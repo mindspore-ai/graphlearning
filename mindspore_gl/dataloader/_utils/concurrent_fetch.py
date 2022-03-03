@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+
 """concurrent fetch loop"""
 import queue
 MP_STATUS_CHECK_INTERVAL = 5.0
+
+
 def _concurrent_fetch_loop(in_queue, out_queue, done_event):
     """concurrently fetch data in another thread"""
 

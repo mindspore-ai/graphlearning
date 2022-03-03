@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
-"""APPNPConv Layer."""
+
+"""APPNPConv Layer"""
 import mindspore as ms
 from mindspore import Tensor
 from mindspore._checkparam import Validator

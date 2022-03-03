@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+
 """GNN Cell"""
 from mindspore.nn import Cell
 from ..parser.vcg import translate, set_display_config

@@ -12,8 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+
 """GINConv Layer"""
 import mindspore as ms
+from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 from .. import GNNCell
 
@@ -37,12 +39,44 @@ class GINConv(GNNCell):
 
     Args:
         activation (Cell): Activation function.
-        init_eps (int): Init value of eps.
+        init_eps (float): Init value of eps.
         learn_eps (bool): Whether eps is learnable.
-        aggregation_type (str): Type of aggregation, should in 'sum', 'max' and 'avg'.
+        aggregation_type (str): Type of aggregation, should in `sum`, `max` and `avg`.
+
+    Inputs:
+        - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,
+          and :math:`*` could be of any shape.
+        - **edge_weight** (Tensor): The input edge weights. The shape is :math:`(M,*)` where :math:`M` is the number
+          of nodes, and :math:`*` could be of any shape.
+        - **g** (Graph): The input graph.
+    Outputs:
+        Tensor, output node features. The shape is :math:`(N, out_feat_size)`.
 
     Raises:
-        SyntaxError: when the aggregation type not in 'sum', 'max' and 'avg'.
+        TypeError: If `activation` is not a Cell.
+        TypeError: If `init_eps` is not a float.
+        TypeError: If `learn_eps` is not a bool.
+        SyntaxError: raised when the aggregation type not in `sum`, `max` and `avg`.
+
+    Examples:
+        >>>import mindspore as ms
+        >>>from mindspore_gl.nn.conv import GINConv
+        >>>from mindspore_gl import GraphField
+        >>>n_nodes = 4
+        >>>n_edges = 8
+        >>>feat_size = 16
+        >>>src_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 2, 3], ms.int32)
+        >>>dst_idx = ms.Tensor([0, 1, 3, 1, 2, 3, 3, 2], ms.int32)
+        >>>ones = ms.ops.Ones()
+        >>>nodes_feat = ones((n_nodes, feat_size), ms.float32)
+        >>>edges_weight = ones((n_edges, feat_size), ms.float32)
+        >>>graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+        >>>hidden_size = 8
+        >>>out_size = 4
+        >>>conv = GINConv(activation=None, init_eps=0., learn_eps=False, aggregation_type="sum")
+        >>>ret = conv(nodes_feat, edges_weight, *graph_field.get_graph())
+        >>>print(ret.shape)
+        (4, 16)
     """
 
     def __init__(self,
@@ -51,6 +85,11 @@ class GINConv(GNNCell):
                  learn_eps=False,
                  aggregation_type="sum"):
         super().__init__()
+        init_eps = Validator.check_is_float(init_eps, "init_eps", self.cls_name)
+        learn_eps = Validator.check_bool(learn_eps, "learn_eps", self.cls_name)
+        if activation is not None and not isinstance(activation, ms.nn.Cell):
+            raise TypeError(f"For '{self.cls_name}', the 'activation' must a Cell, but got "
+                            f"{type(activation).__name__}.")
         self.agg_type = aggregation_type
         if aggregation_type not in {"sum", "max", "avg"}:
             raise SyntaxError("Aggregation type must be one of sum, max or avg")
@@ -64,14 +103,6 @@ class GINConv(GNNCell):
     def construct(self, x, edge_weight, g: Graph):
         """
         Construct function for GINConv.
-
-        Args:
-            x (Tensor): The input node features.
-            edge_weight (Tensor): Edge weights.
-            g (Graph): The input graph.
-
-        Returns:
-            Tensor, output node features.
         """
         g.set_vertex_attr({"h": x})
         g.set_edge_attr({"w": edge_weight})

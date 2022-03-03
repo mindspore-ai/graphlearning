@@ -17,7 +17,7 @@
 from typing import Optional, Union
 import os.path as osp
 import numpy as np
-from mindspore_gl.graph.graph import MindHomoGraph
+from mindspore_gl.graph import MindHomoGraph
 
 
 class IMDBBinary:
@@ -33,7 +33,7 @@ class IMDBBinary:
         RuntimeError: if `root` does not contain data files.
 
     Examples:
-        >>> from mindspore_gl.dataset.imdb_binary import IMDBBinary
+        >>> from mindspore_gl.dataset import IMDBBinary
         >>> root = "path/to/imdb_binary"
         >>> dataset = IMDBBinary(root)
 

@@ -17,7 +17,7 @@
 from typing import Optional, Union
 import os.path as osp
 import numpy as np
-from mindspore_gl.graph.graph import MindHomoGraph
+from mindspore_gl.graph import MindHomoGraph
 
 
 class PPI:
@@ -32,7 +32,7 @@ class PPI:
         RuntimeError: if `root` does not contain data files.
 
     Examples:
-        >>> from mindspore_gl.dataset.ppi import PPI
+        >>> from mindspore_gl.dataset import PPI
         >>> root = "path/to/ppi"
         >>> dataset = PPI(root)
 

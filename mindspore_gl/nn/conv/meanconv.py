@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+
 """MeanConv Layer"""
 import mindspore as ms
+from mindspore import nn
+from mindspore._checkparam import Validator, Rel
 from mindspore.ops import operations as P
 from mindspore.common.initializer import XavierUniform
 from mindspore_gl import Graph
@@ -44,13 +47,43 @@ class MeanConv(GNNCell):
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
         aggregator_type (str): Type of aggregator, should in 'pool', 'lstm' and 'mean'.
-        feat_drop (float): Feature drop out rate.
-        bias (bool): Whether use bias.
-        norm (Cell): Normalization function Cell, default is None.
-        activation (Cell): Activation function Cell, default is None.
+        feat_drop (float): Feature drop out rate. Default: 0.6.
+        bias (bool): Whether use bias. Default: False.
+        norm (Cell): Normalization function Cell. Default: None.
+        activation (Cell): Activation function Cell. Default: None.
+
+    Inputs:
+        - **x** (Tensor) - The input node features. The shape is :math:`(N,D\_in)`
+          where :math:'N' is the number of nodes and :math:`D\_in` could be of any shape.
+        - **self_idx** (Tensor) - The node idx. The shape is :math:'(N\_v,)'
+          where :math:'N\_v' is the number of self nodes.
+        - **g** (Graph) - The input graph.
+
+    Outputs:
+        Tensor, the output feature of shape :math:'(N\_v,D\_out)'.
+        where :math:'N\_v' is the number of self nodes and :math:'D\_out' could be of any shape
 
     Raises:
-        SyntaxError: when aggregator type not supported.
+        ValueError: if activation is not tanh or relu.
+        TypeError: if norm type is not ms.nn.Cell.
+
+    Examples:
+        >>> import mindspore as ms
+        >>> from mindspore_gl.nn.conv.meanconv import MeanConv
+        >>> from mindspore_gl import GraphField
+        >>> n_nodes = 4
+        >>> n_edges = 7
+        >>> feat_size = 4
+        >>> src_idx = ms.Tensor([0, 1, 1, 2, 2, 3, 3], ms.int32)
+        >>> dst_idx = ms.Tensor([0, 0, 2, 1, 3, 0, 1], ms.int32)
+        >>> ones = ms.ops.Ones()
+        >>> feat = ones((n_nodes, feat_size), ms.float32)
+        >>> graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+        >>> meanconv = MeanConv(in_feat_size=4, out_feat_size=2, activation='relu')
+        >>> self_idx = ms.Tensor([0, 1], ms.int32)
+        >>> res = meanconv(feat, self_idx, *graph_field.get_graph())
+        >>> print(res.shape)
+            (2, 2)
     """
 
     def __init__(self,
@@ -59,17 +92,27 @@ class MeanConv(GNNCell):
                  feat_drop=0.6,
                  bias=False,
                  norm=None,
-                 activation: ms.nn.Cell = None):
+                 activation: str = "relu"):
         super().__init__()
-        self.in_feat_size = in_feat_size
-        self.out_feat_size = out_feat_size
-        self.norm = norm
+        self.in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
+        self.out_feat_size = Validator.check_positive_int(out_feat_size, "out_feat_size", self.cls_name)
+        feat_drop = Validator.check_is_float(feat_drop, "feat_drop", self.cls_name)
+        bias = Validator.check_bool(bias, "bias", self.cls_name)
+        activation = Validator.check_string(activation, ["tanh", "relu"], self.cls_name)
+
+        feat_drop = Validator.check_float_range(feat_drop, 0.0, 1.0, Rel.INC_NEITHER, "feat_drop", self.cls_name)
         if activation == "tanh":
             self.activation = P.Tanh()
         elif activation == "relu":
             self.activation = P.ReLU()
         else:
             raise ValueError("activation should be tanh or relu")
+
+        if norm:
+            if not isinstance(norm, nn.Cell):
+                raise TypeError("norm type should be ms.nn.Cell")
+
+        self.norm = norm
         self.feat_drop = ms.nn.Dropout(1 - feat_drop)
         self.concat = P.Concat(axis=1)
         if bias:
@@ -83,15 +126,7 @@ class MeanConv(GNNCell):
     # pylint: disable=arguments-differ
     def construct(self, node_feat, self_idx, g: Graph):
         """
-        Construct function for SAGEConv.
-
-        Args:
-            node_feat (Tensor): The input node features.
-            self_idx(int): The node idx
-            g (Graph): The input graph.
-
-        Returns:
-            Tensor, output node features.
+        Construct function for MeanConv.
         """
         # node_feat = self.feat_drop(node_feat)
         g.set_vertex_attr({"src": node_feat})

@@ -12,10 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+
 """Sampling neighbor"""
 from typing import List
 import numpy as np
-from mindspore_gl.graph.graph import MindHomoGraph
+from mindspore_gl.graph import MindHomoGraph
 from mindspore_gl import sample_kernel
 
 
@@ -52,7 +53,7 @@ def sage_sampler_on_homo(homo_graph: MindHomoGraph, seeds: np.array, neighbor_nu
         >>> import networkx
         >>> import numpy as np
         >>> from scipy.sparse import csr_matrix
-        >>> from mindspore_gl.graph.graph import MindHomoGraph, CsrAdj
+        >>> from mindspore_gl.graph import MindHomoGraph, CsrAdj
         >>> from mindspore_gl.sampling.neighbor import sage_sampler_on_homo
         >>> node_count = 10
         >>> edge_prob = 0.3

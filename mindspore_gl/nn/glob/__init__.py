@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+
 """glob functions"""
 from .sumpooling import SumPooling
 from .maxpooling import MaxPooling

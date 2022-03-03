@@ -15,9 +15,9 @@
 """ Test dataloader api. """
 import numpy as np
 import pytest
-from mindspore_gl.dataloader.dataset import Dataset
-from mindspore_gl.dataloader.samplers import RandomBatchSampler, DistributeRandomBatchSampler
-from mindspore_gl.dataloader.dataloader import DataLoader
+from mindspore_gl.dataloader import Dataset
+from mindspore_gl.dataloader import RandomBatchSampler, DistributeRandomBatchSampler
+from mindspore_gl.dataloader import DataLoader
 
 
 class MyDataset(Dataset):

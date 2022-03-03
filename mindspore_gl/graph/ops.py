@@ -12,14 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
-"""Operations for Graph."""
+
+"""Operations for Graph"""
 from typing import List, Union, Tuple
 import math
 from enum import Enum
 import numpy as np
 
 import mindspore_gl.array_kernel as array_kernel
-import mindspore_gl.dataloader.shared_numpy as shared_numpy
+from mindspore_gl.dataloader import shared_numpy
 from .graph import BatchMeta, MindHomoGraph
 from .utils import SharedArrayPool, ArrayPool
 

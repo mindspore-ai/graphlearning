@@ -12,9 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+
 """Sampling APIs for graph data."""
+from .neighbor import sage_sampler_on_homo
+from .randomwalks import random_walk_unbias_on_homo
 from .k_hop_sampling import k_hop_subgraph
 
 __all__ = [
+    "sage_sampler_on_homo",
+    "random_walk_unbias_on_homo",
     "k_hop_subgraph"
 ]

@@ -12,9 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+
 """Reading and building interface for graph datasets."""
 from .cora import CoraV2
+from .reddit import Reddit
+from .pubmed import PubMed
+from .mag240m import MAG240MDataset
+from .imdb_binary import IMDBBinary
+from .alchemy import Alchemy
+from .enzymes import Enzymes
+from .blog_catalog import BlogCatalog
+from .ppi import PPI
 
 __all__ = [
-    "CoraV2"
+    "CoraV2",
+    "Reddit",
+    "PubMed",
+    "IMDBBinary",
+    "PPI",
+    "BlogCatalog",
+    "Alchemy",
+    "Enzymes"
 ]

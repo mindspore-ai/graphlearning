@@ -12,8 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+
 """APIs for graph convolutions."""
 from .gnn_cell import GNNCell
-from .conv import APPNPConv, GCNConv, GATConv
+from .conv import *
+from .glob import *
 
-__all__ = ['GNNCell', 'APPNPConv', 'GATConv', 'GCNConv']
+__all__ = ['GNNCell']
+__all__.extend(conv.__all__)
+__all__.extend(glob.__all__)

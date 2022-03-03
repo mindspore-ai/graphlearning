@@ -64,9 +64,9 @@ class DataLoader(Generic[Tco]):
             maintain the workers `Dataset` instances alive. (default: ``False``)
 
     Examples:
-        >>> from mindspore_gl.dataloader.dataset import Dataset
-        >>> from mindspore_gl.dataloader.samplers import RandomBatchSampler
-        >>> from mindspore_gl.dataloader.dataloader import DataLoader
+        >>> from mindspore_gl.dataloader import Dataset
+        >>> from mindspore_gl.dataloader import RandomBatchSampler
+        >>> from mindspore_gl.dataloader import DataLoader
         >>> class Mydataset(Dataset):
             ...def __init__(self, data):
             ......self.data = data

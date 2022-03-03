@@ -21,7 +21,6 @@ start = time.time()
 queue.put(array)
 queue.get()
 print(f"time consumed by serialization {time.time() - start}")  # 2.29s
-
 ```
 
 ## 三、基于共享内存方式通信的SharedNDArray的设计与实现
@@ -48,12 +47,14 @@ print(f"time consumed by shared memory {time.time() - start}")  # 0.486s
 为了防止进程间共享内存的泄漏导致程序运行时内存占用无限增长，我们使用引用计数的方式进行`SharedNumpyNDArray`内存生命周期的管理。我们在申请内存时，多申请`8B`用于
 记录当前内存被各个进程的引用次数。每当该内存被共享给其他进程，则内存块引用计数+1， 当一个进程中的`SharedNumpyNDArray`对象被虚拟机垃圾回收，则引用计数-1，
 当最后一个引用该内存的`SharedNumpyNDArray`对象被Python虚拟机进行垃圾回收时，会自动的`unlink`共享内存以方便操作系统回收。 基于上述的方法，我们可以方便高效的实现内存生命周期管理。
+![](./multi_medias/shared_numpy_2.png)
 
 ## 四、共享内存池的设计实现
 
 ### 4.1 动机
 
 有了`SharedNDArray`之后，我们的进程间通信已然高效了许多，但是400ms的耗时仍然是我们所不能接受的，我们于是想进一步减少这部分消耗。
+![](./multi_medias/shared_numpy_3.png)
 
 基于共享内存的通信核心有两个步骤:
 
@@ -95,7 +96,6 @@ shared_array[:] = array[:]
 queue2.put(shared_array)
 queue2.get()
 print(f"time consumed by shared array pool {time.time() - start}")  # 0.120
-
 ```
 
 ## 五、总结

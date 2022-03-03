@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+
 """Claesses for Graph data structure"""
 from typing import Dict
 from collections import namedtuple

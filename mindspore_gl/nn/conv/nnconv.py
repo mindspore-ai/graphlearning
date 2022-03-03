@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+
 """NNConv Layer"""
 import math
 
 import mindspore as ms
+from mindspore._checkparam import Validator
 from mindspore.common.initializer import XavierUniform
 from mindspore_gl import Graph
 from .. import GNNCell
@@ -36,9 +38,41 @@ class NNConv(GNNCell):
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
         edge_embed (Cell): Edge embedding function Cell.
-        aggregator_type (str): Type of aggregator, should be 'sum'.
-        residual (bool): Whether use residual.
-        bias (bool): Whether use bias.
+        aggregator_type (str): Type of aggregator, should be 'sum'. Default: 'sum'.
+        residual (bool): Whether use residual. Default: False.
+        bias (bool): Whether use bias. Default: True.
+
+    Inputs:
+        - **x** (Tensor) - The input node features. The shape is :math:`(N,D\_in)`
+          where :math:'N' is the number of nodes and :math:`D\_in` could be of any shape.
+        - **edge_feat** (Tensor) - The input edge features. The shape is :math:'(N\_e, D\_in)'
+          where :math:'N\_e' is the number of edges and :math:'D\_in' could be of any shape.
+        - **g** (Graph) - The input graph.
+
+    Outputs:
+        Tensor, the output feature of shape :math:'(N,D\_out)'
+        where :math:'N' is the number of nodes and :math:`D\_out` could be of any shape.
+
+    Raises:
+        TypeError: if aggregator type is not sum.
+
+    Examples:
+        >>> import mindspore as ms
+        >>> from mindspore_gl.nn.conv import NNConv
+        >>> from mindspore_gl import GraphField
+        >>> n_nodes = 4
+        >>> n_edges = 7
+        >>> feat_size = 4
+        >>> src_idx = ms.Tensor([0, 1, 1, 2, 2, 3, 3], ms.int32)
+        >>> dst_idx = ms.Tensor([0, 0, 2, 1, 3, 0, 1], ms.int32)
+        >>> ones = ms.ops.Ones()
+        >>> node_feat = ones((n_nodes, feat_size), ms.float32)
+        >>> edge_feat = ones((n_edges, feat_size), ms.float32)
+        >>> graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+        >>> conv = NNConv(feat_size, 4, ms.nn.Dense(feat_size, feat_size * 4))
+        >>> res = conv(node_feat, edge_feat, *graph_field.get_graph())
+        >>> print(res.shape)
+            (4, 4)
     """
 
     def __init__(self,
@@ -49,12 +83,16 @@ class NNConv(GNNCell):
                  residual=False,
                  bias=True):
         super().__init__()
+        self.in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
+        self.out_feat_size = Validator.check_positive_int(out_feat_size, "out_feat_size", self.cls_name)
+        self.agg_type = Validator.check_string(aggregator_type, ["sum"], self.cls_name)
+        residual = Validator.check_bool(residual, "residual", self.cls_name)
+        bias = Validator.check_bool(bias, "bias", self.cls_name)
+
         if aggregator_type != "sum":
             raise TypeError("Don't support aggregator type other than sum.")
+
         self.edge_embed = edge_embed
-        self.agg_type = aggregator_type
-        self.in_feat_size = in_feat_size
-        self.out_feat_size = out_feat_size
         self.res_dense = None
         if residual:
             if in_feat_size != out_feat_size:
@@ -67,14 +105,6 @@ class NNConv(GNNCell):
     def construct(self, x, edge_feat, g: Graph):
         """
         Construct function for NNConv.
-
-        Args:
-            x (Tensor): The input node features.
-            edge_feat (Tensor): The input edge features.
-            g (Graph): The input graph.
-
-        Returns:
-            Tensor, output node features.
         """
         g.set_vertex_attr({"h": ms.ops.ExpandDims()(x, -1)})
         g.set_edge_attr(

@@ -17,7 +17,7 @@
 
 import os.path as osp
 import numpy as np
-from mindspore_gl.graph.graph import MindHomoGraph, CsrAdj
+from mindspore_gl.graph import MindHomoGraph, CsrAdj
 
 
 class Reddit:

@@ -14,7 +14,7 @@
 # ============================================================================
 """ test graph ops """
 import math
-from mindspore_gl.dataset.imdb_binary import IMDBBinary
+from mindspore_gl.dataset import IMDBBinary
 from mindspore_gl.graph.ops import BatchHomoGraph, PadHomoGraph, PadMode
 import pytest
 

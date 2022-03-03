@@ -24,9 +24,7 @@ import mindspore.ops as ops
 from mindspore.common.initializer import Uniform
 import mindspore.context as context
 
-from mindspore_gl.dataloader.dataloader import DataLoader
-from mindspore_gl.dataloader.dataset import Dataset
-from mindspore_gl.dataloader.samplers import RandomBatchSampler
+from mindspore_gl.dataloader import RandomBatchSampler, Dataset, DataLoader
 
 data_path = "/home/workspace/mindspore_dataset/GNN_Dataset/FB15k"
 

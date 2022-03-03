@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
-"""appnp model implemented using mindspore-gl"""
+
+"""appnp model implemented using mindspore-gl."""
 import time
 import argparse
 import sys

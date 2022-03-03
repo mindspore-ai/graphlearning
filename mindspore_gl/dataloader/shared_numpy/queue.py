@@ -50,8 +50,9 @@ class Queue(multiprocessing.queues.Queue):
     MultiProcessing Queue for inter-process communication.
 
     Examples:
-        >>> from mindspore_gl.dataloader.shared_numpy import queue
+        >>> from mindspore_gl.dataloader import Queue
         >>> import numpy as np
+        >>> queue = Queue()
         >>> array = np.ones([2500, 602], dtype=np.float32)
         >>> queue.put(array)
         >>> ret = queue.get()

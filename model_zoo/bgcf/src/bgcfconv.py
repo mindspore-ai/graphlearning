@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
-"""bgcf conv."""
+"""bgcf conv"""
 import mindspore as ms
 import mindspore.nn as nn
 from mindspore import Parameter
@@ -22,7 +22,7 @@ from mindspore.ops import operations as P
 from mindspore.common import dtype as mstype
 
 from mindspore_gl import Graph
-from .. import GNNCell
+from mindspore_gl import GNNCell
 
 
 class AttenConv(nn.Cell):

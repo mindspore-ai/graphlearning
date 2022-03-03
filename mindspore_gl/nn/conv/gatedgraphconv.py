@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+
 """GatedGraphConv Layer"""
 import math
 import mindspore as ms
+from mindspore._checkparam import Validator
 from mindspore.common.initializer import XavierUniform
 from mindspore_gl import Graph
 from .. import GNNCell
@@ -75,6 +77,41 @@ class GatedGraphConv(ms.nn.Cell):
         n_steps (int): Number of steps.
         n_etype (int): Number of edge types.
         bias (bool): Whether use bias.
+
+    Inputs:
+        - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,
+          and :math:`*` could be of any shape.
+        - **g** (Graph): The input graph.
+
+    Outputs:
+        Tensor, output node features. The shape is :math:`(N, out_feat_size)`.
+
+    Raises:
+        TypeError: If `in_feat_size` is not a positive int.
+        TypeError: If `out_feat_size` is not a positive int.
+        TypeError: If `n_steps` is not a positive int.
+        TypeError: If `n_etype` is not a positive int.
+        TypeError: If `bias` is not a bool.
+
+    Examples:
+        >>>import mindspore as ms
+        >>>from mindspore_gl.nn.conv import GatedGraphConv
+        >>>from mindspore_gl import GraphField
+        >>>feat_size = 16
+        >>>h = [ms.ops.Ones()((4, feat_size), ms.float32), ms.ops.Ones()((2, feat_size), ms.float32),
+        ...     ms.ops.Ones()((3, feat_size), ms.float32)]
+        >>>src_idx = [ms.Tensor([0, 1, 2, 3], ms.int32), ms.Tensor([0, 0, 1, 1], ms.int32),
+        ...           ms.Tensor([0, 0, 1, 2, 3], ms.int32), ms.Tensor([2, 3, 3, 0, 1], ms.int32),
+        ...           ms.Tensor([0, 1, 2, 3], ms.int32), ms.Tensor([2, 0, 2, 1], ms.int32)]
+        >>>dst_idx = [ms.Tensor([0, 0, 1, 1], ms.int32), ms.Tensor([0, 1, 2, 3], ms.int32),
+        ...           ms.Tensor([2, 3, 3, 0, 1], ms.int32), ms.Tensor([0, 0, 1, 2, 3], ms.int32),
+        ...           ms.Tensor([2, 0, 2, 1], ms.int32), ms.Tensor([0, 1, 2, 3], ms.int32)]
+        >>>n_nodes = [4, 4, 4, 4, 4, 4]
+        >>>n_edges = [4, 4, 5, 5, 4, 4]
+        >>>conv = GatedGraphConv(feat_size, 16, 2, 6, True)
+        >>>ret = conv(h[0], src_idx, dst_idx, n_nodes, n_edges)
+        >>>print(ret.shape)
+        (4, 16)
     """
 
     def __init__(self,
@@ -87,41 +124,32 @@ class GatedGraphConv(ms.nn.Cell):
         super().__init__()
         if in_feat_size > out_feat_size:
             raise TypeError("GatedGraphConv requires input feature size <= out_feature_size")
-        self.in_feat_size = in_feat_size
-        self.out_feat_size = out_feat_size
+        self.in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
+        self.out_feat_size = Validator.check_positive_int(out_feat_size, "out_feat_size", self.cls_name)
+        bias = Validator.check_bool(bias, "bias", self.cls_name)
         cl = []
         for _ in range(n_etype):
             cl.append(HomoGraphConv(out_feat_size, bias))
         self.cell_list = ms.nn.CellList(cl)
-        self.n_etype = n_etype
-        self.n_steps = n_steps
-        self.gru = ms.nn.GRU(out_feat_size, out_feat_size)
+        self.n_etype = Validator.check_positive_int(n_etype, "n_etype", self.cls_name)
+        self.n_steps = Validator.check_positive_int(n_steps, "n_steps", self.cls_name)
+        self.gru = ms.nn.GRUCell(out_feat_size, out_feat_size)
+        # self.gru = None
 
     # pylint: disable=arguments-differ
     def construct(self, x, src_idx, dst_idx, n_nodes, n_edges):
-        r"""
+        """
         Construct function for GatedGraphConv.
-
-        Args:
-            x (Tensor): The input node features.
-            src_idx (Tensor): A tensor with shape :math:`(N\_EDGES)`,
-                        represents the source node index of COO edge matrix.
-            dst_idx (Tensor): A tensor with shape :math:`(N\_EDGES)`,
-                        represents the destination node index of COO edge matrix.
-            n_nodes (Tensor): An integer tensor.
-            n_edges (Tensor): An integer tensor.
-
-        Returns:
-            Tensor, output node features.
         """
         if self.in_feat_size < self.out_feat_size:
             x = ms.ops.Concat(axis=-1)(x, ms.ops.Zeros()((ms.ops.Shape()(x)[0], self.out_feat_size - self.in_feat_size),
                                                          ms.float32))
         for _ in range(self.n_steps):
-            out = self.cell_list[0](x, src_idx[0], dst_idx[0], n_nodes, n_edges)
+            out = self.cell_list[0](x, src_idx[0], dst_idx[0], n_nodes[0], n_edges[0])
             for i in range(1, self.n_etype):
-                out += self.cell_list[i](x, src_idx[i], dst_idx[i], n_nodes, n_edges)
+                out += self.cell_list[i](x, src_idx[i], dst_idx[i], n_nodes[i], n_edges[i])
             if self.gru is not None:
-                out = self.gru(out)
+                out = self.gru(out, x)
+                x = out
             x = out
-        return out
+        return x

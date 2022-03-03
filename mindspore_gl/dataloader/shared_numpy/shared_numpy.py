@@ -74,7 +74,7 @@ class SharedNDArray(np.ndarray):
 
         Examples:
             >>> import numpy as np
-            >>> from mindspore_gl.dataloader.shared_numpy import SharedNDArray
+            >>> from mindspore_gl.dataloader import SharedNDArray
             >>> np_arr = np.zeros([1000, 500], dtype=np.float32)
             >>> shared_arr = SharedNDArray.from_numpy_array(np_arr)
             >>> shared_arr[0, 0:5] = 2
@@ -110,7 +110,7 @@ class SharedNDArray(np.ndarray):
             SharedNDArray, array created.
 
         Examples:
-            >>> from mindspore_gl.dataloader.shared_numpy import SharedNDArray
+            >>> from mindspore_gl.dataloader import SharedNDArray
             >>> import numpy as np
             >>> tgt_size = [1000, 500]
             >>> shared_arr = SharedNDArray.from_shape(tgt_size, dtype=np.int32)

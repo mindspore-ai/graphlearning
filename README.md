@@ -12,7 +12,7 @@
 
 MindSpore Graph Learning is an efficient and easy-to-use graph learning framework.
 
-![GraphLearning_architecture](./images/MindSpore_GraphLearning_Architecture.PNG)
+![GraphLearning_architecture](./images/MindSpore_GraphLearning_architecture.PNG)
 
 Compared to the normal model, a graph neural network model transfers and aggregates information on a given graph
 structure, which cannot be intuitively expressed through entire graph computing. MindSpore Graph Learning provides a

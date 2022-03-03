@@ -16,7 +16,7 @@
 import os.path as osp
 import numpy as np
 from scipy.sparse import csr_matrix
-from mindspore_gl.graph.graph import MindHomoGraph, CsrAdj
+from mindspore_gl.graph import MindHomoGraph, CsrAdj
 
 
 class BlogCatalog:
@@ -31,7 +31,7 @@ class BlogCatalog:
         RuntimeError: if `root` does not contain data files.
 
     Examples:
-        >>> from mindspore_gl.dataset.blog_catalog import BlogCatalog
+        >>> from mindspore_gl.dataset import BlogCatalog
         >>> root = "path/to/blog_catalog"
         >>> dataset = BlogCatalog(root)
 

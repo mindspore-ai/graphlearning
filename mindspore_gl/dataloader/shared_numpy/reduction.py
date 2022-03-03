@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+
 """reduction method for SharedNDArray"""
 from multiprocessing.reduction import ForkingPickler
 import mindspore_gl.memory_kernel as memory_kernel # pylint:disable=R0402

@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+
 """random walks on graphs"""
 import numpy as np
-from mindspore_gl.graph.graph import MindHomoGraph
+from mindspore_gl.graph import MindHomoGraph
 from mindspore_gl import sample_kernel
 
 __all__ = ['random_walk_unbias_on_homo']

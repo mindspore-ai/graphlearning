@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+
 """worker loop"""
 #pylint: disable=C0209
 #pylint: disable=W0703
@@ -22,10 +23,12 @@ import queue
 from .fetch import _MapDatasetFetcher
 from ..utils import ExceptionWrapper
 
+
 class _DatasetKind:
     @staticmethod
     def create_fetcher(dataset, collate_fn):
         return _MapDatasetFetcher(dataset, collate_fn) #pylint: disable=W0212
+
 
 MP_STATUS_CHECK_INTERVAL = 5.0
 

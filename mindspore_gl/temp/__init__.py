@@ -13,5 +13,6 @@
 # limitations under the License.
 # ============================================================================
 """Init"""
+from .gnn_dataset import *
 from .graph_meta import *
 from .utils import *

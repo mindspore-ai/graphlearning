@@ -24,12 +24,10 @@ from mindspore.common.initializer import Uniform
 
 os.environ["LD_LIBRARY_PATH"] += ":/lib:/usr/lib:/usr/local/lib"
 
-from mindspore_gl.dataset.blog_catalog import BlogCatalog
+from mindspore_gl.dataset import BlogCatalog
 import mindspore_gl.sample_kernel as sample_kernel
-from mindspore_gl.sampling.randomwalks import random_walk_unbias_on_homo
-from mindspore_gl.dataloader.dataloader import DataLoader
-from mindspore_gl.dataloader.dataset import Dataset
-from mindspore_gl.dataloader.samplers import RandomBatchSampler
+from mindspore_gl.sampling import random_walk_unbias_on_homo
+from mindspore_gl.dataloader import RandomBatchSampler, Dataset, DataLoader
 from sklearn.metrics import f1_score
 
 data_path = "/home/workspace/mindspore_dataset/GNN_Dataset/"

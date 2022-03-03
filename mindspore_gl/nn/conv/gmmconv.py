@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+
 """GMMConv Layer"""
 import math
 import mindspore as ms
+from mindspore._checkparam import Validator
 from mindspore.common.initializer import XavierUniform
 from mindspore_gl import Graph
 from .. import GNNCell
@@ -41,12 +43,41 @@ class GMMConv(GNNCell):
         out_feat_size (int): Output node feature size.
         coord_dim (int): Dimension of pseudo-coordinates.
         n_kernels (int): Number of kernels.
-        residual (bool): Whether use residual.
-        bias (bool): Whether use bias.
-        aggregator_type (str): Type of aggregator, should be 'sum'.
+        residual (bool): Whether use residual. Default: False.
+        bias (bool): Whether use bias. Default: False.
+        aggregator_type (str): Type of aggregator, should be 'sum'. Default: "sum".
+
+    Inputs:
+        - **x** (Tensor) - The input node features. The shape is :math:`(N,D\_in)`
+          where :math:'N' is the number of nodes and :math:`D\_in` could be of any shape.
+        - **pseudo** (Tensor) -  Pseudo coordinate tensor. The shape is :math:`(E,D\_u)`
+          where :math:'E' is the number of edges of the graph and :math:'D\_u' is the  Dimension of pseudo-coordinates.
+        - **g** (Graph) - The input graph.
+
+    Outputs:
+        Tensor, the output feature of shape :math:'(N,D\_out)'
+        where :math:'N' is the number of nodes and :math:`D\_out` could be of any shape.
 
     Raises:
-        SyntaxError: when the aggregator type not equals to 'sum'.
+        TypeError: if aggregator type is not sum.
+
+    Examples:
+        >>> import mindspore as ms
+        >>> from mindspore_gl.nn.conv import GMMConv
+        >>> from mindspore_gl import GraphField
+        >>> n_nodes = 4
+        >>> n_edges = 7
+        >>> feat_size = 4
+        >>> src_idx = ms.Tensor([0, 1, 1, 2, 2, 3, 3], ms.int32)
+        >>> dst_idx = ms.Tensor([0, 0, 2, 1, 3, 0, 1], ms.int32)
+        >>> ones = ms.ops.Ones()
+        >>> feat = ones((n_nodes, feat_size), ms.float32)
+        >>> graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+        >>> gmmconv = GMMConv(in_feat_size=feat_size, out_feat_size=2, coord_dim=3, n_kernels=2)
+        >>> pseudo = ones((n_edges, 3), ms.float32)
+        >>> res = gmmconv(feat, pseudo, *graph_field.get_graph())
+        >>> print(res.shape)
+            (4, 2)
     """
 
     def __init__(self,
@@ -58,8 +89,17 @@ class GMMConv(GNNCell):
                  bias=False,
                  aggregator_type="sum"):
         super().__init__()
+        in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
+        self.out_feat_size = Validator.check_positive_int(out_feat_size, "out_feat_size", self.cls_name)
+        self.coord_dim = Validator.check_positive_int(coord_dim, "coord_dim", self.cls_name)
+        self.n_kernels = Validator.check_positive_int(n_kernels, "n_kernels", self.cls_name)
+        residual = Validator.check_bool(residual, "residual", self.cls_name)
+        bias = Validator.check_bool(bias, "bias", self.cls_name)
+        aggregator_type = Validator.check_string(aggregator_type, ["sum"], self.cls_name)
+
         if aggregator_type != "sum":
             raise TypeError("Don't support aggregator type other than sum.")
+
         self.mu = ms.Parameter(
             ms.ops.normal((n_kernels, coord_dim), ms.Tensor([[0. for _ in range(coord_dim)]], ms.float32),
                           ms.Tensor([[0.1 for _ in range(coord_dim)]], ms.float32)))
@@ -71,33 +111,22 @@ class GMMConv(GNNCell):
         if residual:
             self.residual = ms.nn.Dense(in_feat_size, out_feat_size, has_bias=bias, weight_init=XavierUniform(gain))
         self.agg_type = aggregator_type
-        self.n_kernels = n_kernels
-        self.out_feat_size = out_feat_size
-        self.coord_dim = coord_dim
 
     # pylint: disable=arguments-differ
     def construct(self, x, pseudo, g: Graph):
         """
         Construct function for GMMConv.
-
-        Args:
-            x (Tensor): The input node features.
-            pseudo (Tensor): Pseudo coordinate tensor.
-            g (Graph): The input graph.
-
-        Returns:
-            Tensor, output node features.
         """
         g.set_vertex_attr({"h": ms.ops.Reshape()(self.dense(x), (-1, self.n_kernels, self.out_feat_size))})
         gaussian = -0.5 * ((ms.ops.Reshape()(pseudo, (-1, 1, self.coord_dim)) - ms.ops.Reshape()(self.mu, (
             1, self.n_kernels, self.coord_dim))) ** 2)
         gaussian = gaussian * (ms.ops.Reshape()(self.inv_sigma, (1, self.n_kernels, self.coord_dim)) ** 2)
-        gaussian = ms.ops.Exp()(ms.ops.ReduceSum(keep_dims=True)(gaussian, axis=-1))
+        gaussian = ms.ops.Exp()(ms.ops.ReduceSum(keep_dims=True)(gaussian, -1))
         g.set_edge_attr({"g": gaussian})
         for v in g.dst_vertex:
             e = [s.h * e.g for s, e in v.inedges]
             v.rt = g.sum(e)
-            v.rt = ms.ops.ReduceSum()(v.rt, axis=1)
+            v.rt = ms.ops.ReduceSum()(v.rt, 1)
             if self.residual is not None:
                 v.rt = v.rt + self.residual(v.h)
         return [v.rt for v in g.dst_vertex]

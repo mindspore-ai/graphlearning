@@ -26,7 +26,7 @@ class RandomBatchSampler(ds.Sampler):
         batch_size(int): number of sampling subgraphs per batch
 
     Examples:
-        >>> from mindspore_gl.dataloader.samplers import RandomBatchSampler
+        >>> from mindspore_gl.dataloader import RandomBatchSampler
         >>> ds = list(range(10))
         >>> sampler = RandomBatchSampler(ds, 3)
         >>> print(list(sampler))
@@ -77,7 +77,7 @@ class DistributeRandomBatchSampler:
         batch_size(int): number of sampling subgraphs per batch
 
     Examples:
-        >>> from mindspore_gl.dataloader.samplers import DistributeRandomBatchSampler
+        >>> from mindspore_gl.dataloader import DistributeRandomBatchSampler
         >>> ds = list(range(20))
         >>> rank_id = 0
         >>> world_size = 2

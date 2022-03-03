@@ -12,10 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
-"""Graph Utils."""
+
+"""Graph Utils"""
 from typing import Union, List, Tuple, Iterable
 import numpy as np
-import mindspore_gl.dataloader.shared_numpy as shared_numpy
+from mindspore_gl.dataloader import shared_numpy
 import mindspore_gl.memory_kernel as memory_kernel
 
 

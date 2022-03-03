@@ -19,7 +19,7 @@ import numpy as np
 import networkx as nx
 import scipy.sparse as sp
 from scipy.sparse import coo_matrix, csr_matrix
-from mindspore_gl.graph.graph import MindHomoGraph, CsrAdj
+from mindspore_gl.graph import MindHomoGraph, CsrAdj
 
 
 class CoraV2:

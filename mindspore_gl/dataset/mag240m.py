@@ -17,7 +17,7 @@
 from typing import Optional, Union, Dict
 import os.path as osp
 import numpy as np
-from mindspore_gl.graph.graph import MindRelationGraph, MindHeteroGraph, CsrAdj
+from mindspore_gl.graph import MindRelationGraph, MindHeteroGraph, CsrAdj
 from .utils import get_indptr_from_coo_src
 
 
@@ -33,7 +33,7 @@ class MAG240MDataset:
         RuntimeError: if `root` does not contain data files.
 
     Examples:
-        >>> from mindspore_gl.dataset.mag240m import MAG240MDataset
+        >>> from mindspore_gl.dataset import MAG240MDataset
         >>> root = "path/to/mag240m"
         >>> dataset = MAG240MDataset(root)
 

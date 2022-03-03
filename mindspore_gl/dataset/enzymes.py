@@ -17,7 +17,7 @@
 from typing import Optional, Union
 import os.path as osp
 import numpy as np
-from mindspore_gl.graph.graph import MindHomoGraph
+from mindspore_gl.graph import MindHomoGraph
 
 
 class Enzymes:
@@ -32,7 +32,7 @@ class Enzymes:
         RuntimeError: if `root` does not contain data files.
 
     Examples:
-        >>> from mindspore_gl.dataset.enzymes import Enzymes
+        >>> from mindspore_gl.dataset import Enzymes
         >>> root = "path/to/enzymes"
         >>> dataset = Enzymes(root)
     """

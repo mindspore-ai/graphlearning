@@ -12,5 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+
 """Graph abstraction and data interface."""
-__all__ = []
+from .graph import MindHomoGraph, MindRelationGraph, \
+                   MindHeteroGraph, BatchMeta, CsrAdj
+from .ops import PadMode, PadDirection, PadArray2d, \
+                 PadHomoGraph, BatchHomoGraph, UnBatchHomoGraph
+
+__all__ = [
+    "CsrAdj",
+    "MindHomoGraph",
+    "MindRelationGraph",
+    "MindHeteroGraph",
+    "BatchMeta",
+    "PadMode",
+    "PadDirection",
+    "PadArray2d",
+    "PadHomoGraph",
+    "BatchHomoGraph",
+    "UnBatchHomoGraph"
+]

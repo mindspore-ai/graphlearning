@@ -69,7 +69,7 @@ class SharedMemory:
             When attaching to an existing shared memory block, the size parameter is ignored.
 
     Examples:
-        >>> from mindspore_gl.dataloader.shared_numpy import SharedMemory
+        >>> from mindspore_gl.dataloader import SharedMemory
         >>> import numpy as np
         >>> array = np.ones([2500, 602], dtype=np.float32)
         >>> shm = SharedMemory(create=True, size=array.nbytes)

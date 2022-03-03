@@ -18,7 +18,7 @@
 from typing import Optional
 import os.path as osp
 import numpy as np
-from mindspore_gl.graph.graph import MindHomoGraph, CsrAdj
+from mindspore_gl.graph import MindHomoGraph, CsrAdj
 
 
 class PubMed:
@@ -33,7 +33,7 @@ class PubMed:
         RuntimeError: if `root` does not contain data files.
 
     Examples:
-        >>> from mindspore_gl.dataset.pubmed import PubMed
+        >>> from mindspore_gl.dataset import PubMed
         >>> root = "path/to/pubmed"
         >>> dataset = PubMed(root)
 

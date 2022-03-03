@@ -17,7 +17,7 @@ import time
 from multiprocessing import Process
 import numpy as np
 import mindspore_gl.memory_kernel as memory_kernel
-import mindspore_gl.dataloader.shared_numpy as shared_numpy
+from mindspore_gl.dataloader import shared_numpy
 import pytest
 
 
