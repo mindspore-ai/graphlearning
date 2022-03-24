@@ -86,6 +86,7 @@ def main():
     train_net = nn.TrainOneStepCell(loss, optimizer)
     total = 0.
     warm_up = 3
+    best_acc = 0.
 
     for e in range(epochs):
         beg = time.time()
@@ -104,7 +105,9 @@ def main():
         label = labels[test_mask]
         count = np.equal(predict, label)
         test_acc = np.sum(count) / label.shape[0]
+        best_acc = test_acc if test_acc > best_acc else best_acc
         print('epoch:', e, ' test_acc:', test_acc)
+    print('best_acc:', best_acc)
 
 
 if __name__ == "__main__":
