@@ -39,5 +39,5 @@ def test_gcn():
     log_info = file.readlines()
     file.close()
     last_info = log_info[-1]
-    test_acc = float(last_info[last_info.find('test_acc:'):].replace('test_acc:', '').replace('\n', ''))
+    test_acc = float(last_info[last_info.find('best_acc:'):].replace('best_acc:', '').replace('\n', ''))
     assert test_acc > 0.78
