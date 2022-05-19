@@ -246,7 +246,7 @@ class Graph:
 
         Args:
             feat_dict (Dict): key type: str, value type: recommend feature tensor
-                of shape :math:`(N\_EDGES, F)`, :math:`F` is the dimension of the edge feature.
+                of shape :math:`(N\_EDGES, *)`, :math:`*` is the shape of the feature per edge.
                 Recommend the shape of value is :math:`(N\_EDGES, 1)` when the feature dimension is 1.
 
         Raises:

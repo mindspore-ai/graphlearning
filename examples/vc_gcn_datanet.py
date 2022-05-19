@@ -20,7 +20,6 @@ import sys
 
 import numpy as np
 import mindspore as ms
-from mindspore import Tensor
 from mindspore.profiler import Profiler
 import mindspore.nn as nn
 import mindspore.ops as ops
@@ -88,14 +87,6 @@ def main(train_args):
     feature_size = ds.x.shape[1]
     if train_args.profile:
         ms_profiler = Profiler(subgraph="ALL", is_detail=True, is_show_op_path=False, output_path="./prof_result")
-    min_clip = Tensor(1, ms.int32)
-    max_clip = Tensor(100000000, ms.int32)
-    in_deg = ms.Tensor(ds.in_deg)
-    in_deg = ms.ops.clip_by_value(in_deg, min_clip, max_clip)
-    ds.in_deg = ms.ops.Reshape()(ms.ops.Pow()(in_deg, -0.5), ms.ops.Shape()(in_deg))
-    out_deg = ms.Tensor(ds.out_deg)
-    out_deg = ms.ops.clip_by_value(out_deg, min_clip, max_clip)
-    ds.out_deg = ms.ops.Reshape()(ms.ops.Pow()(out_deg, -0.5), ms.ops.Shape()(out_deg))
     # model
     net = GCNNet(data_feat_size=feature_size,
                  hidden_dim_size=train_args.num_hidden,
