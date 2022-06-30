@@ -116,7 +116,6 @@ def main(train_args):
     for e in range(train_args.epochs):
         beg = time.time()
         train_net.set_train()
-        train_net.set_grad()
         train_loss = train_net()
         end = time.time()
         dur = end - beg
