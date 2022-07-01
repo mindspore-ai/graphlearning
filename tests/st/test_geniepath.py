@@ -23,7 +23,7 @@ import mindspore.context as context
 from mindspore_gl.nn import GNNCell
 from mindspore_gl.nn.conv import GATConv
 from mindspore_gl import Graph, GraphField
-from mindspore_gl.dataset.pubmed import PubMed
+from mindspore_gl.dataset.cora import CoraV2
 
 data_path = "/home/workspace/mindspore_dataset/GNN_Dataset/"
 
@@ -94,7 +94,7 @@ def test_geniepath():
     num_attn_head = 1
 
     # dataloader
-    dataset = PubMed(data_path)
+    dataset = CoraV2(data_path, 'pubmed')
 
     train_mask = dataset.train_mask
     test_mask = dataset.test_mask
@@ -103,7 +103,7 @@ def test_geniepath():
     graph_field = GraphField(
         ms.Tensor(adj_coo[0], dtype=ms.int32),
         ms.Tensor(adj_coo[1], dtype=ms.int32),
-        dataset.node_count,
+        dataset.node_count-1,
         dataset.edge_count
     )
     node_feat_tensor = ms.Tensor(dataset.node_feat, dtype=ms.float32)
