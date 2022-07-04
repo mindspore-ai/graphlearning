@@ -71,12 +71,13 @@ class CoraV2:
             └── ind.cora_v2.y
     """
 
-    def __init__(self, root):
+    def __init__(self, root, name='cora_v2'):
         if not isinstance(root, str):
             raise TypeError(f"For '{self.cls_name}', the 'root' should be a str, "
                             f"but got {type(root)}.")
         self._root = root
-        self._path = os.path.join(root, 'cora_v2_with_mask.npz')
+        self._name = name
+        self._path = os.path.join(root, self._name+'_with_mask.npz')
 
         self._csr_row = None
         self._csr_col = None
@@ -102,7 +103,7 @@ class CoraV2:
         """Download and process data"""
         names = ['y', 'tx', 'ty', 'allx', 'ally', 'graph']
         objects = []
-        dataset_str = 'cora_v2'
+        dataset_str = self._name
 
         for name in names:
             try:
@@ -114,6 +115,15 @@ class CoraV2:
         y, tx, ty, allx, ally, graph = tuple(objects)
         test_idx_reorder = _parse_index_file("{}/ind.{}.test.index".format(self._root, dataset_str))
         test_idx_range = np.sort(test_idx_reorder)
+
+        if self._name == 'citeseer':
+            test_idx_range_full = range(min(test_idx_reorder), max(test_idx_reorder)+1)
+            tx_extended = sp.lil_matrix((len(test_idx_range_full), x.shape[1]))
+            tx_extended[test_idx_range-min(test_idx_range), :] = tx
+            tx = tx_extended
+            ty_extended = np.zeros((len(test_idx_range_full), y.shape[1]))
+            ty_extended[test_idx_range-min(test_idx_range), :] = ty
+            ty = ty_extended
 
         features = sp.vstack((allx, tx)).tolil()
         features[test_idx_reorder, :] = features[test_idx_range, :]
