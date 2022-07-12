@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright 2022 Huawei Technologies Co., Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,8 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
-"""APIs for graph convolutions."""
-from .gnn_cell import GNNCell
-from .conv import APPNPConv, GCNConv, GATConv, GATv2Conv
 
-__all__ = ['GNNCell', 'APPNPConv', 'GATConv', 'GATv2Conv', 'GCNConv']
+# data file path: /your/path/cora_v2_with_mask.npz  data_path = /your/path/
+
+python trainval_cora.py --epochs=200 --num_layers=1 --num_hidden=8 --num_heads=8 --num_out_heads=1 \
+                        --in_drop=0.6 --attn_drop=0.6 --negative_slope=0.6 \
+                        --lr=0.005 --weight_decay=5e-4 --data_path="/your/path/"
