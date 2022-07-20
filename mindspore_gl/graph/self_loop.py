@@ -26,7 +26,6 @@ def remove_self_loop(adj, mode='dense'):
         adj(scipy.sparse.coo): Target matrix
         mode(str): type of operation matrix
 
-
     Returns:
         The object after removing the diagonal matrix
         'dense' returns the Tensor type
@@ -53,8 +52,6 @@ def remove_self_loop(adj, mode='dense'):
         raise ValueError('Other formats are not currently supported.')
 
     return adj
-
-
 
 def add_self_loop(adj, node, fill_value, mode='dense'):
     """
@@ -83,6 +80,15 @@ def add_self_loop(adj, node, fill_value, mode='dense'):
           (1, 1)        1
           (2, 2)        1
     """
+    if not isinstance(node, int):
+        raise TypeError("The node data type is {},\
+                        but it should be int.".format(type(node)))
+    if not isinstance(fill_value, (list, np.ndarray)):
+        raise TypeError("The adj data type is {},\
+                        but it should be list or np.array.".format(type(fill_value)))
+    if not isinstance(mode, str):
+        raise TypeError("The mode data type is {},\
+                        but it should be str.".format(type(mode)))
     if mode == 'dense':
         adj_new = adj.toarray() + np.diag(fill_value)
         adj = ms.Tensor(adj_new, ms.float32)

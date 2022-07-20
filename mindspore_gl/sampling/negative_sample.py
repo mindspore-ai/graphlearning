@@ -14,19 +14,22 @@
 # ============================================================================
 """ negative_sample """
 import random
+from bisect import bisect_right
+from math import ceil
 import numpy as np
 
-def negative_sample(positive, node, num_neg_samples, mode='undirected'):
+def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more'):
     """
     Input all positive sample edge sets, and specify the negative sample length,
     and then return the negative sample edge set of the same length, and will not repeat the positive samples
     Can choose to consider self-loop, directed graph or undirected graph operation
 
     Args:
-        positive(array): All positive sample edges, shape:(row, col)
+        positive(list or array):All positive sample edges,shape:(col_len, row_len)
         node(int): number of node
         num_neg_samples(int):Negative sample length
         mode(str): type of operation matrix
+        re(str): type of input data
 
     Returns:
         array, Negative sample edge set,shape:(num_neg_samples, 2)
@@ -42,6 +45,22 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected'):
             [1 3]
             [0 1]]
     """
+    if not isinstance(positive, (list, np.ndarray)):
+        raise TypeError("The positive data type is {},\
+                        but it should be ndarray or list.".format(type(positive)))
+    if not isinstance(node, int):
+        raise TypeError("The node type is {},\
+                        but it should be int.".format(type(node)))
+    if not isinstance(num_neg_samples, int):
+        raise TypeError("The num_neg_samples type is {},\
+                        but it should be int.".format(type(num_neg_samples)))
+    if not isinstance(mode, str):
+        raise TypeError("The mode data type is {},\
+                        but it should be str.".format(type(mode)))
+    if not isinstance(re, str):
+        raise TypeError("The re data type is {},\
+                        but it should be str.".format(type(re)))
+
     def sample(population: int, k: int):
         """
         Randomly sample the edge set of length population,
@@ -51,17 +70,28 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected'):
             return np.arange(population)
         return random.sample(range(population), k)
 
+    if re == 'more':
+        positive = np.array([i for i in positive])
+        row = np.array([i[0] for i in positive])
+        col = np.array([i[1] for i in positive])
+        size = positive.shape[0]
+    else:
+        positive = np.array(positive)
+        row = np.array(positive[0])
+        col = np.array(positive[1])
+        size = positive.shape[1]
 
-    positive = np.array([i for i in positive])
-    row = np.array([i[0] for i in positive])
-    col = np.array([i[1] for i in positive])
     idx, population = edge_index_to_vector([row, col], (node, node), mode=mode)
 
-    prob = 1. - positive.shape[0]/(node*node - node)
+    if num_neg_samples is None:
+        num_neg_samples = size
+    if mode == 'undirected':
+        num_neg = num_neg_samples
+        num_neg_samples = ceil(num_neg_samples / 2)
+
+    prob = 1. - size/(node*node - node)
     sample_size = int(1.1 * num_neg_samples / prob)
-
     neg_idx = None
-
     for _ in range(3):
         rnd = np.array(sample(population, sample_size))
         mask = np.isin(rnd, idx)
@@ -72,70 +102,13 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected'):
         if len(neg_idx) >= num_neg_samples:
             neg_idx = neg_idx[:num_neg_samples]
             break
-
     assert num_neg_samples == neg_idx.shape[0]
-
     neg_idx = vector_to_edge_index(neg_idx, (node, node), mode=mode)
-    return np.array([[neg_idx[0][i], neg_idx[1][i]] for i in range(num_neg_samples)])
 
-def vector_to_edge_index(idx, size, mode='undirected'):
-    """
-    Convert the number to the corresponding edge,
-    you can specify whether to consider the processing method of the diagonal matrix,
-    the processing method of the directed graph or the processing method of the undirected graph
-
-    Args:
-        idx(array):collection of edges，shape:(1, row_len or col_len)
-        size(tuple):number of graph nodes, shape:(node, node)
-        mode(str):type of operation matrix
-
-    Returns:
-        array, transformed edge, shape:(row_len or col_len, 2)
-
-    Examples:
-        >>> from mindspore_gl.sampling import vector_to_edge_index
-        >>> import numpy as np
-        >>> idx = vector_to_edge_index(np.array([0, 1, 2]), (3, 3))
-        >>> print(idx)
-            [[0 0 1]
-            [1 2 2]]
-    """
-    def bucketize(x, y):
-        """
-        Divide y into intervals and return the number of intervals in y for each element in x.
-        """
-        ans = []
-        y = np.insert(y, 0, [-1])
-        for i in x:
-            tag = len(y)-1
-            for j in range(len(y)):
-                if i >= y[len(y) - j - 1]:
-                    ans.append(tag)
-                    break
-                tag -= 1
-        return np.array(ans)
-
-    assert size[0] == size[1]
-
-    if mode == 'bipartite':
-        row = np.round(idx / size[1])
-        col = idx % size[1]
-        idx = np.stack([row, col], dim=0)
-    elif mode == 'undirected':
-        num_nodes = size[0]
-
-        offset = np.arange(1, num_nodes).cumsum(0)
-        offset1 = np.arange(1, num_nodes)[::-1].cumsum(0)
-        row = bucketize(idx, offset1)
-        col = (offset[row] + idx) % num_nodes
-        idx = np.stack([row, col])
+    if re == 'more':
+        idx = np.array([[neg_idx[0][i], neg_idx[1][i]] for i in range(num_neg)])
     else:
-        num_nodes = size[0]
-
-        row = np.floor(idx / (num_nodes - 1))
-        col = idx % (num_nodes - 1)
-        col[row <= col] += 1
-        idx = np.stack([row, col])
+        idx = neg_idx
     return idx
 
 def edge_index_to_vector(edge_index, size, mode='undirected'):
@@ -145,7 +118,7 @@ def edge_index_to_vector(edge_index, size, mode='undirected'):
     the processing method of the directed graph or the processing method of the undirected graph
 
     Args:
-        edge_index(array):set of two edges，shape:(row_len or col_len, 2)
+        edge_index(list):set of two edges，shape:(row_len or col_len, 2)
         size(tuple):number of graph nodes, shape:(node, node)
         mode(str):type of operation matrix
 
@@ -160,6 +133,15 @@ def edge_index_to_vector(edge_index, size, mode='undirected'):
         >>> print(idx, population)
             [0 1 2] 3
     """
+    if not isinstance(edge_index, list):
+        raise TypeError("The edge_index data type is {},\
+                        but it should be list.".format(type(edge_index)))
+    if not isinstance(size, tuple):
+        raise TypeError("The size data type is {},\
+                        but it should be tuple.".format(type(size)))
+    if not isinstance(mode, str):
+        raise TypeError("The mode data type is {},\
+                        but it should be str.".format(type(mode)))
     assert size[0] == size[1]
 
     if mode == 'bipartite':
@@ -188,3 +170,65 @@ def edge_index_to_vector(edge_index, size, mode='undirected'):
         population = num_nodes * num_nodes - num_nodes
 
     return idx, population
+
+def vector_to_edge_index(idx, size, mode='undirected'):
+    """
+    Convert the number to the corresponding edge,
+    you can specify whether to consider the processing method of the diagonal matrix,
+    the processing method of the directed graph or the processing method of the undirected graph
+
+    Args:
+        idx(ndarray):collection of edges，shape:(1, row_len or col_len)
+        size(tuple):number of graph nodes, shape:(node, node)
+        mode(str):type of operation matrix
+
+    Returns:
+        array, transformed edge, shape:(row_len or col_len, 2)
+
+    Examples:
+        >>> from mindspore_gl.sampling import vector_to_edge_index
+        >>> import numpy as np
+        >>> idx = vector_to_edge_index(np.array([0, 1, 2]), (3, 3))
+        >>> print(idx)
+            [[0 0 1]
+            [1 2 2]]
+    """
+    if not isinstance(idx, np.ndarray):
+        raise TypeError("The idx data type is {},\
+                        but it should be ndarray.".format(type(idx)))
+    if not isinstance(size, tuple):
+        raise TypeError("The size data type is {},\
+                        but it should be tuple.".format(type(size)))
+    if not isinstance(mode, str):
+        raise TypeError("The mode data type is {},\
+                        but it should be str.".format(type(mode)))
+    def bucketize(x, y):
+        """
+        Divide y into intervals and return the number of intervals in y for each element in x.
+        """
+        ans = []
+        for i in x:
+            ans.append(bisect_right(y, i))
+        return np.array(ans)
+
+    assert size[0] == size[1]
+
+    if mode == 'bipartite':
+        row = np.round(idx / size[1])
+        col = idx % size[1]
+        idx = np.stack([row, col], dim=0)
+    elif mode == 'undirected':
+        num_nodes = size[0]
+        offset = np.arange(1, num_nodes).cumsum(0)
+        offset1 = np.arange(1, num_nodes)[::-1].cumsum(0)
+        row = bucketize(idx, offset1)
+        col = (offset[row] + idx) % num_nodes
+        a, b = np.concatenate([row, col]), np.concatenate([col, row])
+        idx = np.stack([a, b])
+    else:
+        num_nodes = size[0]
+        row = np.floor(idx / (num_nodes - 1))
+        col = idx % (num_nodes - 1)
+        col[row <= col] += 1
+        idx = np.stack([row, col])
+    return idx
