@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
-"""APIs for graph convolutions."""
-from .gnn_cell import GNNCell
-from .conv import APPNPConv, GCNConv, GATConv, GATv2Conv
+""" gatv2 net """
+from .gatv2 import GatV2Net
 
-__all__ = ['GNNCell', 'APPNPConv', 'GATConv', 'GATv2Conv', 'GCNConv']
+__all__ = ['GatV2Net']
