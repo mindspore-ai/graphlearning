@@ -14,9 +14,9 @@
 # ============================================================================
 """ negative_sample """
 import random
-from bisect import bisect_right
 from math import ceil
 import numpy as np
+import mindspore_gl.bucket_kernel
 
 def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more'):
     """
@@ -202,14 +202,16 @@ def vector_to_edge_index(idx, size, mode='undirected'):
     if not isinstance(mode, str):
         raise TypeError("The mode data type is {},\
                         but it should be str.".format(type(mode)))
-    def bucketize(x, y):
+    def bucketize(i, v):
         """
         Divide y into intervals and return the number of intervals in y for each element in x.
         """
-        ans = []
-        for i in x:
-            ans.append(bisect_right(y, i))
-        return np.array(ans)
+        i = list(i)
+        v = list(v)
+        l = len(i)
+        n = len(v)
+        res = mindspore_gl.bucket_kernel.bucket(i, v, l, n)
+        return res
 
     assert size[0] == size[1]
 
@@ -221,7 +223,7 @@ def vector_to_edge_index(idx, size, mode='undirected'):
         num_nodes = size[0]
         offset = np.arange(1, num_nodes).cumsum(0)
         offset1 = np.arange(1, num_nodes)[::-1].cumsum(0)
-        row = bucketize(idx, offset1)
+        row = bucketize(offset1, idx)
         col = (offset[row] + idx) % num_nodes
         a, b = np.concatenate([row, col]), np.concatenate([col, row])
         idx = np.stack([a, b])
