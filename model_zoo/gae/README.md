@@ -25,7 +25,7 @@ The official description of the dataset used in this experiment is as follows:
 
 **PubMed**: The Pubmed Diabetes dataset consists of 19717 scientific publications from PubMed database pertaining to diabetes classified into one of three classes. The citation network consists of 44338 links. Each publication in the dataset is described by a TF/IDF weighted word vector from a dictionary which consists of 500 unique words. The README file in the dataset provides more details.
 
-- Official dataset address: https://linqs.soe.ucsc.edu/data
+- Official dataset address: https://linqs.org/datasets/
 - Address after data processing: https://github.com/kimiyoung/planetoid/tree/master/data
 
 ## Environment Requirements

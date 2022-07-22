@@ -14,7 +14,7 @@
 # ============================================================================
 """ test_pca """
 import mindspore as ms
-from mindspore_gl.utils.pca import pca
+from mindspore_gl.utils import pca
 import pytest
 
 

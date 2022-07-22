@@ -13,4 +13,8 @@
 # limitations under the License.
 # ============================================================================
 """Dataloader for graph networks."""
-__all__ = []
+from .split_data import split_data
+
+__all__ = [
+    "split_data"
+]

@@ -14,7 +14,7 @@
 # ============================================================================
 """test sample"""
 import numpy as np
-from mindspore_gl.sampling.sample import negative_sample
+from mindspore_gl import negative_sample
 
 
 def test_negative_sample():
