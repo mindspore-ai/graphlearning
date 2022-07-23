@@ -14,7 +14,9 @@
 # ============================================================================
 """Sampling APIs for graph data."""
 from .k_hop_sampling import k_hop_subgraph
+from .negative_sample import negative_sample
 
 __all__ = [
-    "k_hop_subgraph"
+    "k_hop_subgraph",
+    "negative_sample"
 ]

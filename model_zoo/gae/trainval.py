@@ -24,8 +24,8 @@ import mindspore.context as context
 from mindspore_gl import Graph, GraphField
 from mindspore_gl.dataset import CoraV2
 from mindspore_gl.nn.gnn_cell import GNNCell
-from mindspore_gl.sampling.negative_sample import negative_sample
-from mindspore_gl.dataloader.split_data import split_data
+from mindspore_gl.sampling import negative_sample
+from mindspore_gl.dataloader import split_data
 
 from src.gae import GAENet, GCNEncoder, InnerProductDecoder
 from util import get_auc_score

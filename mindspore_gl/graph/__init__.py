@@ -13,4 +13,8 @@
 # limitations under the License.
 # ============================================================================
 """Graph abstraction and data interface."""
-__all__ = []
+from .self_loop import add_self_loop, remove_self_loop
+__all__ = [
+    "add_self_loop",
+    "remove_self_loop"
+]

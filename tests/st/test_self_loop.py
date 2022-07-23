@@ -14,7 +14,7 @@
 # ============================================================================
 """test self_loop"""
 import scipy.sparse as sp
-from mindspore_gl.graph.self_loop import remove_self_loop, add_self_loop
+from mindspore_gl.graph import remove_self_loop, add_self_loop
 
 
 def test_remove_loop():
