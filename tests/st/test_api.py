@@ -398,7 +398,7 @@ def test_min(node_feat, graph_field):
     dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32)
     node_feat: ms.Tensor([[1], [2], [1], [2], [0], [1], [2], [3], [1]], ms.float32)
     Expectation:min([v.innbs])
-    [[0], [0], [0], [0], [0], [0], [0], [0], [0]]
+    [[1], [1], [0], [0], [1], [2], [1], [0], [1]]
     """
 
     class TestMin(GNNCell):
@@ -409,7 +409,7 @@ def test_min(node_feat, graph_field):
             return [v.h for v in g.dst_vertex]
 
     ret = TestMin()(node_feat, *graph_field.get_graph()).asnumpy().tolist()
-    expected = [[0], [0], [0], [0], [0], [0], [0], [0], [0]]
+    expected = [[1], [1], [0], [0], [1], [2], [1], [0], [1]]
     assert_list_equal(ret, expected)
 
 

@@ -16,6 +16,7 @@
 # pylint: disable=bad-continuation,unused-argument
 import ast
 from typing import List
+import numpy as np
 
 from .vectorization import VectorizationType
 from .constants import GATHER_OP, ZEROS_OP, RESHAPE_OP, SHAPE_OP, \
@@ -24,7 +25,7 @@ from .constants import GATHER_OP, ZEROS_OP, RESHAPE_OP, SHAPE_OP, \
                        SCATTER_MIN_OP, SCATTER_MAX_OP, SCATTER_ADD_OP, \
                        SRC_IDX, DST_IDX, VER_SUBGRAPH_IDX, EDGE_SUBGRAPH_IDX, \
                        GRAPH_MASK, N_GRAPHS, N_NODES, GRAPH_FIELD_NAMES, \
-                       BACKEND_NAME
+                       BACKEND_NAME, FILL_OP, MASKED_FILL_OP, IS_INF_OP
 
 
 def set_backend(bk_name: str):
@@ -130,6 +131,8 @@ class MindSporeBackend(Backend):
     def __init__(self) -> None:
         super().__init__()
         self.snapshot_id = 0
+        self.pos_inf = np.inf
+        self.neg_inf = -np.inf
 
     def get_next_snapshot_id(self):
         """
@@ -162,6 +165,9 @@ class MindSporeBackend(Backend):
                    self.init_op(SCATTER_MIN_OP, "TensorScatterMin"),
                    self.init_op(GATHER_OP, "Gather"),
                    self.init_op(ZEROS_OP, "Zeros"),
+                   self.init_op(FILL_OP, "Fill"),
+                   self.init_op(MASKED_FILL_OP, "MaskedFill"),
+                   self.init_op(IS_INF_OP, "IsInf"),
                    self.init_op(SHAPE_OP, "Shape"),
                    self.init_op(RESHAPE_OP, "Reshape")]
         return op_list
@@ -785,6 +791,13 @@ class MindSporeBackend(Backend):
                         ast.Name(id=idx, ctx=ast.Store()),
                         ast.Constant(value=value)])
 
+    def invoke_masked_fill_op(self, node: ast.AST, value):
+        """helper function, invoke masked_fill op."""
+        return self.invoke_op(MASKED_FILL_OP,
+                              [node,
+                               self.invoke_op(IS_INF_OP, [node]),
+                               ast.Constant(value=value)])
+
     def invoke_scatter_op(self,
                           feat,
                           enclosing_block,
@@ -814,7 +827,11 @@ class MindSporeBackend(Backend):
                     args=[ast.Name(id=scatter_tmp_name, ctx=ast.Load())]),
                 slice=ast.Slice(lower=ast.Constant(value=1), upper=None,
                                 step=None), ctx=ast.Load()))
-        call.args = [self.create_zero_tensor(output_shape_node, scatter_tmp_name),
+        if scatter_op in [SCATTER_MAX_OP, SCATTER_MIN_OP]:
+            input_x = self.create_inf_tensor(scatter_op, output_shape_node, scatter_tmp_name)
+        else:
+            input_x = self.create_zero_tensor(output_shape_node, scatter_tmp_name)
+        call.args = [input_x,
                      ast.Name(id=dst_idx, ctx=ast.Load()),
                      ast.Name(id=scatter_tmp_name, ctx=ast.Load())]
         call.keywords = []
@@ -823,6 +840,8 @@ class MindSporeBackend(Backend):
                 left=call,
                 op=ast.Div(),
                 right=self.transform_scatter_idx_func(feat, enclosing_block, insert_stmt_cb, shape_name, dst_idx))
+        elif scatter_op in [SCATTER_MAX_OP, SCATTER_MIN_OP]:
+            call = self.invoke_masked_fill_op(call, 0.0)
         insert_stmt_cb(enclosing_block, tmp, call)
         return call
 
@@ -888,4 +907,25 @@ class MindSporeBackend(Backend):
                           id=dtype_id,
                           ctx=ast.Load()),
                       attr=attr_dtype)],
+            keywords=[])
+
+    def create_inf_tensor(self, scatter_op: str, shape_ast: ast.AST, dtype_id: str):
+        """helper function, create inf tensor."""
+        assert backend() is not None, "Backend name is unknown." \
+                                      " Please set_backend first."
+        if dtype_id is None:
+            dtype_id = backend()
+            attr_dtype = 'float32'
+        else:
+            attr_dtype = 'dtype'
+        const_val = self.neg_inf if scatter_op == SCATTER_MAX_OP else self.pos_inf
+        return ast.Call(
+            func=ast.Name(FILL_OP, ctx=ast.Load()),
+            args=[ast.Attribute(
+                      value=ast.Name(
+                          id=dtype_id,
+                          ctx=ast.Load()),
+                      attr=attr_dtype),
+                shape_ast,
+                ast.Constant(value=const_val)],
             keywords=[])
