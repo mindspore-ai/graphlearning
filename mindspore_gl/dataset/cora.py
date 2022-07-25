@@ -50,33 +50,34 @@ class CoraV2:
     - Number of Classes: 7
     - Label split:
 
-    - Train: 140
-    - Valid: 500
-    - Test: 1000
+      - Train: 140
+      - Valid: 500
+      - Test: 1000
 
     Dataset can be download here: <https://github.com/kimiyoung/planetoid>
     You can organize the dataset files into the following directory structure and read by `process` API.
 
     .. code-block::
 
-    .
-    └── corav2
-        ├── ind.cora_v2.allx
-        ├── ind.cora_v2.ally
-        ├── ind.cora_v2.graph
-        ├── ind.cora_v2.test.index
-        ├── ind.cora_v2.tx
-        ├── ind.cora_v2.ty
-        ├── ind.cora_v2.x
-        └── ind.cora_v2.y
+        .
+        └── corav2
+            ├── ind.cora_v2.allx
+            ├── ind.cora_v2.ally
+            ├── ind.cora_v2.graph
+            ├── ind.cora_v2.test.index
+            ├── ind.cora_v2.tx
+            ├── ind.cora_v2.ty
+            ├── ind.cora_v2.x
+            └── ind.cora_v2.y
     """
 
-    def __init__(self, root):
+    def __init__(self, root, name='cora_v2'):
         if not isinstance(root, str):
             raise TypeError(f"For '{self.cls_name}', the 'root' should be a str, "
                             f"but got {type(root)}.")
         self._root = root
-        self._path = os.path.join(root, 'cora_v2_with_mask.npz')
+        self._name = name
+        self._path = os.path.join(root, self._name+'_with_mask.npz')
 
         self._csr_row = None
         self._csr_col = None
@@ -102,7 +103,7 @@ class CoraV2:
         """Download and process data"""
         names = ['y', 'tx', 'ty', 'allx', 'ally', 'graph']
         objects = []
-        dataset_str = 'cora_v2'
+        dataset_str = self._name
 
         for name in names:
             try:
@@ -114,6 +115,15 @@ class CoraV2:
         y, tx, ty, allx, ally, graph = tuple(objects)
         test_idx_reorder = _parse_index_file("{}/ind.{}.test.index".format(self._root, dataset_str))
         test_idx_range = np.sort(test_idx_reorder)
+
+        if self._name == 'citeseer':
+            test_idx_range_full = range(min(test_idx_reorder), max(test_idx_reorder)+1)
+            tx_extended = sp.lil_matrix((len(test_idx_range_full), x.shape[1]))
+            tx_extended[test_idx_range-min(test_idx_range), :] = tx
+            tx = tx_extended
+            ty_extended = np.zeros((len(test_idx_range_full), y.shape[1]))
+            ty_extended[test_idx_range-min(test_idx_range), :] = ty
+            ty = ty_extended
 
         features = sp.vstack((allx, tx)).tolil()
         features[test_idx_reorder, :] = features[test_idx_range, :]
@@ -177,8 +187,8 @@ class CoraV2:
             int, the number of feature size
 
         Examples:
-            >>>#dataset is an instance object of Dataset
-            >>>num_features = dataset.num_features()
+            >>> #dataset is an instance object of Dataset
+            >>> num_features = dataset.num_features()
         """
         return self.node_feat.shape[1]
 
@@ -191,8 +201,8 @@ class CoraV2:
             int, the number of classes
 
         Examples:
-            >>>#dataset is an instance object of Dataset
-            >>>num_classes = dataset.num_classes()
+            >>> #dataset is an instance object of Dataset
+            >>> num_classes = dataset.num_classes()
         """
         return len(np.unique(self.node_label))
 
@@ -205,8 +215,8 @@ class CoraV2:
             numpy.ndarray, array of mask
 
         Examples:
-            >>>#dataset is an instance object of Dataset
-            >>>train_mask = dataset.train_mask()
+            >>> #dataset is an instance object of Dataset
+            >>> train_mask = dataset.train_mask()
         """
         if self._train_mask is None:
             self._train_mask = self._npz_file['train_mask']
@@ -221,8 +231,8 @@ class CoraV2:
             numpy.ndarray, array of mask
 
         Examples:
-            >>>#dataset is an instance object of Dataset
-            >>>test_mask = dataset.test_mask()
+            >>> #dataset is an instance object of Dataset
+            >>> test_mask = dataset.test_mask()
         """
         if self._test_mask is None:
             self._test_mask = self._npz_file['test_mask']
@@ -237,8 +247,8 @@ class CoraV2:
             numpy.ndarray, array of mask
 
         Examples:
-            >>>#dataset is an instance object of Dataset
-            >>>val_mask = dataset.val_mask()
+            >>> #dataset is an instance object of Dataset
+            >>> val_mask = dataset.val_mask()
         """
         if self._val_mask is None:
             self._val_mask = self._npz_file['val_mask']
@@ -253,8 +263,8 @@ class CoraV2:
             numpy.ndarray, array of training nodes
 
         Examples:
-            >>>#dataset is an instance object of Dataset
-            >>>train_nodes = dataset.train_nodes()
+            >>> #dataset is an instance object of Dataset
+            >>> train_nodes = dataset.train_nodes()
         """
         return (np.nonzero(self.train_mask)[0]).astype(np.int32)
 
@@ -267,8 +277,8 @@ class CoraV2:
             int, length of csr row
 
         Examples:
-            >>>#dataset is an instance object of Dataset
-            >>>node_count = dataset.node_count()
+            >>> #dataset is an instance object of Dataset
+            >>> node_count = dataset.node_count()
         """
         return len(self._csr_row)
 
@@ -281,8 +291,8 @@ class CoraV2:
             int, length of csr col
 
         Examples:
-            >>>#dataset is an instance object of Dataset
-            >>>edge_count = dataset.edge_count()
+            >>> #dataset is an instance object of Dataset
+            >>> edge_count = dataset.edge_count()
         """
         return len(self._csr_col)
 
@@ -295,8 +305,8 @@ class CoraV2:
             numpy.ndarray, array of node feature
 
         Examples:
-            >>>#dataset is an instance object of Dataset
-            >>>node_feat = dataset.node_feat()
+            >>> #dataset is an instance object of Dataset
+            >>> node_feat = dataset.node_feat()
         """
         if self._node_feat is None:
             self._node_feat = self._npz_file["feat"]
@@ -312,8 +322,8 @@ class CoraV2:
             numpy.ndarray, array of node label
 
         Examples:
-            >>>#dataset is an instance object of Dataset
-            >>>node_label = dataset.node_label()
+            >>> #dataset is an instance object of Dataset
+            >>> node_label = dataset.node_label()
         """
         if self._node_label is None:
             self._node_label = self._npz_file["label"]
@@ -328,8 +338,8 @@ class CoraV2:
             numpy.ndarray, array of coo matrix.
 
         Examples:
-            >>>#dataset is an instance object of Dataset
-            >>>node_label = dataset.adj_coo()
+            >>> #dataset is an instance object of Dataset
+            >>> node_label = dataset.adj_coo()
         """
         return csr_matrix((np.ones(self._csr_col.shape), self._csr_col, self._csr_row)).tocoo(copy=False)
 
@@ -342,8 +352,8 @@ class CoraV2:
             numpy.ndarray, array of csr matrix.
 
         Examples:
-            >>>#dataset is an instance object of Dataset
-            >>>node_label = dataset.adj_csr()
+            >>> #dataset is an instance object of Dataset
+            >>> node_label = dataset.adj_csr()
         """
         return csr_matrix((np.ones(self._csr_col.shape), self._csr_col, self._csr_row))
 

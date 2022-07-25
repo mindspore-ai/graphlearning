@@ -46,6 +46,13 @@ if sys.platform.startswith("darwin"):
 
 assert sys.platform.startswith("linux") or sys.platform.startswith("darwin"), "Only Supported On Linux And Darwin"
 
+CYTHON_BUCKET_KERNEL = Extension(
+    "mindspore_gl.bucket_kernel",
+    [
+        "mindspore_gl/extensions/buckize.c",
+    ]
+)
+
 CYTHON_SAMPLE_KERNEL = Extension(
     "mindspore_gl.sample_kernel",
     [
@@ -101,6 +108,7 @@ if sys.platform.startswith("darwin"):
     SHAERED_NUMPY = SHAERED_NUMPY_DARWIN
 
 extensions = [
+    CYTHON_BUCKET_KERNEL,
     CYTHON_SAMPLE_KERNEL,
     CYTHON_MEMORY_KERNEL,
     CYTHON_ARRAY_KERNEL,

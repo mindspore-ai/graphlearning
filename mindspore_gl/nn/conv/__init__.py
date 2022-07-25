@@ -28,6 +28,7 @@ from .nnconv import NNConv
 from .sageconv import SAGEConv
 from .sgconv import SGConv
 from .tagconv import TAGConv
+from .gatv2conv import GATv2Conv
 
 __all__ = ['AGNNConv', 'APPNPConv', 'CFConv', 'DOTGATConv', 'EDGEConv', 'GATConv', 'GatedGraphConv',
-           'GCNConv', 'GINConv', 'GMMConv', 'NNConv', 'SAGEConv', 'SGConv', 'TAGConv']
+           'GCNConv', 'GINConv', 'GMMConv', 'NNConv', 'SAGEConv', 'SGConv', 'TAGConv', 'GATv2Conv']
