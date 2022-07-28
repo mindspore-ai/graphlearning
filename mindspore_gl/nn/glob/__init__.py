@@ -20,5 +20,7 @@ from .sortpooling import SortPooling
 from .globalattentionpooling import GlobalAttentionPooling
 from .set2set import Set2Set
 from .weightandsum import WeightAndSum
+from .sagpooling import SAGPooling
 
-__all__ = ['AvgPooling', 'GlobalAttentionPooling', 'MaxPooling', 'Set2Set', 'SortPooling', 'SumPooling', 'WeightAndSum']
+__all__ = ['AvgPooling', 'GlobalAttentionPooling', 'MaxPooling', 'Set2Set', 'SortPooling',
+           'SumPooling', 'WeightAndSum', "SAGPooling"]

@@ -29,6 +29,7 @@ from .nnconv import NNConv
 from .sageconv import SAGEConv
 from .sgconv import SGConv
 from .tagconv import TAGConv
+from .gcnconv2 import GCNConv2
 
 __all__ = [
     'AGNNConv',
@@ -47,4 +48,5 @@ __all__ = [
     'SAGEConv',
     'SGConv',
     'TAGConv',
+    'GCNConv2',
 ]
