@@ -14,6 +14,19 @@
 # ============================================================================
 """APIs for graph convolutions."""
 from .gnn_cell import GNNCell
-from .conv import APPNPConv, GCNConv, GATConv, GATv2Conv
+from .conv import (
+    APPNPConv,
+    GCNConv,
+    EGConv,
+    GATConv,
+    GATv2Conv,
+)
 
-__all__ = ['GNNCell', 'APPNPConv', 'GATConv', 'GATv2Conv', 'GCNConv']
+__all__ = [
+    'GNNCell',
+    'APPNPConv',
+    'GATConv',
+    'GATv2Conv',
+    'GCNConv',
+    'EGConv',
+]
