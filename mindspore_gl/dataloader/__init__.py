@@ -17,7 +17,7 @@ from .dataloader import DataLoader
 from .samplers import RandomBatchSampler, DistributeRandomBatchSampler
 from .dataset import Dataset
 from .shared_numpy import SharedNDArray, SharedMemory, Queue
-
+from .split_data import split_data
 
 __all__ = [
         "DataLoader",
@@ -26,5 +26,6 @@ __all__ = [
         "Dataset",
         "SharedMemory",
         "SharedNDArray",
-        "Queue"
+        "Queue",
+        "split_data"
         ]

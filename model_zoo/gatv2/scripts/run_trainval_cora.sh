@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright 2022 Huawei Technologies Co., Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,25 +14,8 @@
 # limitations under the License.
 # ============================================================================
 
-"""Graph abstraction and data interface."""
-from .graph import MindHomoGraph, MindRelationGraph, \
-                   MindHeteroGraph, BatchMeta, CsrAdj
-from .ops import PadMode, PadDirection, PadArray2d, \
-                 PadHomoGraph, BatchHomoGraph, UnBatchHomoGraph
-from .self_loop import add_self_loop, remove_self_loop
+# data file path: /your/path/cora_v2_with_mask.npz  data_path = /your/path/
 
-__all__ = [
-    "CsrAdj",
-    "MindHomoGraph",
-    "MindRelationGraph",
-    "MindHeteroGraph",
-    "BatchMeta",
-    "PadMode",
-    "PadDirection",
-    "PadArray2d",
-    "PadHomoGraph",
-    "BatchHomoGraph",
-    "UnBatchHomoGraph",
-    "add_self_loop",
-    "remove_self_loop"
-]
+python trainval_cora.py --epochs=200 --num_layers=1 --num_hidden=8 --num_heads=8 --num_out_heads=1 \
+                        --in_drop=0.6 --attn_drop=0.6 --negative_slope=0.6 \
+                        --lr=0.005 --weight_decay=5e-4 --data_path="/your/path/"

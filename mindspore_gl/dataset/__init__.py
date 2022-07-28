@@ -16,7 +16,6 @@
 """Reading and building interface for graph datasets."""
 from .cora import CoraV2
 from .reddit import Reddit
-from .pubmed import PubMed
 from .mag240m import MAG240MDataset
 from .imdb_binary import IMDBBinary
 from .alchemy import Alchemy
@@ -27,7 +26,6 @@ from .ppi import PPI
 __all__ = [
     "CoraV2",
     "Reddit",
-    "PubMed",
     "IMDBBinary",
     "PPI",
     "BlogCatalog",

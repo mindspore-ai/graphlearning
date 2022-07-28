@@ -12,26 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+""" VGAENet """
 
-"""Graph abstraction and data interface."""
-from .graph import MindHomoGraph, MindRelationGraph, \
-                   MindHeteroGraph, BatchMeta, CsrAdj
-from .ops import PadMode, PadDirection, PadArray2d, \
-                 PadHomoGraph, BatchHomoGraph, UnBatchHomoGraph
-from .self_loop import add_self_loop, remove_self_loop
-
-__all__ = [
-    "CsrAdj",
-    "MindHomoGraph",
-    "MindRelationGraph",
-    "MindHeteroGraph",
-    "BatchMeta",
-    "PadMode",
-    "PadDirection",
-    "PadArray2d",
-    "PadHomoGraph",
-    "BatchHomoGraph",
-    "UnBatchHomoGraph",
-    "add_self_loop",
-    "remove_self_loop"
-]
