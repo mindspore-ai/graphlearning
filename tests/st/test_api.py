@@ -430,7 +430,7 @@ def test_avg(node_feat, graph_field):
     dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32)
     node_feat: ms.Tensor([[1], [2], [1], [2], [0], [1], [2], [3], [1]], ms.float32)
     Expectation:min([v.innbs])
-    [[1], [1], [NAN], [0], [1.5], [2], [1], [NAN], [1]]
+    [[1], [1], [0], [0], [1.5], [2], [1], [0], [1]]
     """
 
     class TestAvg(GNNCell):
@@ -445,7 +445,7 @@ def test_avg(node_feat, graph_field):
     for row in ret:
         if math.isnan(row[0]):
             row[0] = NAN
-    expected = [[1], [1], [NAN], [0], [1.5], [2], [1], [NAN], [1]]
+    expected = [[1], [1], [0], [0], [1.5], [2], [1], [0], [1]]
     assert_list_equal(ret, expected)
 
 

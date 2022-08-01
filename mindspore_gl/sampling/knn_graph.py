@@ -74,7 +74,7 @@ def knn_graph(feat: np.ndarray, k: int, dis: int = None, \
         row = np.squeeze(row[mask])
         col = np.squeeze(col[mask])
     data = np.ones(len(row))
-    g = sp.csr_matrix((data, (row, col)), shape=(size, size)).tocoo()
+    g = sp.csr_matrix((data, (col, row)), shape=(size, size)).tocoo()
     return g
 
 

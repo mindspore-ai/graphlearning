@@ -836,10 +836,14 @@ class MindSporeBackend(Backend):
                      ast.Name(id=scatter_tmp_name, ctx=ast.Load())]
         call.keywords = []
         if is_avg:
-            call = ast.BinOp(
-                left=call,
-                op=ast.Div(),
-                right=self.transform_scatter_idx_func(feat, enclosing_block, insert_stmt_cb, shape_name, dst_idx))
+            div_right_node = ast.BinOp(
+                left=self.transform_scatter_idx_func(feat, enclosing_block, insert_stmt_cb, shape_name, dst_idx),
+                op=ast.Add(),
+                right=ast.Constant(value=1e-15)
+            )
+            call = ast.BinOp(left=call,
+                             op=ast.Div(),
+                             right=div_right_node)
         elif scatter_op in [SCATTER_MAX_OP, SCATTER_MIN_OP]:
             call = self.invoke_masked_fill_op(call, 0.0)
         insert_stmt_cb(enclosing_block, tmp, call)
