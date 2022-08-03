@@ -18,17 +18,13 @@ from mindspore_gl.nn.conv.sageconv import SAGEConv
 
 class SAGENet(Cell):
     """graphsage net"""
-    def __init__(self, in_feat_size, hidden_feat_size, appr_feat_size, out_feat_size, device):
+    def __init__(self, in_feat_size, hidden_feat_size, appr_feat_size, out_feat_size):
         super().__init__()
         self.num_layers = 2
-        self.is_ascend = device == "Ascend"
         self.layer1 = SAGEConv(in_feat_size, hidden_feat_size, aggregator_type='mean')
-        if self.is_ascend:
-            self.layer2 = SAGEConv(hidden_feat_size, appr_feat_size, aggregator_type='mean')
-            self.dense_out = ms.nn.Dense(appr_feat_size, out_feat_size, has_bias=False,
-                                         weight_init=XavierUniform(math.sqrt(2)))
-        else:
-            self.layer2 = SAGEConv(hidden_feat_size, out_feat_size, aggregator_type='mean')
+        self.layer2 = SAGEConv(hidden_feat_size, appr_feat_size, aggregator_type='mean')
+        self.dense_out = ms.nn.Dense(appr_feat_size, out_feat_size, has_bias=False,
+                                     weight_init=XavierUniform(math.sqrt(2)))
         self.activation = ms.nn.ReLU()
         self.dropout = ms.nn.Dropout(0.5)
 
@@ -38,6 +34,5 @@ class SAGENet(Cell):
         node_feat = self.activation(node_feat)
         node_feat = self.dropout(node_feat)
         ret = self.layer2(node_feat, None, edges[0], edges[1], n_nodes, n_edges)
-        if self.is_ascend:
-            ret = self.dense_out(ret)
+        ret = self.dense_out(ret)
         return ret

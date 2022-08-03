@@ -65,7 +65,7 @@ def main():
 
     test_dataloader = DataLoader(dataset, sampler=test_sampler, num_workers=0)
     appr_dim = math.ceil(graph_dataset.num_classes/8)*8
-    model = SAGENet(graph_dataset.num_features, 256, appr_dim, graph_dataset.num_classes, args.device)
+    model = SAGENet(graph_dataset.num_features, 256, appr_dim, graph_dataset.num_classes)
     optimizer = nn.optim.Adam(model.trainable_params(), learning_rate=args.lr, weight_decay=args.weight_decay)
     loss = LossNet(model)
     train_net = nn.TrainOneStepCell(loss, optimizer)
@@ -112,7 +112,7 @@ def main():
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="GAT")
+    parser = argparse.ArgumentParser(description="Graphsage")
     parser.add_argument("--data-path", type=str, help="path to dataloader")
     parser.add_argument("--gpu", type=int, default=0, help="which gpu to use")
     parser.add_argument("--batch_size", type=int, default=1024, help="batch size ")
