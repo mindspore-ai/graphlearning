@@ -28,7 +28,7 @@ class CoraV2:
 
     Args:
         root(str): path to the root directory that contains cora_v2_with_mask.npz.
-
+        name(str): select dataset type, optional: ["cora_v2", "citeseer", "pubmed"].
     Raises:
         RuntimeError: If root does not contain data files.
 
