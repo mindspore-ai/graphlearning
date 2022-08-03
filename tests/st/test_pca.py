@@ -13,7 +13,7 @@
 # limitations under the License.
 # ============================================================================
 """ test_pca """
-import mindspore as ms
+import numpy as np
 from mindspore_gl.utils import pca
 import pytest
 
@@ -31,6 +31,6 @@ def test_pca():
     Expectation:
     output.shape == (6, 1)
     """
-    x = ms.Tensor([[-1, 1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
+    x = np.array([[-1, 1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
     data = pca(x, 1)
     assert data.shape == (6, 1)

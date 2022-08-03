@@ -51,7 +51,7 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more
     if not isinstance(node, int):
         raise TypeError("The node type is {},\
                         but it should be int.".format(type(node)))
-    if not isinstance(num_neg_samples, int):
+    if num_neg_samples is not None and (not isinstance(num_neg_samples, int)):
         raise TypeError("The num_neg_samples type is {},\
                         but it should be int.".format(type(num_neg_samples)))
     if not isinstance(mode, str):
@@ -85,8 +85,8 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more
 
     if num_neg_samples is None:
         num_neg_samples = size
+    num_neg = num_neg_samples
     if mode == 'undirected':
-        num_neg = num_neg_samples
         num_neg_samples = ceil(num_neg_samples / 2)
 
     prob = 1. - size/(node*node - node)
@@ -108,7 +108,7 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more
     if re == 'more':
         idx = np.array([[neg_idx[0][i], neg_idx[1][i]] for i in range(num_neg)])
     else:
-        idx = neg_idx
+        idx = np.stack([neg_idx[0][:num_neg], neg_idx[1][:num_neg]])
     return idx
 
 def edge_index_to_vector(edge_index, size, mode='undirected'):
@@ -218,7 +218,7 @@ def vector_to_edge_index(idx, size, mode='undirected'):
     if mode == 'bipartite':
         row = np.round(idx / size[1])
         col = idx % size[1]
-        idx = np.stack([row, col], dim=0)
+        idx = np.stack([row, col])
     elif mode == 'undirected':
         num_nodes = size[0]
         offset = np.arange(1, num_nodes).cumsum(0)
