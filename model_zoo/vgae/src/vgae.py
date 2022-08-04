@@ -130,8 +130,7 @@ class InnerProductDecoder(GNNCell):
     def decoder_all(self, x, g: Graph):
         g = g
         x = self.dropout(x)
-        transpose = ms.ops.Transpose()
-        adj_rec = ms.ops.matmul(x, transpose(x, (1, 0)))
+        adj_rec = ms.ops.matmul(x, x.transpose(1, 0))
         return adj_rec
 
     def decoder(self, x, index):

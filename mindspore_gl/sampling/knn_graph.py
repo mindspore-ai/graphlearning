@@ -37,7 +37,7 @@ def knn_graph(feat: np.ndarray, k: int, dis: int = None, \
 
     Example:
         >>> import numpy as np
-        >>> from mindspore_gl import knn_graph
+        >>> from mindspore_gl.sampling import knn_graph
         >>> f = np.array([[1,2,3],[4,5,6],[7,8,9]], dtype=np.float32)
         >>> adj = knn_graph(f, 1)
         >>> print(adj)
@@ -96,7 +96,7 @@ def distance(node_feat, edge_index, norm: bool = True, max_value=None):
     Example:
       >>> import numpy as np
       >>> import scipy.sparse as sp
-      >>> from mindspore_gl import distance
+      >>> from mindspore_gl.sampling import distance
       >>> node_feat = ms.Tensor([[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 6]])
       >>> edge_index = ms.Tensor([[0, 1], [2, 2]])
       >>> adj = distance(node_feat, edge_index)
