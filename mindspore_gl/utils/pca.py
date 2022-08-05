@@ -15,7 +15,6 @@
 """ pca """
 import math
 import numpy as np
-import mindspore as ms
 
 def large_mat_mul(input_a, input_b, batch=32):
     """
@@ -57,31 +56,31 @@ def get_approximate_basis(matrix: np.ndarray, k: int = 6, niter: int = 2):
     r = np.random.randn(n, k)
     matrix_t = matrix.T
 
-    q, _ = np.linalg.qr(np.matmul(matrix, r))
+    q, _ = np.linalg.qr(mat_mul(matrix, r))
     for _ in range(niter):
-        q = np.linalg.qr(np.matmul(matrix_t, q))[0]
-        q = np.linalg.qr(np.matmul(matrix, q))[0]
+        q = np.linalg.qr(mat_mul(matrix_t, q))[0]
+        q = np.linalg.qr(mat_mul(matrix, q))[0]
     return q
 
-def pca(matrix: ms.Tensor, k: int = None, niter: int = 2, norm: bool = False):
+def pca(matrix: np.ndarray, k: int = None, niter: int = 2, norm: bool = False):
     r"""
     Perform a linear principal component analysis (PCA) on the matrix,
     and will return the first k dimensionality-reduced features.
 
     Args:
-      matrix(Tensor): Input features, shape:(B, F)
+      matrix(ndarray): Input features, shape:(B, F)
       k(int): target dimension for dimensionality reduction
       niter(int): the number of subspace iterations to conduct \
       and it must be a nonnegative integer.
       norm(bool): Whether the output is normalized
 
     Return:
-        Tensor, Features after dimensionality reduction
+        ndarray, Features after dimensionality reduction
 
     Example:
-      >>> import mindsprre as ms
-      >>> from mindspore_gl import pca
-      >>> X = ms.Tensor([[-1, 1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
+      >>> import numpy as np
+      >>> from mindspore_gl.utils import pca
+      >>> X = np.array([[-1, 1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
       >>> data = pca(X, 1)
       >>> print(data)
           [[ 0.33702252]
@@ -91,7 +90,7 @@ def pca(matrix: ms.Tensor, k: int = None, niter: int = 2, norm: bool = False):
           [-2.22871406]
           [-3.6021826 ]]
     """
-    if not isinstance(matrix, ms.Tensor):
+    if not isinstance(matrix, np.ndarray):
         raise TypeError("The matrix type is {},\
                         but it should be Tensor.".format(type(matrix)))
     if not isinstance(k, int):
@@ -100,7 +99,6 @@ def pca(matrix: ms.Tensor, k: int = None, niter: int = 2, norm: bool = False):
     m, n = matrix.shape[-2:]
     if k is None:
         k = min(6, m, n)
-    matrix = matrix.asnumpy()
 
     c = np.mean(matrix, axis=-2)
     norm_matrix = matrix - c
@@ -117,4 +115,4 @@ def pca(matrix: ms.Tensor, k: int = None, niter: int = 2, norm: bool = False):
     else:
         matrix = mat_mul(norm_matrix, v_c[:,])
 
-    return ms.Tensor(matrix)
+    return matrix

@@ -43,6 +43,18 @@ class GCNEncoder(GNNCell):
                  name: str = 'GAE'
                 ):
         super().__init__()
+        if not isinstance(data_feat_size, int):
+            raise TypeError("The data_feat_size type is {},\
+                            but it should be int.".format(type(data_feat_size)))
+        if not isinstance(hidden_dim_size, tuple):
+            raise TypeError("The hidden_dim_size type is {},\
+                            but it should be tuple.".format(type(hidden_dim_size)))
+        if not isinstance(activate, tuple):
+            raise TypeError("The activate type is {},\
+                            but it should be tuple.".format(type(activate)))
+        if not isinstance(name, str):
+            raise TypeError("The name type is {},\
+                            but it should be str.".format(type(name)))
         self.name = name
         layer = []
         if name == 'GAE':
@@ -78,15 +90,6 @@ class GCNEncoder(GNNCell):
                 x: encoded features，shape:(node, hidden_dim[-1])
                 hidden_out：The result of the parallel execution of the last two layers, shape:(2, node, hidden_dim[-1])
         """
-        if not isinstance(x, ms.Tensor):
-            raise TypeError("The x data type is {},\
-                            but it should be Tensor.".format(type(x)))
-        if not isinstance(in_deg, ms.Tensor):
-            raise TypeError("The in_deg data type is {},\
-                            but it should be Tensor.".format(type(in_deg)))
-        if not isinstance(out_deg, ms.Tensor):
-            raise TypeError("The out_deg data type is {},\
-                            but it should be Tensor.".format(type(out_deg)))
         hidden_out = []
         if self.name == 'GAE':
             for cell in self.layer.cell_list:
@@ -114,14 +117,19 @@ class InnerProductDecoder(GNNCell):
                  dropout_rate=1.0,
                  decoder_type='all'):
         super().__init__()
+        if not isinstance(dropout_rate, float):
+            raise TypeError("The dropout_rate type is {},\
+                            but it should be float.".format(type(dropout_rate)))
+        if not isinstance(decoder_type, str):
+            raise TypeError("The decoder_type type is {},\
+                            but it should be str.".format(type(decoder_type)))
         self.dropout = ms.nn.Dropout(dropout_rate)
         self.type = decoder_type
 
     def decoder_all(self, x, g: Graph):
         g = g
         x = self.dropout(x)
-        transpose = ms.ops.Transpose()
-        adj_rec = ms.ops.matmul(x, transpose(x, (1, 0)))
+        adj_rec = ms.ops.matmul(x, x.transpose(1, 0))
         return adj_rec
 
     def decoder(self, x, index):
@@ -142,9 +150,6 @@ class InnerProductDecoder(GNNCell):
         Returns:
             adj_rec(Tensor): object after inner product operation,shape:(node, node)
         """
-        if not isinstance(x, ms.Tensor):
-            raise TypeError("The x data type is {},\
-                            but it should be Tensor.".format(type(x)))
         if self.type == 'all':
             adj_rec = self.decoder_all(x, g.src_idx)
         else:
@@ -184,6 +189,12 @@ class GAENet(GNNCell):
                  encoder,
                  decoder):
         super().__init__()
+        if not isinstance(encoder, GNNCell):
+            raise TypeError("The encoder type is {},\
+                            but it should be GNNCell.".format(type(encoder)))
+        if not isinstance(decoder, GNNCell):
+            raise TypeError("The decoder type is {},\
+                            but it should be GNNCell.".format(type(decoder)))
         self.encoder = encoder
         self.decoder = decoder
 
