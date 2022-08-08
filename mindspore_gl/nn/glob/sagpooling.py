@@ -137,7 +137,8 @@ class SAGPooling(GNNCell):
         row_mask = (new_row >= 0)
         col_mask = (new_col >= 0)
         mask = ms.ops.logical_and(row_mask, col_mask)
-        idx = ms.ops.nonzero(mask)
-        src_perm = new_row[idx].view(-1)
-        dst_perm = new_col[idx].view(-1)
+        src_perm = self.masked_select(new_row.view(-1), mask)
+        dst_perm = self.masked_select(new_col.view(-1), mask)
+        src_perm = src_perm.astype(ms.int32)
+        dst_perm = dst_perm.astype(ms.int32)
         return x, src_perm, dst_perm, perm, perm_score
