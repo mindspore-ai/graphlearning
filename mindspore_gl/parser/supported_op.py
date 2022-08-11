@@ -28,6 +28,8 @@ supported_ops = {
     "avg": OpInfos("transform_agg_func", (SCATTER_ADD_OP, True)),
 
     "dot": OpInfos("transform_dot_func", ()),
+    "topk_nodes": OpInfos("transform_topk_func", ()),
+    "topk_edges": OpInfos("transform_topk_func", ()),
 
     "node_mask": OpInfos("transform_get_mask_func", (VER_SUBGRAPH_IDX,)),
     "edge_mask": OpInfos("transform_get_mask_func", (EDGE_SUBGRAPH_IDX,)),
@@ -49,8 +51,8 @@ supported_ops = {
     "softmax_edges": OpInfos("transform_readout_softmax_func", (SCATTER_EDGE_SUBGRAPH_IDX, EDGE_SUBGRAPH_IDX)),
     "broadcast_nodes": OpInfos("transform_readout_broadcast_func", (VER_SUBGRAPH_IDX,)),
     "broadcast_edges": OpInfos("transform_readout_broadcast_func", (EDGE_SUBGRAPH_IDX,)),
-    "topk_nodes": OpInfos("transform_readout_topk_func", (VER_SUBGRAPH_IDX,)),
-    "topk_edges": OpInfos("transform_readout_topk_func", (EDGE_SUBGRAPH_IDX,)),
+    "batched_topk_nodes": OpInfos("transform_readout_topk_func", (VER_SUBGRAPH_IDX,)),
+    "batched_topk_edges": OpInfos("transform_readout_topk_func", (EDGE_SUBGRAPH_IDX,)),
 
     "get_homo_graph": OpInfos("transform_get_homo_func", ()),
 }
