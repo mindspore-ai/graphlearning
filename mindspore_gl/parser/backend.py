@@ -706,8 +706,7 @@ class MindSporeBackend(Backend):
                                       ast.Name(id=feat_shape, ctx=ast.Load()),
                                   ], ctx=ast.Load()),
                                   ast.Attribute(
-                                      value=ast.Name(id=x,
-                                                     ctx=ast.Load()),
+                                      value=x,
                                       attr='dtype',
                                       ctx=ast.Load()),
                               ], keywords=[]),
