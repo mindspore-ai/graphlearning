@@ -509,7 +509,7 @@ def test_broadcast_edges():
 @pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
-def test_topk_nodes_without_softby():
+def test_batched_topk_nodes_without_softby():
     """
     Feature:test topk nodes without softby
     Description:test topk nodes without softby
@@ -540,7 +540,7 @@ def test_topk_nodes_without_softby():
 
     class TestTopkNodes(GNNCell):
         def construct(self, x, bg: BatchedGraph):
-            return bg.topk_nodes(x, 2)
+            return bg.batched_topk_nodes(x, 2)
 
     output, indices = TestTopkNodes()(node_feat, *batched_graph_field.get_batched_graph())
     output = output.asnumpy().tolist()
@@ -566,7 +566,7 @@ def test_topk_nodes_without_softby():
 @pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
-def test_topk_edges_without_softby():
+def test_batched_topk_edges_without_softby():
     """
     Feature:test topk edges without softby
     Description:test topk edges without softby
@@ -598,7 +598,7 @@ def test_topk_edges_without_softby():
 
     class TestTopkEdges(GNNCell):
         def construct(self, x, bg: BatchedGraph):
-            return bg.topk_edges(x, 2)
+            return bg.batched_topk_edges(x, 2)
 
     output, indices = TestTopkEdges()(edge_feat, *batched_graph_field.get_batched_graph())
     output = output.asnumpy().tolist()
@@ -624,7 +624,7 @@ def test_topk_edges_without_softby():
 @pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
-def test_topk_nodes_with_softby():
+def test_batched_topk_nodes_with_softby():
     """
     Feature:test topk nodes with softby
     Description:test topk nodes with softby
@@ -655,7 +655,7 @@ def test_topk_nodes_with_softby():
 
     class TestTopkNodes(GNNCell):
         def construct(self, x, bg: BatchedGraph):
-            return bg.topk_nodes(x, 2, 1)
+            return bg.batched_topk_nodes(x, 2, 1)
 
     output, indices = TestTopkNodes()(node_feat, *batched_graph_field.get_batched_graph())
     output = output.asnumpy().tolist()
@@ -679,7 +679,7 @@ def test_topk_nodes_with_softby():
 @pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
-def test_topk_edges_with_softby():
+def test_batched_topk_edges_with_softby():
     """
     Feature:test topk edges with softby
     Description:test topk edges with softby
@@ -711,7 +711,7 @@ def test_topk_edges_with_softby():
 
     class TestTopkEdges(GNNCell):
         def construct(self, x, bg: BatchedGraph):
-            return bg.topk_edges(x, 2, 1)
+            return bg.batched_topk_edges(x, 2, 1)
 
     output, indices = TestTopkEdges()(edge_feat, *batched_graph_field.get_batched_graph())
     output = output.asnumpy().tolist()

@@ -16,7 +16,7 @@
 # pylint: disable=unused-import
 import mindspore as ms
 from mindspore._checkparam import Validator
-from mindspore_gl import BatchedGraph
+from mindspore_gl import Graph
 from mindspore_gl.nn.conv import GCNConv2
 from .. import GNNCell
 
@@ -89,13 +89,9 @@ class SAGPooling(GNNCell):
         >>> dst_idx = ms.Tensor([0, 0, 2, 1, 3, 0, 1], ms.int32)
         >>> ones = ms.ops.Ones()
         >>> feat = ones((n_nodes, feat_size), ms.float32)
-        >>> ver_subgraph_idx = ms.Tensor([0, 0, 0, 0], ms.int32)
-        >>> edge_subgraph_idx = ms.Tensor([0, 0, 0, 0, 0, 0, 0], ms.int32)
-        >>> graph_mask = ms.Tensor([1], ms.int32)
-        >>> graph_field = BatchedGraphField(src_idx, dst_idx, n_nodes, n_edges,
-        >>>                                 ver_subgraph_idx, edge_subgraph_idx, graph_mask)
+        >>> graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
         >>> sagpooling = SAGPooling(in_feat_size=4, GNN = GCNConv2)
-        >>> res = gcnconv(feat, None, n_nodes, perm_nodes,  *batched_graph_field.get_batched_graph())
+        >>> res = sagpooling(feat, None, n_nodes, perm_nodes,  *graph_field.get_graph())
         >>> print(res.shape)
         (2, 4)
     """
@@ -117,7 +113,7 @@ class SAGPooling(GNNCell):
         self.masked_select = ms.ops.MaskedSelect()
 
     # pylint: disable=arguments-differ
-    def construct(self, x, attn, node_num, perm_num, g: BatchedGraph):
+    def construct(self, x, attn, node_num, perm_num, g: Graph):
         """
         Construct function for SAGPooling.
         """

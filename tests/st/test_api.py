@@ -670,3 +670,169 @@ def test_get_homo_graph(node_feat, heter_graph_field):
     ret = TestHeterGraph()(node_feat, *heter_graph_field.get_heter_graph()).asnumpy().tolist()
     expected = [[1], [2], [0], [0], [3], [2], [1], [0], [3]]
     assert_list_equal(ret, expected)
+
+
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_topk_nodes_without_softby():
+    """
+    Feature:test topk nodes without softby
+    Description:test topk nodes without softby
+    Expectation:topk_nodes_without_softby of node_feat based on batched_graph_field
+    """
+
+    node_feat = ms.Tensor([
+        [1, 2, 3, 4],
+        [2, 4, 1, 3],
+        [1, 3, 2, 4],
+        [9, 7, 5, 8],
+        [8, 7, 6, 5],
+        [8, 6, 4, 6],
+        [1, 2, 1, 1],
+    ], ms.float32)
+
+    n_nodes = 7
+    n_edges = 8
+    src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6], ms.int32)
+    dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4], ms.int32)
+    graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+
+    class TestTopkNodes(GNNCell):
+        def construct(self, x, g: Graph):
+            return g.topk_nodes(x, 2)
+
+    output, indices = TestTopkNodes()(node_feat, *graph_field.get_graph())
+    output = output.asnumpy().tolist()
+    indices = indices.asnumpy().tolist()
+    output_expected = [[9, 7, 6, 8], [8, 7, 5, 6]]
+    indices_expected = [[3, 3, 4, 3], [4, 4, 3, 5]]
+    first, second = np.array(output), np.array(output_expected)
+    assert np.sum(np.abs((first - second))) == 0
+    first, second = np.array(indices), np.array(indices_expected)
+    assert np.sum(np.abs((first - second))) == 0
+
+
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_topk_edges_without_softby():
+    """
+    Feature:test topk edges without softby
+    Description:test topk edges without softby
+    Expectation:topk_edges_without_softby of edge_feat based on batched_graph_field
+    """
+
+    edge_feat = ms.Tensor([
+        [1, 2, 3, 4],
+        [2, 4, 1, 3],
+        [1, 3, 2, 4],
+        [9, 7, 5, 8],
+        [8, 7, 6, 5],
+        [8, 6, 4, 6],
+        [1, 2, 1, 1],
+        [3, 2, 3, 3],
+    ], ms.float32)
+
+    n_nodes = 7
+    n_edges = 8
+    src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6], ms.int32)
+    dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4], ms.int32)
+    graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+
+    class TestTopkEdges(GNNCell):
+        def construct(self, x, g: Graph):
+            return g.topk_edges(x, 2)
+
+    output, indices = TestTopkEdges()(edge_feat, *graph_field.get_graph())
+    output = output.asnumpy().tolist()
+    indices = indices.asnumpy().tolist()
+    output_expected = [[9, 7, 6, 8], [8, 7, 5, 6]]
+    indices_expected = [[3, 3, 4, 3], [4, 4, 3, 5]]
+    first, second = np.array(output), np.array(output_expected)
+    assert np.sum(np.abs((first - second))) == 0
+    first, second = np.array(indices), np.array(indices_expected)
+    assert np.sum(np.abs((first - second))) == 0
+
+
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_topk_nodes_with_softby():
+    """
+    Feature:test topk nodes with softby
+    Description:test topk nodes with softby
+    Expectation:topk_nodes_with_softby of node_feat based on batched_graph_field
+    """
+
+    node_feat = ms.Tensor([
+        [1, 2, 3, 4],
+        [2, 4, 1, 3],
+        [1, 3, 2, 4],
+        [9, 7, 5, 8],
+        [8, 7, 6, 5],
+        [8, 6, 4, 6],
+        [1, 2, 1, 1],
+    ], ms.float32)
+
+    n_nodes = 7
+    n_edges = 8
+    src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6], ms.int32)
+    dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4], ms.int32)
+    graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+
+    class TestTopkNodes(GNNCell):
+        def construct(self, x, g: Graph):
+            return g.topk_nodes(x, 2, 1)
+
+    output, indices = TestTopkNodes()(node_feat, *graph_field.get_graph())
+    output = output.asnumpy().tolist()
+    indices = indices.asnumpy().tolist()
+    output_expected = [[9, 7, 5, 8], [8, 7, 6, 5]]
+    indices_expected = [3, 4]
+    first, second = np.array(output), np.array(output_expected)
+    assert np.sum(np.abs((first - second))) == 0
+    first, second = np.array(indices), np.array(indices_expected)
+    assert np.sum(np.abs((first - second))) == 0
+
+
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_topk_edges_with_softby():
+    """
+    Feature:test topk edges with softby
+    Description:test topk edges with softby
+    Expectation:topk_edges_with_softby of edge_feat based on batched_graph_field
+    """
+
+    edge_feat = ms.Tensor([
+        [1, 2, 3, 4],
+        [2, 4, 1, 3],
+        [1, 3, 2, 4],
+        [9, 7, 5, 8],
+        [8, 7, 6, 5],
+        [8, 6, 4, 6],
+        [1, 2, 1, 1],
+        [3, 2, 3, 3],
+    ], ms.float32)
+
+    n_nodes = 7
+    n_edges = 8
+    src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6], ms.int32)
+    dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4], ms.int32)
+    graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+
+    class TestTopkEdges(GNNCell):
+        def construct(self, x, g: Graph):
+            return g.topk_edges(x, 2, 1)
+
+    output, indices = TestTopkEdges()(edge_feat, *graph_field.get_graph())
+    output = output.asnumpy().tolist()
+    indices = indices.asnumpy().tolist()
+    output_expected = [[9, 7, 5, 8], [8, 7, 6, 5]]
+    indices_expected = [3, 4]
+    first, second = np.array(output), np.array(output_expected)
+    assert np.sum(np.abs((first - second))) == 0
+    first, second = np.array(indices), np.array(indices_expected)
+    assert np.sum(np.abs((first - second))) == 0

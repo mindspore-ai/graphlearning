@@ -516,6 +516,153 @@ class MindSporeBackend(Backend):
         """
         return self.invoke_gather_op(node.args[0], gather_idx, 0)
 
+    def transform_topk_func(self, node: ast.AST,
+                            enclosing_block: ast.AST,
+                            insert_stmt_cb):
+        """
+        Transform readout topk functions.
+
+        The output code is determined by your input parameters.
+        The origin code:
+            ret = g.topk_nodes(x, k)
+        It will be transform to:
+            _, FEAT_SHAPE = SHAPE(x)
+            TOPK_OUTPUT, TOPK_INDICES = ms.ops.Sort(
+                                        -2, True)(X)
+            ret = TOPK_OUTPUT[:, :k], TOPK_INDICES[:, :k]
+
+        The origin code:
+            ret = g.topk_nodes(x, k, sortby)
+        It will be transform to:
+            _, FEAT_SHAPE = SHAPE(x)
+            TOPK_INDICES = ms.ops.Sort(
+                -2, True)(X)[1][(..., sortby)]
+            TOPK_OUTPUT = ms.ops.GatherD()(
+                X,
+                0,
+                ms.ops.BroadcastTo((n_nodes, FEAT_SHAPE))(
+                    RESHAPE(TOPK_INDICES, (n_nodes, 1))
+                )
+            )
+            ret = TOPK_OUTPUT[:, :k], TOPK_INDICES[:, :k]
+
+        Args:
+            node (ast.AST): The origin node.
+            enclosing_block (ast.AST): The enclosing block for the node.
+            insert_stmt_cb (Function): Insert statement callback.
+
+
+        Returns:
+            ast.AST, call node after transformation.
+
+        Raises:
+            SyntaxError: be raised if input args not in (2, 3).
+        """
+        node_shape = "NODE_SHAPE"
+        feat_shape = "FEAT_SHAPE"
+        topk_output, topk_indices = "TOPK_OUTPUT", "TOPK_INDICES"
+        k = node.args[1]
+        x = node.args[0]
+        if isinstance(k, ast.NameConstant):
+            if not isinstance(k.value, int) or isinstance(k.value, bool):
+                raise TypeError(f"topk function 'k' argument"
+                                f"accept an int type, but got {type(k.value)}")
+
+        call = ast.Tuple(elts=[
+            ast.Subscript(value=ast.Name(id=topk_output, ctx=ast.Load()),
+                          slice=ast.Slice(lower=None,
+                                          upper=k,
+                                          step=None),
+                          ctx=ast.Load()),
+            ast.Subscript(value=ast.Name(id=topk_indices, ctx=ast.Load()),
+                          slice=ast.Slice(lower=None,
+                                          upper=k,
+                                          step=None),
+                          ctx=ast.Load()),
+        ], ctx=ast.Load())
+
+        if len(node.args) == 2:
+            tmp2 = ast.Assign(targets=[
+                ast.Tuple(elts=[
+                    ast.Name(id=topk_output, ctx=ast.Store()),
+                    ast.Name(id=topk_indices, ctx=ast.Store()),
+                ], ctx=ast.Store()),
+            ], value=ast.Call(func=ast.Call(func=self.create_op_node("Sort"),
+                                            args=[ast.UnaryOp(op=ast.USub(),
+                                                              operand=ast.Num(n=2)),
+                                                  ast.Constant(value=True),
+                                                  ], keywords=[]),
+                              args=[ast.Name(id=x.id, ctx=ast.Load())],
+                              keywords=[]
+                              ))
+            insert_stmt_cb(enclosing_block, tmp2, call)
+
+        elif len(node.args) == 3:
+            tmp3 = ast.Assign(targets=[
+                ast.Name(id=topk_output, ctx=ast.Store()),
+            ], value=ast.Call(func=ast.Call(func=self.create_op_node(
+                "GatherD"),
+                args=[], keywords=[]), args=[
+                x,
+                ast.Num(n=0),
+                ast.Call(func=ast.Call(func=self.create_op_node("BroadcastTo"),
+                                       args=[
+                                           ast.Tuple(elts=[
+                                               ast.Name(id=node_shape, ctx=ast.Load()),
+                                               ast.Name(id=feat_shape, ctx=ast.Load()),
+                                           ], ctx=ast.Load()),
+                                       ], keywords=[]), args=[
+                    self.invoke_op(RESHAPE_OP, args=[
+                        ast.Name(id=topk_indices, ctx=ast.Load()),
+                        ast.Tuple(elts=[
+                            ast.Name(id=node_shape, ctx=ast.Load()),
+                            ast.Num(n=1),
+                        ], keywords=[]),
+                    ])
+                ], keywords=[]),
+            ], keywords=[])
+            )
+            insert_stmt_cb(enclosing_block, tmp3, call)
+
+            sortby = node.args[2]
+            if isinstance(sortby, ast.NameConstant):
+                if not isinstance(sortby.value, int) or isinstance(sortby.value, bool):
+                    raise TypeError(f"topk function 'sortby' argument"
+                                    f"accept an int type, but got {type(sortby.value)}")
+
+            tmp2 = ast.Assign(targets=[
+                ast.Name(id=topk_indices, ctx=ast.Store()),
+            ], value=ast.Subscript(value=ast.Subscript(
+                value=ast.Call(func=ast.Call(func=self.create_op_node("Sort"),
+                                             args=[
+                                                 ast.UnaryOp(op=ast.USub(), operand=ast.Num(n=2)),
+                                                 ast.Constant(value=True),
+                                             ], keywords=[]), args=[x],
+                               keywords=[]),
+                slice=ast.Index(value=ast.Num(n=1)), ctx=ast.Load()),
+                slice=ast.Index(value=ast.Tuple(
+                    elts=[
+                        ast.Ellipsis(),
+                        sortby,
+                    ],
+                    ctx=ast.Load())),
+                ctx=ast.Load())
+            )
+            insert_stmt_cb(enclosing_block, tmp2, call)
+
+        else:
+            raise SyntaxError("Topk function only accept 2 or 3 args.")
+
+        tmp0 = ast.Assign(targets=[
+            ast.Tuple(elts=[
+                ast.Name(id=node_shape, ctx=ast.Store()),
+                ast.Name(id=feat_shape, ctx=ast.Store()),
+            ], ctx=ast.Store()),
+        ], value=self.invoke_op(SHAPE_OP, args=[x]))
+        insert_stmt_cb(enclosing_block, tmp0, call)
+
+        return call
+
     def transform_readout_topk_func(self, node: ast.AST,
                                     enclosing_block: ast.AST,
                                     insert_stmt_cb, gather_idx):

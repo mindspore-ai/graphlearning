@@ -549,6 +549,148 @@ class Graph:
                 [[2.0], [1.0], [2.0], [2.0], [0.0], [0.0], [2.0], [0.0], [1.0], [1.0], [1.0]]
         """
 
+    def topk_nodes(self, node_feat, k, sortby=None):
+        r"""
+        Return a graph-level representation by a graph-wise top-k
+        on node features.
+
+        If sortby is set to None, the function would perform top-k
+        on all dimensions independently.
+
+        Args:
+            node_feat (Tensor): A tensor represent the node feature,
+                with shape :math:`(N\_NODES, F)`. :math:`F` is the dimension of the node feature.
+            k (int): Represent how many nodes for top-k.
+            sortby (int): Sort according to which feature. If is None,
+                all features are sorted independently.  Default is None.
+
+        Note:
+            The value participated in the sort by axis (all value if sortby is
+            None) should be greater than zero.
+            Due to the reason that we create zero value for padding
+            and they may cover the features.
+
+        Returns:
+            - **topk_output** (Tensor) - a tensor with shape :math:`(B, K, F)`,
+              where :math:`B` is the batch size of the input graph.
+              :math:`K` is the input 'k', :math:`F` is the feature size.
+            - **topk_indices** (Tensor), - a tensor with shape
+              :math:`(B, K)`(:math:`(B, K, F)` if sortby is set to None),
+              where :math:`B` is the batch size of the input graph,
+              :math:`F` is the feature size.
+
+        Raises:
+            TypeError: If `node_feat` is not a Tensor.
+            TypeError: If `k` is not an int.
+            ValueError: If `sortby` is not an int.
+
+        Supported Platforms:
+            ``GPU``
+
+        Examples:
+            >>> import mindspore as ms
+            >>> from mindspore_gl import BatchedGraph, BatchedGraphField
+            >>> from mindspore_gl.nn import GNNCell
+            >>> node_feat = ms.Tensor([
+            ...     [1, 2, 3, 4],
+            ...     [2, 4, 1, 3],
+            ...     [1, 3, 2, 4],
+            ...     [9, 7, 5, 8],
+            ...     [8, 7, 6, 5],
+            ...     [8, 6, 4, 6],
+            ...     [1, 2, 1, 1],
+            ... ], ms.float32)
+            ...
+            >>> n_nodes = 7
+            >>> n_edges = 8
+            >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6], ms.int32)
+            >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4], ms.int32)
+            >>> graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+            ...
+            >>> class TestTopkNodes(GNNCell):
+            ...     def construct(self, x, g: Graph):
+            ...         return g.topk_nodes(x, 2, 1)
+            ...
+            >>> output, indices = TestTopkNodes()(node_feat, *graph_field.get_graph())
+            >>> output = output.asnumpy().tolist()
+            >>> indices = indices.asnumpy().tolist()
+            >>> print(output)
+                [[9.0, 7.0, 5.0, 8.0], [8.0, 7.0, 6.0, 5.0]]
+            >>> print(indices)
+                [3, 4]
+        """
+
+    def topk_edges(self, node_feat, k, sortby=None):
+        r"""
+        Return a graph-level representation by a graph-wise top-k
+        on node features.
+
+        If sortby is set to None, the function would perform top-k
+        on all dimensions independently.
+
+        Args:
+            node_feat (Tensor): A tensor represent the node feature,
+                with shape :math:`(N\_NODES, F)`. :math:`F` is the dimension of the node feature.
+            k (int): Represent how many nodes for top-k.
+            sortby (int): Sort according to which feature. If is None,
+                all features are sorted independently.  Default is None.
+
+        Note:
+            The value participated in the sort by axis (all value if sortby is
+            None) should be greater than zero.
+            Due to the reason that we create zero value for padding
+            and they may cover the features.
+
+        Returns:
+            - **topk_output** (Tensor) - a tensor with shape :math:`(B, K, F)`,
+              where :math:`B` is the batch size of the input graph.
+              :math:`K` is the input 'k', :math:`F` is the feature size.
+            - **topk_indices** (Tensor), - a tensor with shape
+              :math:`(B, K)`(:math:`(B, K, F)` if sortby is set to None),
+              where :math:`B` is the batch size of the input graph,
+              :math:`F` is the feature size.
+
+        Raises:
+            TypeError: If `node_feat` is not a Tensor.
+            TypeError: If `k` is not an int.
+            ValueError: If `sortby` is not an int.
+
+        Supported Platforms:
+            ``GPU``
+
+        Examples:
+            >>> import mindspore as ms
+            >>> from mindspore_gl import BatchedGraph, BatchedGraphField
+            >>> from mindspore_gl.nn import GNNCell
+            >>> node_feat = ms.Tensor([
+            ...     [1, 2, 3, 4],
+            ...     [2, 4, 1, 3],
+            ...     [1, 3, 2, 4],
+            ...     [9, 7, 5, 8],
+            ...     [8, 7, 6, 5],
+            ...     [8, 6, 4, 6],
+            ...     [1, 2, 1, 1],
+            ... ], ms.float32)
+            ...
+            >>> n_nodes = 7
+            >>> n_edges = 8
+            >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6], ms.int32)
+            >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4], ms.int32)
+            >>> graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+            ...
+            >>> class TestTopkEdges(GNNCell):
+            ...     def construct(self, x, g: Graph):
+            ...         return g.topk_edges(x, 2, 1)
+            ...
+            >>> output, indices = TestTopkEdges()(node_feat, *graph_field.get_graph())
+            >>> output = output.asnumpy().tolist()
+            >>> indices = indices.asnumpy().tolist()
+            >>> print(output)
+                [[9.0, 7.0, 5.0, 8.0], [8.0, 7.0, 6.0, 5.0]]
+            >>> print(indices)
+                [3, 4]
+        """
+
     def in_degree(self):
         r"""
         Get the in degree of each node in a graph.
@@ -1197,7 +1339,7 @@ class BatchedGraph(Graph):
                  [5.800000190734863, 4.800000190734863, 3.799999952316284, 4.599999904632568]]
         """
 
-    def topk_nodes(self, node_feat, k, sortby=None):
+    def batched_topk_nodes(self, node_feat, k, sortby=None):
         r"""
         Return a graph-level representation by a graph-wise top-k
         on node features.
@@ -1263,7 +1405,7 @@ class BatchedGraph(Graph):
             ...
             >>> class TestTopkNodes(GNNCell):
             ...     def construct(self, x, bg: BatchedGraph):
-            ...         return bg.topk_nodes(x, 2, 1)
+            ...         return bg.batched_topk_nodes(x, 2, 1)
             ...
             >>> output, indices = TestTopkNodes()(node_feat, *batched_graph_field.get_batched_graph())
             >>> output = output.asnumpy().tolist()
@@ -1274,7 +1416,7 @@ class BatchedGraph(Graph):
                 [[1, 2], [3, 4]]
         """
 
-    def topk_edges(self, edge_feat, k, sortby=None):
+    def batched_topk_edges(self, edge_feat, k, sortby=None):
         r"""
         Return a graph-level representation by a graph-wise
         top-k on edge features.
@@ -1341,7 +1483,7 @@ class BatchedGraph(Graph):
             ...
             >>> class TestTopkEdges(GNNCell):
             ...     def construct(self, x, bg: BatchedGraph):
-            ...         return bg.topk_edges(x, 2, 1)
+            ...         return bg.batched_topk_edges(x, 2, 1)
             ...
             >>> output, indices = TestTopkEdges()(edge_feat, *batched_graph_field.get_batched_graph())
             >>> output = output.asnumpy().tolist()

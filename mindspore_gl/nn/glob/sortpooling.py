@@ -49,6 +49,6 @@ class SortPooling(GNNCell):
             Tensor, output representation for graphs.
         """
         x, _ = ms.ops.Sort()(x)
-        ret, _ = g.topk_nodes(x, self.k, -1)
+        ret, _ = g.batched_topk_nodes(x, self.k, -1)
         ret = ms.ops.Reshape()(ret, (-1, self.k * ms.ops.Shape()(x)[-1]))
         return ret
