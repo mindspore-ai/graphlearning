@@ -13,9 +13,13 @@
 # limitations under the License.
 # ============================================================================
 """ self_loop """
-import mindspore as ms
 import numpy as np
 import scipy.sparse as sp
+import mindspore as ms
+from mindspore import ops
+import mindspore.numpy as mp
+import mindspore.nn as nn
+from mindspore import COOTensor
 
 def remove_self_loop(adj, mode='dense'):
     """
@@ -56,49 +60,62 @@ def remove_self_loop(adj, mode='dense'):
 def add_self_loop(adj, node, fill_value, mode='dense'):
     """
     Feature:
-    ADD the diagonal matrix from the input matrix object,
+    ADD the selp loop from the input coo matrix,
     you can choose to operate on a dense matrix or a matrix in coo format
 
     Args:
-        adj(scipy.sparse.coo): Target matrix
+        adj(Tensor): COO matrix
         node(int): Number of nodes
-        fill_value(array): self-loop value,shape:(node)
+        fill_value(Tensor): self-loop value
         mode(str): type of operation matrix
 
     Returns:
         The object after adding the diagonal matrix
-        'dense' returns the Tensor type
-        'coo' returns scipy.sparse.coo type
+        'dense' returns the dense Tensor type
+        'coo' returns the coo Tensor type
+
+    Raises:
+        ValueError: if `mode` not is coo or dense.
+        TypeError: If `node` is not a positive int.
 
     Examples:
-        >>> from mindspore_gl.graph.self_loop import add_self_loop
-        >>> import scipy.sparse as sp
-        >>> adj = sp.csr_matrix(([0, 0, 0], ([0, 1, 2], [0, 1, 2])), shape=(3, 3)).tocoo()
-        >>> adj = add_self_loop(adj, 3, [1, 1, 1], 'coo')
-        >>> print(adj)
-          (0, 0)        1
-          (1, 1)        1
-          (2, 2)        1
+        >>> indices = Tensor([[0, 1], [1, 2], [2, 0]], dtype=ms.int32)
+        >>> values = Tensor([1, 2, 1], dtype=ms.float32)
+        >>> shape = (3, 3)
+        >>> adj = COOTensor(indices, values, shape)
+        >>> node = 3
+        >>> fill_value = Tensor([1, 1, 1], ms.float32)
+        >>> new_adj = add_self_loop(adj, node, fill_value, mode='dense')
+        >>> print(new_adj)
+        [[1. 1. 0.]
+         [0. 1. 2.]
+         [1. 0. 1.]]
+         >>> new_adj = add_self_loop(adj, node, fill_value, mode='coo')
+         >>> print(new_adj.indices)
+         [[0 1]
+          [1 2]
+          [2 0]
+          [0 0]
+          [1 1]
+          [2 2]]
+         >>> print(new_adj.values)
+         [1. 2. 1. 1. 1. 1.]
     """
     if not isinstance(node, int):
         raise TypeError("The node data type is {},\
                         but it should be int.".format(type(node)))
-    if not isinstance(fill_value, (list, np.ndarray)):
-        raise TypeError("The adj data type is {},\
-                        but it should be list or np.array.".format(type(fill_value)))
-    if not isinstance(mode, str):
-        raise TypeError("The mode data type is {},\
-                        but it should be str.".format(type(mode)))
+    assert mode in ['coo', 'dense'], 'Invalid mode'
+    shape = adj.shape
+    range_index = nn.Range(0, node, 1)
+    loop_index = range_index()
+    loop_index = ops.ExpandDims()(loop_index, 0)
+    loop_index = mp.tile(loop_index, (2, 1))
+    loop_index = ops.Transpose()(loop_index, (1, 0))
+    edge_index = adj.indices
+    edge_index = ops.Concat()((edge_index, loop_index))
+    edge_attr = adj.values
+    edge_attr = ops.Concat()((edge_attr, fill_value))
+    new_adj = COOTensor(edge_index, edge_attr, shape)
     if mode == 'dense':
-        adj_new = adj.toarray() + np.diag(fill_value)
-        adj = ms.Tensor(adj_new, ms.float32)
-    elif mode == 'coo':
-        loop = np.array([i for i in range(node)])
-        data = np.concatenate([adj.data, fill_value])
-        col = np.concatenate([adj.col, loop])
-        row = np.concatenate([adj.row, loop])
-        adj = sp.csr_matrix((data, (row, col)), shape=adj.shape).tocoo()
-    else:
-        raise ValueError('Other formats are not currently supported.')
-
-    return adj
+        new_adj = new_adj.to_dense()
+    return new_adj
