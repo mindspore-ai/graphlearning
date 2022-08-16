@@ -30,6 +30,8 @@ from .sageconv import SAGEConv
 from .sgconv import SGConv
 from .tagconv import TAGConv
 from .gcnconv2 import GCNConv2
+from .chebconv import ChebConv
+from .stconv import STConv, TemporalConv
 
 __all__ = [
     'AGNNConv',
@@ -49,4 +51,7 @@ __all__ = [
     'SGConv',
     'TAGConv',
     'GCNConv2',
+    'ChebConv',
+    'STConv',
+    'TemporalConv'
 ]

@@ -14,7 +14,9 @@
 # ============================================================================
 """Reading and building interface for graph datasets."""
 from .cora import CoraV2
+from .metr_la import MetrLa
 
 __all__ = [
-    "CoraV2"
+    "CoraV2",
+    "MetrLa"
 ]
