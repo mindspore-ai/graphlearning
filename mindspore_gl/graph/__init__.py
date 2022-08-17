@@ -14,7 +14,12 @@
 # ============================================================================
 """Graph abstraction and data interface."""
 from .self_loop import add_self_loop, remove_self_loop
+from .get_laplacian import get_laplacian
+from .norm import norm
+
 __all__ = [
     "add_self_loop",
-    "remove_self_loop"
+    "remove_self_loop",
+    "get_laplacian",
+    "norm"
 ]
