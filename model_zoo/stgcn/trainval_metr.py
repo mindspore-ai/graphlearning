@@ -16,6 +16,7 @@
 import argparse
 import time
 import numpy as np
+from sklearn.model_selection import train_test_split
 import mindspore as ms
 import mindspore.nn as nn
 import mindspore.context as context
@@ -25,7 +26,6 @@ from mindspore_gl.dataset.metr_la import MetrLa
 from mindspore_gl.graph import norm
 from mindspore_gl import Graph, GraphField
 from mindspore_gl.nn.gnn_cell import GNNCell
-from sklearn.model_selection import train_test_split
 
 from src import STGcnNet
 
