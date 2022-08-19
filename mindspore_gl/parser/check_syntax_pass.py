@@ -22,7 +22,7 @@ from .ast_base import BaseAstVisitor
 from .api import Graph, BatchedGraph, HeterGraph, Edge, SrcVertex, DstVertex
 from .gnn_exception import SyntaxNotSupported
 from .vectorization import VectorizationType
-from .supported_op import supported_ops
+from .supported_op import supported_ops, batchedgraph_ops_extend, hetergraph_ops_extend
 from .ast_transformer import ArgReplacer, ArgListReplacer,\
     InitBackend, InlineAttributeSetter, InlineSupportedOpCall, \
     DefaultArgsSetter
@@ -315,6 +315,7 @@ class CheckSyntaxPass(BaseAstVisitor):
         self.attr_recursion_ = AttributeRecursionDepth()
         self.func_def_count_ = 0
         self.expr_graph_type_ = {}
+        self.graph_type_ = None
         self.add_builtin_ops_to_symtable([op_name for op_name in self.agg_ops_] + ["compile"])
         setattr(self.__class__, "visit_FunctionDef", self.visit_functiondef)
         setattr(self.__class__, "visit_Expr", self.visit_expr)
@@ -333,11 +334,11 @@ class CheckSyntaxPass(BaseAstVisitor):
         """Visit ast.FunctionDef."""
         self.func_def_count_ += 1
         if self.func_def_count_ == 1:
-            pos, graph_sym, graph_type = self.add_args_to_symtable(node.args)
+            pos, graph_sym, self.graph_type_ = self.add_args_to_symtable(node.args)
             if isinstance(graph_sym, SymGraph):
-                self.add_transformation(node, InitBackend(graph_type))
+                self.add_transformation(node, InitBackend(self.graph_type_))
             self.add_transformation(node, ArgReplacer(graph_sym.fields_, pos))
-            if graph_type == TYPE_GRAPH:
+            if self.graph_type_ == TYPE_GRAPH:
                 self.add_transformation(
                     node,
                     DefaultArgsSetter(
@@ -553,12 +554,18 @@ class CheckSyntaxPass(BaseAstVisitor):
         sym = self.find_symbol(func.value.id)
         assert sym, "Cannot resolve symbol " + str(func.value.id)
         method_name = func.attr
-        if method_name in supported_ops:
+        if self.graph_type_ == TYPE_BATCHEDGRAPH:
+            supported_ops_ = {**supported_ops, **batchedgraph_ops_extend}
+        elif self.graph_type_ == TYPE_HETERGRAPH:
+            supported_ops_ = {**supported_ops, **hetergraph_ops_extend}
+        else:
+            supported_ops_ = supported_ops
+        if method_name in supported_ops_:
             # supported Op functions
             self.expr_graph_type_[call_node] = VectorizationType.GRAPH
             self.add_transformation(
                 call_node, InlineSupportedOpCall(
-                    supported_ops[method_name]))
+                    supported_ops_[method_name]))
             return None
 
         # set attribute functions

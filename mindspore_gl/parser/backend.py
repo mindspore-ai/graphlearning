@@ -727,6 +727,7 @@ class MindSporeBackend(Backend):
         node_shape = "NODE_SHAPE"
         feat_shape = "FEAT_SHAPE"
         x_seperated = "X_SEPRATED_BY_GRAPH"
+        inf_ = "_INF_FILL"
         topk_output, topk_indices = "TOPK_OUTPUT", "TOPK_INDICES"
         k = node.args[1]
         x = node.args[0]
@@ -755,37 +756,37 @@ class MindSporeBackend(Backend):
         ], ctx=ast.Load())
 
         if len(node.args) == 2:
-            tmp2 = ast.Assign(targets=[
+            tmp3 = ast.Assign(targets=[
                 ast.Tuple(elts=[
                     ast.Name(id=topk_output, ctx=ast.Store()),
                     ast.Name(id=topk_indices, ctx=ast.Store()),
                 ], ctx=ast.Store()),
             ], value=ast.Call(func=ast.Call(func=self.create_op_node("Sort"),
-                                        args=[ast.UnaryOp(op=ast.USub(),
-                                                operand=ast.Num(n=2)),
-                                    ast.Constant(value=True),
-                                    ], keywords=[]),
+                                            args=[ast.UnaryOp(op=ast.USub(),
+                                                              operand=ast.Num(n=2)),
+                                                  ast.Constant(value=True),
+                                                  ], keywords=[]),
                               args=[ast.Name(id=x_seperated, ctx=ast.Load())],
                               keywords=[]
                               ))
-            insert_stmt_cb(enclosing_block, tmp2, call)
+            insert_stmt_cb(enclosing_block, tmp3, call)
 
         elif len(node.args) == 3:
-            tmp3 = ast.Assign(targets=[
+            tmp4 = ast.Assign(targets=[
                 ast.Name(id=topk_output, ctx=ast.Store()),
             ], value=ast.Call(func=ast.Call(func=self.create_op_node(
                 "GatherD"),
-                                            args=[], keywords=[]), args=[
-                                  ast.Name(id=x_seperated, ctx=ast.Load()),
-                                  ast.Num(n=1),
-                                       ast.Call(func=ast.Call(func=self.create_op_node("BroadcastTo"),
+                args=[], keywords=[]), args=[
+                ast.Name(id=x_seperated, ctx=ast.Load()),
+                ast.Num(n=1),
+                ast.Call(func=ast.Call(func=self.create_op_node("BroadcastTo"),
                                        args=[
-                    ast.Tuple(elts=[
-                        ast.Name(id=N_GRAPHS, ctx=ast.Load()),
-                        ast.Name(id=node_shape, ctx=ast.Load()),
-                        ast.Name(id=feat_shape, ctx=ast.Load()),
-                    ], ctx=ast.Load()),
-                ], keywords=[]), args=[
+                                           ast.Tuple(elts=[
+                                               ast.Name(id=N_GRAPHS, ctx=ast.Load()),
+                                               ast.Name(id=node_shape, ctx=ast.Load()),
+                                               ast.Name(id=feat_shape, ctx=ast.Load()),
+                                           ], ctx=ast.Load()),
+                                       ], keywords=[]), args=[
                     self.invoke_op(RESHAPE_OP, args=[
                         ast.Name(id=topk_indices, ctx=ast.Load()),
                         ast.Tuple(elts=[
@@ -797,7 +798,7 @@ class MindSporeBackend(Backend):
                 ], keywords=[]),
             ], keywords=[])
             )
-            insert_stmt_cb(enclosing_block, tmp3, call)
+            insert_stmt_cb(enclosing_block, tmp4, call)
 
             sortby = node.args[2]
             if isinstance(sortby, ast.NameConstant):
@@ -805,76 +806,78 @@ class MindSporeBackend(Backend):
                     raise TypeError(f"topk function 'sortby' argument"
                                     f"accept an int type, but got {type(sortby.value)}")
 
-            tmp2 = ast.Assign(targets=[
+            tmp3 = ast.Assign(targets=[
                 ast.Name(id=topk_indices, ctx=ast.Store()),
-            ], value=ast.Subscript(value=ast.Subscript(
-                value=ast.Call(func=ast.Call(func=self.create_op_node("Sort"),
-                                             args=[
-                                                 ast.UnaryOp(op=ast.USub(), operand=ast.Num(n=2)),
-                                                 ast.Constant(value=True),
-                ], keywords=[]), args=[ast.Name(id=x_seperated,
-                                                ctx=ast.Load())],
-                                 keywords=[]),
-                slice=ast.Index(value=ast.Num(n=1)), ctx=ast.Load()),
-                                slice=ast.Index(value=ast.Tuple(
-                                                            elts=[
-                                                                ast.Ellipsis(),
-                                                                sortby,
-                                                                  ],
-                                                            ctx=ast.Load())),
-                                ctx=ast.Load())
+            ],
+                value=ast.Subscript(value=ast.Subscript(
+                    value=ast.Call(func=ast.Call(func=self.create_op_node("Sort"),
+                                                 args=[
+                                                     ast.UnaryOp(op=ast.USub(), operand=ast.Num(n=2)),
+                                                     ast.Constant(value=True)],
+                                                 keywords=[]),
+                                   args=[ast.Name(id=x_seperated,
+                                                  ctx=ast.Load())],
+                                   keywords=[]),
+                    slice=ast.Index(value=ast.Num(n=1)), ctx=ast.Load()),
+                    slice=ast.Index(value=ast.Tuple(
+                        elts=[
+                            ast.Ellipsis(),
+                            sortby,
+                        ],
+                        ctx=ast.Load())),
+                    ctx=ast.Load())
             )
-            insert_stmt_cb(enclosing_block, tmp2, call)
+            insert_stmt_cb(enclosing_block, tmp3, call)
 
         else:
             raise SyntaxError("Topk function only accept 2 or 3 args.")
         long_args = [
-                        ast.List(elts=[
-                            ast.Name(id=gather_idx,
+            ast.List(elts=[
+                ast.Name(id=gather_idx,
+                         ctx=ast.Load()),
+                ast.Call(
+                    func=ast.Call(
+                        func=self.create_op_node("Range", "nn"),
+                        args=[
+                            ast.Num(n=0),
+                            ast.Name(id=node_shape,
                                      ctx=ast.Load()),
-                            ast.Call(
-                                func=ast.Call(
-                                    func=self.create_op_node("Range", "nn"),
-                                    args=[
-                                        ast.Num(n=0),
-                                        ast.Name(id=node_shape,
-                                                 ctx=ast.Load()),
-                                        ast.Num(n=1)],
-                                    keywords=[]), args=[], keywords=[]),
-                        ], ctx=ast.Load()),
-                    ]
-        tmp1 = ast.Assign(targets=[ast.Name(id=x_seperated, ctx=ast.Store())],
-                          value=ast.Call(func=ast.Name(id=SCATTER_ADD_OP,
-                                                       ctx=ast.Load()), args=[
-                              self.invoke_op(ZEROS_OP, args=[
-                                  ast.Tuple(elts=[
-                                      ast.Name(id=N_GRAPHS, ctx=ast.Load()),
-                                      ast.Name(id=node_shape, ctx=ast.Load()),
-                                      ast.Name(id=feat_shape, ctx=ast.Load()),
-                                  ], ctx=ast.Load()),
-                                  ast.Attribute(
-                                      value=x,
-                                      attr='dtype',
-                                      ctx=ast.Load()),
-                              ], keywords=[]),
-                              ast.Call(func=ast.Call(
-                                  func=self.create_op_node("Transpose"),
-                                  args=[], keywords=[]),
-                                       args=[
-                                           ast.Call(
-                                               func=ast.Call(
-                                                   func=self.create_op_node(
-                                                        "Stack"),
-                                                   args=[],
-                                                   keywords=[]),
-                                               args=long_args,
-                                               keywords=[]),
-                                           ast.Tuple(elts=[
-                                               ast.Num(n=1), ast.Num(n=0)
-                                           ], ctx=ast.Load()),
-                                       ], keywords=[]),
-                              x,
-                          ], keywords=[]),
+                            ast.Num(n=1)],
+                        keywords=[]), args=[], keywords=[]),
+            ], ctx=ast.Load()),
+        ]
+
+        tmp2 = ast.Assign(targets=[ast.Name(id=x_seperated, ctx=ast.Store())],
+                          value=ast.Call(func=ast.Call(self.create_op_node("TensorScatterUpdate"),
+                                                       args=[], keywords=[]),
+                                         args=[ast.Name(id=inf_, ctx=ast.Load()),
+                                               ast.Call(func=ast.Call(func=self.create_op_node("Transpose"),
+                                                                      args=[], keywords=[]),
+                                                        args=[ast.Call(func=ast.Call(func=self.create_op_node("Stack"),
+                                                                                     args=[], keywords=[]),
+                                                                       args=long_args,
+                                                                       keywords=[]),
+                                                              ast.Tuple(elts=[ast.Num(n=1), ast.Num(n=0)],
+                                                                        ctx=ast.Load()),
+                                                              ],
+                                                        keywords=[]),
+                                               x],
+                                         keywords=[]
+                                         )
+                          )
+        insert_stmt_cb(enclosing_block, tmp2, call)
+
+        tmp1 = ast.Assign(targets=[ast.Name(id=inf_, ctx=ast.Store())],
+                          value=ast.Call(func=ast.Name(FILL_OP, ctx=ast.Load()),
+                                         args=[ast.Attribute(value=x,
+                                                             attr='dtype',
+                                                             ctx=ast.Load()),
+                                               ast.Tuple(elts=[ast.Name(id=N_GRAPHS, ctx=ast.Load()),
+                                                               ast.Name(id=node_shape, ctx=ast.Load()),
+                                                               ast.Name(id=feat_shape, ctx=ast.Load()),
+                                                               ], ctx=ast.Load()),
+                                               ast.Constant(value=self.neg_inf)],
+                                         keywords=[])
                           )
         insert_stmt_cb(enclosing_block, tmp1, call)
 
