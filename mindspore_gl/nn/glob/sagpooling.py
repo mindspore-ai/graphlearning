@@ -16,10 +16,9 @@
 # pylint: disable=unused-import
 import mindspore as ms
 from mindspore._checkparam import Validator
-from mindspore_gl import Graph
+from mindspore_gl import BatchedGraph
 from mindspore_gl.nn.conv import GCNConv2
 from .. import GNNCell
-
 
 class SAGPooling(GNNCell):
     r"""The self-attention pooling operator from the `"Self-Attention Graph
@@ -113,7 +112,7 @@ class SAGPooling(GNNCell):
         self.masked_select = ms.ops.MaskedSelect()
 
     # pylint: disable=arguments-differ
-    def construct(self, x, attn, node_num, perm_num, g: Graph):
+    def construct(self, x, attn, node_num, perm_num, g: BatchedGraph):
         """
         Construct function for SAGPooling.
         """
@@ -122,11 +121,12 @@ class SAGPooling(GNNCell):
         score = self.gnn(attn, g)
         perm_score, perm = g.topk_nodes(score.astype(ms.float32), perm_num, 0)
         perm_score = self.activation()(perm_score)
-        perm_score = perm_score.view((perm_score.size, 1))
         x = perm_score * x[perm]
         x = self.multiplier * x
         mask = ms.numpy.full(node_num, -1.).astype(ms.float32)
-        new_node_index = ms.numpy.arange(perm_num, dtype=ms.float32)
+        perm = perm.view(perm.size)
+        new_node_index = ms.numpy.arange(perm.size, dtype=ms.float32)
+        ver_subgraph_idx = g.ver_subgraph_idx[perm]
         mask[perm] = new_node_index
         row, col = g.src_idx, g.dst_idx
         new_row, new_col = mask[row], mask[col]
@@ -135,6 +135,7 @@ class SAGPooling(GNNCell):
         mask = ms.ops.logical_and(row_mask, col_mask)
         src_perm = self.masked_select(new_row.view(-1), mask)
         dst_perm = self.masked_select(new_col.view(-1), mask)
+        edge_subgraph_idx = self.masked_select(g.edge_subgraph_idx, mask)
         src_perm = src_perm.astype(ms.int32)
         dst_perm = dst_perm.astype(ms.int32)
-        return x, src_perm, dst_perm, perm, perm_score
+        return x, src_perm, dst_perm, ver_subgraph_idx, edge_subgraph_idx, perm, perm_score
