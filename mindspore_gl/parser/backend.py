@@ -727,7 +727,8 @@ class MindSporeBackend(Backend):
         node_shape = "NODE_SHAPE"
         feat_shape = "FEAT_SHAPE"
         x_seperated = "X_SEPRATED_BY_GRAPH"
-        inf_ = "_INF_FILL"
+        inf_ = "_INF_FILL_"
+        fill_ = "FILL_"
         topk_output, topk_indices = "TOPK_OUTPUT", "TOPK_INDICES"
         k = node.args[1]
         x = node.args[0]
@@ -756,7 +757,7 @@ class MindSporeBackend(Backend):
         ], ctx=ast.Load())
 
         if len(node.args) == 2:
-            tmp3 = ast.Assign(targets=[
+            tmp4 = ast.Assign(targets=[
                 ast.Tuple(elts=[
                     ast.Name(id=topk_output, ctx=ast.Store()),
                     ast.Name(id=topk_indices, ctx=ast.Store()),
@@ -769,10 +770,10 @@ class MindSporeBackend(Backend):
                               args=[ast.Name(id=x_seperated, ctx=ast.Load())],
                               keywords=[]
                               ))
-            insert_stmt_cb(enclosing_block, tmp3, call)
+            insert_stmt_cb(enclosing_block, tmp4, call)
 
         elif len(node.args) == 3:
-            tmp4 = ast.Assign(targets=[
+            tmp5 = ast.Assign(targets=[
                 ast.Name(id=topk_output, ctx=ast.Store()),
             ], value=ast.Call(func=ast.Call(func=self.create_op_node(
                 "GatherD"),
@@ -798,7 +799,7 @@ class MindSporeBackend(Backend):
                 ], keywords=[]),
             ], keywords=[])
             )
-            insert_stmt_cb(enclosing_block, tmp4, call)
+            insert_stmt_cb(enclosing_block, tmp5, call)
 
             sortby = node.args[2]
             if isinstance(sortby, ast.NameConstant):
@@ -806,7 +807,7 @@ class MindSporeBackend(Backend):
                     raise TypeError(f"topk function 'sortby' argument"
                                     f"accept an int type, but got {type(sortby.value)}")
 
-            tmp3 = ast.Assign(targets=[
+            tmp4 = ast.Assign(targets=[
                 ast.Name(id=topk_indices, ctx=ast.Store()),
             ],
                 value=ast.Subscript(value=ast.Subscript(
@@ -827,7 +828,7 @@ class MindSporeBackend(Backend):
                         ctx=ast.Load())),
                     ctx=ast.Load())
             )
-            insert_stmt_cb(enclosing_block, tmp3, call)
+            insert_stmt_cb(enclosing_block, tmp4, call)
 
         else:
             raise SyntaxError("Topk function only accept 2 or 3 args.")
@@ -847,7 +848,7 @@ class MindSporeBackend(Backend):
             ], ctx=ast.Load()),
         ]
 
-        tmp2 = ast.Assign(targets=[ast.Name(id=x_seperated, ctx=ast.Store())],
+        tmp3 = ast.Assign(targets=[ast.Name(id=x_seperated, ctx=ast.Store())],
                           value=ast.Call(func=ast.Call(self.create_op_node("TensorScatterUpdate"),
                                                        args=[], keywords=[]),
                                          args=[ast.Name(id=inf_, ctx=ast.Load()),
@@ -865,9 +866,26 @@ class MindSporeBackend(Backend):
                                          keywords=[]
                                          )
                           )
+        insert_stmt_cb(enclosing_block, tmp3, call)
+
+        tmp2 = ast.Assign(targets=[ast.Name(id=inf_, ctx=ast.Store())],
+                          value=ast.Call(func=self.create_op_node("mul"),
+                                         args=[ast.Name(id=fill_, ctx=ast.Load()),
+                                               ast.Call(func=self.create_op_node("log"),
+                                                        args=[ast.Call(func=ast.Call(func=self.create_op_node("Zeros"),
+                                                                                     args=[], keywords=[]),
+                                                                       args=[ast.Tuple(elts=[ast.Num(n=1)]),
+                                                                             ast.Attribute(value=x,
+                                                                                           attr='dtype',
+                                                                                           ctx=ast.Load())],
+                                                                       keywords=[])],
+                                                        keywords=[])
+                                               ],
+                                         keywords=[])
+                          )
         insert_stmt_cb(enclosing_block, tmp2, call)
 
-        tmp1 = ast.Assign(targets=[ast.Name(id=inf_, ctx=ast.Store())],
+        tmp1 = ast.Assign(targets=[ast.Name(id=fill_, ctx=ast.Store())],
                           value=ast.Call(func=ast.Name(FILL_OP, ctx=ast.Load()),
                                          args=[ast.Attribute(value=x,
                                                              attr='dtype',
@@ -876,7 +894,7 @@ class MindSporeBackend(Backend):
                                                                ast.Name(id=node_shape, ctx=ast.Load()),
                                                                ast.Name(id=feat_shape, ctx=ast.Load()),
                                                                ], ctx=ast.Load()),
-                                               ast.Constant(value=self.neg_inf)],
+                                               ast.Num(n=1.)],
                                          keywords=[])
                           )
         insert_stmt_cb(enclosing_block, tmp1, call)

@@ -15,6 +15,7 @@
 """SAGPooling Layer"""
 # pylint: disable=unused-import
 import mindspore as ms
+from mindspore import dtype as mstype
 from mindspore._checkparam import Validator
 from mindspore_gl import BatchedGraph
 from mindspore_gl.nn.conv import GCNConv2
@@ -116,6 +117,10 @@ class SAGPooling(GNNCell):
         """
         Construct function for SAGPooling.
         """
+        if x.dtype != mstype.float32:
+            raise TypeError('Only float32 node features are supported but got ' + str(x.dtype) + ' for input_1')
+        if (attn is not None) and (attn.dtype != mstype.float32):
+            raise TypeError('Only float32 node features are supported but got ' + str(attn.dtype) + ' for input_2')
         attn = x if attn is None else attn
         attn = self.expand_dims(attn, -1) if attn.ndim == 1 else attn
         score = self.gnn(attn, g)
