@@ -869,34 +869,36 @@ class MindSporeBackend(Backend):
         insert_stmt_cb(enclosing_block, tmp3, call)
 
         tmp2 = ast.Assign(targets=[ast.Name(id=inf_, ctx=ast.Store())],
-                          value=ast.Call(func=self.create_op_node("mul"),
-                                         args=[ast.Name(id=fill_, ctx=ast.Load()),
-                                               ast.Call(func=self.create_op_node("log"),
-                                                        args=[ast.Call(func=ast.Call(func=self.create_op_node("Zeros"),
-                                                                                     args=[], keywords=[]),
-                                                                       args=[ast.Tuple(elts=[ast.Num(n=1)]),
-                                                                             ast.Attribute(value=x,
-                                                                                           attr='dtype',
-                                                                                           ctx=ast.Load())],
-                                                                       keywords=[])],
-                                                        keywords=[])
-                                               ],
-                                         keywords=[])
+                          value=ast.Call(func=self.create_op_node('mul'),
+                                         args=[
+                                             ast.Call(func=ast.Name(FILL_OP, ctx=ast.Load()),
+                                                      args=[ast.Attribute(value=x,
+                                                                          attr='dtype',
+                                                                          ctx=ast.Load()),
+                                                            ast.Tuple(elts=[ast.Name(id=N_GRAPHS, ctx=ast.Load()),
+                                                                            ast.Name(id=node_shape, ctx=ast.Load()),
+                                                                            ast.Name(id=feat_shape, ctx=ast.Load()),
+                                                                            ], ctx=ast.Load()),
+                                                            ast.Num(n=1.)],
+                                                      keywords=[]),
+                                             ast.Name(id=fill_, ctx=ast.Load())
+                                         ], keywords=[]
+                                         )
                           )
         insert_stmt_cb(enclosing_block, tmp2, call)
 
         tmp1 = ast.Assign(targets=[ast.Name(id=fill_, ctx=ast.Store())],
-                          value=ast.Call(func=ast.Name(FILL_OP, ctx=ast.Load()),
-                                         args=[ast.Attribute(value=x,
-                                                             attr='dtype',
-                                                             ctx=ast.Load()),
-                                               ast.Tuple(elts=[ast.Name(id=N_GRAPHS, ctx=ast.Load()),
-                                                               ast.Name(id=node_shape, ctx=ast.Load()),
-                                                               ast.Name(id=feat_shape, ctx=ast.Load()),
-                                                               ], ctx=ast.Load()),
-                                               ast.Num(n=1.)],
-                                         keywords=[])
-                          )
+                          value=ast.Call(func=ast.Call(func=self.create_op_node("Sub"),
+                                                       args=[], keywords=[]),
+                                         args=[ast.Call(func=ast.Call(func=self.create_op_node("ReduceMin"),
+                                                                      args=[], keywords=[]),
+                                                        args=[x],
+                                                        keywords=[]),
+                                               ast.Call(func=ast.Attribute(value=ast.Name(id=backend()),
+                                                                           attr="Tensor", ctx=ast.Load()),
+                                                        args=[ast.Num(n=0.0001)],
+                                                        keywords=[])],
+                                         keywords=[]))
         insert_stmt_cb(enclosing_block, tmp1, call)
 
         tmp0 = ast.Assign(targets=[

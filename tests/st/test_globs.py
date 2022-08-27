@@ -367,7 +367,7 @@ def test_sagpooling():
     net.gnn.fc1.weight.set_data(weight_gcn)
     net.gnn.fc2.weight.set_data(weight_gcn2)
     net.gnn.bias.set_data(bias_gcn)
-    feature, src, dst, ver_subgraph, edge_subgraph, perm, perm_score = net(node_feat, None, 7, 2,
+    feature, src, dst, ver_subgraph, edge_subgraph, perm, perm_score = net(node_feat, None, 2,
                                                                            *batched_graph_field.get_batched_graph())
     assert numpy.allclose(feature.asnumpy(), expect_feature)
     assert numpy.allclose(src.asnumpy(), expect_src)
