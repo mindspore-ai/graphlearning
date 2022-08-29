@@ -113,7 +113,7 @@ class SAGPooling(GNNCell):
         self.masked_select = ms.ops.MaskedSelect()
 
     # pylint: disable=arguments-differ
-    def construct(self, x, attn, node_num, perm_num, g: BatchedGraph):
+    def construct(self, x, attn, perm_num, g: BatchedGraph):
         """
         Construct function for SAGPooling.
         """
@@ -128,6 +128,7 @@ class SAGPooling(GNNCell):
         perm_score = self.activation()(perm_score)
         x = perm_score * x[perm]
         x = self.multiplier * x
+        node_num = g.n_nodes
         mask = ms.numpy.full(node_num, -1.).astype(ms.float32)
         perm = perm.view(perm.size)
         new_node_index = ms.numpy.arange(perm.size, dtype=ms.float32)
