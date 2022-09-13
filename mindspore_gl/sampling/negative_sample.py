@@ -25,14 +25,14 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more
     Can choose to consider self-loop, directed graph or undirected graph operation
 
     Args:
-        positive(list or array):All positive sample edges,shape:(col_len, row_len)
+        positive(list or array):All positive sample edges,shape is (col_len, row_len)
         node(int): number of node
         num_neg_samples(int):Negative sample length
         mode(str): type of operation matrix
         re(str): type of input data
 
     Returns:
-        array, Negative sample edge set,shape:(num_neg_samples, 2)
+        array, Negative sample edge set,shape is (num_neg_samples, 2)
 
     Examples:
         >>> from mindspore_gl.sampling import negative_sample
@@ -118,12 +118,12 @@ def edge_index_to_vector(edge_index, size, mode='undirected'):
     the processing method of the directed graph or the processing method of the undirected graph
 
     Args:
-        edge_index(list):set of two edges，shape:(row_len or col_len, 2)
-        size(tuple):number of graph nodes, shape:(node, node)
+        edge_index(list):set of two edges，shape is (row_len or col_len, 2)
+        size(tuple):number of graph nodes, shape is (node, node)
         mode(str):type of operation matrix
 
     Returns:
-        idx(array): Transformed vector,shape:(1, row_len or col_len)
+        idx(array): Transformed vector,shape is (1, row_len or col_len)
         population(int): number of edges to sample
 
     Examples:
@@ -178,12 +178,12 @@ def vector_to_edge_index(idx, size, mode='undirected'):
     the processing method of the directed graph or the processing method of the undirected graph
 
     Args:
-        idx(ndarray):collection of edges，shape:(1, row_len or col_len)
-        size(tuple):number of graph nodes, shape:(node, node)
+        idx(ndarray):collection of edges，shape is (1, row_len or col_len)
+        size(tuple):number of graph nodes, shape is (node, node)
         mode(str):type of operation matrix
 
     Returns:
-        array, transformed edge, shape:(row_len or col_len, 2)
+        array, transformed edge, shape is (row_len or col_len, 2)
 
     Examples:
         >>> from mindspore_gl.sampling import vector_to_edge_index
