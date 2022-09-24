@@ -24,9 +24,11 @@ class MetrLa:
 
     Args:
         root(str): path to the root directory that contains METR-LA/adj_mat.npy and
-        METR-LA/node_values.npy
-        in_timestep(int): numbers of input time sequence
-        out_timestep(int): numbers of output time sequence
+        METR-LA/node_values.npy.
+
+    Inputs:
+        - **in_timestep** (int) - numbers of input time sequence.
+        - **out_timestep** (int) - numbers of output time sequence.
 
     Raises:
         TypeError: if `root` is not a str.
@@ -69,7 +71,14 @@ class MetrLa:
         self.x = self.x / stds.reshape(1, -1, 1)
 
     def get_data(self, in_timestep, out_timestep):
-        """get sequence time feature and label"""
+        """
+        get sequence time feature and label
+
+        Args:
+            in_timestep(int): numbers of input time sequence.
+            out_timestep(int): numbers of output time sequence.
+
+        """
         if not (isinstance(in_timestep, int) and in_timestep > 0):
             raise Exception('the in_timestep must be a positive integer value')
         if not (isinstance(out_timestep, int) and out_timestep > 0):
