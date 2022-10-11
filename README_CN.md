@@ -26,8 +26,21 @@ MindSpore Graph Learning 还创新提出了以点为中心编程范式，提供�
 ### 确认系统环境信息
 
 - 硬件平台确认为Linux系统下的GPU。
-- 参考[MindSpore安装指南](https://www.mindspore.cn/install)，完成MindSpore的安装，要求至少1.6.0版本。
+- 参考[MindSpore安装指南](https://www.mindspore.cn/install)，完成MindSpore的安装，要求至少1.6.1版本。
 - 其余依赖请参见[requirements.txt](https://gitee.com/mindspore/graphlearning/blob/master/requirements.txt)。
+
+### MindSpore版本依赖关系
+
+由于MindSpore Graph Learning与MindSpore有依赖关系，请按照根据下表中所指示的对应关系，在[MindSpore下载页面](https://www.mindspore.cn/versions)下载并安装对应的whl包。
+
+```shell
+ pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/{MindSpore-Version}/MindSpore/gpu/x86_64/cuda-10.1/mindspore_gpu-{MindSpore-Version}-cp37-cp37m-linux_x86_64.whl
+```
+
+| MindSpore Graph Learning 版本 |                                分支                                | MindSpore 版本 |
+|:---------------------------:|:----------------------------------------------------------------:|:------------:|
+|           master            | [master](https://gitee.com/mindspore/graphlearning/tree/master/) |   >=1.7.1    |
+|            0.1.0            |   [r0.1](https://gitee.com/mindspore/graphlearning/tree/r0.1/)   |   >=1.6.1    |
 
 ### 安装方式
 
@@ -36,7 +49,7 @@ MindSpore Graph Learning 还创新提出了以点为中心编程范式，提供�
 #### pip安装
 
 ```bash
-pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/{version}/GraphLearning/any/mindspore_gl_gpu-{version}-cp37-cp37m-linux_x86_64.whl --trusted-host ms-release.obs.cn-north-4.myhuaweicloud.com -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/1.6.1/GraphLearning/any/mindspore_gl_gpu-{version}-cp37-cp37m-linux_x86_64.whl --trusted-host ms-release.obs.cn-north-4.myhuaweicloud.com -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 > - 在联网状态下，安装whl包时会自动下载MindSpore Graph Learning安装包的依赖项（依赖项详情参见[requirements.txt](https://gitee.com/mindspore/graphlearning/blob/master/requirements.txt)），其余情况需自行安装。
