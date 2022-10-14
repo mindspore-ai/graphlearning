@@ -34,7 +34,7 @@ class GatherNet(ms.nn.Cell):
         return ms.ops.gather(data, indices, axis)
 
     def bprop(self, data, indices, axis, out, dout):
-        del indices, axis, out
+        # pylint: disable=unused-argument
         grad_csr = ms.CSRTensor(
             self.indptr_backward, self.indices_backward, dout, (data.shape[0], data.shape[0]) + data.shape[1:])
         grad_sum = grad_csr.sum(1).reshape(data.shape)
@@ -55,7 +55,7 @@ class CSRReduceSumNet(ms.nn.Cell):
         return self.op(indptr, indices, values, shape, axis)
 
     def bprop(self, indptr, indices, values, shape, axis, out, dout):
-        del values, shape, axis, out
+        # pylint: disable=unused-argument
         dout = dout.reshape((dout.shape[0],) + dout.shape[2:])
         grad_values = ms.ops.gather(dout, self.indices_backward, 0)
         return indptr, indices, grad_values, (), 0
