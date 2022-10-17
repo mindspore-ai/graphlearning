@@ -23,7 +23,7 @@ from mindspore_gl.graph.ops import PadArray2d, PadMode, PadDirection
 
 class GraphSAGEDataset(Dataset):
     """Do sampling from neighbour nodes"""
-    def __init__(self, graph_dataset, neighbor_nums, batch_size):
+    def __init__(self, graph_dataset, neighbor_nums, batch_size, single_size=False):
         self.graph_dataset = graph_dataset
         self.graph = graph_dataset[0]
         self.neighbor_nums = neighbor_nums
@@ -31,6 +31,7 @@ class GraphSAGEDataset(Dataset):
         self.y = graph_dataset.node_label
         self.batch_size = batch_size
         self.max_sampled_nodes_num = neighbor_nums[0] * neighbor_nums[1] * batch_size
+        self.single_size = single_size
 
 
     def __getitem__(self, batch_nodes):
@@ -44,31 +45,32 @@ class GraphSAGEDataset(Dataset):
 
         num_sample_nodes = len(res['all_nodes'])
         max_sampled_nodes_num = self.max_sampled_nodes_num
+        if self.single_size is False:
+            if num_sample_nodes < floor(0.2*max_sampled_nodes_num):
+                pad_node_num = floor(0.2*max_sampled_nodes_num)
+            elif num_sample_nodes < floor(0.4*max_sampled_nodes_num):
+                pad_node_num = floor(0.4 * max_sampled_nodes_num)
+            elif num_sample_nodes < floor(0.6*max_sampled_nodes_num):
+                pad_node_num = floor(0.6 * max_sampled_nodes_num)
+            elif num_sample_nodes < floor(0.8*max_sampled_nodes_num):
+                pad_node_num = floor(0.8 * max_sampled_nodes_num)
+            else:
+                pad_node_num = max_sampled_nodes_num
 
-        if num_sample_nodes < floor(0.2*max_sampled_nodes_num):
-            pad_node_num = floor(0.2*max_sampled_nodes_num)
-        elif num_sample_nodes < floor(0.4*max_sampled_nodes_num):
-            pad_node_num = floor(0.4 * max_sampled_nodes_num)
-        elif num_sample_nodes < floor(0.6*max_sampled_nodes_num):
-            pad_node_num = floor(0.6 * max_sampled_nodes_num)
-        elif num_sample_nodes < floor(0.8*max_sampled_nodes_num):
-            pad_node_num = floor(0.8 * max_sampled_nodes_num)
+            if num_sample_edges < floor(0.2*max_sampled_nodes_num):
+                pad_edge_num = floor(0.2*max_sampled_nodes_num)
+            elif num_sample_edges < floor(0.4*max_sampled_nodes_num):
+                pad_edge_num = floor(0.4 * max_sampled_nodes_num)
+            elif num_sample_edges < floor(0.6*max_sampled_nodes_num):
+                pad_edge_num = floor(0.6 * max_sampled_nodes_num)
+            elif num_sample_edges < floor(0.8*max_sampled_nodes_num):
+                pad_edge_num = floor(0.8 * max_sampled_nodes_num)
+            else:
+                pad_edge_num = max_sampled_nodes_num
+
         else:
             pad_node_num = max_sampled_nodes_num
-
-        if num_sample_edges < floor(0.2*max_sampled_nodes_num):
-            pad_edge_num = floor(0.2*max_sampled_nodes_num)
-        elif num_sample_edges < floor(0.4*max_sampled_nodes_num):
-            pad_edge_num = floor(0.4 * max_sampled_nodes_num)
-        elif num_sample_edges < floor(0.6*max_sampled_nodes_num):
-            pad_edge_num = floor(0.6 * max_sampled_nodes_num)
-        elif num_sample_edges < floor(0.8*max_sampled_nodes_num):
-            pad_edge_num = floor(0.8 * max_sampled_nodes_num)
-        else:
             pad_edge_num = max_sampled_nodes_num
-
-
-
 
         layered_edges_pad_op = PadArray2d(mode=PadMode.CONST, size=[2, pad_edge_num],
                                           dtype=np.int32, direction=PadDirection.ROW,
@@ -82,7 +84,7 @@ class GraphSAGEDataset(Dataset):
                                      reset_with_fill_value=False,
                                      use_shared_numpy=True
                                      )
-
+        sample_edges = sample_edges[:, :pad_edge_num]
         pad_sample_edges = layered_edges_pad_op(sample_edges)
         feat = nid_feat_pad_op.lazy([num_sample_nodes, self.graph_dataset.num_features])
         array_kernel.float_2d_gather_with_dst(feat, self.graph_dataset.node_feat, res['all_nodes'])

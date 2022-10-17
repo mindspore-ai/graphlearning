@@ -66,7 +66,7 @@ class RandomBatchSampler(ds.Sampler):
         return len(self.data_source) // self.batch_size
 
 
-class DistributeRandomBatchSampler:
+class DistributeRandomBatchSampler(ds.Sampler):
     """
     Distribute Random Batch Sampler
 
