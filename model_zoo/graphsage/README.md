@@ -27,11 +27,19 @@ This experiment is based on [Reddit dataset](http://snap.stanford.edu/graphsage/
 
 ## Quick Start
 
-GPU:
+GPU:\
 CUDA_VISIBLE_DEVICES=0 python model_zoo/graphsage/trainval_reddit.py --data_path  {data_path}
 
-Ascend:
+Ascend:\
 python model_zoo/graphsage/trainval_reddit.py --data_path  {data_path} --device Ascend
+
+## Distributed Training
+
+GPU:\
+bash distributed_run.sh GPU {DATA_PATH}
+
+Ascend:\
+bash distributed_run.sh Ascend {DATA_PATH} {RANK_START} {RANK_SIZE} {RANK_TABLE_FILE}
 
 ## Experiment results
 

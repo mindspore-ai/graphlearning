@@ -1,12 +1,25 @@
 # Contents
 
-- Model
-- Datasets
 - Environment Requirements
-- Quick Start
-- Experiment results (acc)
+- Single GPU
+    - Model
+    - Datasets
+    - Quick Start
+    - Experiment results (acc)
+- Multi GPUs
+    - Model
+    - Datasets
+    - Quick Start
+    - Experiment results (sec/epoch)
 
-## Model
+## Environment Requirements
+
+- MindSpore >= 1.6.0
+- GraphLearning >= 0.1.0
+
+## Single GPU
+
+### Model
 
 - APPNP
 
@@ -34,20 +47,15 @@ More detail about GCN can be found in:
 
 Thomas N. Kipf, Max Welling. 2016. Semi-Supervised Classification with Graph Convolutional Networks. In ICLR 2016.
 
-## Datasets
+### Datasets
 
-The experiment is based on CoraFull.npz, AmazonCoBuy_computers.npz, Coauthor_physics.npz, Coauthor_cs.npz, pubmed_with_mask.npz, cora_v2_with_mask.npz, citeseer_with_mask.npz and reddit_with_mask.npz
+The experiment is based on CoraFull.npz, AmazonCoBuy_computers.npz, Coauthor_physics.npz, Coauthor_cs.npz, pubmed_with_mask.npz, cora_v2_with_mask.npz, citeseer_with_mask.npz.
 
-## Environment Requirements
-
-- MindSpore >= 1.6.0
-- GraphLearning >= 0.1.0
-
-## Quick Start
+### Quick Start
 
 bash run_bench.sh
 
-## Experiment results
+### Experiment results
 
 Performance comparison
 
@@ -56,3 +64,34 @@ Performance comparison
 | APPNP | 2.25 | 2.61 | 3.37 | 6.78 | 2.77 |
 | GAT | 1.57 | 2.96 | 2.34 | 8.65 | 5.03 |
 | GCN | 1.31 | 1.97 | 2.05 | 1.94 | 1.46 |
+
+## Multi GPUs
+
+The parallel computing of Graphlearning is based on the MindSpore. Graphlearning adopts the data parallelism approach that distributes both data and computation across a collection of computation resources. It requires only a few lines of code modifications from training on a single device.
+
+### Model
+
+- GRAPHSAGE
+
+GraphSAGE is a general inductive framework that leverages node feature information (e.g., text attributes) to efficiently generate node embeddings for previously unseen data. Instead of training individual embeddings for each node, GraphSAGE learns a function that generates embeddings by sampling and aggregating features from a node's local neighborhood.
+
+More detail about GraphSAGE can be found in:
+
+Hamilton W L, Ying R, Leskovec J. Inductive representation learning on large graphs (Neural Information Processing Systems, 2017)
+
+### Datasets
+
+The experiment is based on reddit_with_mask.npz.
+
+### Quick Start
+
+bash distributed_run.sh
+
+### Experiment results
+
+Performance comparison
+
+|      Dataset      | reddit |
+|:-----------------:|:------:|
+|    single GPU     |   56   |
+| Multiple GPUs (4) |   13   |
