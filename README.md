@@ -33,9 +33,22 @@ applications. For more details, please refer to <https://gitee.com/mindspore/gra
 
 - Ensure that the hardware platform is GPU under the Linux system.
 - Refer to [MindSpore Installation Guide](https://www.mindspore.cn/install/en) to complete the installation of
-  MindSpore, which requires at least version 1.6.0.
+  MindSpore, which requires at least version 1.6.1.
 - For other dependencies, please refer
   to [requirements.txt](https://gitee.com/mindspore/graphlearning/blob/master/requirements.txt).
+
+### Version dependency
+
+Due the dependency between MindSpore Graph Learning and MindSpore, please follow the table below and install the corresponding MindSpore verision from [MindSpore download page](https://www.mindspore.cn/versions/en).
+
+```shell
+ pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/{MindSpore-Version}/MindSpore/gpu/x86_64/cuda-10.1/mindspore_gpu-{MindSpore-Version}-cp37-cp37m-linux_x86_64.whl
+```
+
+| MindSpore Graph Learning Version |                             Branch                             | MindSpore version |
+|:--------------------------------:|:--------------------------------------------------------------:|:---------------:|
+|              master              | [master](https://gitee.com/mindspore/graphlearning/tree/master/) |      >=1.7.1    |
+|              0.1.0               |  [r0.1](https://gitee.com/mindspore/graphlearning/tree/r0.1/)  |      >=1.6.1    |
 
 ### Installation Methods
 
@@ -44,7 +57,7 @@ You can install MindSpore Graph Learning either by pip or by source code.
 #### Installation by pip
 
 ```bash
-pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/{version}/GraphLearning/any/mindspore_gl_gpu-{version}-cp37-cp37m-linux_x86_64.whl --trusted-host ms-release.obs.cn-north-4.myhuaweicloud.com -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/1.6.1/GraphLearning/any/mindspore_gl_gpu-{version}-cp37-cp37m-linux_x86_64.whl --trusted-host ms-release.obs.cn-north-4.myhuaweicloud.com -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 > - When the network is connected, dependency items are automatically downloaded during .whl package installation. For details about other dependency items, see [requirements.txt](https://gitee.com/mindspore/graphlearning/blob/master/requirements.txt). In other cases, you need to manually install dependency items.
