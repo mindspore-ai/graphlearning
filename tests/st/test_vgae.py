@@ -31,8 +31,8 @@ def test_vgae():
     """
     if not os.path.exists('./ci_temp'):
         os.mkdir('ci_temp')
-    if os.path.exists('ci_temp/gae'):
-        shutil.rmtree('ci_temp/gae')
+    if os.path.exists('ci_temp/vgae'):
+        shutil.rmtree('ci_temp/vgae')
 
     cmd_copy = "cp -r ../../model_zoo/vgae/ ./ci_temp/"
     os.system(cmd_copy)

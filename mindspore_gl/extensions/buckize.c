@@ -28,7 +28,7 @@ int64_t lower_bound(int64_t *A, int64_t L, int64_t R, int64_t val) {
             l = m + 1;
         }
     }
-    return val <= A[l] ? l: l + 1;
+    return val < A[l] ? l: l + 1;
 }
 
 // convert python type list to C type list

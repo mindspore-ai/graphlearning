@@ -66,7 +66,7 @@ class BlogCatalog:
 
     @property
     def node_count(self):
-        return len(self._csr_row)
+        return len(self._csr_row)-1
 
     @property
     def edge_count(self):
