@@ -10,7 +10,7 @@ A: MindSpore Graph Learning parses vertex-centeric programming code through sour
 
 <font size=3>**Q: What should I do if the error message `AttributeError: None of backend from {mindspore} is identified. Backend must be imported as a global variable.` is displayed during the execution of GNNCell?**</font>
 
-A: MindSpore Graph Learning parses vertex-centeric programming code through source-to-source translation. In the GNNCell definition file, the network execution backend is obtained based on global variables. You need to import MindSpore in the header of the GNNCell definition file. Otherwise, an error is reported, indicating that the backend cannot be found.
+A: MindSpore Graph Learning parses vertex-centeric programming code through source-to-source translation. In the GNNCell definition file, the network execution backend is obtained based on global variables. You need to import MindSpore in the header of the GNNCell definition file. Otherwise, an error is reported, indicating that the backend cannot be found. Or the 'construct' member method of the base class is not overridden in the custom network. The 'construct' member method needs to be overridden.
 
 <br/>
 

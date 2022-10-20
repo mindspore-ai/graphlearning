@@ -12,7 +12,7 @@ Learning源到源翻译解析以点为中心的编程代码，中间调用了ins
 怎么办？**</font>
 
 <font size=3>**A:** MindSpore Graph Learning通过源到源翻译解析以点为中心的编程代码，在GNNCell定义的文件根据全局变量获取网络执行后端，需要在GNNCell定义文件头部import
-mindspore，否则会报错找不到后端。
+mindspore，否则会报错找不到后端。或者是在自定义网络中没有重写基类的`construct`成员方法，需要重写`construct`成员方法。
 
 <font size=3>**Q: 调用图聚合接口'sum、avg、max、min'
 等时`TypeInferenceError: Line 6: Built-in agg func "avg" only takes expr of EDGE or SRC type. Got None.`怎么办？**</font>

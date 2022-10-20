@@ -41,7 +41,7 @@ class EGConv(GNNCell):
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
         aggregators (List[str]): aggregators to be used, default is ['symnorm']. Supported aggregators are
-        `sum`, `mean`, `max`, `min`, `std`, `var`, `symnorm`.
+            `sum`, `mean`, `max`, `min`, `std`, `var`, `symnorm`.
         num_heads (int, optional): Number of heads :math:`H`. Default: 8. Must have `out_feat_size % num_heads == 0`.
         num_bases (int, optional): Number of basis weight :math:`B`. Default: 4.
         bias (bool, optional): Whether the layer will learn an additive bias. (default: `True`)
