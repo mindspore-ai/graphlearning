@@ -16,6 +16,7 @@
 from sklearn.metrics import roc_auc_score, average_precision_score
 import numpy as np
 
+
 def get_auc_score(adj_rec, edges_pos, edges_neg):
     """
     Output the link prediction matrix and positive and negative samples and process them,
@@ -30,6 +31,7 @@ def get_auc_score(adj_rec, edges_pos, edges_neg):
         auc_score(float):AUC score
         ap_score(float):AP score
     """
+
     def sigmoid(x):
         return 1 / (1 + np.exp(-x))
 
@@ -43,7 +45,6 @@ def get_auc_score(adj_rec, edges_pos, edges_neg):
     preds_neg = []
     for e in edges_neg:
         preds_neg.append(sigmoid(adj_rec[int(e[0]), int(e[1])]))
-
 
     preds_all = np.hstack([preds, preds_neg])
     labels_all = np.hstack([np.ones(len(preds)), np.zeros(len(preds_neg))])

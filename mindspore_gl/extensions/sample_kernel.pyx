@@ -28,36 +28,33 @@ from cython.parallel import prange
 @cython.boundscheck(False)
 @cython.wraparound(False)
 def map_edges(np.ndarray[np.int32_t, ndim=2] edges, reindex):
-    """Mapping edges by given dictionary
+    """Mapping edges by given map dictionary
     """
-    cdef unordered_map[int, int] m = reindex
+    cdef unordered_map[int, int] map_dict = reindex
     cdef int i = 0
-    cdef int h = edges.shape[1]
-    cdef int j
-    cdef int [:, :] edges_view = edges
+    cdef int num_edges = edges.shape[1]
+    cdef int [:, :] edges_new = edges
     with nogil:
-        for i in prange(h, schedule="static"):
-            edges_view[0, i] = m[edges_view[0, i]]
-            edges_view[1, i] = m[edges_view[1, i]]
-    return edges
+        for i in prange(num_edges, schedule="static"):
+            edges_new[0, i] = map_dict[edges_new[0, i]]
+            edges_new[1, i] = map_dict[edges_new[1, i]]
+    return edges_new
 
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
 def map_nodes(nodes, reindex):
-    """Mapping nodes by given dictionary
+    """Mapping node id by given map dictionary
     """
     cdef np.ndarray[np.int32_t, ndim=1] t_nodes = np.array(nodes, dtype=np.int32)
-    cdef unordered_map[int, int] m = reindex
+    cdef unordered_map[int, int] map_dict = reindex
     cdef int i = 0
-    cdef int h = len(nodes)
-    cdef np.ndarray[np.int32_t, ndim=1] new_nodes = np.zeros([h], dtype=np.int32)
-    cdef int j
+    cdef int num_nodes = len(nodes)
+    cdef np.ndarray[np.int32_t, ndim=1] nodes_new = np.zeros([num_nodes], dtype=np.int32)
     with nogil:
-        for i in xrange(h):
-            j = t_nodes[i]
-            new_nodes[i] = m[j]
-    return new_nodes
+        for i in xrange(num_nodes):
+            nodes_new[i] = map_dict[t_nodes[i]]
+    return nodes_new
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
@@ -159,9 +156,10 @@ def random_walk_cpu_unbias(np.ndarray[np.int32_t, ndim=1] csr_row, np.ndarray[np
     for idx in xrange(seeds_length):
         node = seeds[idx]
         out[idx][0] = node
+        sample_node = node
         for cur_ptr in xrange(walk_length):
-            row_start = csr_row[node]
-            row_end = csr_row[node + 1]
+            row_start = csr_row[sample_node]
+            row_end = csr_row[sample_node + 1]
             sampled_node = csr_col[row_start + rand() % (row_end - row_start)]
             out[idx][cur_ptr + 1] = sampled_node
 
@@ -170,27 +168,27 @@ def random_walk_cpu_unbias(np.ndarray[np.int32_t, ndim=1] csr_row, np.ndarray[np
 @cython.boundscheck(False)
 @cython.wraparound(False)
 def skip_gram_gen_pair(vector[long long] walk, long win_size=5):
-    cdef vector[long long] src
-    cdef vector[long long] dst
-    cdef long long l = len(walk)
+    cdef vector[long long] s_ids
+    cdef vector[long long] d_ids
+    cdef long long steps = len(walk)
     cdef long long real_win_size, left, right, i
     cdef np.ndarray[np.int64_t, ndim=1] rnd = np.random.randint(1,  win_size+1,
-                                    dtype=np.int64, size=l)
+                                    dtype=np.int64, size=steps)
     with nogil:
-        for i in xrange(l):
+        for i in xrange(steps):
             real_win_size = rnd[i]
             left = i - real_win_size
             if left < 0:
                 left = 0
             right = i + real_win_size
-            if right >= l:
-                right = l - 1
+            if right >= steps:
+                right = steps - 1
             for j in xrange(left, right+1):
                 if walk[i] == walk[j]:
                     continue
-                src.push_back(walk[i])
-                dst.push_back(walk[j])
-    return src, dst
+                s_ids.push_back(walk[i])
+                d_ids.push_back(walk[j])
+    return s_ids, d_ids
 
 def node2vec_random_walk(np.ndarray[np.int32_t, ndim=1] csr_row, np.ndarray[np.int32_t, ndim=1] csr_col,
                          int walk_length, np.ndarray[np.int32_t, ndim=1] seeds, float p, float q):

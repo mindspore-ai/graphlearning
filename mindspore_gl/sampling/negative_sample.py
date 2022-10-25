@@ -71,17 +71,17 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more
         return random.sample(range(population), k)
 
     if re == 'more':
-        positive = np.array([i for i in positive])
-        row = np.array([i[0] for i in positive])
-        col = np.array([i[1] for i in positive])
+        positive = np.array([i for i in positive], dtype=np.int32)
+        row = np.array([i[0] for i in positive], dtype=np.int32)
+        col = np.array([i[1] for i in positive], dtype=np.int32)
         size = positive.shape[0]
     else:
         positive = np.array(positive)
-        row = np.array(positive[0])
-        col = np.array(positive[1])
+        row = np.array(positive[0], dtype=np.int32)
+        col = np.array(positive[1], dtype=np.int32)
         size = positive.shape[1]
 
-    idx, population = edge_index_to_vector([row, col], (node, node), mode=mode)
+    idx, population = edge_index_to_vector(np.array([row, col], dtype=np.int32), (node, node), mode=mode)
 
     if num_neg_samples is None:
         num_neg_samples = size
@@ -133,9 +133,9 @@ def edge_index_to_vector(edge_index, size, mode='undirected'):
         >>> print(idx, population)
             [0 1 2] 3
     """
-    if not isinstance(edge_index, list):
+    if not isinstance(edge_index, np.ndarray):
         raise TypeError("The edge_index data type is {},\
-                        but it should be list.".format(type(edge_index)))
+                        but it should be ndarray.".format(type(edge_index)))
     if not isinstance(size, tuple):
         raise TypeError("The size data type is {},\
                         but it should be tuple.".format(type(size)))
@@ -153,7 +153,7 @@ def edge_index_to_vector(edge_index, size, mode='undirected'):
     elif mode == 'undirected':
         row, col = edge_index
         num_nodes = size[0]
-        mask = row <= col
+        mask = row < col
         row, col = row[mask], col[mask]
         offset = np.arange(1, num_nodes).cumsum(0)[row]
         idx = row*(num_nodes) + col - offset
@@ -222,7 +222,7 @@ def vector_to_edge_index(idx, size, mode='undirected'):
     elif mode == 'undirected':
         num_nodes = size[0]
         offset = np.arange(1, num_nodes).cumsum(0)
-        offset1 = np.arange(1, num_nodes)[::-1].cumsum(0)
+        offset1 = np.arange(1, num_nodes)*num_nodes-offset
         row = bucketize(offset1, idx)
         col = (offset[row] + idx) % num_nodes
         a, b = np.concatenate([row, col]), np.concatenate([col, row])
