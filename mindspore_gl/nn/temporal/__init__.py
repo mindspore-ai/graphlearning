@@ -13,10 +13,12 @@
 # limitations under the License.
 # ============================================================================
 """APIs for temporal graph convolutions."""
+from .stconv import STConv
 from .astgcn import (
     ASTGCN,
 )
 
 __all__ = [
     'ASTGCN',
+    'STConv'
 ]

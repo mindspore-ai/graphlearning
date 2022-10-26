@@ -16,7 +16,7 @@
 import mindspore as ms
 from mindspore_gl import Graph
 from mindspore_gl.nn.gnn_cell import GNNCell
-from mindspore_gl.nn.conv import STConv
+from mindspore_gl.nn.temporal import STConv
 
 class STGcnNet(GNNCell):
     """ STGCN Net """

@@ -12,6 +12,7 @@
 """SAGEConv Layer."""
 import math
 import mindspore as ms
+from mindspore import nn
 from mindspore.common.initializer import XavierUniform
 from mindspore._checkparam import Validator
 from mindspore_gl import Graph
@@ -57,13 +58,19 @@ class SAGEConv(GNNCell):
         where :math:'N' is the number of nodes and :math:`D\_out` could be of any shape.
 
     Raises:
-        KeyError: if aggregator type is not pool, lstm or mean.
-        TypeError: if activation type is not ms.nn.Cell
-        TypeError: if norm type is not ms.nn.Cell
+        TypeError: If `in_feat_size` or `out_feat_size` is not an int.
+        TypeError: If `bias` is not a bool.
+        KeyError: if `aggregator` type is not pool, lstm or mean.
+        TypeError: if `activation` type is not ms.nn.Cell
+        TypeError: if `norm` type is not ms.nn.Cell
+
+    Supported Platforms:
+         ``GPU`` ``Ascend``
 
     Examples:
        >>> import mindspore as ms
        >>> from mindspore import nn
+       >>> from mindspore.numpy import ones
        >>> from mindspore_gl.nn.conv import SAGEConv
        >>> from mindspore_gl import GraphField
        >>> n_nodes = 4
@@ -78,7 +85,7 @@ class SAGEConv(GNNCell):
        >>> edge_weight = ones((n_edges, 1), ms.float32)
        >>> res = sageconv(feat, edge_weight, *graph_field.get_graph())
        >>> print(res.shape)
-           (4,2)
+        (4,2)
     """
     def __init__(self,
                  in_feat_size: int,
@@ -126,14 +133,6 @@ class SAGEConv(GNNCell):
     def construct(self, node_feat, edge_weight, g: Graph):
         """
         Construct function for SAGEConv.
-
-        Args:
-            node_feat (Tensor): The input node features.
-            edge_weight (Tensor): Edge weights.
-            g (Graph): The input graph.
-
-        Returns:
-            Tensor, output node features.
         """
         g.set_vertex_attr({"h": node_feat})
         if self.agg_type == "mean" and self.in_feat_size > self.out_feat_size:
