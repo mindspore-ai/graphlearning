@@ -55,6 +55,9 @@ class APPNPConv(GNNCell):
         ValueError: If `alpha` is not in range [0.0, 1.0]
         ValueError: If `edge_drop` is not in range (0.0, 1.0]
 
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
     Examples:
         >>> import mindspore as ms
         >>> from mindspore_gl.nn.conv import APPNPConv

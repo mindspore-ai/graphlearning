@@ -14,6 +14,7 @@
 # ============================================================================
 """AGNNConv Layer."""
 import mindspore as ms
+from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 from .. import GNNCell
 
@@ -21,8 +22,7 @@ from .. import GNNCell
 class AGNNConv(GNNCell):
     r"""
     Attention Based Graph Neural Network.
-    From the paper `Attention-based Graph Neural Network for Semi-Supervised Learning
-    <https://arxiv.org/abs/1803.03735>`_.
+    From the paper `Attention-based Graph Neural Network for Semi-Supervised Learning <https://arxiv.org/abs/1803.03735>`_.
 
     .. math::
         H^{l+1} = P H^{l}
@@ -37,12 +37,46 @@ class AGNNConv(GNNCell):
     Args:
         init_beta (float): Init :math:`\beta`, a single scalar parameter.
         learn_beta (bool): Whether :math:`\beta` is learnable.
+
+    Inputs:
+        - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,
+          and math:`*` could be of any shape.
+        - **g** (Graph): The input graph.
+
+    Outputs:
+        Tensor, output node features, where the shape should be the same as input 'x'.
+
+    Rasise:
+        TypeError: If 'init_beta' is not a float.
+        TypeError: If 'learn_beta' is not a bool.
+
+    Supported Platforms:
+        ``Ascend```GPU``
+
+    Examples:
+        >>> import mindspore as ms
+        >>> from mindspore_gl.nn.conv import AGNNConv
+        >>> from mindspore_gl import GraphField
+        >>> n_nodes = 4
+        >>> n_edges = 8
+        >>> feat_size = 16
+        >>> src_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 2, 3], ms.int32)
+        >>> dst_idx = ms.Tensor([0, 1, 3, 1, 2, 3, 3, 2], ms.int32)
+        >>> ones = ms.ops.Ones()
+        >>> feat = ones((n_nodes, feat_size), ms.float32)
+        >>> graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+        >>> conv = AGNNConv()
+        >>> ret = conv(feat, *graph_field.get_graph())
+        >>> print(ret.shape)
+        (4, 16)
     """
 
     def __init__(self,
                  init_beta: float = 1.,
                  learn_beta: bool = True):
         super().__init__()
+        init_beta = Validator.check_is_float(init_beta, "init_beta", self.cls_name)
+        learn_beta = Validator.check_bool(learn_beta, 'learn_beta', self.cls_name)
         if learn_beta:
             self.beta = ms.Parameter(ms.Tensor([init_beta], ms.float32))
         else:
@@ -52,18 +86,10 @@ class AGNNConv(GNNCell):
     def construct(self, x, g: Graph):
         """
         Construct function for AGNNConv.
-
-        Args:
-            x (Tensor): The input node features.
-            g (Graph): The input graph.
-
-        Returns:
-            Tensor, output node features.
         """
         g.set_vertex_attr({"h": x, "norm_h": ms.ops.L2Normalize()(x)})
         for v in g.dst_vertex:
             cosine_dis = [ms.ops.Exp()(self.beta * g.dot(u.norm_h, v.norm_h)) for u in v.innbs]
-            # require axis=1 for the reduce_sum op, need explain to user
             a = cosine_dis / g.sum(cosine_dis)
             v.h = g.sum([u.h for u in v.innbs] * a)
         return [v.h for v in g.dst_vertex]
