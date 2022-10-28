@@ -31,7 +31,7 @@ from .sgconv import SGConv
 from .tagconv import TAGConv
 from .gcnconv2 import GCNConv2
 from .chebconv import ChebConv
-from .stconv import STConv, TemporalConv
+from .meanconv import MeanConv
 
 __all__ = [
     'AGNNConv',
@@ -52,6 +52,5 @@ __all__ = [
     'TAGConv',
     'GCNConv2',
     'ChebConv',
-    'STConv',
-    'TemporalConv'
+    'MeanConv'
 ]

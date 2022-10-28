@@ -15,6 +15,7 @@
 """Global Attention Pooling Layer"""
 # pylint: disable=unused-import
 import mindspore
+from mindspore import nn
 from mindspore_gl import BatchedGraph
 from .. import GNNCell
 
@@ -32,10 +33,53 @@ class GlobalAttentionPooling(GNNCell):
         gate_nn (Cell): The neural network for computing attention score for each feature.
         feat_nn (Cell): The neural network applied to each feature
             before combining each feature with an attention score.
+
+    Inputs:
+        - **x** (Tensor) - The input node features to be updated. The shape is :math:`(N, D)`
+          where :math:`N` is the number of nodes, and :math:`D` is the feature size of nodes.
+        - **g** (BatchedGraph) - The input graph.
+
+    Outputs:
+        - **x** (Tensor) - The output representation for graphs. The shape is :math: `2, D_{out}`
+          where :math:`D_{out}` is the feature size of nodes
+
+    Raises:
+        TypeError: if `gate_nn` type or `feat_nn` type is not ms.nn.Cell
+
+    Supported Platforms:
+         ``GPU`` ``Ascend``
+
+    Examples:
+        >>> import numpy as np
+        >>> import mindspore as ms
+        >>> from mindspore_gl.nn.glob import GlobalAttentionPooling
+        >>> from mindspore_gl import BatchedGraphField
+        >>> n_nodes = 7
+        >>> n_edges = 8
+        >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6], ms.int32)
+        >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4], ms.int32)
+        >>> ver_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1], ms.int32)
+        >>> edge_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 1], ms.int32)
+        >>> graph_mask = ms.Tensor([1, 1], ms.int32)
+        >>> batched_graph_field = BatchedGraphField(src_idx, dst_idx, n_nodes, n_edges, ver_subgraph_idx,
+        >>>                                         edge_subgraph_idx, graph_mask)
+        >>> node_feat = np.random.random((n_nodes, 4))
+        >>> node_feat = ms.Tensor(node_feat, ms.float32)
+        >>> gate_nn = ms.nn.Dense(4, 1)
+        >>> net = GlobalAttentionPooling(gate_nn)
+        >>> ret = net(node_feat, *batched_graph_field.get_batched_graph())
+        >>> print(ret.shape)
+        (2, 4)
     """
 
     def __init__(self, gate_nn, feat_nn=None):
         super().__init__()
+        if gate_nn:
+            if not isinstance(gate_nn, nn.Cell):
+                raise TypeError("gate_nn type should be ms.nn.Cell")
+        if feat_nn:
+            if not isinstance(feat_nn, nn.Cell):
+                raise TypeError("feat_nn type should be ms.nn.Cell")
         self.gate_nn = gate_nn
         self.feat_nn = feat_nn
 
@@ -43,13 +87,6 @@ class GlobalAttentionPooling(GNNCell):
     def construct(self, x, g: BatchedGraph):
         """
         Construct function for GlobalAttentionPooling.
-
-        Args:
-            x (Tensor): input node features.
-            g (BatchedGraph): input batched graph.
-
-        Returns:
-            Tensor, output representation for graphs.
         """
         gate = self.gate_nn(x)
         # assert ms.ops.Shape()(x)[-1] == 1, "The output of gate_nn should have 1 at its last axis."

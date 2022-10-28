@@ -65,7 +65,7 @@ class GCNConv(GNNCell):
         ValueError: If `dropout` is not in range (0.0, 1.0]
 
     Supported Platforms:
-         ``GPU``
+         ``GPU`` ``Ascend``
 
     Examples:
         >>> import mindspore as ms

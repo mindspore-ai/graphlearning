@@ -61,7 +61,7 @@ class SAGPooling(GNNCell):
         - **g** (BatchedGraph) - The input graph.
 
     Outputs:
-        - **x** (Tensor) - The updated node features. The shape is :math: `M, D_{out}`
+        - **x** (Tensor) - The updated node features. The shape is :math: `2, M, D_{out}`
           where :math:`M` equals to `perm_num` in `Inputs`
           and :math: `D_{out}` equals to `D` in `Inputs`.
         - **src_perm** (Tensor) - The updated src nodes.
@@ -74,26 +74,30 @@ class SAGPooling(GNNCell):
         TypeError: If `in_feat_size` or `out_size` is not an int.
 
     Supported Platforms:
-         ``GPU``
+         ``GPU`` ``Ascend``
 
     Examples:
+        >>> import numpy as np
         >>> import mindspore as ms
-        >>> from mindspore_gl.nn.conv import GCNConv2
         >>> from mindspore_gl.nn.glob import SAGPooling
         >>> from mindspore_gl import BatchedGraphField
-        >>> n_nodes = 4
-        >>> perm_nodes = 2
-        >>> n_edges = 7
-        >>> feat_size = 4
-        >>> src_idx = ms.Tensor([0, 1, 1, 2, 2, 3, 3], ms.int32)
-        >>> dst_idx = ms.Tensor([0, 0, 2, 1, 3, 0, 1], ms.int32)
-        >>> ones = ms.ops.Ones()
-        >>> feat = ones((n_nodes, feat_size), ms.float32)
-        >>> graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
-        >>> sagpooling = SAGPooling(in_feat_size=4, GNN = GCNConv2)
-        >>> res = sagpooling(feat, None, n_nodes, perm_nodes,  *graph_field.get_graph())
-        >>> print(res.shape)
-        (2, 4)
+        >>> node_feat = ms.Tensor([[1, 2, 3, 4], [2, 4, 1, 3], [1, 3, 2, 4],
+        >>>                        [9, 7, 5, 8], [8, 7, 6, 5], [8, 6, 4, 6], [1, 2, 1, 1]],
+        >>>                       ms.float32)
+        >>> n_nodes = 7
+        >>> n_edges = 8
+        >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6], ms.int32)
+        >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4], ms.int32)
+        >>> ver_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1], ms.int32)
+        >>> edge_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 1], ms.int32)
+        >>> graph_mask = ms.Tensor([0, 1], ms.int32)
+        >>> batched_graph_field = BatchedGraphField(src_idx, dst_idx, n_nodes, n_edges, ver_subgraph_idx,
+        >>>                                         edge_subgraph_idx, graph_mask)
+        >>> net = SAGPooling(4)
+        >>> feature, src, dst, ver_subgraph, edge_subgraph, perm, perm_score = net(node_feat, None, 2,
+        >>>                                                                    *batched_graph_field.get_batched_graph())
+        >>> print(feature.shape)
+        (2, 2, 4)
     """
 
     def __init__(self,
