@@ -82,8 +82,8 @@ class SAGPooling(GNNCell):
         >>> from mindspore_gl.nn.glob import SAGPooling
         >>> from mindspore_gl import BatchedGraphField
         >>> node_feat = ms.Tensor([[1, 2, 3, 4], [2, 4, 1, 3], [1, 3, 2, 4],
-        >>>                        [9, 7, 5, 8], [8, 7, 6, 5], [8, 6, 4, 6], [1, 2, 1, 1]],
-        >>>                       ms.float32)
+        ...                        [9, 7, 5, 8], [8, 7, 6, 5], [8, 6, 4, 6], [1, 2, 1, 1]],
+        ...                       ms.float32)
         >>> n_nodes = 7
         >>> n_edges = 8
         >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6], ms.int32)
@@ -92,10 +92,10 @@ class SAGPooling(GNNCell):
         >>> edge_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 1], ms.int32)
         >>> graph_mask = ms.Tensor([0, 1], ms.int32)
         >>> batched_graph_field = BatchedGraphField(src_idx, dst_idx, n_nodes, n_edges, ver_subgraph_idx,
-        >>>                                         edge_subgraph_idx, graph_mask)
+        ...                                         edge_subgraph_idx, graph_mask)
         >>> net = SAGPooling(4)
         >>> feature, src, dst, ver_subgraph, edge_subgraph, perm, perm_score = net(node_feat, None, 2,
-        >>>                                                                    *batched_graph_field.get_batched_graph())
+        ...                                                                    *batched_graph_field.get_batched_graph())
         >>> print(feature.shape)
         (2, 2, 4)
     """

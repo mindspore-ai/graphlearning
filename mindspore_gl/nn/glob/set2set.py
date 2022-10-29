@@ -69,7 +69,7 @@ class Set2Set(GNNCell):
         >>> edge_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 1], ms.int32)
         >>> graph_mask = ms.Tensor([1, 1], ms.int32)
         >>> batched_graph_field = BatchedGraphField(src_idx, dst_idx, n_nodes, n_edges, ver_subgraph_idx,
-        >>>                                         edge_subgraph_idx, graph_mask)
+        ...                                         edge_subgraph_idx, graph_mask)
         >>> node_feat = np.random.random((n_nodes, 4))
         >>> node_feat = ms.Tensor(node_feat, ms.float32)
         >>> net = Set2Set(4, 3, 2)
