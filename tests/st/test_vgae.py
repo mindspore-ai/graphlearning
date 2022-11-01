@@ -37,7 +37,7 @@ def test_vgae():
     cmd_copy = "cp -r ../../model_zoo/vgae/ ./ci_temp/"
     os.system(cmd_copy)
 
-    cmd_train = "python ./ci_temp/vgae/trainval.py " \
+    cmd_train = "python ./ci_temp/vgae/trainval.py --fuse=True " \
                 "--data_path=\"/home/workspace/mindspore_dataset/GNN_Dataset/\" >> ./ci_temp/vgae/trainval.log"
     os.system(cmd_train)
 

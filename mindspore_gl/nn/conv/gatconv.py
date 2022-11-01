@@ -59,6 +59,9 @@ class GATConv(GNNCell):
         TypeError: If `activation` is not a Cell.
         ValueError: If `input_drop_out_rate` or `attn_drop_out_rate` is not in range (0.0, 1.0]
 
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
     Examples:
         >>> import mindspore as ms
         >>> from mindspore_gl.nn.conv import GATConv

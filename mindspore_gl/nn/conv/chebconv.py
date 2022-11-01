@@ -64,6 +64,9 @@ class ChebConv(GNNCell):
             TypeError: If `in_channels` or `out_channels` or `k` is not an int.
             TypeError: If `bias` is not a bool.
 
+        Supported Platforms:
+            ``Ascend`` ``GPU``
+
         Examples:
             >>> import mindspore as ms
             >>> from mindspore_gl.nn.conv import ChebConv

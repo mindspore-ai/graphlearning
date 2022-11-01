@@ -14,6 +14,7 @@
 # ============================================================================
 """EDGEConv Layer"""
 import mindspore as ms
+from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 from .. import GNNCell
 
@@ -34,6 +35,41 @@ class EDGEConv(GNNCell):
         out_feat_size (int): Output node feature size.
         batch_norm (bool): Whether use batch norm.
         bias (bool): Whether use bias.
+
+    Inputs:
+        - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,
+          and math:`*` could be of any shape.
+        - **g** (Graph): The input graph.
+
+    Outputs:
+        Tensor, output node features. The shape is :math: `(N, out_feat_size)`.
+
+    Rasise:
+        TypeError: If 'in_feat_size' is not a positive int.
+        TypeError: If 'out_feat_size' is not a positive int.
+        TypeError: If 'batch_norm' is not a bool.
+        TypeError: If 'bias' is not a bool.
+
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
+    Examples:
+        >>> import mindspore as ms
+        >>> from mindspore_gl.nn.conv import EDGEConv
+        >>> from mindspore_gl import GraphField
+        >>> n_nodes = 4
+        >>> n_edges = 8
+        >>> feat_size = 16
+        >>> src_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 2, 3], ms.int32)
+        >>> dst_idx = ms.Tensor([0, 1, 3, 1, 2, 3, 3, 2], ms.int32)
+        >>> ones = ms.ops.Ones()
+        >>> nodes_feat = ones((n_nodes, feat_size), ms.float32)
+        >>> graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+        >>> out_size = 4
+        >>> conv = EDGEConv(feat_size, out_size, batch_norm=True)
+        >>> ret = conv(nodes_feat, *graph_field.get_graph())
+        >>> print(ret.shape)
+        (4, 4)
     """
 
     # pylint: disable=arguments-differ
@@ -43,6 +79,11 @@ class EDGEConv(GNNCell):
                  batch_norm: bool,
                  bias=True):
         super().__init__()
+        in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
+        out_feat_size = Validator.check_positive_int(out_feat_size, "out_feat_size", self.cls_name)
+        batch_norm = Validator.check_bool(batch_norm, 'batch_norm', self.cls_name)
+        bias = Validator.check_bool(bias, 'bias', self.cls_name)
+
         self.batch_norm = batch_norm
         self.theta = ms.nn.Dense(in_feat_size, out_feat_size, has_bias=bias)
         self.phi = ms.nn.Dense(in_feat_size, out_feat_size, has_bias=bias)
@@ -52,13 +93,6 @@ class EDGEConv(GNNCell):
     def construct(self, x, g: Graph):
         """
         Construct function for EDGEConv.
-
-        Args:
-            x (Tensor): The input node features.
-            g (Graph): The input graph.
-
-        Returns:
-            Tensor, output node features.
         """
         g.set_vertex_attr({"x": x, "phi": self.phi(x)})
         for v in g.dst_vertex:

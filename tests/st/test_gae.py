@@ -37,7 +37,7 @@ def tast_gae():
     cmd_copy = "cp -r ../../model_zoo/gae/ ./ci_temp/"
     os.system(cmd_copy)
 
-    cmd_train = "python ./ci_temp/gae/trainval.py " \
+    cmd_train = "python ./ci_temp/gae/trainval.py --fuse=True " \
                 "--data_path=\"/home/workspace/mindspore_dataset/GNN_Dataset/\" >> ./ci_temp/gae/trainval.log"
     os.system(cmd_train)
 
