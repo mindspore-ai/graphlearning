@@ -146,6 +146,4 @@ class GATConv(ms.nn.Cell):
             indptr, indices, feat_src * edge, (n_nodes, n_nodes, self.num_attn_head, self.out_size))
         v_h = ms.ops.csr_reduce_sum(csr_attn_feat, 1)
         v_h = v_h + self.bias
-        if self.activation:
-            v_h = self.activation(v_h)
         return ms.ops.Flatten()(v_h)
