@@ -20,6 +20,16 @@ from mindspore import nn
 from mindspore.numpy import ones
 from mindspore_gl import GraphField, BatchedGraphField
 from mindspore_gl.graph import norm
+from mindspore_gl.nn import AGNNConv
+from mindspore_gl.nn import APPNPConv
+from mindspore_gl.nn import CFConv
+from mindspore_gl.nn import ChebConv
+from mindspore_gl.nn import DOTGATConv
+from mindspore_gl.nn import EDGEConv
+from mindspore_gl.nn import EGConv
+from mindspore_gl.nn import GATConv
+from mindspore_gl.nn import GatedGraphConv
+from mindspore_gl.nn import GATv2Conv
 from mindspore_gl.nn.conv import GCNConv2
 from mindspore_gl.nn.temporal import STConv
 from mindspore_gl.nn.conv import TAGConv
@@ -59,7 +69,282 @@ batched_graph_field = BatchedGraphField(src_idx, dst_idx, n_nodes, n_edges,
 graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
 
 
-# test
+# test conv api
+@pytest.mark.lebel0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_agnnconv():
+    """
+    Features: AGNNConv.
+    Description: Test AGNNConv.
+    Expectation: The output is as expected.
+    """
+    net = AGNNConv(0.5)
+    expect_output = np.array([[1, 3, 2, 4], [0.99999994, 2.501635, 2.4983644, 3.9999998],
+                              [0, 0, 0, 0], [8, 7, 6, 5],
+                              [5.1674695, 4.381411, 2.7860584, 3.976764], [9, 7, 5, 8],
+                              [8, 6, 4, 6]])
+    output = net(node_feat, *graph_field.get_graph())
+    assert np.allclose(output.asnumpy(), expect_output)
+
+
+@pytest.mark.lebel0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_appnpconv():
+    """
+    Features: APPNPConv.
+    Description: Test APPNPConv.
+    Expectation: The output is as expected.
+    """
+    in_deg = ms.Tensor([1, 2, 0, 1, 2, 1, 1], ms.int32)
+    out_deg = ms.Tensor([1, 0, 2, 1, 1, 2, 1], ms.int32)
+    net = APPNPConv(k=3, alpha=0.5, edge_drop=1.0)
+
+    output = net(node_feat, in_deg, out_deg, *graph_field.get_graph())
+    expect_output = np.array([[0.75, 1.75, 2., 3.],
+                              [1.625, 3.625, 2., 4.],
+                              [0.5, 1.5, 1., 2.],
+                              [7.979315, 6.4123735, 4.6686554, 6.5329313],
+                              [9.34099, 7.9249363, 6.0088835, 6.726713],
+                              [6.65349, 5.1749363, 3.5713832, 5.164213],
+                              [3.795495, 3.5562181, 2.3169417, 3.0196066]])
+    assert np.allclose(output.asnumpy(), expect_output)
+
+
+@pytest.mark.lebel0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_cfconv():
+    """
+    Features: CFConv.
+    Description: Test CFConv.
+    Expectation: The output is as expected.
+    """
+    edge_embedding_weight_1 = ms.Tensor(np.ones((8, 4)), ms.float32)
+    edge_embedding_weight_2 = ms.Tensor(np.ones((8, 8)), ms.float32)
+    node_embedding_weight = ms.Tensor(np.ones((8, 4)), ms.float32)
+    out_embedding_weight = ms.Tensor(np.ones((4, 8)), ms.float32)
+
+    net = CFConv(4, 4, 8, 4)
+    net.edge_embedding_layer[0].weight.set_data(edge_embedding_weight_1)
+    net.edge_embedding_layer[2].weight.set_data(edge_embedding_weight_2)
+    net.node_embedding_layer.weight.set_data(node_embedding_weight)
+    net.out_embedding_layer[0].weight.set_data(out_embedding_weight)
+    output = net(node_feat, edge_feat, *graph_field.get_graph())
+    expect_output = np.array([[341.28683, 341.28683, 341.28683, 341.28683],
+                              [683.2668, 683.2668, 683.2668, 683.2668],
+                              [0, 0, 0, 0], [3147.352, 3147.352, 3147.352, 3147.352],
+                              [2792.3188, 2792.3188, 2792.3188, 2792.3188],
+                              [4033.8284, 4033.8284, 4033.8284, 4033.8284],
+                              [317.01743, 317.01743, 317.01743, 317.01743]])
+    assert np.allclose(output.asnumpy(), expect_output)
+
+
+@pytest.mark.lebel0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_chebconv():
+    """
+    Features: ChebConv.
+    Description: Test ChebConv.
+    Expectation: The output is as expected.
+    """
+    lins_weight_0 = ms.Tensor(np.ones((4, 4)), ms.float32)
+    lins_weight_1 = ms.Tensor(np.ones((4, 4)), ms.float32)
+    lins_weight_2 = ms.Tensor(np.ones((4, 4)), ms.float32)
+
+    net = ChebConv(in_channels=4, out_channels=4, k=3)
+    net.lins[0].weight.set_data(lins_weight_0)
+    net.lins[1].weight.set_data(lins_weight_1)
+    net.lins[2].weight.set_data(lins_weight_2)
+    output = net(node_feat, edge_feat, *graph_field.get_graph())
+    expect_output = np.array([[2.8000002, 2.8000002, 2.8000002, 2.8000002],
+                              [7.6000004, 7.6000004, 7.6000004, 7.6000004],
+                              [0., 0., 0., 0.],
+                              [39.940002, 39.940002, 39.940002, 39.940002],
+                              [46.5, 46.5, 46.5, 46.5],
+                              [47.88, 47.88, 47.88, 47.88],
+                              [8.36, 8.36, 8.36, 8.36]])
+    assert np.allclose(output.asnumpy(), expect_output)
+
+
+@pytest.mark.lebel0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_dotgatconv():
+    """
+    Features: DOTGATConv.
+    Description: Test DOTGATConv.
+    Expectation: The output is as expected.
+    """
+    dense_weight = ms.Tensor(np.ones((8, 4)), ms.float32)
+
+    net = DOTGATConv(4, 4, 2)
+    net.dense.weight.set_data(dense_weight)
+    output = net(node_feat, *graph_field.get_graph())
+    expect_output = np.array([[[10., 10., 10., 10.], [10., 10., 10., 10.]],
+                              [[10., 10., 10., 10.], [10., 10., 10., 10.]],
+                              [[0., 0., 0., 0.], [0., 0., 0., 0.]],
+                              [[26., 26., 26., 26.], [26., 26., 26., 26.]],
+                              [[20.724138, 20.724138, 20.724138, 20.724138],
+                               [20.724138, 20.724138, 20.724138, 20.724138]],
+                              [[29., 29., 29., 29.], [29., 29., 29., 29.]],
+                              [[24., 24., 24., 24.], [24., 24., 24., 24.]]])
+    assert np.allclose(output.asnumpy(), expect_output)
+
+
+@pytest.mark.lebel0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_edgeconv():
+    """
+    Features: EDGEConv.
+    Description: Test EDGEConv.
+    Expectation: The output is as expected.
+    """
+    theta_weight = ms.Tensor(np.ones((4, 4)), ms.float32)
+    phi_weight = ms.Tensor(np.ones((4, 4)), ms.float32)
+
+    net = EDGEConv(4, 4, batch_norm=True)
+    net.theta.weight.set_data(theta_weight)
+    net.phi.weight.set_data(phi_weight)
+    output = net(node_feat, *graph_field.get_graph())
+    expect_output = np.array([[9.99995, 9.99995, 9.99995, 9.99995],
+                              [9.99995, 9.99995, 9.99995, 9.99995],
+                              [0., 0., 0., 0.],
+                              [25.99987, 25.99987, 25.99987, 25.99987],
+                              [23.99988, 23.99988, 23.99988, 23.99988],
+                              [28.999855, 28.999855, 28.999855, 28.999855],
+                              [23.99988, 23.99988, 23.99988, 23.99988]])
+    assert np.allclose(output.asnumpy(), expect_output)
+
+
+@pytest.mark.lebel0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_egconv():
+    """
+    Features: EGConv.
+    Description: Test EGConv.
+    Expectation: The output is as expected.
+    """
+    basis_fc_weight = ms.Tensor(np.ones((6, 4)), ms.float32)
+    combine_fc_weight = ms.Tensor(np.ones((9, 4)), ms.float32)
+
+    net = EGConv(in_feat_size=4, out_feat_size=6, aggregators=['sum'], num_heads=3, num_bases=3)
+    net.basis_fc.weight.set_data(basis_fc_weight)
+    net.combine_fc.weight.set_data(combine_fc_weight)
+    output = net(node_feat, *graph_field.get_graph())
+    expect_output = np.array([[300., 300., 300., 300., 300., 300.],
+                              [600., 600., 600., 600., 600., 600.],
+                              [0., 0., 0., 0., 0., 0.],
+                              [2262., 2262., 2262., 2262., 2262., 2262.],
+                              [2262., 2262., 2262., 2262., 2262., 2262.],
+                              [2088., 2088., 2088., 2088., 2088., 2088.],
+                              [360., 360., 360., 360., 360., 360.]])
+    assert np.allclose(output.asnumpy(), expect_output)
+
+
+@pytest.mark.lebel0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_gatconv():
+    """
+    Features: GATConv.
+    Description: Test GATConv.
+    Expectation: The output is as expected.
+    """
+    attn_s_data = ms.Tensor(np.ones((3, 2)), ms.float32)
+    attn_d_data = ms.Tensor(np.ones((3, 2)), ms.float32)
+    fc_weight = ms.Tensor(np.ones((6, 4)), ms.float32)
+
+    net = GATConv(in_feat_size=4, out_size=2, num_attn_head=3, add_norm=True)
+    net.fc.weight.set_data(fc_weight)
+    net.attn_s.set_data(attn_s_data)
+    net.attn_d.set_data(attn_d_data)
+    output = net(node_feat, *graph_field.get_graph())
+    expect_output = np.array([[10., 10., 10., 10., 10., 10.],
+                              [10., 10., 10., 10., 10., 10.],
+                              [0., 0., 0., 0., 0., 0.],
+                              [26., 26., 26., 26., 26., 26.],
+                              [16.283588, 16.283588, 16.283588, 16.283588, 16.283588, 16.283588],
+                              [29., 29., 29., 29., 29., 29.],
+                              [24., 24., 24., 24., 24., 24.]])
+    assert np.allclose(output.asnumpy(), expect_output)
+
+
+@pytest.mark.lebel0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_gatedgraphconv():
+    """
+    Features: GatedGraphConv.
+    Description: Test GatedGraphConv.
+    Expectation: The output is as expected.
+    """
+    src_idx_list = [ms.Tensor([0, 2, 2], ms.int32), ms.Tensor([3, 4], ms.int32),
+                    ms.Tensor([5, 5, 6], ms.int32)]
+    dst_idx_list = [ms.Tensor([1, 0, 1], ms.int32), ms.Tensor([5, 3], ms.int32),
+                    ms.Tensor([4, 6, 4], ms.int32)]
+    n_edges_list = [3, 2, 3]
+
+    dense_weight_0 = ms.Tensor(np.ones((4, 4)), ms.float32)
+    dense_weight_1 = ms.Tensor(np.ones((4, 4)), ms.float32)
+    dense_weight_2 = ms.Tensor(np.ones((4, 4)), ms.float32)
+    gru_ih_weight = ms.Tensor(np.ones((12, 4)), ms.float32)
+    gru_hh_weight = ms.Tensor(np.ones((12, 4)), ms.float32)
+    gru_ih_bias = ms.Tensor(np.zeros((12,)), ms.float32)
+    gru_hh_bias = ms.Tensor(np.zeros((12,)), ms.float32)
+
+    net = GatedGraphConv(4, 4, 2, 3, True)
+    net.cell_list[0].dense.weight.set_data(dense_weight_0)
+    net.cell_list[1].dense.weight.set_data(dense_weight_1)
+    net.cell_list[2].dense.weight.set_data(dense_weight_2)
+    net.gru.weight_ih.set_data(gru_ih_weight)
+    net.gru.weight_hh.set_data(gru_hh_weight)
+    net.gru.bias_ih.set_data(gru_ih_bias)
+    net.gru.bias_hh.set_data(gru_hh_bias)
+
+    output = net(node_feat, src_idx_list, dst_idx_list, n_nodes, n_edges_list)
+    expect_output = np.array([[1., 2., 3., 4.],
+                              [2., 4., 1., 3.],
+                              [1., 2.9998183, 1.9999092, 3.9997275],
+                              [9., 7., 5., 8.],
+                              [8., 7., 6., 5.],
+                              [8., 6., 4., 6.],
+                              [1., 2., 1., 1.]])
+    assert np.allclose(output.asnumpy(), expect_output)
+
+
+@pytest.mark.lebel0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_gatv2conv():
+    """
+    Features: GATv2Conv.
+    Description: Test GATv2Conv.
+    Expectation: The output is as expected.
+    """
+    fc_s_weight = ms.Tensor(np.ones((6, 4)), ms.float32)
+    fc_d_weight = ms.Tensor(np.ones((6, 4)), ms.float32)
+    attn_data = ms.Tensor(np.ones((3, 2)), ms.float32)
+
+    net = GATv2Conv(in_feat_size=4, out_size=2, num_attn_head=3, add_norm=True)
+    net.fc_s.weight.set_data(fc_s_weight)
+    net.fc_d.weight.set_data(fc_d_weight)
+    net.attn.set_data(attn_data)
+    output = net(node_feat, *graph_field.get_graph())
+    expect_output = np.array([[10., 10., 10., 10., 10., 10.],
+                              [10., 10., 10., 10., 10., 10.],
+                              [0., 0., 0., 0., 0., 0.],
+                              [26., 26., 26., 26., 26., 26.],
+                              [16.283588, 16.283588, 16.283588, 16.283588, 16.283588, 16.283588],
+                              [29., 29., 29., 29., 29., 29.],
+                              [24., 24., 24., 24., 24., 24.]])
+    assert np.allclose(output.asnumpy(), expect_output)
+
+
 @pytest.mark.lebel0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
@@ -85,6 +370,7 @@ def test_gcnconv2():
     output = net(node_feat, *graph_field.get_graph())
     assert np.allclose(output.asnumpy(), expect_output)
 
+
 @pytest.mark.lebel0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
@@ -107,6 +393,7 @@ def test_tagconv():
     tagconv.dense.bias.set_data(bias_tag)
     output = tagconv(node_feat, in_degree, out_degree, *graph_field.get_graph())
     assert np.allclose(output.asnumpy(), expect_output)
+
 
 @pytest.mark.lebel0
 @pytest.mark.platform_x86_gpu_training
@@ -171,6 +458,7 @@ def test_nnconv():
     nnconv.edge_embed.bias.set_data(nn_bias)
     output = nnconv(nn_node_feat, edge_feat, *graph_field.get_graph())
     assert np.allclose(output.asnumpy(), expect_output)
+
 
 @pytest.mark.lebel0
 @pytest.mark.platform_x86_gpu_training
@@ -257,6 +545,7 @@ def test_stconv():
                         )
     assert np.allclose(output.asnumpy(), expected)
 
+
 @pytest.mark.lebel0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
@@ -285,6 +574,7 @@ def test_gmmconv():
     output = gmmconv(node_feat, pseudo, *graph_field.get_graph())
     assert np.allclose(output.asnumpy(), expect_output)
 
+
 def test_meanconv():
     """
     Features:   MEANConv
@@ -305,6 +595,7 @@ def test_meanconv():
     output = meanconv(node_feat, self_idx, *graph_field.get_graph())
     assert np.allclose(output.asnumpy(), expect_output)
 
+
 @pytest.mark.lebel0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
@@ -321,6 +612,7 @@ def test_ginconv():
     conv = GINConv(activation=None, init_eps=0., learn_eps=False, aggregation_type="sum")
     output = conv(node_feat, edges_weight, *graph_field.get_graph())
     assert np.allclose(output.asnumpy(), expect_output)
+
 
 @pytest.mark.lebel0
 @pytest.mark.platform_x86_gpu_training
@@ -341,4 +633,3 @@ def test_gcnconv():
     gcnconv.fc.weight.set_data(gcn_weight)
     output = gcnconv(node_feat, in_degree, out_degree, *graph_field.get_graph())
     assert np.allclose(output.asnumpy(), expect_output)
-    

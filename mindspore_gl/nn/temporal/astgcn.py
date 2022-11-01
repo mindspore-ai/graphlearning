@@ -351,7 +351,7 @@ class ASTGCN(GNNCell):
         >>> import numpy as np
         >>> import mindspore as ms
         >>> from mindspore_gl.graph import norm
-        >>> from mindspore_gl.nn.temporal import ASTGCN
+        >>> from mindspore_gl.nn import ASTGCN
         >>> from mindspore_gl import GraphField
         >>> node_count = 5
         >>> num_for_predict = 4

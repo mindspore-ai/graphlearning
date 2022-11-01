@@ -23,7 +23,7 @@ from mindspore import Tensor
 from mindspore.common import set_seed
 
 from mindspore_gl import GraphField
-from mindspore_gl.nn.temporal import ASTGCN
+from mindspore_gl.nn import ASTGCN
 from mindspore_gl.graph import norm
 
 @pytest.mark.level0
