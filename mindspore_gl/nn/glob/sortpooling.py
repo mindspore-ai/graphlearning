@@ -48,7 +48,7 @@ class SortPooling(GNNCell):
     Examples:
         >>> import numpy as np
         >>> import mindspore as ms
-        >>> from mindspore_gl.nn.glob import SortPooling
+        >>> from mindspore_gl.nn import SortPooling
         >>> from mindspore_gl import BatchedGraphField
         >>> n_nodes = 7
         >>> n_edges = 8

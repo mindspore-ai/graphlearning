@@ -19,7 +19,7 @@ from mindspore.common.initializer import initializer
 from mindspore.common.initializer import XavierUniform
 from mindspore.nn.cell import Cell
 from mindspore._checkparam import Validator
-from mindspore_gl.nn.gnn_cell import GNNCell
+from mindspore_gl.nn import GNNCell
 from mindspore_gl import BatchedGraph
 
 

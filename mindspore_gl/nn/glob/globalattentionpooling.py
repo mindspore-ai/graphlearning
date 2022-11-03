@@ -52,7 +52,7 @@ class GlobalAttentionPooling(GNNCell):
     Examples:
         >>> import numpy as np
         >>> import mindspore as ms
-        >>> from mindspore_gl.nn.glob import GlobalAttentionPooling
+        >>> from mindspore_gl.nn import GlobalAttentionPooling
         >>> from mindspore_gl import BatchedGraphField
         >>> n_nodes = 7
         >>> n_edges = 8

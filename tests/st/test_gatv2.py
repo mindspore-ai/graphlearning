@@ -19,7 +19,7 @@ import pytest
 import numpy as np
 import mindspore as ms
 from mindspore_gl import GraphField
-from mindspore_gl.nn.conv import GATv2Conv
+from mindspore_gl.nn import GATv2Conv
 
 feat_np = np.array([[0.6964692, 0.28613934, 0.22685145, 0.5513148],
                     [0.71946895, 0.42310646, 0.9807642, 0.6848297],

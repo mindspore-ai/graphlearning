@@ -14,7 +14,7 @@ import math
 import mindspore as ms
 from mindspore.nn import Cell
 from mindspore.common.initializer import XavierUniform
-from mindspore_gl.nn.conv.sageconv import SAGEConv
+from mindspore_gl.nn import SAGEConv
 
 class SAGENet(Cell):
     """graphsage net"""

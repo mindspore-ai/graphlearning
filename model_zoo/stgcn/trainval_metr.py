@@ -25,7 +25,7 @@ from mindspore.profiler import Profiler
 from mindspore_gl.dataset.metr_la import MetrLa
 from mindspore_gl.graph import norm
 from mindspore_gl import Graph, GraphField
-from mindspore_gl.nn.gnn_cell import GNNCell
+from mindspore_gl.nn import GNNCell
 
 from src import STGcnNet
 

@@ -22,7 +22,7 @@ import mindspore.nn as nn
 
 import mindspore.context as context
 
-from mindspore_gl.nn.conv import GATConv
+from mindspore_gl.nn import GATConv
 
 data_path = "/home/workspace/mindspore_dataset/GNN_Dataset/ACM3025.npz"
 

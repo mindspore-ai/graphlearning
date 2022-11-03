@@ -20,8 +20,8 @@ import mindspore.nn as nn
 import mindspore.ops as ops
 import mindspore.context as context
 
-from mindspore_gl.nn.conv import GINConv
-from mindspore_gl.nn.gnn_cell import GNNCell
+from mindspore_gl.nn import GINConv
+from mindspore_gl.nn import GNNCell
 from mindspore_gl.dataloader.dataset import Dataset
 from mindspore_gl.dataloader.dataloader import DataLoader
 from mindspore_gl.dataloader.samplers import RandomBatchSampler

@@ -24,7 +24,7 @@ import mindspore.context as context
 
 from mindspore_gl import Graph, GraphField
 from mindspore_gl.dataset import CoraV2
-from mindspore_gl.nn.gnn_cell import GNNCell
+from mindspore_gl.nn import GNNCell
 
 from src.gcn import GCNNet
 

@@ -18,7 +18,7 @@ import math
 import mindspore as ms
 import mindspore.ops as ops
 from mindspore_gl import BatchedGraph
-from mindspore_gl.nn.gnn_cell import GNNCell
+from mindspore_gl.nn import GNNCell
 
 from recommendation.lp_graphtrains.utils import pad_batch_ms
 from transformer_encoder import TransformerNodeEncoderMS

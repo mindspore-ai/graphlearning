@@ -16,8 +16,8 @@
 import mindspore as ms
 
 from mindspore_gl import Graph
-from mindspore_gl.nn.gnn_cell import GNNCell
-from mindspore_gl.nn.conv import GCNConv
+from mindspore_gl.nn import GNNCell
+from mindspore_gl.nn import GCNConv
 
 
 class GCNNet(GNNCell):

@@ -20,8 +20,8 @@ import mindspore.nn as nn
 from mindspore.common.initializer import XavierUniform
 
 from mindspore_gl import Graph
-from mindspore_gl.nn.gnn_cell import GNNCell
-from mindspore_gl.nn.conv import APPNPConv
+from mindspore_gl.nn import GNNCell
+from mindspore_gl.nn import APPNPConv
 
 
 class APPNPNet(GNNCell):
