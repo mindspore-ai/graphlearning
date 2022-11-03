@@ -14,13 +14,13 @@ OGB and other benchmarks.
 
 More detail about GAT can be found in:
 
-Brody S,  Alon U,  Yahav E. (2021). How Attentive are Graph Attention Networks? arXiv preprint arXiv:2105.14491.
+[Brody S,  Alon U,  Yahav E. (2021). How Attentive are Graph Attention Networks? arXiv preprint arXiv:2105.14491.](https://arxiv.org/pdf/2105.14491.pdf)
 
 This repository contains a implementation of GATv2 based on MindSpore and GraphLearning
 
 ## Datasets
 
-The experiment is based on Cora-ML, which was extracted in "Deep gaussian embedding of attributed graphs: Unsupervised inductive learning via ranking." ICLR 2018
+The experiment is based on [Cora-ML](https://github.com/kimiyoung/planetoid), which was extracted in "Deep gaussian embedding of attributed graphs: Unsupervised inductive learning via ranking." ICLR 2018
 
 ## Environment Requirements
 
