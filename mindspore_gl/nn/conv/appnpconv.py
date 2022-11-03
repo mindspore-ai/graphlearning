@@ -35,7 +35,7 @@ class APPNPConv(GNNCell):
     Args:
         k (int): Number of iters.
         alpha (float): Transmission probability.
-        edge_drop (float): The drop rate on the edge of messages received by each node. Default: 1.0.
+        edge_drop (float): The keep rate on the edge of messages received by each node. Default: 1.0.
 
     Inputs:
         - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,
@@ -60,7 +60,7 @@ class APPNPConv(GNNCell):
 
     Examples:
         >>> import mindspore as ms
-        >>> from mindspore_gl.nn.conv import APPNPConv
+        >>> from mindspore_gl.nn import APPNPConv
         >>> from mindspore_gl import GraphField
         >>> n_nodes = 4
         >>> n_edges = 7

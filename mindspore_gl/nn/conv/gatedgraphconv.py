@@ -95,7 +95,7 @@ class GatedGraphConv(ms.nn.Cell):
 
     Examples:
         >>>import mindspore as ms
-        >>>from mindspore_gl.nn.conv import GatedGraphConv
+        >>>from mindspore_gl.nn import GatedGraphConv
         >>>from mindspore_gl import GraphField
         >>>feat_size = 16
         >>>n_nodes = 4

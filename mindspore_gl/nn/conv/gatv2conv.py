@@ -40,8 +40,8 @@ class GATv2Conv(GNNCell):
         in_feat_size (int): Input node feature size.
         out_size (int): Output node feature size.
         num_attn_head (int): Number of attention head used in GATv2.
-        input_drop_out_rate (float): Input drop out rate. Default: 1.0.
-        attn_drop_out_rate (float): Attention drop out rate. Default: 1.0.
+        input_drop_out_rate (float): Keep rate of input drop out. Default: 1.0.
+        attn_drop_out_rate (float): Keep rate of attention drop out. Default: 1.0.
         leaky_relu_slope (float): Slope for leaky relu. Default: 0.2.
         activation (Cell): Activation function, default is None.
         add_norm: Whether the edge information needs normalization or not. Default: False.
@@ -65,7 +65,7 @@ class GATv2Conv(GNNCell):
 
     Examples:
         >>> import mindspore as ms
-        >>> from mindspore_gl.nn.conv import GATv2Conv
+        >>> from mindspore_gl.nn import GATv2Conv
         >>> from mindspore_gl import GraphField
         >>> n_nodes = 4
         >>> n_edges = 7

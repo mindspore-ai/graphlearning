@@ -69,7 +69,7 @@ class ChebConv(GNNCell):
 
         Examples:
             >>> import mindspore as ms
-            >>> from mindspore_gl.nn.conv import ChebConv
+            >>> from mindspore_gl.nn import ChebConv
             >>> from mindspore_gl import GraphField
             >>> from mindspore_gl.utils import norm
             >>> n_nodes = 2
