@@ -12,13 +12,13 @@ Graph Attention Networks(GAT) was proposed in 2017 by Petar Veličković et al. 
 
 More detail about GAT can be found in:
 
-Veličković, P., Cucurull, G., Casanova, A., Romero, A., Lio, P., & Bengio, Y. (2017). Graph attention networks. arXiv preprint arXiv:1710.10903.
+[Veličković, P., Cucurull, G., Casanova, A., Romero, A., Lio, P., & Bengio, Y. (2017). Graph attention networks. arXiv preprint arXiv:1710.10903.](https://arxiv.org/pdf/1710.10903.pdf)
 
 This repository contains a implementation of GAT based on MindSpore and GraphLearning
 
 ## Datasets
 
-The experiment is based on Cora-ML, which was extracted in "Deep gaussian embedding of attributed graphs: Unsupervised inductive learning via ranking." ICLR 2018
+The experiment is based on [Cora-ML](https://github.com/kimiyoung/planetoid), which was extracted in "Deep gaussian embedding of attributed graphs: Unsupervised inductive learning via ranking." ICLR 2018
 
 ## Environment Requirements
 

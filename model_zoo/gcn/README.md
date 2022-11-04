@@ -12,13 +12,13 @@ Graph Convolutional Networks (GCN) was proposed in 2016 and designed to do semi-
 
 More detail about GCN can be found in:
 
-Thomas N. Kipf, Max Welling. 2016. Semi-Supervised Classification with Graph Convolutional Networks. In ICLR 2016.
+[Thomas N. Kipf, Max Welling. 2016. Semi-Supervised Classification with Graph Convolutional Networks.](https://arxiv.org/pdf/1609.02907.pdf) In ICLR 2016.
 
 This repository contains a implementation of GCN based on MindSpore and GraphLearning
 
 ## Datasets
 
-The experiment is based on Cora-ML, which was extracted in "Deep gaussian embedding of attributed graphs: Unsupervised inductive learning via ranking." ICLR 2018
+The experiment is based on [Cora-ML](https://github.com/kimiyoung/planetoid), which was extracted in "Deep gaussian embedding of attributed graphs: Unsupervised inductive learning via ranking." ICLR 2018
 
 ## Environment Requirements
 

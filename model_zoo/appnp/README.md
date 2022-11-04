@@ -12,13 +12,13 @@ Personalized propagation of neural predictions (PPNP), and its fast approximatio
 
 More detail about APPNP can be found in:
 
-Klicpera J , Bojchevski A, S Günnemann. Predict then Propagate: Graph Neural Networks meet Personalized PageRank
+[Klicpera J , Bojchevski A, S Günnemann. Predict then Propagate: Graph Neural Networks meet Personalized PageRank](https://arxiv.org/pdf/1810.05997.pdf)
 
 This repository contains a implementation of APPNP based on MindSpore and GraphLearning
 
 ## Datasets
 
-The experiment is based on Cora-ML, which was extracted in "Deep gaussian embedding of attributed graphs: Unsupervised inductive learning via ranking." ICLR 2018
+The experiment is based on [Cora-ML](https://github.com/kimiyoung/planetoid), which was extracted in "Deep gaussian embedding of attributed graphs: Unsupervised inductive learning via ranking." ICLR 2018
 
 ## Environment Requirements
 

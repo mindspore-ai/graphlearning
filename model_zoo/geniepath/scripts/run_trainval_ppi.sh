@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright 2022 Huawei Technologies Co., Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,13 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
-"""Reading and building interface for graph datasets."""
-from .cora import CoraV2
-from .metr_la import MetrLa
-from .ppi import PPI
 
-__all__ = [
-    "CoraV2",
-    "MetrLa",
-    "PPI"
-]
+# data file path: /your/path/ppi_with_mask.npz  data_path = /your/path/
+
+python trainval_ppi.py --epoch=1000 --hidden_dim=256 --num_layers=3 \
+                       --lr=0.0004 --num_attn_head=1 --data_path="/your/path/"
