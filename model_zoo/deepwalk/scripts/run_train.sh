@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright 2022 Huawei Technologies Co., Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,13 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
-"""Sampling APIs for graph data."""
-from .k_hop_sampling import k_hop_subgraph
-from .negative_sample import negative_sample
-from .randomwalks import random_walk_unbias_on_homo
 
-__all__ = [
-    "k_hop_subgraph",
-    "negative_sample",
-    "random_walk_unbias_on_homo"
-]
+# data file path: /your/path/blog_catalog.npz  data_path = /your/path/
+
+python train_blog_catalog.py --epoch=80 --walk_len=40 --neg_num=20 --lr=0.025 --win_size=10 --data_path="/your/path/"

@@ -25,13 +25,16 @@ class RandomBatchSampler(ds.Sampler):
         data_source(Union[List, Tuple, Iterable]): data source sample from
         batch_size(int): number of sampling subgraphs per batch
 
+    Raises:
+        TypeError: If `batch_size` is not a positive integer.
+
     Examples:
         >>> from mindspore_gl.dataloader.samplers import RandomBatchSampler
         >>> ds = list(range(10))
         >>> sampler = RandomBatchSampler(ds, 3)
         >>> print(list(sampler))
         # results will be random for suffle
-            [[5, 9, 3], [4, 6, 7], [2, 8, 1]]
+        [[5, 9, 3], [4, 6, 7], [2, 8, 1]]
 
     """
     def __init__(self, data_source, batch_size):
@@ -76,6 +79,12 @@ class DistributeRandomBatchSampler(ds.Sampler):
         data_source(Union[List, Tuple, Iterable]): data source sample from
         batch_size(int): number of sampling subgraphs per batch
 
+    Raises:
+        TypeError: If `batch_size` is not a positive integer.
+        TypeError: If `rank` is negative or not an integer or `rank` value greater than `work_size`.
+        TypeError: If `work_size` is not a positive integer.
+
+
     Examples:
         >>> from mindspore_gl.dataloader.samplers import DistributeRandomBatchSampler
         >>> ds = list(range(20))
@@ -84,7 +93,7 @@ class DistributeRandomBatchSampler(ds.Sampler):
         >>> sampler = DistributeRandomBatchSampler(rank_id, world_size, ds, 3)
         >>> print(list(sampler))
         # results will be random for suffle
-            [[10, 18, 6], [8, 12, 14], [4, 16, 2]]
+        [[10, 18, 6], [8, 12, 14], [4, 16, 2]]
 
     """
     def __init__(self, rank, world_size, data_source, batch_size):

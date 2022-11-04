@@ -145,7 +145,7 @@ def choose_index(np.ndarray[ndim=1, dtype=np.int32_t] rnd, int neighbor_count, i
 @cython.wraparound(False)
 @cython.boundscheck(False)
 def random_walk_cpu_unbias(np.ndarray[np.int32_t, ndim=1] csr_row, np.ndarray[np.int32_t, ndim=1] csr_col,
-                           int walk_length, np.ndarray[np.int32_t, ndim=1] seeds, int default_value = -1):
+                           int walk_length, np.ndarray[np.int32_t, ndim=1] seeds):
     cdef int seeds_length = seeds.shape[0]
     cdef np.ndarray[np.int32_t, ndim=2] out = np.full([seeds_length, walk_length + 1], -1, dtype=np.int32)
     cdef int idx
@@ -162,7 +162,6 @@ def random_walk_cpu_unbias(np.ndarray[np.int32_t, ndim=1] csr_row, np.ndarray[np
             row_end = csr_row[sample_node + 1]
             sampled_node = csr_col[row_start + rand() % (row_end - row_start)]
             out[idx][cur_ptr + 1] = sampled_node
-
     return out
     
 @cython.boundscheck(False)
