@@ -19,7 +19,7 @@ import mindspore.numpy as np
 import pytest
 import numpy
 
-from mindspore_gl.nn.glob import SumPooling, MaxPooling, AvgPooling, SortPooling, \
+from mindspore_gl.nn import SumPooling, MaxPooling, AvgPooling, SortPooling, \
     GlobalAttentionPooling, WeightAndSum, Set2Set, SAGPooling
 from mindspore_gl import BatchedGraphField
 

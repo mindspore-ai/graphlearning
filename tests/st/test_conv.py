@@ -17,6 +17,7 @@ import pytest
 import numpy as np
 import mindspore as ms
 from mindspore import nn
+import mindspore.context as context
 from mindspore.numpy import ones
 from mindspore_gl import GraphField, BatchedGraphField
 from mindspore_gl.graph import norm
@@ -30,15 +31,16 @@ from mindspore_gl.nn import EGConv
 from mindspore_gl.nn import GATConv
 from mindspore_gl.nn import GatedGraphConv
 from mindspore_gl.nn import GATv2Conv
-from mindspore_gl.nn.conv import GCNConv2
-from mindspore_gl.nn.temporal import STConv
-from mindspore_gl.nn.conv import TAGConv
-from mindspore_gl.nn.conv import SAGEConv
-from mindspore_gl.nn.conv import NNConv
-from mindspore_gl.nn.conv import GMMConv
-from mindspore_gl.nn.conv import MeanConv
-from mindspore_gl.nn.conv import GINConv
-from mindspore_gl.nn.conv import GCNConv
+from mindspore_gl.nn import GCNConv2
+from mindspore_gl.nn import STConv
+from mindspore_gl.nn import TAGConv
+from mindspore_gl.nn import SAGEConv
+from mindspore_gl.nn import NNConv
+from mindspore_gl.nn import GMMConv
+from mindspore_gl.nn import MeanConv
+from mindspore_gl.nn import GINConv
+from mindspore_gl.nn import GCNConv
+from mindspore_gl.nn import SGConv
 
 node_feat = ms.Tensor([
     [1, 2, 3, 4],
@@ -632,4 +634,23 @@ def test_gcnconv():
     gcnconv = GCNConv(in_feat_size=4, out_size=2, activation=None, dropout=1.0)
     gcnconv.fc.weight.set_data(gcn_weight)
     output = gcnconv(node_feat, in_degree, out_degree, *graph_field.get_graph())
+    assert np.allclose(output.asnumpy(), expect_output)
+
+def test_sgconv():
+    """
+    Features:    SGConv
+    Description: Test GCNConv.
+    Expectation: The output is as expected.
+    """
+    context.set_context(device_target="GPU", mode=context.PYNATIVE_MODE)
+    expect_output = np.array([[0.78969425, -0.7038187], [1.1158828, -0.8802371],
+                              [0., 0.], [-2.8770034, 5.501037],
+                              [-1.6443993, 2.48498], [-3.8468409, 4.322275],
+                              [-2.596011, 3.065707]])
+    sg_weight = ms.Tensor([[-0.9653046, 0.502546, 0.17415217, 0.05653964],
+                           [0.8662434, -0.10252704, 0.35179812, -0.5644021]],
+                          ms.float32)
+    sgconv = SGConv(in_feat_size=4, out_feat_size=2)
+    sgconv.dense.weight.set_data(sg_weight)
+    output = sgconv(node_feat, in_degree, out_degree, *graph_field.get_graph())
     assert np.allclose(output.asnumpy(), expect_output)

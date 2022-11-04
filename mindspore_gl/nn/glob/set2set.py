@@ -59,7 +59,7 @@ class Set2Set(GNNCell):
     Examples:
         >>> import numpy as np
         >>> import mindspore as ms
-        >>> from mindspore_gl.nn.glob import Set2Set
+        >>> from mindspore_gl.nn import Set2Set
         >>> from mindspore_gl import BatchedGraphField
         >>> n_nodes = 7
         >>> n_edges = 8

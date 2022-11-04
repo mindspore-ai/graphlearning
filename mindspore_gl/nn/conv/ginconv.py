@@ -63,7 +63,7 @@ class GINConv(GNNCell):
 
     Examples:
         >>> import mindspore as ms
-        >>> from mindspore_gl.nn.conv import GINConv
+        >>> from mindspore_gl.nn import GINConv
         >>> from mindspore_gl import GraphField
         >>> n_nodes = 4
         >>> n_edges = 8

@@ -41,7 +41,7 @@ class AvgPooling(GNNCell):
     Examples:
         >>> import numpy as np
         >>> import mindspore as ms
-        >>> from mindspore_gl.nn.glob import AvgPooling
+        >>> from mindspore_gl.nn import AvgPooling
         >>> from mindspore_gl import BatchedGraphField
         >>> n_nodes = 7
         >>> n_edges = 8

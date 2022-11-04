@@ -17,7 +17,7 @@ import pytest
 import numpy as np
 import mindspore as ms
 from mindspore_gl import GraphField
-from mindspore_gl.nn.conv import EGConv
+from mindspore_gl.nn import EGConv
 
 feat_np = np.array([
     [0.6964692, 0.28613934, 0.22685145, 0.5513148],

@@ -26,9 +26,27 @@ from .conv import (
     GATConv,
     GatedGraphConv,
     GATv2Conv,
+    GCNConv2,
+    GINConv,
+    GMMConv,
+    MeanConv,
+    NNConv,
+    SAGEConv,
+    SGConv,
+    TAGConv
 )
 from .temporal import (
-    ASTGCN,
+    ASTGCN, STConv
+)
+from .glob import (
+    AvgPooling,
+    GlobalAttentionPooling,
+    MaxPooling,
+    SAGPooling,
+    Set2Set,
+    SortPooling,
+    SumPooling,
+    WeightAndSum
 )
 
 __all__ = [
@@ -45,4 +63,21 @@ __all__ = [
     'GATv2Conv',
     'GCNConv',
     'ASTGCN',
+    'STConv',
+    'GINConv',
+    'GMMConv',
+    'NNConv',
+    'SAGEConv',
+    'SGConv',
+    'TAGConv',
+    'GCNConv2',
+    'MeanConv',
+    'AvgPooling',
+    'GlobalAttentionPooling',
+    'MaxPooling',
+    'SAGPooling',
+    'Set2Set',
+    'SortPooling',
+    'SumPooling',
+    'WeightAndSum'
 ]

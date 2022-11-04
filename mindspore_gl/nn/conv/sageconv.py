@@ -71,7 +71,7 @@ class SAGEConv(GNNCell):
        >>> import mindspore as ms
        >>> from mindspore import nn
        >>> from mindspore.numpy import ones
-       >>> from mindspore_gl.nn.conv import SAGEConv
+       >>> from mindspore_gl.nn import SAGEConv
        >>> from mindspore_gl import GraphField
        >>> n_nodes = 4
        >>> n_edges = 7

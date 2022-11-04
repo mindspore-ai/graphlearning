@@ -17,7 +17,7 @@ import numpy as np
 import mindspore as ms
 import mindspore.context as context
 import pytest
-from mindspore_gl.nn.gnn_cell import GNNCell
+from mindspore_gl.nn import GNNCell
 
 from mindspore_gl import BatchedGraphField, BatchedGraph
 

@@ -15,8 +15,8 @@
 """STGCN net"""
 import mindspore as ms
 from mindspore_gl import Graph
-from mindspore_gl.nn.gnn_cell import GNNCell
-from mindspore_gl.nn.temporal import STConv
+from mindspore_gl.nn import GNNCell
+from mindspore_gl.nn import STConv
 
 class STGcnNet(GNNCell):
     """ STGCN Net """

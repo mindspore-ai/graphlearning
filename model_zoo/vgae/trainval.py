@@ -23,10 +23,10 @@ import mindspore.nn as nn
 from mindspore.profiler import Profiler
 import mindspore.ops as ops
 import mindspore.context as context
-from mindspore_gl.nn.conv import GCNConv
+from mindspore_gl.nn import GCNConv
 from mindspore_gl import Graph, GraphField
 from mindspore_gl.dataset import CoraV2
-from mindspore_gl.nn.gnn_cell import GNNCell
+from mindspore_gl.nn import GNNCell
 from mindspore_gl.sampling import negative_sample
 from mindspore_gl.dataloader import split_data
 

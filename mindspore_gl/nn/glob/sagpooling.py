@@ -79,7 +79,7 @@ class SAGPooling(GNNCell):
     Examples:
         >>> import numpy as np
         >>> import mindspore as ms
-        >>> from mindspore_gl.nn.glob import SAGPooling
+        >>> from mindspore_gl.nn import SAGPooling
         >>> from mindspore_gl import BatchedGraphField
         >>> node_feat = ms.Tensor([[1, 2, 3, 4], [2, 4, 1, 3], [1, 3, 2, 4],
         ...                        [9, 7, 5, 8], [8, 7, 6, 5], [8, 6, 4, 6], [1, 2, 1, 1]],
