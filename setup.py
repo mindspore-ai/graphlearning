@@ -117,7 +117,7 @@ extensions = [
 ]
 
 setuptools.setup(
-    name='mindspore-gl_gpu',
+    name='mindspore-gl',
     version='0.1',
     author='The MindSpore GraphLearning Authors',
     author_email='contact@mindspore.cn',

@@ -31,7 +31,7 @@ applications. For more details, please refer to <https://gitee.com/mindspore/gra
 
 ### System Environment Information Confirmation
 
-- Ensure that the hardware platform is GPU under the Linux system.
+- Ensure that the hardware platform is the Linux system, Windows and Mac are not supported.
 - Refer to [MindSpore Installation Guide](https://www.mindspore.cn/install/en) to complete the installation of
   MindSpore, which requires at least version 1.6.1.
 - For other dependencies, please refer
@@ -40,10 +40,6 @@ applications. For more details, please refer to <https://gitee.com/mindspore/gra
 ### Version dependency
 
 Due the dependency between MindSpore Graph Learning and MindSpore, please follow the table below and install the corresponding MindSpore verision from [MindSpore download page](https://www.mindspore.cn/versions/en).
-
-```shell
- pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/{MindSpore-Version}/MindSpore/gpu/x86_64/cuda-10.1/mindspore_gpu-{MindSpore-Version}-cp37-cp37m-linux_x86_64.whl
-```
 
 | MindSpore Graph Learning Version |                             Branch                             | MindSpore version |
 |:--------------------------------:|:--------------------------------------------------------------:|:---------------:|
@@ -76,7 +72,7 @@ pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/1.6.1/GraphLearn
     ```bash
     cd graphlearning
     bash build.sh
-    pip install ./output/mindspore_gl_gpu-*.whl
+    pip install ./output/mindspore_gl*.whl
     ```
 
 ### Installation Verification
