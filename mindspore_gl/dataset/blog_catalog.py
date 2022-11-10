@@ -13,8 +13,11 @@
 # limitations under the License.
 # ============================================================================
 """BlogCatalog Dataset"""
+import os
 import os.path as osp
 import numpy as np
+import pandas as pd
+from scipy.sparse import coo_matrix
 from scipy.sparse import csr_matrix
 from mindspore_gl.graph.graph import MindHomoGraph, CsrAdj
 
@@ -35,6 +38,29 @@ class BlogCatalog:
         >>> root = "path/to/blog_catalog"
         >>> dataset = BlogCatalog(root)
 
+    About BlogCatalog dataset:
+
+    This is the data set crawled from BlogCatalog ( http://www.blogcatalog.com ). BlogCatalog is a social blog
+    directory website. This contains the friendship network crawled and group memberships. For easier understanding,
+    all the contents are organized in CSV file format.
+
+    Statistics:
+
+    - Nodes: 10,312
+    - Edges: 333,983
+    - Number of Classes: 39
+
+    Dataset can be download here: <https://figshare.com/articles/dataset/BlogCatalog_dataset/11923611>
+    You can organize the dataset files into the following directory structure and read by `preprocess` API.
+
+    .. code-block::
+
+        .
+        └── ppi
+            ├── edges.csv
+            ├── group-edges.csv
+            ├── groups.csv
+            └── nodes.csv
     """
     def __init__(self, root):
         if not isinstance(root, str):
@@ -52,9 +78,41 @@ class BlogCatalog:
 
         self._npz_file = None
 
-        self.load()
+        if os.path.exists(self._path) and os.path.isfile(self._path):
+            self.load()
+        elif os.path.exists(self._root):
+            self.preprocess()
+            self.load()
+        else:
+            raise Exception('data file does not exist')
+
+    def preprocess(self):
+        """Process data"""
+        nodes = pd.read_csv(ops.join(self._root, 'nodes.csv'), header=None)
+        nodes = list(nodes.values[:, 0])
+        node_num = len(nodes)
+        groups = pd.read_csv(ops.join(self._root, 'groups.csv'), header=None)
+        groups = list(groups.values[:, 0])
+        edges = pd.read_csv(ops.join(self._root, 'edges.csv'), header=None)
+        group_edges = pd.read_csv(ops.join(self._root, 'group-edges.csv'), header=None)
+        group_edges = group_edges.drop_duplicates(subset=[0])
+        vocab = group_edges.values[:, 0] - 1
+        label = group_edges.values[:, 1]
+        edges = edges.values
+        dir_row = edges[:, 0] - 1
+        dir_col = edges[:, 1] - 1
+        row = np.hstack((dir_row, dir_col))
+        col = np.hstack((dir_col, dir_row))
+        data = [1] * len(row)
+        coo = coo_matrix((data, (row, col)), shape=(node_num, node_num))
+        crs = coo.tocsr()
+        indptr = crs.indptr
+        indces = crs.indices
+        np.savez(self._path, num_classes=len(groups), adj_csr_indptr=indptr,
+                 adj_csr_indices=indces, label=label, vocab=vocab)
 
     def load(self):
+        """Load the saved npz dataset from files."""
         self._npz_file = np.load(self._path)
         self._csr_row = self._npz_file['adj_csr_indptr'].astype(np.int32)
         self._csr_col = self._npz_file['adj_csr_indices'].astype(np.int32)
@@ -62,34 +120,104 @@ class BlogCatalog:
 
     @property
     def num_classes(self):
-        return 39
+        """
+        Number of label classes
+
+        Returns:
+            int, the number of classes
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> num_classes = dataset.num_classes
+        """
+        return int(self._npz_file["num_classes"])
 
     @property
     def node_count(self):
-        return len(self._csr_row)-1
+        """
+        Number of nodes
+
+        Returns:
+            int, length of csr row
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> node_count = dataset.node_count
+        """
+        return len(self._csr_row) - 1
 
     @property
     def edge_count(self):
+        """
+        Number of edges
+
+        Returns:
+            int, length of csr col
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> edge_count = dataset.edge_count
+        """
         return len(self._csr_col)
 
     @property
     def node_label(self):
+        """
+        Ground truth labels of each node
+
+        Returns:
+            numpy.ndarray, array of node label
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> node_label = dataset.node_label
+        """
         if self._node_label is None:
             self._node_label = self._npz_file["label"]
         return self._node_label.astype(np.int32)
 
     @property
     def vocab(self):
+        """
+        ID of each node
+
+        Returns:
+            numpy.ndarray, array of node id
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> node_label = dataset.vocab
+        """
         if self._vocab is None:
             self._vocab = self._npz_file["vocab"]
         return self._vocab.astype(np.int32)
 
     @property
     def adj_coo(self):
+        """
+        Return the adjacency matrix of COO representation
+
+        Returns:
+            numpy.ndarray, array of coo matrix.
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> node_label = dataset.adj_coo
+        """
         return csr_matrix((np.ones(self._csr_col.shape), self._csr_col, self._csr_row)).tocoo(copy=False)
 
     @property
     def adj_csr(self):
+        """
+        Return the adjacency matrix of CSR representation.
+
+        Returns:
+            numpy.ndarray, array of csr matrix.
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> node_label = dataset.adj_csr
+        """
         return csr_matrix((np.ones(self._csr_col.shape), self._csr_col, self._csr_row))
 
     def __getitem__(self, idx):
