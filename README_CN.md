@@ -25,17 +25,13 @@ MindSpore Graph Learning 还创新提出了以点为中心编程范式，提供�
 
 ### 确认系统环境信息
 
-- 硬件平台确认为Linux系统下的GPU。
+- 硬件平台确认为Linux系统，暂不支持Windows和Mac。
 - 参考[MindSpore安装指南](https://www.mindspore.cn/install)，完成MindSpore的安装，要求至少1.6.1版本。
 - 其余依赖请参见[requirements.txt](https://gitee.com/mindspore/graphlearning/blob/master/requirements.txt)。
 
 ### MindSpore版本依赖关系
 
 由于MindSpore Graph Learning与MindSpore有依赖关系，请按照根据下表中所指示的对应关系，在[MindSpore下载页面](https://www.mindspore.cn/versions)下载并安装对应的whl包。
-
-```shell
- pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/{MindSpore-Version}/MindSpore/gpu/x86_64/cuda-10.1/mindspore_gpu-{MindSpore-Version}-cp37-cp37m-linux_x86_64.whl
-```
 
 | MindSpore Graph Learning 版本 |                                分支                                | MindSpore 版本 |
 |:---------------------------:|:----------------------------------------------------------------:|:------------:|
@@ -68,7 +64,7 @@ pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/1.6.1/GraphLearn
     ```bash
     cd graphlearning
     bash build.sh
-    pip install ./output/mindspore_gl_gpu-*.whl
+    pip install ./output/mindspore_gl*.whl
     ```
 
 ### 验证是否成功安装

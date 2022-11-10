@@ -117,8 +117,9 @@ def main():
     adj_coo, (train, val, test) = split_data(ds, graph_type='undirected')
 
     # Construct negative examples
-    val_false = negative_sample([train, val, test], ds.node_count-1, len(val), mode=mode)
-    test_false = negative_sample([train, val, test], ds.node_count-1, len(test), mode=mode)
+    positive = [e for list in [train, val, test] for e in list]
+    val_false = negative_sample(positive, ds.node_count-1, len(val), mode=mode)
+    test_false = negative_sample(positive, ds.node_count-1, len(test), mode=mode)
 
     n_nodes = ds.node_feat.shape[0]
     n_edges = adj_coo.row.shape[0] - val.shape[0] - test.shape[0]
