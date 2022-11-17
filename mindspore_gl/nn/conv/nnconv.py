@@ -18,6 +18,7 @@ import math
 import mindspore as ms
 from mindspore.common.initializer import XavierUniform
 from mindspore import nn
+from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 from .. import GNNCell
 

@@ -250,6 +250,30 @@ class BatchMeta:
 class MindHomoGraph:
     """
     in-memory homo graph, edge_type == 1
+
+    Examples:
+        >>> import numpy as np
+        >>> import networkx
+        >>> from scipy.sparse import csr_matrix
+        >>> from mindspore_gl.graph.graph import MindHomoGraph, CsrAdj
+        >>> node_count = 20
+        >>> edge_prob = 0.1
+        >>> graph = networkx.generators.random_graphs.fast_gnp_random_graph(node_count, edge_prob)
+        >>> edge_array = np.transpose(np.array(list(graph.edges)))
+        >>> row = edge_array[0]
+        >>> col = edge_array[1]
+        >>> data = np.zeros(row.shape)
+        >>> csr_mat = csr_matrix((data, (row, col)), shape=(node_count, node_count))
+        >>> generated_graph = MindHomoGraph()
+        >>> node_dict = {idx: idx for idx in range(node_count)}
+        >>> edge_count = col.shape[0]
+        >>> edge_ids = np.array(list(range(edge_count))).astype(np.int32)
+        >>> generated_graph.set_topo(CsrAdj(csr_mat.indptr.astype(np.int32), csr_mat.indices.astype(np.int32)),
+        ... node_dict, edge_ids)
+        >>> print(generated_graph.neighbors(0))
+        # results will be random for suffle
+        [10 14]
+
     """
     def __init__(self):
 
@@ -260,36 +284,28 @@ class MindHomoGraph:
         self._adj_csr: CsrAdj = None
         self._adj_coo = None
 
-        ################
-        #
-        ################
         self._node_count = 0
         self._edge_count = 0
 
-        ###################
-        # Batch Meta Info
-        ###################
+        "Batch Meta Info"
         self._batch_meta = None
 
-    ############################################
-    # initialize Graph
-    ###########################################
     def set_topo(self, adj_csr: np.ndarray, node_dict, edge_ids: np.ndarray):
+        """initialize CSR Graph"""
         self._adj_csr = adj_csr
         self._node_dict = node_dict
         self._edge_ids = edge_ids
         self._node_ids = np.array(list(node_dict.keys()))
 
     def set_topo_coo(self, adj_coo, node_dict=None, edge_ids: np.ndarray = None):
+        """initialize COO Graph"""
         self._adj_coo = adj_coo
         self._node_dict = node_dict
         self._node_ids = None if node_dict is None else np.array(list(node_dict.keys()))
         self._edge_ids = edge_ids
 
-    ##########################################
-    # Query With Lazy Computation
-    ##########################################
     def neighbors(self, node):
+        """Query With Lazy Computation"""
         self._check_csr()
         mapped_idx = self._node_dict.get(node, None)
         assert mapped_idx is not None
@@ -309,11 +325,31 @@ class MindHomoGraph:
 
     @property
     def adj_csr(self):
+        """
+        csr adj matrix
+
+        Returns:
+            mindspore_gl.graph.graph.csr_adj, csr graph
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> adj_csr = graph.adj_csr
+        """
         self._check_csr()
         return self._adj_csr
 
     @property
     def adj_coo(self):
+        """
+        coo adj matrix
+
+        Returns:
+            numpy.ndarray, coo graph
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> adj_coo = graph.adj_coo
+        """
         self._check_coo()
         return self._adj_coo
 
@@ -325,7 +361,15 @@ class MindHomoGraph:
 
     @property
     def edge_count(self):
-        """Edge count of graph"""
+        """Edge count of graph
+
+        Returns:
+            int, edge numbers
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> edge_count = graph.edge_count
+        """
         if self._edge_count > 0:
             return self._edge_count
 
@@ -340,7 +384,15 @@ class MindHomoGraph:
 
     @property
     def node_count(self):
-        """Node count of graph"""
+        """Node count of graph
+
+        Returns:
+            int, nodes numbers
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> node_count = graph.node_count
+        """
         if self._node_count > 0:
             return self._node_count
         if self._adj_csr is not None:
@@ -355,10 +407,28 @@ class MindHomoGraph:
 
     @property
     def is_batched(self) -> bool:
+        """If the graph be batched
+
+        Returns:
+            bool, the graph be batched
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> is_batched = graph.is_batched
+        """
         return self.batch_meta is not None
 
     @property
     def batch_meta(self) -> BatchMeta:
+        """If the graph be batched
+
+        Returns:
+            mindspore_gl.graph.graph.BatchMeta, bathc meta info
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> batch_meta = graph.batch_meta
+        """
         return self._batch_meta
 
     @batch_meta.setter
@@ -385,10 +455,8 @@ class MindHomoGraph:
         res.edge_count = edge_count
         return res
 
-    ############################
-    # Inner Function
-    ############################
     def _check_csr(self):
+        """graph type check, is csr"""
         assert self._adj_csr is not None or self._adj_coo is not None
         if self._adj_csr is not None:
             return
@@ -396,6 +464,7 @@ class MindHomoGraph:
         return
 
     def _check_coo(self):
+        """graph type check, is coo"""
         assert self._adj_csr is not None or self._adj_coo is not None
         if self._adj_coo is not None:
             return
