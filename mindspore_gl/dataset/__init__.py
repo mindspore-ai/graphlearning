@@ -17,10 +17,12 @@ from .cora import CoraV2
 from .metr_la import MetrLa
 from .ppi import PPI
 from .blog_catalog import BlogCatalog
+from .alchemy import Alchemy
 
 __all__ = [
     "CoraV2",
     "MetrLa",
     "PPI",
-    "BlogCatalog"
+    "BlogCatalog",
+    "Alchemy"
 ]

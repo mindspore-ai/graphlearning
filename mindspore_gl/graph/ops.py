@@ -27,15 +27,31 @@ from .utils import SharedArrayPool, ArrayPool
 class BatchHomoGraph:
     """
     BatchHomoGraph, batch list of MindHomoGraph into a single MindHomoGraph with some batch_meta information.
+
+    Inputs:
+        graph_list(List[MindHomoGraph]): To list of MindHomoGraph
+
+    Examples:
+        >>> from mindspore_gl.graph.ops import BatchHomoGraph
+        >>> import numpy as np
+        >>> from mindspore_gl.graph.graph import MindHomoGraph
+        >>> graph_list = []
+        >>> for _ in range(5):
+        ...     graph = MindHomoGraph()
+        ...     edges = np.array([[0, 2, 2, 3, 4, 5, 5, 6], [1, 0, 1, 5, 3, 4, 6, 4]])
+        ...     graph.set_topo_coo(edges)
+        ...     graph.node_count = 7
+        ...     graph.edge_count = 8
+        ...     graph_list.append(graph)
+        >>> batch_fn = BatchHomoGraph()
+        >>> batch_graph = batch_fn(graph_list)
     """
 
     def __init__(self):
         self.res_coo = None
 
     def __call__(self, graph_list: List[MindHomoGraph], **kwargs) -> MindHomoGraph:
-        ########################
-        # determine coo_length
-        #########################
+        """determine coo_length"""
         total_edge_count = 0
         total_node_count = 0
         graph_nodes = np.zeros([len(graph_list) + 1], dtype=np.int32)
@@ -49,18 +65,14 @@ class BatchHomoGraph:
         if self.res_coo is None or self.res_coo.shape[1] < total_edge_count:
             del self.res_coo
             self.res_coo = np.zeros([2, total_edge_count], dtype=np.int32)
-        ###########################
         # copy edge array
-        ########################
         node_offset = 0
         edge_offset = 0
         for graph in graph_list:
             self.res_coo[:, edge_offset: graph.edge_count + edge_offset] = graph.adj_coo + node_offset
             node_offset += graph.node_count
             edge_offset += graph.edge_count
-        ######################################
         # Pack Result
-        ######################################
         res_graph = MindHomoGraph()
         res_graph.set_topo_coo(np.copy(self.res_coo[:, :total_edge_count]))
         res_graph.node_count = total_node_count
@@ -97,7 +109,6 @@ class PadMode(Enum):
 class PadDirection(Enum):
     """
     Padding Direction for 2d array specifically.
-
     """
     ROW = 1
     COL = 2
@@ -124,6 +135,23 @@ class PadArray2d:
         use_shared_numpy(bool): If we use SharedNDArray for speeding up inter process communication.
             This is recommended if you do feature collection and feature padding in child process and
             need inter process communication for graph feature.
+
+    Inputs:
+        input_array(numpy.array): input numpy array for pad
+
+    Raises:
+        ValueError: pad size should be provided when padding mode is PadMode.CONST.
+
+    Examples:
+        >>> from mindspore_gl.graph.ops import PadArray2d, PadMode, PadDirection
+        >>> pad_op = PadArray2d(dtype=np.float32, mode=PadMode.CONST, direction=PadDirection.COL,
+        ...                               size=(3, 1), fill_value=0)
+        >>> node_list = np.array([[1]])
+        >>> res = pad_op(node_list)
+        >>> print(res)
+        [[1.]
+         [0.]
+         [0.]]
     """
 
     def __init__(self, dtype, direction, fill_value=None, reset_with_fill_value=True, mode=PadMode.AUTO, size=None,
@@ -155,12 +183,6 @@ class PadArray2d:
     def __call__(self, input_array, **kwargs):
         """
         Pad Array
-
-        Args:
-            input_array(numpy.array): input numpy array for pad
-
-        Returns:
-            numpy.array, padded array
         """
         fill_value = kwargs.get("fill_value", None)
         if self.pad_mode == PadMode.CONST:
@@ -217,9 +239,7 @@ class PadArray2d:
             memory_buffer[:input_array.shape[0]] = input_array
             if self.reset_with_fill_value:
                 memory_buffer[input_array.shape[0]:] = fill_value
-        ##########################
         # Put Back To Memory Buffer
-        ##########################
         self.array_pool.put(target_size, memory_buffer)
         return memory_buffer
 
@@ -247,9 +267,7 @@ class PadArray2d:
                     memory_buffer[:, shape[1]:] = self.fill_value
                 else:
                     memory_buffer[shape[0]:] = self.fill_value
-            ##########################
             # Put Back To Memory Buffer
-            ##########################
             self.array_pool.put(self.size, memory_buffer)
             return memory_buffer
         memory_buffer = None
@@ -279,9 +297,7 @@ class PadArray2d:
 
             if self.reset_with_fill_value:
                 memory_buffer[shape[0]:] = fill_value
-        ##########################
         # Put Back To Memory Buffer
-        ##########################
         self.array_pool.put(target_size, memory_buffer)
         return memory_buffer
 

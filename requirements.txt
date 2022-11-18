@@ -4,3 +4,4 @@ astpretty>=2.1.0
 scikit-learn>=0.24.2
 numpy>=1.21.2
 networkx>=2.6.3
+rdkit>=2022.9.1

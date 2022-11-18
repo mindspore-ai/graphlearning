@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright 2022 Huawei Technologies Co., Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,22 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
-"""Graph abstraction and data interface."""
-from .self_loop import add_self_loop, remove_self_loop
-from .get_laplacian import get_laplacian
-from .norm import norm
-from .graph import MindHomoGraph
-from .ops import BatchHomoGraph, PadArray2d, PadHomoGraph, PadMode, PadDirection
 
-__all__ = [
-    "add_self_loop",
-    "remove_self_loop",
-    "get_laplacian",
-    "norm",
-    "MindHomoGraph",
-    "BatchHomoGraph",
-    "PadArray2d",
-    "PadHomoGraph",
-    "PadMode",
-    "PadDirection"
-]
+# data file path: /your/path/alchemy_with_mask.npz  data_path = /your/path/
+
+python trainval_alchemy.py --epoch=250 --batch_size=16 --data_path="/your/path/"
