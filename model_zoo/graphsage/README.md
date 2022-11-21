@@ -12,13 +12,13 @@ GraphSAGE is a general inductive framework that leverages node feature informati
 
 More detail about GraphSAGE can be found in:
 
-Hamilton W L, Ying R, Leskovec J. Inductive representation learning on large graphs (Neural Information Processing Systems, 2017)
+[Hamilton W L, Ying R, Leskovec J. Inductive representation learning on large graphs (Neural Information Processing Systems, 2017)](https://proceedings.neurips.cc/paper/2017/file/5dd9db5e033da9c6fb5ba83c7a7ebea9-Paper.pdf)
 
 This repository contains a implementation of GraphSAGE based on MindSpore and GraphLearning
 
 ## Datasets
 
-This experiment is based on [Reddit dataset](http://snap.stanford.edu/graphsage/)
+This experiment is based on [Reddit dataset](https://data.dgl.ai/dataset/reddit.zip)
 
 ## Environment Requirements
 

@@ -188,7 +188,7 @@ class CoraV2:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> num_features = dataset.num_features()
+            >>> num_features = dataset.num_features
         """
         return self.node_feat.shape[1]
 
@@ -202,7 +202,7 @@ class CoraV2:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> num_classes = dataset.num_classes()
+            >>> num_classes = dataset.num_classes
         """
         return len(np.unique(self.node_label))
 
@@ -216,7 +216,7 @@ class CoraV2:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> train_mask = dataset.train_mask()
+            >>> train_mask = dataset.train_mask
         """
         if self._train_mask is None:
             self._train_mask = self._npz_file['train_mask']
@@ -232,7 +232,7 @@ class CoraV2:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> test_mask = dataset.test_mask()
+            >>> test_mask = dataset.test_mask
         """
         if self._test_mask is None:
             self._test_mask = self._npz_file['test_mask']
@@ -248,7 +248,7 @@ class CoraV2:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> val_mask = dataset.val_mask()
+            >>> val_mask = dataset.val_mask
         """
         if self._val_mask is None:
             self._val_mask = self._npz_file['val_mask']
@@ -264,7 +264,7 @@ class CoraV2:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> train_nodes = dataset.train_nodes()
+            >>> train_nodes = dataset.train_nodes
         """
         return (np.nonzero(self.train_mask)[0]).astype(np.int32)
 
@@ -278,7 +278,7 @@ class CoraV2:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> node_count = dataset.node_count()
+            >>> node_count = dataset.node_count
         """
         return len(self._csr_row)
 
@@ -292,7 +292,7 @@ class CoraV2:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> edge_count = dataset.edge_count()
+            >>> edge_count = dataset.edge_count
         """
         return len(self._csr_col)
 
@@ -306,7 +306,7 @@ class CoraV2:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> node_feat = dataset.node_feat()
+            >>> node_feat = dataset.node_feat
         """
         if self._node_feat is None:
             self._node_feat = self._npz_file["feat"]
@@ -323,7 +323,7 @@ class CoraV2:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> node_label = dataset.node_label()
+            >>> node_label = dataset.node_label
         """
         if self._node_label is None:
             self._node_label = self._npz_file["label"]
@@ -339,7 +339,7 @@ class CoraV2:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> node_label = dataset.adj_coo()
+            >>> node_label = dataset.adj_coo
         """
         return csr_matrix((np.ones(self._csr_col.shape), self._csr_col, self._csr_row)).tocoo(copy=False)
 
@@ -353,7 +353,7 @@ class CoraV2:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> node_label = dataset.adj_csr()
+            >>> node_label = dataset.adj_csr
         """
         return csr_matrix((np.ones(self._csr_col.shape), self._csr_col, self._csr_row))
 
