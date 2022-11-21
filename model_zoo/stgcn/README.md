@@ -12,7 +12,7 @@ Spatio-Temporal Graph Convolutional Networks (STGCN) can tackle the time series 
 
 More detail about STGCN can be found in:
 
-Yu B, Yin H, Zhu Z. Spatio-temporal graph convolutional networks: A deep learning framework for traffic forecasting[J]. arXiv preprint arXiv:1709.04875, 2017.
+[Yu B, Yin H, Zhu Z. Spatio-temporal graph convolutional networks: A deep learning framework for traffic forecasting[J]. arXiv preprint arXiv:1709.04875, 2017.](https://arxiv.org/pdf/1709.04875.pdf)
 
 This repository contains a implementation of STGCN based on MindSpore and GraphLearning
 

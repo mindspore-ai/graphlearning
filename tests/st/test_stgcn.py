@@ -39,7 +39,7 @@ def test_stgcn():
     os.system(cmd_copy)
 
     cmd_train = "python ./ci_temp/stgcn/trainval_metr.py --epochs 1 " \
-                "--data-path \"/home/workspace/mindspore_dataset/GNN_Dataset/\" >>" \
+                "--data-path \"/home/workspace/mindspore_dataset/GNN_Dataset/METR-LA/\" >>" \
                 "./ci_temp/stgcn/trainval_metr.log"
     os.system(cmd_train)
 

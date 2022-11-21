@@ -47,8 +47,8 @@ class MetrLa:
             raise TypeError(f"For '{self.cls_name}', the 'root' should be a str, "
                             f"but got {type(root)}.")
         self._root = root
-        self._adj = os.path.join(root, 'METR-LA/adj_mat.npy')
-        self._node = os.path.join(root, 'METR-LA/node_values.npy')
+        self._adj = os.path.join(root, 'adj_mat.npy')
+        self._node = os.path.join(root, 'node_values.npy')
         self.load()
 
         if os.path.exists(self._adj) and os.path.isfile(self._adj) and \
@@ -98,4 +98,14 @@ class MetrLa:
 
     @property
     def node_num(self):
+        """
+        Number of nodes
+
+        Returns:
+            int, number of node
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> node_count = dataset.node_num
+        """
         return self.features.shape[1]
