@@ -15,16 +15,12 @@
 """Utils function"""
 import importlib.util
 from pathlib import Path
-import os
 import random
 
-DEFAULT_SRC_LOC = os.path.abspath(os.path.join(os.getcwd(), "..")) + "/.mindspore_gl/" + str(
-    hash(random.randint(1, 1e30))) + "/"
+DEFAULT_SRC_LOC = Path.cwd().parent / ".mindspore_gl" / str(hash(random.randint(1, 1e30)))
 counter = 0
-Path(DEFAULT_SRC_LOC).mkdir(parents=True, exist_ok=True)
 
-
-def src_to_function(src_code: str, func_name: str, globals_dict: dict):
+def src_to_function(src_code: str, func_name: str, globals_dict: dict, translate_path: None or str):
     """
     Transform the source code to function.
 
@@ -32,6 +28,7 @@ def src_to_function(src_code: str, func_name: str, globals_dict: dict):
         src_code (str): source code.
         func_name (str): the function name.
         globals_dict (dict): globals dict.
+        translate_path (None or str): The path for save the construct file.
 
     Returns:
         Function, new function.
@@ -40,11 +37,15 @@ def src_to_function(src_code: str, func_name: str, globals_dict: dict):
     module_name = func_name + f"-{counter}"
     file_name = module_name + ".py"
     counter += 1
-    with open(DEFAULT_SRC_LOC + file_name, "w", encoding="UTF-8") as f:
+    if translate_path is None:
+        translate_path = DEFAULT_SRC_LOC
+    else:
+        translate_path = Path(translate_path) / ".mindspore_gl" / str(hash(random.randint(1, 1e30)))
+    Path(translate_path).mkdir(parents=True, exist_ok=True)
+    with open(translate_path / file_name, "w", encoding="UTF-8") as f:
         f.write(src_code)
-    new_fn = import_func(module_name, func_name, DEFAULT_SRC_LOC)
+    new_fn = import_func(module_name, func_name, translate_path)
     return add_import_info(new_fn, globals_dict)
-
 
 def add_import_info(new_fn, globals_dict):
     """
@@ -65,10 +66,10 @@ def add_import_info(new_fn, globals_dict):
 
 def import_func(module_name: str,
                 func_name: str,
-                src_folder: str = DEFAULT_SRC_LOC):
+                src_folder: Path = DEFAULT_SRC_LOC):
     """Import the function."""
     spec = importlib.util.spec_from_file_location(
-        module_name, src_folder + module_name + ".py")
+        module_name, src_folder / (module_name + ".py"))
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod.__dict__[func_name]
