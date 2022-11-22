@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright 2022 Huawei Technologies Co., Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,19 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
-"""Reading and building interface for graph datasets."""
-from .cora import CoraV2
-from .metr_la import MetrLa
-from .ppi import PPI
-from .blog_catalog import BlogCatalog
-from .alchemy import Alchemy
-from .enzymes import Enzymes
-
-__all__ = [
-    "CoraV2",
-    "MetrLa",
-    "PPI",
-    "BlogCatalog",
-    "Alchemy",
-    "Enzymes"
-]
+CUDA_VISIBLE_DEVICES=0 python model_zoo/diffpool/trainval_enzymes.py --data_path "/your/path"
