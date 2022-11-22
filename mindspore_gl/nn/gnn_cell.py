@@ -22,11 +22,12 @@ class GNNCell(Cell):
     GNN Cell class.
 
     Construct function will be translated by default.
-    """
 
+    """
+    translate_path = None
     def __init__(self):
         super().__init__()
-        translate(self, "construct")
+        translate(self, "construct", self.translate_path)
 
     @staticmethod
     def enable_display(screen_width=200):
@@ -35,6 +36,10 @@ class GNNCell(Cell):
 
         Args:
             screen_width (int): Determines the screen width on which the code is displayed.
+
+        Examples:
+            >>> from mindspore_gl.nn import GNNCell
+            >>> GNNCell.enable_display(screen_width=350)
         """
         set_display_config(screen_width, True)
 
@@ -42,5 +47,23 @@ class GNNCell(Cell):
     def disable_display():
         """
         Disable display code comparison.
+
+        Examples:
+            >>> from mindspore_gl.nn import GNNCell
+            >>> GNNCell.disable_display()
         """
         set_display_config(0, False)
+
+    @classmethod
+    def specify_path(cls, path):
+        """
+        Enable specify the construct file path.
+
+        Args:
+            path (str): The path for save the construct file.
+
+        Examples:
+            >>> from mindspore_gl.nn import GNNCell
+            >>> GNNCell.specify_path('path/to/save')
+        """
+        cls.translate_path = path

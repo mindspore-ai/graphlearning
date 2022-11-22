@@ -41,7 +41,7 @@ def set_display_config(screen_width, display):
     DISPLAY = display
 
 
-def translate(obj, method_name: str):
+def translate(obj, method_name: str, translate_path: None or str = None):
     """
     Translate the vertex central code into MindSpore understandable code.
 
@@ -50,6 +50,7 @@ def translate(obj, method_name: str):
 
     Args:
         obj: (Object): The object.
+        translate_path (str): The path for save the construct file.
         method_name (str): The name of the method to be translated.
     """
     global SCREEN_WIDTH, DISPLAY
@@ -70,6 +71,6 @@ def translate(obj, method_name: str):
         comparator.mapping_by_origin_lineno(new_ast)
         comparator.show_diff()
     new_src = decompile(new_ast)
-    new_fn = src_to_function(new_src, method_name, fn.__globals__)
+    new_fn = src_to_function(new_src, method_name, fn.__globals__, translate_path)
     new_fn.__module__ = fn.__module__
     setattr(obj, method_name, MethodType(new_fn, obj))
