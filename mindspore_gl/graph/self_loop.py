@@ -79,6 +79,9 @@ def add_self_loop(adj, node, fill_value, mode='dense'):
         TypeError: If `node` is not a positive int.
 
     Examples:
+        >>> from mindspore import Tensor
+        >>> from mindspore import COOTensor
+        >>> from mindspore_gl.graph import add_self_loop
         >>> indices = Tensor([[0, 1], [1, 2], [2, 0]], dtype=ms.int32)
         >>> values = Tensor([1, 2, 1], dtype=ms.float32)
         >>> shape = (3, 3)

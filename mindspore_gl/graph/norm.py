@@ -49,7 +49,7 @@ def norm(edge_index, num_nodes, edge_weight=None, normalization='sym',
 
     Examples:
         >>> import mindspore as ms
-        >>> from mindspore_gl.utils import norm
+        >>> from mindspore_gl.graph import norm
         >>> edge_index = [[1, 1, 2, 2], [0, 2, 0, 1]]
         >>> edge_index = ms.Tensor(edge_index, ms.int32)
         >>> num_nodes = 3

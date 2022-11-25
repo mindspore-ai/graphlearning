@@ -170,14 +170,19 @@ class BatchMeta:
         graph_nodes(numpy.array): accumulated node sum for graphs in batched graph(first element is 0).
         graph_edges(numpy.array): accumulated edge sum for graphs in batched graph(first element is 0).
 
+    Examples:
+        >>> from mindspore_gl.graph import BatchMeta
+        >>> graph_nodes = np.array([0, 20, 40, 60, 80])
+        >>> graph_edges = np.array([0, 100, 200, 300, 400])
+        >>> graph = BatchMeta(graph_nodes, graph_edges)
+        >>> print(graph[1])
+        (20, 100)
+
     """
     def __init__(self, graph_nodes, graph_edges):
         self._graph_nodes = graph_nodes
         self._graph_edges = graph_edges
-
-        #######################
         # For Lazy Computation
-        #######################
         self._node_map_idx = None
         self._edge_map_idx = None
 
