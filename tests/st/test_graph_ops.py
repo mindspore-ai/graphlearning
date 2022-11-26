@@ -14,18 +14,46 @@
 # ============================================================================
 """ test graph ops """
 import math
+import numpy as np
+import mindspore as ms
 from mindspore_gl.dataset.imdb_binary import IMDBBinary
-from mindspore_gl.graph.ops import BatchHomoGraph, PadHomoGraph, PadMode
+from mindspore_gl.graph import BatchHomoGraph, PadHomoGraph, PadMode, PadArray2d,\
+    MindHomoGraph, get_laplacian, PadDirection, norm, UnBatchHomoGraph
 import pytest
 
 dataset = IMDBBinary("/home/workspace/mindspore_dataset/GNN_Dataset/")
+
+nodes = list(range(7))
+num_nodes = 7
+src_idx = [0, 2, 2, 3, 4, 5, 5, 6]
+dst_idx = [1, 0, 1, 5, 3, 4, 6, 4]
+
+
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_homograph():
+    """
+    Feature: test MindHomoGraph
+    Description: test MindHomoGraph
+    Expectation: Output result
+    """
+    graph = MindHomoGraph()
+    graph.set_topo_coo([src_idx, dst_idx])
+    adj_coo = np.array(graph.adj_coo)
+    expect_output = np.array([[0, 2, 2, 3, 4, 5, 5, 6], [1, 0, 1, 5, 3, 4, 6, 4]])
+    assert np.allclose(adj_coo, expect_output)
 
 
 @pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_batch():
-    """ test batch """
+    """
+    Feature: test MindHomoGraph
+    Description: test MindHomoGraph
+    Expectation: Output result
+    """
     graphs = [dataset[0], dataset[1]]
     batch_graph_op = BatchHomoGraph()
     batch_graph = batch_graph_op(graphs)
@@ -37,11 +65,60 @@ def test_batch():
     assert batch_graph.adj_coo.shape[1] == batch_graph.edge_count
 
 
+def test_unbatch():
+    """
+    Feature: test UnBatchHomoGraph
+    Description: test UnBatchHomoGraph
+    Expectation: Output result
+    """
+    graphs = [dataset[0], dataset[1]]
+    batch_graph_op = BatchHomoGraph()
+    batch_graph = batch_graph_op(graphs)
+    unbatch_fn = UnBatchHomoGraph()
+    unbatch_graph = unbatch_fn(batch_graph)
+    assert unbatch_graph[0].edge_count == graphs[0].edge_count
+    assert unbatch_graph[0].node_count == graphs[0].node_count
+    assert unbatch_graph[1].edge_count == graphs[1].edge_count
+    assert unbatch_graph[1].node_count == graphs[1].node_count
+
+def test_pad_array2d():
+    """
+    Feature: test PadArray2d
+    Description: test PadArray2d
+    Expectation: Output result
+    """
+    pad_op = PadArray2d(dtype=np.float32, mode=PadMode.CONST, direction=PadDirection.COL, size=(10, 2), fill_value=0)
+    node_list = np.array([[1, 2], [2, 4]])
+    pad_res = pad_op(node_list)
+    expect_output = np.array([[1., 2.], [2., 4.], [0., 0.], [0., 0.], [0., 0.],
+                              [0., 0.], [0., 0.], [0., 0.], [0., 0.], [0., 0.]])
+    assert np.allclose(pad_res, expect_output)
+
+
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_batchmeta():
+    """
+    Feature: test BatchMeta
+    Description: test BatchMeta
+    Expectation: Output result
+    """
+    graphs = [dataset[0], dataset[1]]
+    batch_graph_op = BatchHomoGraph()
+    batch_graph = batch_graph_op(graphs)
+    assert batch_graph.batch_meta[0] == (dataset.graph_nodes[1], dataset.graph_edges[1])
+
+
 @pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_pad_const():
-    """ test pad const """
+    """
+    Feature: test PadMode.CONST
+    Description: test PadMode.CONST
+    Expectation: Output result
+    """
     graph = dataset[0]
     n_node = graph.node_count + 1
     n_edge = graph.edge_count + 30
@@ -61,7 +138,11 @@ def test_pad_const():
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_pad_auto():
-    """ test pad auto """
+    """
+    Feature: test PadMode.AUTO
+    Description: test PadMode.AUTO
+    Expectation: Output result
+    """
     graph = dataset[0]
     pad_graph_op = PadHomoGraph(mode=PadMode.AUTO)
     pad_res = pad_graph_op(graph)
@@ -77,7 +158,11 @@ def test_pad_auto():
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_batch_and_pad_const():
-    """ test batch and pad const """
+    """
+    Feature: test batch and pad const
+    Description: test batch and pad const
+    Expectation: Output result
+    """
     graphs = [dataset[0], dataset[1]]
     batch_graph_op = BatchHomoGraph()
     batch_graph = batch_graph_op(graphs)
@@ -101,7 +186,11 @@ def test_batch_and_pad_const():
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_batch_and_pad_auto():
-    """ test batch and pad auto """
+    """
+    Feature: test batch and pad auto
+    Description: test batch and pad auto
+    Expectation: Output result
+    """
     graphs = [dataset[0], dataset[1]]
     batch_graph_op = BatchHomoGraph()
     batch_graph = batch_graph_op(graphs)
@@ -115,3 +204,31 @@ def test_batch_and_pad_auto():
     assert pad_res[1].edge_count == graphs[1].edge_count
     assert pad_res[1].node_count == graphs[1].node_count
     assert pad_res.adj_coo.shape[1] == pad_res.edge_count
+
+
+def test_laplacian():
+    """
+    Feature: test get_laplacian
+    Description: test get_laplacian
+    Expectation: Output result
+    """
+    edge_index = [src_idx, dst_idx]
+    edge_index = ms.Tensor(edge_index, ms.int32)
+    edge_weight = ms.Tensor([1, 2, 1, 2, 1, 2, 1, 2], ms.float32)
+    _, edge_weight = get_laplacian(edge_index, edge_weight, 'sym', num_nodes)
+    expect_output = np.array([-0., -1.1547005, -0., -0.8164965, -0.7071067, -1.1547005, -0.40824825,
+                              -1.4142134, 1., 1., 1., 1., 1., 1., 1.])
+    assert np.allclose(edge_weight.asnumpy(), expect_output)
+
+def test_norm():
+    """
+    Feature: test norm
+    Description: test norm
+    Expectation: Output result
+    """
+    edge_index = [src_idx, dst_idx]
+    edge_index = ms.Tensor(edge_index, ms.int32)
+    _, edge_weight = norm(edge_index, num_nodes)
+    expect_output = np.array([-0., -0.7071067, -0., -0.7071067, -1., -0.7071067, -0.7071067,
+                              -1., 1., 1., 1., 1., 1., 1., 1.])
+    assert np.allclose(edge_weight.asnumpy(), expect_output)

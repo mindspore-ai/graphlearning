@@ -45,6 +45,8 @@ class BatchHomoGraph:
         ...     graph_list.append(graph)
         >>> batch_fn = BatchHomoGraph()
         >>> batch_graph = batch_fn(graph_list)
+        >>> print(batch_graph.edge_count)
+        40
     """
 
     def __init__(self):
@@ -85,6 +87,25 @@ class BatchHomoGraph:
 class UnBatchHomoGraph:
     """
     Return list of MindHomoGraph from a Batched MindHomoGraph.
+
+    Examples:
+        >>> from mindspore_gl.graph.ops import BatchHomoGraph
+        >>> import numpy as np
+        >>> from mindspore_gl.graph.graph import MindHomoGraph
+        >>> graph_list = []
+        >>> for _ in range(5):
+        ...     graph = MindHomoGraph()
+        ...     edges = np.array([[0, 2, 2, 3, 4, 5, 5, 6], [1, 0, 1, 5, 3, 4, 6, 4]])
+        ...     graph.set_topo_coo(edges)
+        ...     graph.node_count = 7
+        ...     graph.edge_count = 8
+        ...     graph_list.append(graph)
+        >>> batch_fn = BatchHomoGraph()
+        >>> batch_graph = batch_fn(graph_list)
+        >>> unbatch_fn = UnBatchHomoGraph()
+        >>> unbatch_graph = unbatch_fn(batch_graph)
+        >>> print(unbatch_graph[0].edge_count)
+        8
     """
 
     def __init__(self):
@@ -203,9 +224,7 @@ class PadArray2d:
                     memory_buffer[:input_array.shape[0]] = input_array
                 if self.reset_with_fill_value:
                     memory_buffer[input_array.shape[0]:] = self.fill_value
-            ##########################
             # Put Back To Memory Buffer
-            ##########################
             self.array_pool.put(self.size, memory_buffer)
             return memory_buffer
         memory_buffer = None
@@ -316,6 +335,12 @@ class PadHomoGraph:
             n_node = 2^ceil(log2(input_graph.node_count)),
             n_edge = 2^ceil(log2(input_graph.edge_count))
 
+    Inputs:
+        graph(MindHomoGraph): input graph
+
+    Outputs:
+        MindHomoGraph, padded graph
+
     """
 
     def __init__(self, n_node=None, mode=PadMode.AUTO, n_edge=None):
@@ -331,38 +356,24 @@ class PadHomoGraph:
     def __call__(self, graph: MindHomoGraph, **kwargs) -> MindHomoGraph:
         """
         Do pad operation.
-
-        Args:
-            graph(MindHomoGraph): input graph
-
-        Returns:
-            MindHomoGraph, padded graph
         """
-        ####################################
         # Check Input Graph is Valid To Pad
-        ####################################
         res_graph = MindHomoGraph()
         if self.mode is PadMode.CONST:
             assert graph.edge_count < self.n_edge, \
                 "Given graph is too large for the given padding"
         if graph.is_batched:
             if self.mode == PadMode.CONST:
-                ###########################
                 # No Need To Pad
-                ###########################
                 if graph.edge_count == self.n_edge:
                     return graph
-                ####################################
                 # Determine Padded Graph
-                ####################################
                 pad_graph_coo = np.full([2, self.n_edge - graph.edge_count], self.n_node - 1, dtype=np.int32)
                 pad_graph = MindHomoGraph()
                 pad_graph.adj_coo = pad_graph_coo
                 pad_graph.node_count = self.n_node - graph.node_count
                 pad_graph.edge_count = self.n_edge - graph.edge_count
-                ####################################
                 # Pad Graph
-                ####################################
                 res_graph.adj_coo = np.concatenate([graph.adj_coo, pad_graph.adj_coo], axis=1)
                 res_graph_graph_nodes = np.concatenate([graph.batch_meta.graph_nodes, np.array([self.n_node],
                                                                                                dtype=np.int32)])
@@ -372,14 +383,10 @@ class PadHomoGraph:
                 res_graph.edge_count = self.n_edge
                 res_graph.node_count = self.n_node
                 return res_graph
-            ###########################
             # No Need To Pad
-            ###########################
             if graph.edge_count == 1 << math.ceil(math.log2(graph.edge_count)):
                 return graph
-            #############################
             # Determine Pad Graph
-            #############################
             edge_bucket_length = math.ceil(math.log2(graph.edge_count))
             padded_graph_edge_count = (1 << edge_bucket_length) - graph.edge_count
             padded_graph_node_count = (1 << math.ceil(math.log2(graph.node_count))) - graph.node_count
@@ -389,9 +396,7 @@ class PadHomoGraph:
             pad_graph.node_count = padded_graph_node_count
             pad_graph.edge_count = padded_graph_edge_count
 
-            ################################
             # Pad Graph
-            ################################
             res_graph.adj_coo = np.concatenate([graph.adj_coo, pad_graph.adj_coo], axis=1)
             res_graph_graph_nodes = np.concatenate([graph.batch_meta.graph_nodes,
                                                     np.array([1 << math.ceil(math.log2(graph.node_count))],
@@ -404,23 +409,17 @@ class PadHomoGraph:
 
             return res_graph
         if self.mode == PadMode.CONST:
-            ###############################
             # No Need To Pad
-            ###############################
             if graph.edge_count == self.n_edge:
                 return graph
-            ############################
             # Determine Pad Graph
-            ############################
             pad_graph_coo = np.full([2, self.n_edge - graph.edge_count], self.n_node - 1, dtype=np.int32)
             pad_graph = MindHomoGraph()
             pad_graph.adj_coo = pad_graph_coo
             pad_graph.node_count = self.n_node - graph.node_count
             pad_graph.edge_count = self.n_edge - graph.edge_count
             return self.batch_op([graph, pad_graph])
-        ###########################
         # No Need To Pad
-        ###########################
         if graph.edge_count == 1 << math.ceil(math.log2(graph.edge_count)):
             return graph
 
@@ -437,7 +436,6 @@ class PadHomoGraph:
 
 class UnPadHomoGraph:
     """Empty placeholder"""
-
     def __init__(self):
         pass
 

@@ -45,6 +45,7 @@ def get_laplacian(edge_index, edge_weight, normalization, num_nodes):
 
     Examples:
         >>> import mindspore as ms
+        >>> from mindspore_gl.graph import get_laplacian
         >>> edge_index = [[1, 1, 2, 2], [0, 2, 0, 1]]
         >>> edge_index = ms.Tensor(edge_index, ms.int32)
         >>> num_nodes = 3

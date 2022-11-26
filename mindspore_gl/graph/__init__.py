@@ -16,8 +16,8 @@
 from .self_loop import add_self_loop, remove_self_loop
 from .get_laplacian import get_laplacian
 from .norm import norm
-from .graph import MindHomoGraph, CsrAdj
-from .ops import BatchHomoGraph, PadArray2d, PadHomoGraph, PadMode, PadDirection
+from .graph import MindHomoGraph, CsrAdj, BatchMeta
+from .ops import BatchHomoGraph, PadArray2d, PadHomoGraph, PadMode, PadDirection, UnBatchHomoGraph
 
 __all__ = [
     "add_self_loop",
@@ -30,5 +30,7 @@ __all__ = [
     "PadHomoGraph",
     "PadMode",
     "PadDirection",
-    "CsrAdj"
+    "CsrAdj",
+    "BatchMeta",
+    "UnBatchHomoGraph"
 ]
