@@ -16,9 +16,11 @@
 from .k_hop_sampling import k_hop_subgraph
 from .negative_sample import negative_sample
 from .randomwalks import random_walk_unbias_on_homo
+from .neighbor import sage_sampler_on_homo
 
 __all__ = [
     "k_hop_subgraph",
     "negative_sample",
-    "random_walk_unbias_on_homo"
+    "random_walk_unbias_on_homo",
+    "sage_sampler_on_homo"
 ]

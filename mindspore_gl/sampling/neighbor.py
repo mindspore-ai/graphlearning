@@ -41,12 +41,12 @@ def sage_sampler_on_homo(homo_graph: MindHomoGraph, seeds: np.array, neighbor_nu
         - seeds_idx: seeds local ids
 
     Raises:
-        TypeError: If 'in_feat_size' or 'out_size' is not an int.
+        TypeError: If 'homo_graph' is not a MindHomoGraph class.
         TypeError: If 'seeds' is not a np.array.
         TypeError: If 'neighbor_nums' is not a list.
 
     Supported Platforms:
-        ``GPU``
+        ``GPU`` ``Ascend``
 
     Examples:
         >>> import networkx
@@ -73,12 +73,11 @@ def sage_sampler_on_homo(homo_graph: MindHomoGraph, seeds: np.array, neighbor_nu
         ... neighbor_nums=[2, 2])
         >>> print(res)
         {'seeds_idx': array([0, 3, 2], dtype=int32), 'all_nodes': array([0, 1, 2, 1, 4, 5, 6, 5, 6, 7, 8, 9],
-               dtype=int32), 'layered_edges_0': array([[0, 0, 3, 3, 2],
-               [3, 4, 7, 8, 7]], dtype=int32), 'layered_eids_0': array([[0, 0, 3, 3, 2],
-               [3, 4, 7, 8, 7]], dtype=int32), 'layered_edges_1': array([[ 3,  3,  4,  4,  7,  8,  8],
-               [ 7,  8, 10, 11,  9, 10, 11]], dtype=int32), 'layered_eids_1': array([[ 3,  3,  4,  4,  7,  8,  8],
-               [ 7,  8, 10, 11,  9, 10, 11]], dtype=int32)}
-
+           dtype=int32), 'layered_edges_0': array([[0, 0, 3, 3, 2],
+           [3, 4, 7, 8, 7]], dtype=int32), 'layered_eids_0': array([[0, 0, 3, 3, 2],
+           [3, 4, 7, 8, 7]], dtype=int32), 'layered_edges_1': array([[ 3,  3,  4,  4,  7,  8,  8],
+           [ 7,  8, 10, 11,  9, 10, 11]], dtype=int32), 'layered_eids_1': array([[ 3,  3,  4,  4,  7,  8,  8],
+           [ 7,  8, 10, 11,  9, 10, 11]], dtype=int32)}
 
     """
     if not isinstance(homo_graph, MindHomoGraph):
@@ -97,8 +96,7 @@ def sage_sampler_on_homo(homo_graph: MindHomoGraph, seeds: np.array, neighbor_nu
     for neighbor_num in neighbor_nums:
         edge_index, edge_ids = sample_kernel.sample_one_hop_unbias(homo_graph.adj_csr.indptr,
                                                                    homo_graph.adj_csr.indices,
-                                                                   neighbor_num,
-                                                                   seeds)
+                                                                   neighbor_num, seeds)
         layered_edges.append(edge_index)
         layered_eids.append(edge_ids)
         seeds = np.unique(edge_index[1])

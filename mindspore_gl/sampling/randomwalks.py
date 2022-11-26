@@ -35,6 +35,12 @@ def random_walk_unbias_on_homo(homo_graph: MindHomoGraph,
         TypeError: If `walk_length` is not a positive integer.
         TypeError: If `seeds` is not numpy.ndarray int 32.
 
+    Returns:
+        array, sample node (len(seeds), walk_length)
+
+    Supported Platforms:
+        ``GPU`` ``Ascend``
+
     Examples:
         >>> import numpy as np
         >>>import networkx
@@ -54,10 +60,10 @@ def random_walk_unbias_on_homo(homo_graph: MindHomoGraph,
         >>> edge_count = col.shape[0]
         >>> edge_ids = np.array(list(range(edge_count))).astype(np.int32)
         >>> generated_graph.set_topo(CsrAdj(csr_mat.indptr.astype(np.int32), csr_mat.indices.astype(np.int32)),
-            ...node_dict, edge_ids)
+        ... node_dict, edge_ids)
         >>> nodes = np.arange(0, node_count)
         >>> out = random_walk_unbias_on_homo(homo_graph=generated_graph, seeds=nodes[:5].astype(np.int32),
-            ...walk_length=10)
+        ... walk_length=10)
         >>> print(out)
         # results will be random for suffle
         [[   0 9493 8272 1251 3922 4180  211 1083 4198 9981 7669]
@@ -66,6 +72,13 @@ def random_walk_unbias_on_homo(homo_graph: MindHomoGraph,
          [   3 8723 5645 3691 4857 5501  113 4140 6666 2282 1248]
          [   4 4354 9551 5224 3156 8693  346 8899 6046 6011 5310]]
     """
+
+    if not isinstance(seeds, np.ndarray):
+        raise TypeError("The positive data type is {},\
+                        but it should be ndarray or list.".format(type(seeds)))
+    if not isinstance(walk_length, int) or walk_length <= 0:
+        raise TypeError("The node type is {},\
+                        but it should be positive int.".format(type(walk_length)))
 
     # sample
     out = sample_kernel.random_walk_cpu_unbias(homo_graph.adj_csr.indptr,

@@ -25,14 +25,23 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more
     Can choose to consider self-loop, directed graph or undirected graph operation
 
     Args:
-        positive(list or array):All positive sample edges,shape is (col_len, row_len)
+        positive(list or array):All positive sample edges,shape:(col_len, row_len)
         node(int): number of node
         num_neg_samples(int):Negative sample length
         mode(str): type of operation matrix
         re(str): type of input data
 
     Returns:
+        array, Negative sample edge set,shape:(num_neg_samples, 2)
+
+    Returns:
         array, Negative sample edge set,shape is (num_neg_samples, 2)
+
+    Rasise:
+        TypeError: If 'positive' is not a list or ndarry.
+        TypeError: If 'node' is not a positive int.
+        TypeError: If 're' is not in more or other.
+        ValueError: If `mode` is not in bipartite, undirected or other.
 
     Examples:
         >>> from mindspore_gl.sampling import negative_sample
@@ -45,21 +54,7 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more
             [1 3]
             [0 1]]
     """
-    if not isinstance(positive, (list, np.ndarray)):
-        raise TypeError("The positive data type is {},\
-                        but it should be ndarray or list.".format(type(positive)))
-    if not isinstance(node, int):
-        raise TypeError("The node type is {},\
-                        but it should be int.".format(type(node)))
-    if num_neg_samples is not None and (not isinstance(num_neg_samples, int)):
-        raise TypeError("The num_neg_samples type is {},\
-                        but it should be int.".format(type(num_neg_samples)))
-    if not isinstance(mode, str):
-        raise TypeError("The mode data type is {},\
-                        but it should be str.".format(type(mode)))
-    if not isinstance(re, str):
-        raise TypeError("The re data type is {},\
-                        but it should be str.".format(type(re)))
+    check_param(positive, node, num_neg_samples, mode, re)
 
     def sample(population: int, k: int):
         """
@@ -89,7 +84,7 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more
     if mode == 'undirected':
         num_neg_samples = ceil(num_neg_samples / 2)
 
-    prob = 1. - size/(node*node - node)
+    prob = 1. - size / (node * node - node)
     sample_size = int(1.1 * num_neg_samples / prob)
     neg_idx = None
     for _ in range(3):
@@ -178,12 +173,12 @@ def vector_to_edge_index(idx, size, mode='undirected'):
     the processing method of the directed graph or the processing method of the undirected graph
 
     Args:
-        idx(ndarray):collection of edges，shape is (1, row_len or col_len)
-        size(tuple):number of graph nodes, shape is (node, node)
+        idx(ndarray):collection of edges，shape:(1, row_len or col_len)
+        size(tuple):number of graph nodes, shape:(node, node)
         mode(str):type of operation matrix
 
     Returns:
-        array, transformed edge, shape is (row_len or col_len, 2)
+        array, transformed edge, shape:(row_len or col_len, 2)
 
     Examples:
         >>> from mindspore_gl.sampling import vector_to_edge_index
@@ -222,7 +217,7 @@ def vector_to_edge_index(idx, size, mode='undirected'):
     elif mode == 'undirected':
         num_nodes = size[0]
         offset = np.arange(1, num_nodes).cumsum(0)
-        offset1 = np.arange(1, num_nodes)*num_nodes-offset
+        offset1 = np.arange(1, num_nodes)[::-1].cumsum(0)
         row = bucketize(offset1, idx)
         col = (offset[row] + idx) % num_nodes
         a, b = np.concatenate([row, col]), np.concatenate([col, row])
@@ -234,3 +229,22 @@ def vector_to_edge_index(idx, size, mode='undirected'):
         col[row <= col] += 1
         idx = np.stack([row, col])
     return idx
+
+
+def check_param(positive, node, num_neg_samples, mode, re):
+    """check parameters"""
+    if not isinstance(positive, (list, np.ndarray)):
+        raise TypeError("The positive data type is {},\
+                        but it should be ndarray or list.".format(type(positive)))
+    if not isinstance(node, int) or node <= 0:
+        raise TypeError("The node type is {},\
+                        but it should be int.".format(type(node)))
+    if num_neg_samples is not None and (not isinstance(num_neg_samples, int)) or num_neg_samples <= 0:
+        raise TypeError("The num_neg_samples type is {},\
+                        but it should be int.".format(type(num_neg_samples)))
+    if mode not in ['bipartite', 'undirected', 'other']:
+        raise TypeError("The mode data type is {},\
+                        but it should be str.".format(type(mode)))
+    if re not in ['more', 'other']:
+        raise TypeError("The re data type is {},\
+                        but it should be str.".format(type(re)))

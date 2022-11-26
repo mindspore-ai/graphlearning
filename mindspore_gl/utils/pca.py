@@ -77,25 +77,36 @@ def pca(matrix: np.ndarray, k: int = None, niter: int = 2, norm: bool = False):
     Return:
         ndarray, Features after dimensionality reduction
 
+    Raises:
+        TypeError: If 'k' or 'niter' is not a positive int.
+        TypeError: If 'matrix' is not a ndarry.
+        TypeError: If 'norm' is not a bool.
+
     Example:
-      >>> import numpy as np
-      >>> from mindspore_gl.utils import pca
-      >>> X = np.array([[-1, 1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
-      >>> data = pca(X, 1)
-      >>> print(data)
-          [[ 0.33702252]
-          [ 2.22871406]
-          [ 3.6021826 ]
-          [-1.37346854]
-          [-2.22871406]
-          [-3.6021826 ]]
+        >>> import numpy as np
+        >>> from mindspore_gl.utils import pca
+        >>> X = np.array([[-1, 1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
+        >>> data = pca(X, 1)
+        >>> print(data)
+            [[ 0.33702252]
+            [ 2.22871406]
+            [ 3.6021826 ]
+            [-1.37346854]
+            [-2.22871406]
+            [-3.6021826 ]]
     """
     if not isinstance(matrix, np.ndarray):
         raise TypeError("The matrix type is {},\
                         but it should be Tensor.".format(type(matrix)))
-    if not isinstance(k, int):
+    if not isinstance(k, int) or k <= 0:
         raise TypeError("The k type is {},\
-                        but it should be int.".format(type(k)))
+                        but it should be positive int.".format(type(k)))
+    if not isinstance(niter, int) or niter <= 0:
+        raise TypeError("The niter type is {},\
+                        but it should be positive int.".format(type(niter)))
+    if not isinstance(norm, bool):
+        raise TypeError("The norm type is {},\
+                        but it should be bool.".format(type(norm)))
     m, n = matrix.shape[-2:]
     if k is None:
         k = min(6, m, n)
