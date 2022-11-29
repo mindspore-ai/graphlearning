@@ -60,19 +60,20 @@ class Alchemy:
     You can organize the dataset files into the following directory structure and read by `preprocess` API.
 
     .. code-block::
-    .
-    ├── dev
-    │ ├── dev_target.csv
-    │ └── sdf
-    │     ├── atom_10
-    │     ├── atom_11
-    │     ├── atom_12
-    │     └── atom_9
-    └── valid
-        ├── sdf
-        │ ├── atom_11
-        │ └── atom_12
-        └── valid_target.csv
+
+        .
+        ├── dev
+        │ ├── dev_target.csv
+        │ └── sdf
+        │     ├── atom_10
+        │     ├── atom_11
+        │     ├── atom_12
+        │     └── atom_9
+        └── valid
+            ├── sdf
+            │ ├── atom_11
+            │ └── atom_12
+            └── valid_target.csv
 
     """
     dataset_url = ""

@@ -20,70 +20,72 @@ from mindspore_gl import Graph
 from mindspore_gl.nn import GNNCell
 
 class ChebConv(GNNCell):
-    r"""from the paper
-        `"Convolutional Neural Networks on Graphs with Fast Localized Spectral
-        Filtering" <https://arxiv.org/abs/1606.09375>`_ paper
+    r"""
+    from the paper
+    `Convolutional Neural Networks on Graphs with Fast Localized Spectral
+    Filtering <https://arxiv.org/abs/1606.09375>`_ paper.
 
-        .. math::
-            \mathbf{X}^{\prime} = {\sigma}(\sum_{k=1}^{K} \mathbf{\beta}^{k} \cdot
-            \mathbf{T}^{k} (\mathbf{\hat{L}}) \cdot X)
+    .. math::
+        \mathbf{X}^{\prime} = {\sigma}(\sum_{k=1}^{K} \mathbf{\beta}^{k} \cdot
+        \mathbf{T}^{k} (\mathbf{\hat{L}}) \cdot X)
 
-            \mathbf{\hat{L}} = 2 \mathbf{L} / {\lambda}_{max} - \mathbf{I}
-        :math:`\mathbf{T}^{k}` is computed recursively by
+        \mathbf{\hat{L}} = 2 \mathbf{L} / {\lambda}_{max} - \mathbf{I}
 
-        .. math::
-            \mathbf{T}^{k}(\mathbf{\hat{L}}) = 2 \mathbf{\hat{L}}\mathbf{T}^{k-1}
-             - \mathbf{T}^{k-2}
-        where :math:`\mathbf{k}` is 1 or 2
+    :math:`\mathbf{T}^{k}` is computed recursively by
 
-        .. math::
-            \mathbf{T}^{0} (\mathbf{\hat{L}}) = \mathbf{I}
+    .. math::
+        \mathbf{T}^{k}(\mathbf{\hat{L}}) = 2 \mathbf{\hat{L}}\mathbf{T}^{k-1}
+        - \mathbf{T}^{k-2}
 
-            \mathbf{T}^{1} (\mathbf{\hat{L}}) = \mathbf{\hat{L}}
+    where :math:`\mathbf{k}` is 1 or 2
 
+    .. math::
+        \mathbf{T}^{0} (\mathbf{\hat{L}}) = \mathbf{I}
 
-        Args:
-            in_channels (int): Input node feature size.
-            out_channels (int): Output node feature size.
-            k (int): Chebyshev filter size. Default: 3
-            bias (bool): Whether use bias. Default: True.
+        \mathbf{T}^{1} (\mathbf{\hat{L}}) = \mathbf{\hat{L}}
 
-        Inputs:
-            - **x** (Tensor) - The input node features. The shape is :math:`(N, D_{in})`
-              where :math:`N` is the number of nodes,
-              and :math:`D_{in}` should be equal to `in_channels` in `Args`.
-            - **edge_weight** (Tensor) - Edge weights. The shape is :math:'(N\_e,)'
-              where :math:'N\_e' is the number of edges.
-            - **g** (Graph) - The input graph.
+    Args:
+        in_channels (int): Input node feature size.
+        out_channels (int): Output node feature size.
+        k (int): Chebyshev filter size. Default: 3
+        bias (bool): Whether use bias. Default: True.
 
-        Outputs:
-            Tensor, output node features with shape of :math:`(N, D_{out})`, where :math:`(D_{out})` should be
-            the same as `out_size` in `Args`.
+    Inputs:
+        - **x** (Tensor) - The input node features. The shape is :math:`(N, D_{in})`
+          where :math:`N` is the number of nodes,
+          and :math:`D_{in}` should be equal to `in_channels` in `Args`.
+        - **edge_weight** (Tensor) - Edge weights. The shape is :math:'(N\_e,)'
+          where :math:'N\_e' is the number of edges.
+        - **g** (Graph) - The input graph.
 
-        Raises:
-            TypeError: If `in_channels` or `out_channels` or `k` is not an int.
-            TypeError: If `bias` is not a bool.
+    Outputs:
+        Tensor, output node features with shape of :math:`(N, D_{out})`, where :math:`(D_{out})` should be
+        the same as `out_size` in `Args`.
 
-        Supported Platforms:
-            ``Ascend`` ``GPU``
+    Raises:
+        TypeError: If `in_channels` or `out_channels` or `k` is not an int.
+        TypeError: If `bias` is not a bool.
 
-        Examples:
-            >>> import mindspore as ms
-            >>> from mindspore_gl.nn import ChebConv
-            >>> from mindspore_gl import GraphField
-            >>> from mindspore_gl.utils import norm
-            >>> n_nodes = 2
-            >>> feat_size = 4
-            >>> edge_index = [[0, 1], [1, 0]]
-            >>> edge_index = ms.Tensor(edge_index, ms.int32)
-            >>> ones = ms.ops.Ones()
-            >>> feat = ones((n_nodes, feat_size), ms.float32)
-            >>> edge_index, edge_weight = norm(edge_index, n_nodes)
-            >>> feat = ones((n_nodes, feat_size), ms.float32)
-            >>> checonv = ChebConv(in_channels=feat_size, out_channels=4, k=3)
-            >>> res = checonv(feat, edge_weight, *graph_field.get_graph())
-            >>> print(res.shape)
-            (2, 4)
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
+    Examples:
+        >>> import mindspore as ms
+        >>> from mindspore_gl.nn import ChebConv
+        >>> from mindspore_gl import GraphField
+        >>> from mindspore_gl.utils import norm
+        >>> n_nodes = 2
+        >>> feat_size = 4
+        >>> edge_index = [[0, 1], [1, 0]]
+        >>> edge_index = ms.Tensor(edge_index, ms.int32)
+        >>> ones = ms.ops.Ones()
+        >>> feat = ones((n_nodes, feat_size), ms.float32)
+        >>> edge_index, edge_weight = norm(edge_index, n_nodes)
+        >>> feat = ones((n_nodes, feat_size), ms.float32)
+        >>> checonv = ChebConv(in_channels=feat_size, out_channels=4, k=3)
+        >>> res = checonv(feat, edge_weight, *graph_field.get_graph())
+        >>> print(res.shape)
+        (2, 4)
         """
     def __init__(self, in_channels: int, out_channels: int, k: int, bias: bool = True):
         super(ChebConv, self).__init__()

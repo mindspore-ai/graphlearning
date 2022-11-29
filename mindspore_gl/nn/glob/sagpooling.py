@@ -22,22 +22,23 @@ from mindspore_gl.nn.conv import GCNConv2
 from .. import GNNCell
 
 class SAGPooling(GNNCell):
-    r"""The self-attention pooling operator from the `"Self-Attention Graph
-    Pooling" <https://arxiv.org/abs/1904.08082>`_ and `"Understanding
-    Attention and Generalization in Graph Neural Networks"
-    <https://arxiv.org/abs/1905.02850>`_ papers
+    r"""
+    The self-attention pooling operator from the `Self-Attention Graph
+    Pooling <https://arxiv.org/abs/1904.08082>`_ and `Understanding
+    Attention and Generalization in Graph Neural Networks
+    <https://arxiv.org/abs/1905.02850>`_ papers.
 
     if :obj:`min_score` :math:`\tilde{\alpha}` is :obj:`None`:
 
-        .. math::
-            \mathbf{y} &= \textrm{GNN}(\mathbf{X}, \mathbf{A})
+    .. math::
+        \mathbf{y} &= \textrm{GNN}(\mathbf{X}, \mathbf{A})
 
-            \mathbf{i} &= \mathrm{top}_k(\mathbf{y})
+        \mathbf{i} &= \mathrm{top}_k(\mathbf{y})
 
-            \mathbf{X}^{\prime} &= (\mathbf{X} \odot
-            \mathrm{tanh}(\mathbf{y}))_{\mathbf{i}}
+        \mathbf{X}^{\prime} &= (\mathbf{X} \odot
+        \mathrm{tanh}(\mathbf{y}))_{\mathbf{i}}
 
-            \mathbf{A}^{\prime} &= \mathbf{A}_{\mathbf{i},\mathbf{i}}
+        \mathbf{A}^{\prime} &= \mathbf{A}_{\mathbf{i},\mathbf{i}}
 
     Args:
         in_channels (int): Size of each input sample.
@@ -74,7 +75,7 @@ class SAGPooling(GNNCell):
         TypeError: If `in_feat_size` or `out_size` is not an int.
 
     Supported Platforms:
-         ``GPU`` ``Ascend``
+        ``GPU`` ``Ascend``
 
     Examples:
         >>> import numpy as np
