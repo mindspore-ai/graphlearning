@@ -51,7 +51,7 @@ class AGNNConv(GNNCell):
         TypeError: If 'learn_beta' is not a bool.
 
     Supported Platforms:
-        ``Ascend```GPU``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import mindspore as ms

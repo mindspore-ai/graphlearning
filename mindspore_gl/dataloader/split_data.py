@@ -21,7 +21,7 @@ def split_data(x, val_ratio=0.05, test_ratio=0.1, graph_type='undirected'):
     Cut the training set into training set, validation set and test set according to the proportion of user input,
     and perform graph reconstruction on the training set, and then return
 
-    Args：
+    Args:
         x: Graph Structured Dataset
         val_ratio(float): Validation set proportion
         test_ratio(float): Test set proportion
@@ -39,7 +39,7 @@ def split_data(x, val_ratio=0.05, test_ratio=0.1, graph_type='undirected'):
         >>> ds = CoraV2('data_path')
         >>> adj_coo, train, val, test = split_data(ds)
         >>> print(train.shape, val.shape, test.shape)
-            (11684, 2) (263, 2) (527, 2)
+        (11684, 2) (263, 2) (527, 2)
     """
     col = x.adj_coo.col
     row = x.adj_coo.row

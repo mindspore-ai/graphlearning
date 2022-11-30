@@ -88,68 +88,69 @@ class TemporalConv(ms.nn.Cell):
         return h
 
 class STConv(GNNCell):
-    r"""STGCN layer
-        from the paper `A deep learning framework for traffic forecasting
-        arXiv preprint arXiv:1709.04875, 2017.`_.
-        The STGCN layer contains 2 temporal convolution layer and 1
-        graph convolution layer (ChebyNet).
+    r"""
+    STGCN layer
+    from the paper `A deep learning framework for traffic forecasting
+    arXiv preprint arXiv:1709.04875, 2017.`_.
+    The STGCN layer contains 2 temporal convolution layer and 1
+    graph convolution layer (ChebyNet).
 
-        Args:
-            num_nodes (int): number of nodes.
-            in_channels (int): Input node feature size.
-            hidden_channels (int): hidden feature size.
-            out_channels (int): Output node feature size.
-            kernel_size (int): Convolutional kernel size. Default: 3
-            k (int): Chebyshev filter size. Default: 3
-            bias (bool): Whether use bias. Default: True.
+    Args:
+        num_nodes (int): number of nodes.
+        in_channels (int): Input node feature size.
+        hidden_channels (int): hidden feature size.
+        out_channels (int): Output node feature size.
+        kernel_size (int): Convolutional kernel size. Default: 3
+        k (int): Chebyshev filter size. Default: 3
+        bias (bool): Whether use bias. Default: True.
 
-        Inputs:
-            - **x** (Tensor) - The input node features. The shape is :math:`(B, T, N, (D_{in}))`
-              where :math:`B` is the size of batch,:math:`T` is the number of input time steps,
-              :math:`N` is the number of nodes,
-              :math:`(D_{in})` should be equal to `in_channels` in `Args`.
-            - **edge_weight** (Tensor) - Edge weights. The shape is :math:`(N\_e,)`
-              where :math:`N\_e` is the number of edges.
-            - **g** (Graph) - The input graph.
+    Inputs:
+        - **x** (Tensor) - The input node features. The shape is :math:`(B, T, N, (D_{in}))`
+          where :math:`B` is the size of batch,:math:`T` is the number of input time steps,
+          :math:`N` is the number of nodes,
+          :math:`(D_{in})` should be equal to `in_channels` in `Args`.
+        - **edge_weight** (Tensor) - Edge weights. The shape is :math:`(N\_e,)`
+          where :math:`N\_e` is the number of edges.
+        - **g** (Graph) - The input graph.
 
-        Outputs:
-            Tensor, output node features with shape of :math:`(B, D_{out}, N, T)`,
-            where :math:`B` is the size of batch, :math:`(D_{out})` should be the same as
-            `out_channels` in `Args`, :math:`N` is the number of nodes,
-            :math:`T` is the number of input time steps.
+    Outputs:
+        Tensor, output node features with shape of :math:`(B, D_{out}, N, T)`,
+        where :math:`B` is the size of batch, :math:`(D_{out})` should be the same as
+        `out_channels` in `Args`, :math:`N` is the number of nodes,
+        :math:`T` is the number of input time steps.
 
-        Raises:
-            TypeError: If `num_nodes` or `in_channels` or `out_channels` or `hidden_channels`
+    Raises:
+        TypeError: If `num_nodes` or `in_channels` or `out_channels` or `hidden_channels`
             or `kernel_size` or is `k` not an int.
-            TypeError: If `bias` is not a bool.
+        TypeError: If `bias` is not a bool.
 
-        Supported Platforms:
-         ``GPU`` ``Ascend``
+    Supported Platforms:
+        ``GPU`` ``Ascend``
 
-         Examples:
-            >>> import numpy as np
-            >>> import mindspore as ms
-            >>> from mindspore_gl.nn.temporal import STConv
-            >>> from mindspore_gl import GraphField
-            >>> from mindspore_gl.graph import norm
-            >>> n_nodes = 4
-            >>> n_edges = 6
-            >>> feat_size = 2
-            >>> edge_attr = ms.Tensor([1, 1, 1, 1, 1, 1], ms.float32)
-            >>> edge_index = ms.Tensor([[1, 1, 2, 2, 3, 3],
-            >>>                         [0, 2, 1, 3, 0, 1]], ms.int32)
-            >>> edge_index, edge_weight = norm(edge_index, n_nodes, edge_attr, 'sym')
-            >>> edge_weight = ms.ops.Reshape()(edge_weight, ms.ops.Shape()(edge_weight) + (1,))
-            >>> batch_size = 2
-            >>> input_time_steps = 5
-            >>> feat = ms.Tensor(np.ones((batch_size, input_time_steps, n_nodes, feat_size)), ms.float32)
-            >>> graph_field = GraphField(edge_index[0], edge_index[1], n_nodes, n_edges)
-            >>> stconv = STConv(num_nodes=n_nodes, in_channels=feat_size,
-            >>>                 hidden_channels=3, out_channels=2,
-            >>>                 kernel_size=2, k=2)
-            >>> out = stconv(feat, edge_weight, *graph_field.get_graph())
-            >>> print(out.shape)
-            (2, 3, 4, 2)
+        Examples:
+        >>> import numpy as np
+        >>> import mindspore as ms
+        >>> from mindspore_gl.nn.temporal import STConv
+        >>> from mindspore_gl import GraphField
+        >>> from mindspore_gl.graph import norm
+        >>> n_nodes = 4
+        >>> n_edges = 6
+        >>> feat_size = 2
+        >>> edge_attr = ms.Tensor([1, 1, 1, 1, 1, 1], ms.float32)
+        >>> edge_index = ms.Tensor([[1, 1, 2, 2, 3, 3],
+        >>>                         [0, 2, 1, 3, 0, 1]], ms.int32)
+        >>> edge_index, edge_weight = norm(edge_index, n_nodes, edge_attr, 'sym')
+        >>> edge_weight = ms.ops.Reshape()(edge_weight, ms.ops.Shape()(edge_weight) + (1,))
+        >>> batch_size = 2
+        >>> input_time_steps = 5
+        >>> feat = ms.Tensor(np.ones((batch_size, input_time_steps, n_nodes, feat_size)), ms.float32)
+        >>> graph_field = GraphField(edge_index[0], edge_index[1], n_nodes, n_edges)
+        >>> stconv = STConv(num_nodes=n_nodes, in_channels=feat_size,
+        >>>                 hidden_channels=3, out_channels=2,
+        >>>                 kernel_size=2, k=2)
+        >>> out = stconv(feat, edge_weight, *graph_field.get_graph())
+        >>> print(out.shape)
+        (2, 3, 4, 2)
     """
     def __init__(self,
                  num_nodes: int,
