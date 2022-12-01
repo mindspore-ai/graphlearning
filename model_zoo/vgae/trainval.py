@@ -127,7 +127,7 @@ def main():
                                                "UnsortedSegmentSum, GatherNd --enable_recompute_fusion=false "
                                                "--enable_parallel_fusion=true ")
     else:
-        context.set_context(device_target="GPU", mode=context.PYNATIVE_MODE)
+        context.set_context(device_target="GPU", mode=context.GRAPH_MODE)
 
     if args.profile:
         ms_profiler = Profiler(subgraph="ALL", is_detail=True, is_show_op_path=False, output_path="./prof_result")
@@ -207,6 +207,8 @@ def main():
 
     auc_score, ap_score = get_auc_score(out.asnumpy(), test, test_false)
     print('Test Auc score:', auc_score, "AP score:", ap_score)
+
+    ms.export(net, node_feat, in_deg, out_deg, index, *g.get_graph(), file_name="vgae_model", file_format="MINDIR")
 
     if args.profile:
         ms_profiler.analyse()

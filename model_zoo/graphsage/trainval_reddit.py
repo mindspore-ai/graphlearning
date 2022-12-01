@@ -106,6 +106,7 @@ def main():
             correct_prediction += len(np.nonzero(np.equal(predict, label))[0])
             total_prediction += len(seeds_idx)
         print(f"test accuracy : {correct_prediction / total_prediction}")
+    ms.export(model, nid_feat, edges, n_nodes, n_edges, file_name="sage_model", file_format="MINDIR")
 
     if args.profile:
         ms_profiler.analyse()

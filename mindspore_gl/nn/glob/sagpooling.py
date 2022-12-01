@@ -62,14 +62,14 @@ class SAGPooling(GNNCell):
         - **g** (BatchedGraph) - The input graph.
 
     Outputs:
-        - **x** (Tensor) - The updated node features. The shape is :math: `2, M, D_{out}`
-          where :math:`M` equals to `perm_num` in `Inputs`
-          and :math: `D_{out}` equals to `D` in `Inputs`.
+        - **x** (Tensor) - The updated node features. The shape is :math:`(2, M, D_{out})`,
+          where :math:`M` equals to `perm_num` in `Inputs`,
+          and :math:`D_{out}` equals to `D` in `Inputs`.
         - **src_perm** (Tensor) - The updated src nodes.
         - **dst_perm** (Tensor) - The updated dst nodes.
-        - **perm** (Tensor) - The node index for topk nodes before updating node index. The shape is :math: `M`
+        - **perm** (Tensor) - The node index for topk nodes before updating node index. The shape is :math:`M`,
           where :math:`M` equals to `perm_num` in `Inputs`.
-        - **perm_score (Tensor) - The projection score for updated nodes.
+        - **perm_score** (Tensor) - The projection score for updated nodes.
 
     Raises:
         TypeError: If `in_feat_size` or `out_size` is not an int.
