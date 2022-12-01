@@ -33,7 +33,7 @@ def split_data(x, val_ratio=0.05, test_ratio=0.1, graph_type='undirected'):
         val(array): Validation set positive example,shape:(val_len, 2)
         test(array): Test set positive examples,shape:(test_len, 2)
 
-    Example:
+    Examples:
         >>> from util import split_data
         >>> from mindspore_gl.dataset import CoraV2
         >>> ds = CoraV2('data_path')

@@ -54,8 +54,8 @@ class ChebConv(GNNCell):
         - **x** (Tensor) - The input node features. The shape is :math:`(N, D_{in})`
           where :math:`N` is the number of nodes,
           and :math:`D_{in}` should be equal to `in_channels` in `Args`.
-        - **edge_weight** (Tensor) - Edge weights. The shape is :math:'(N\_e,)'
-          where :math:'N\_e' is the number of edges.
+        - **edge_weight** (Tensor) - Edge weights. The shape is :math:`(N\_e,)`
+          where :math:`N\_e` is the number of edges.
         - **g** (Graph) - The input graph.
 
     Outputs:

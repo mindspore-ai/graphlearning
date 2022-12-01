@@ -32,11 +32,11 @@ class MaxPooling(GNNCell):
         - **g** (BatchedGraph) - The input graph.
 
     Outputs:
-        - **x** (Tensor) - The output representation for graphs. The shape is :math: `2, D_{out}`
+        - **x** (Tensor) - The output representation for graphs. The shape is :math:`2, D_{out}`
           where :math:`D_{out}` is the feature size of nodes
 
     Supported Platforms:
-         ``GPU`` ``Ascend``
+        ``GPU`` ``Ascend``
 
     Examples:
         >>> import numpy as np

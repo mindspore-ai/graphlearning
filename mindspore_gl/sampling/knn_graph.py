@@ -35,15 +35,15 @@ def knn_graph(feat: np.ndarray, k: int, dis: int = None, \
     Returns:
         coo, Rebuilt graph
 
-    Example:
+    Examples:
         >>> import numpy as np
         >>> from mindspore_gl.sampling import knn_graph
         >>> f = np.array([[1,2,3],[4,5,6],[7,8,9]], dtype=np.float32)
         >>> adj = knn_graph(f, 1)
         >>> print(adj)
-            (0, 1)  1.0
-            (1, 0)  1.0
-            (2, 1)  1.0
+        (0, 1)  1.0
+        (1, 0)  1.0
+        (2, 1)  1.0
     """
     if not isinstance(feat, np.ndarray):
         raise TypeError("The feat type is {},\
@@ -93,16 +93,16 @@ def distance(node_feat, edge_index, norm: bool = True, max_value=None):
     Returns:
         coo, adjacency matrix
 
-    Example:
-      >>> import numpy as np
-      >>> import scipy.sparse as sp
-      >>> from mindspore_gl.sampling import distance
-      >>> node_feat = ms.Tensor([[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 6]])
-      >>> edge_index = ms.Tensor([[0, 1], [2, 2]])
-      >>> adj = distance(node_feat, edge_index)
-      >>> print(adj)
-          (0, 2)  1.0
-          (1, 2)  0.5
+    Examples:
+        >>> import numpy as np
+        >>> import scipy.sparse as sp
+        >>> from mindspore_gl.sampling import distance
+        >>> node_feat = ms.Tensor([[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 6]])
+        >>> edge_index = ms.Tensor([[0, 1], [2, 2]])
+        >>> adj = distance(node_feat, edge_index)
+        >>> print(adj)
+        (0, 2)  1.0
+        (1, 2)  0.5
     """
     if not isinstance(node_feat, ms.Tensor):
         raise TypeError("The node_feat type is {},\

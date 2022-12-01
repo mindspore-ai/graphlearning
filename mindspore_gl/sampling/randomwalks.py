@@ -24,29 +24,29 @@ def random_walk_unbias_on_homo(homo_graph: MindHomoGraph,
                                seeds: np.ndarray,
                                walk_length: int):
     """
-    random walks on homo graph
+    random walks on homo graph.
 
     Args:
         homo_graph(MindHomoGraph): the source graph which is sampled from
         seeds(np.ndarray) : random seeds for sampling
         walk_length(int): sample path length
 
+    Returns:
+        array, sample node (len(seeds), walk_length)
+
     Raises:
         TypeError: If `walk_length` is not a positive integer.
         TypeError: If `seeds` is not numpy.ndarray int 32.
-
-    Returns:
-        array, sample node (len(seeds), walk_length)
 
     Supported Platforms:
         ``GPU`` ``Ascend``
 
     Examples:
         >>> import numpy as np
-        >>>import networkx
-        >>>from scipy.sparse import csr_matrix
-        >>>from mindspore_gl.graph.graph import MindHomoGraph, CsrAdj
-        >>>from mindspore_gl.sampling.randomwalks import random_walk_unbias_on_homo
+        >>> import networkx
+        >>> from scipy.sparse import csr_matrix
+        >>> from mindspore_gl.graph.graph import MindHomoGraph, CsrAdj
+        >>> from mindspore_gl.sampling.randomwalks import random_walk_unbias_on_homo
         >>> node_count = 10000
         >>> edge_prob = 0.1
         >>> graph = networkx.generators.random_graphs.fast_gnp_random_graph(node_count, edge_prob)

@@ -48,14 +48,14 @@ class SAGEConv(GNNCell):
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N,D\_in)`
-          where :math:'N' is the number of nodes and :math:`D\_in` could be of any shape.
-        - **edge_weight** (Tensor) - Edge weights. The shape is :math:'(N\_e,)'
-          where :math:'N\_e' is the number of edges.
+          where :math:`N` is the number of nodes and :math:`D\_in` could be of any shape.
+        - **edge_weight** (Tensor) - Edge weights. The shape is :math:`(N\_e,)`
+          where :math:`N\_e` is the number of edges.
         - **g** (Graph) - The input graph.
 
     Outputs:
-        Tensor, the output feature of shape :math:'(N,D\_out)'
-        where :math:'N' is the number of nodes and :math:`D\_out` could be of any shape.
+        Tensor, the output feature of shape :math:`(N,D\_out)`.
+        where :math:`N` is the number of nodes and :math:`D\_out` could be of any shape.
 
     Raises:
         TypeError: If `in_feat_size` or `out_feat_size` is not an int.
@@ -65,7 +65,7 @@ class SAGEConv(GNNCell):
         TypeError: if `norm` type is not ms.nn.Cell
 
     Supported Platforms:
-         ``GPU`` ``Ascend``
+        ``GPU`` ``Ascend``
 
     Examples:
        >>> import mindspore as ms

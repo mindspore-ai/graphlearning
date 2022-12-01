@@ -62,7 +62,7 @@ class EGConv(GNNCell):
         ValueError: If `aggregators` is not in ['sum', 'mean', 'max', 'min', 'symnorm', 'var', 'std'].
 
     Supported Platforms:
-         ``Ascend`` ``GPU``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import mindspore as ms

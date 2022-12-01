@@ -68,11 +68,11 @@ def pca(matrix: np.ndarray, k: int = None, niter: int = 2, norm: bool = False):
     and will return the first k dimensionality-reduced features.
 
     Args:
-      matrix(ndarray): Input features, shape:(B, F)
-      k(int): target dimension for dimensionality reduction
-      niter(int): the number of subspace iterations to conduct \
-      and it must be a nonnegative integer.
-      norm(bool): Whether the output is normalized
+        matrix(ndarray): Input features, shape:(B, F)
+        k(int): target dimension for dimensionality reduction
+        niter(int): the number of subspace iterations to conduct
+            and it must be a nonnegative integer.
+        norm(bool): Whether the output is normalized
 
     Return:
         ndarray, Features after dimensionality reduction
@@ -82,18 +82,18 @@ def pca(matrix: np.ndarray, k: int = None, niter: int = 2, norm: bool = False):
         TypeError: If 'matrix' is not a ndarry.
         TypeError: If 'norm' is not a bool.
 
-    Example:
+    Examples:
         >>> import numpy as np
         >>> from mindspore_gl.utils import pca
         >>> X = np.array([[-1, 1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
         >>> data = pca(X, 1)
         >>> print(data)
-            [[ 0.33702252]
-            [ 2.22871406]
-            [ 3.6021826 ]
-            [-1.37346854]
-            [-2.22871406]
-            [-3.6021826 ]]
+        [[ 0.33702252]
+        [ 2.22871406]
+        [ 3.6021826 ]
+        [-1.37346854]
+        [-2.22871406]
+        [-3.6021826 ]]
     """
     if not isinstance(matrix, np.ndarray):
         raise TypeError("The matrix type is {},\

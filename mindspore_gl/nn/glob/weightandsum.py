@@ -32,14 +32,14 @@ class WeightAndSum(GNNCell):
         - **g** (BatchedGraph) - The input graph.
 
     Outputs:
-        - **x** (Tensor) - The output representation for graphs. The shape is :math: `2, D_{out}`
+        - **x** (Tensor) - The output representation for graphs. The shape is :math:`2, D_{out}`
           where :math:`D_{out}` is the feature size of nodes
 
     Raises:
         TypeError: If `in_feat_size` is not an int.
 
     Supported Platforms:
-         ``GPU`` ``Ascend``
+        ``GPU`` ``Ascend``
 
     Examples:
         >>> import numpy as np

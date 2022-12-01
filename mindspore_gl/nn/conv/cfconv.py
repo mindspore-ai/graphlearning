@@ -57,9 +57,9 @@ class CFConv(GNNCell):
 
     Inputs:
         - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,
-          and math:`*` could be of any shape.
+          and :math:`*` could be of any shape.
         - **edge_feats** (Tensor): The input edge features. The shape is :math:`(M,*)` where :math:`M` is the number of
-          edges, and math:`*` could be of any shape.
+          edges, and :math:`*` could be of any shape.
         - **g** (Graph): The input graph.
 
     Outputs:

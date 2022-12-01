@@ -32,9 +32,6 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more
         re(str): type of input data
 
     Returns:
-        array, Negative sample edge set,shape:(num_neg_samples, 2)
-
-    Returns:
         array, Negative sample edge set,shape is (num_neg_samples, 2)
 
     Rasise:

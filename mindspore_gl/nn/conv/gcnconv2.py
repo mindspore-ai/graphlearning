@@ -51,7 +51,7 @@ class GCNConv2(GNNCell):
         TypeError: If `in_feat_size` or `out_size` is not an int.
 
     Supported Platforms:
-         ``GPU`` ``Ascend``
+        ``GPU`` ``Ascend``
 
     Examples:
         >>> import mindspore as ms
