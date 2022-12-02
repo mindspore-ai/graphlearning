@@ -133,7 +133,9 @@ setuptools.setup(
         'ast-decompiler>=0.3.2',
         'astpretty',
         'scikit-learn>=0.24.2',
-        'Cython'
+        'Cython',
+        'networkx>=2.6.3',
+        'rdkit>=2022.9.1'
     ],
     zip_safe=False,
     #################################
