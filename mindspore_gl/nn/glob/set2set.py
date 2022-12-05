@@ -47,14 +47,14 @@ class Set2Set(GNNCell):
         - **g** (BatchedGraph) - The input graph.
 
     Outputs:
-        - **x** (Tensor) - The output representation for graphs. The shape is :math: `2, D_{out}`
+        - **x** (Tensor) - The output representation for graphs. The shape is :math:`2, D_{out}`
           where :math:`D_{out}` is the double feature size of nodes
 
     Raises:
         TypeError: If `input_size` or `num_iters` or `num_layers` is not an int.
 
     Supported Platforms:
-         ``GPU`` ``Ascend``
+        ``GPU`` ``Ascend``
 
     Examples:
         >>> import numpy as np

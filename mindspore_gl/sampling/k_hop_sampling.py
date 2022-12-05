@@ -57,9 +57,8 @@ def k_hop_subgraph(node_idx, num_hops, adj_coo, node_count, relabel_nodes=False,
         ... relabel_nodes=True)
         >>> print(res)
         {'subset': array([0, 1, 2, 3, 4]), 'adj_coo': array([[0, 1, 1, 2, 3, 0, 3, 4],
-       [1, 0, 2, 1, 0, 3, 4, 3]]), 'inv': array([0, 3]), 'edge_mask': array([ True,  True,  True,  True,  True,  True,
-       True,  True, False, False])}
-
+        [1, 0, 2, 1, 0, 3, 4, 3]]), 'inv': array([0, 3]), 'edge_mask': array([ True,  True,  True,  True,  True,  True,
+        True,  True, False, False])}
     """
     if flow not in ["source_to_target", "target_to_source"]:
         raise ValueError("Aggregation type must be one of source_to_target or target_to_source")

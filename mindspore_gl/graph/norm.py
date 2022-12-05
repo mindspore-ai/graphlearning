@@ -21,28 +21,29 @@ from mindspore_gl.graph import add_self_loop
 def norm(edge_index, num_nodes, edge_weight=None, normalization='sym',
          lambda_max=None, batch=None):
     r"""
-     graph laplacian normalization
+    graph laplacian normalization
 
-    Inputs:
-        - **edge_index** (Tensor) - Edge index. The shape is :math:`(2, N\_e)`
-          where :math:`N\_e` is the number of edges.
-        - **num_nodes** (int) - Number of nodes.
-        - **edge_weight** (Tensor) - Edge weights. The shape is :math:`(N\_e)`
-          where :math:`N\_e` is the number of edges.
-        - **normalization** (str) - Normalization method.
-          1. :obj:`None`: No normalization
-          :math:`\mathbf{L} = \mathbf{D} - \mathbf{A}`
-          2. :obj:`"sym"`: Symmetric normalization
-          :math:`\mathbf{L} = \mathbf{I} - \mathbf{D}^{-1/2} \mathbf{A}
-          \mathbf{D}^{-1/2}`
-          3. :obj:`"rw"`: Random-walk normalization
-          :math:`\mathbf{L} = \mathbf{I} - \mathbf{D}^{-1} \mathbf{A}`
-        - **lambda_max** (int, float) - Lambda value of graph.
-        - **batch** (Tensor) - Batch vector.
+    Args:
+        edge_index (Tensor): Edge index. The shape is :math:`(2, N\_e)`
+            where :math:`N\_e` is the number of edges.
+        num_nodes (int): Number of nodes.
+        edge_weight (Tensor): Edge weights. The shape is :math:`(N\_e)`
+            where :math:`N\_e` is the number of edges.
+        normalization (str): Normalization method.
 
-    Outputs:
-         - **edge_index** (Tensor) - normalized edge_index.
-         - **edge_weight** (Tensor) - normalized edge_weight
+            1. :obj:`None`: No normalization
+               :math:`\mathbf{L} = \mathbf{D} - \mathbf{A}`
+            2. :obj:`"sym"`: Symmetric normalization
+               :math:`\mathbf{L} = \mathbf{I} - \mathbf{D}^{-1/2} \mathbf{A}
+               \mathbf{D}^{-1/2}`
+            3. :obj:`"rw"`: Random-walk normalization
+               :math:`\mathbf{L} = \mathbf{I} - \mathbf{D}^{-1} \mathbf{A}`
+        lambda_max (int, float): Lambda value of graph.
+        batch (Tensor): Batch vector.
+
+    Returns:
+        - **edge_index** (Tensor) - normalized edge_index.
+        - **edge_weight** (Tensor) - normalized edge_weight
 
     Raises:
         ValueError: if `normalization` not is None or sym or rw.

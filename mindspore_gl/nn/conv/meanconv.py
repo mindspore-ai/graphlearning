@@ -53,14 +53,14 @@ class MeanConv(GNNCell):
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N,D\_in)`
-          where :math:'N' is the number of nodes and :math:`D\_in` could be of any shape.
-        - **self_idx** (Tensor) - The node idx. The shape is :math:'(N\_v,)'
-          where :math:'N\_v' is the number of self nodes.
+          where :math:`N` is the number of nodes and :math:`D\_in` could be of any shape.
+        - **self_idx** (Tensor) - The node idx. The shape is :math:`(N\_v,)`
+          where :math:`N\_v` is the number of self nodes.
         - **g** (Graph) - The input graph.
 
     Outputs:
-        Tensor, the output feature of shape :math:'(N\_v,D\_out)'.
-        where :math:'N\_v' is the number of self nodes and :math:'D\_out' could be of any shape
+        Tensor, the output feature of shape :math:`(N\_v,D\_out)`.
+        where :math:`N\_v` is the number of self nodes and :math:`D\_out` could be of any shape
 
     Raises:
         SyntaxError: when aggregator type not supported.
@@ -71,7 +71,7 @@ class MeanConv(GNNCell):
         ValueError: If `activation` is not tanh or relu.
 
     Supported Platforms:
-         ``GPU`` ``Ascend``
+        ``GPU`` ``Ascend``
 
     Examples:
         >>> import mindspore as ms

@@ -36,14 +36,14 @@ class SortPooling(GNNCell):
         - **g** (BatchedGraph) - The input graph.
 
     Outputs:
-        - **x** (Tensor) - The output representation for graphs. The shape is :math: `2, D_{out}`
+        - **x** (Tensor) - The output representation for graphs. The shape is :math:`2, D_{out}`
           where :math:`D_{out}` is the double feature size of nodes.
 
     Raises:
         TypeError: If `k` is not an int.
 
     Supported Platforms:
-         ``GPU`` ``Ascend``
+        ``GPU`` ``Ascend``
 
     Examples:
         >>> import numpy as np

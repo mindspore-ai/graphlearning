@@ -38,11 +38,11 @@ class EDGEConv(GNNCell):
 
     Inputs:
         - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,
-          and math:`*` could be of any shape.
+          and :math:`*` could be of any shape.
         - **g** (Graph): The input graph.
 
     Outputs:
-        Tensor, output node features. The shape is :math: `(N, out_feat_size)`.
+        Tensor, output node features. The shape is :math:`(N, out_feat_size)`.
 
     Rasise:
         TypeError: If 'in_feat_size' is not a positive int.

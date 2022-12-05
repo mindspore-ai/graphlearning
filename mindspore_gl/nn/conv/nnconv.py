@@ -44,14 +44,14 @@ class NNConv(GNNCell):
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N,D\_in)`
-          where :math:'N' is the number of nodes and :math:`D\_in` could be of any shape.
-        - **edge_feat** (Tensor) - Edge featutes. The shape is :math:'(N\_e,F\_e)'
-          where :math:'N\_e' is the number of edges and :math:'F\_e' is the number of edge features.
+          where :math:`N` is the number of nodes and :math:`D\_in` could be of any shape.
+        - **edge_feat** (Tensor) - Edge featutes. The shape is :math:`(N\_e,F\_e)`
+          where :math:`N\_e` is the number of edges and :math:`F\_e` is the number of edge features.
         - **g** (Graph) - The input graph.
 
     Outputs:
-        Tensor, the output feature of shape :math:'(N,D\_out)'
-        where :math:'N' is the number of nodes and :math:`D\_out` could be of any shape.
+        Tensor, the output feature of shape :math:`(N,D\_out)`
+        where :math:`N` is the number of nodes and :math:`D\_out` could be of any shape.
 
     Raises:
         TypeError: if `edge_embed` type is not ms.nn.Cell or `aggregator_type` is not sum
@@ -59,7 +59,7 @@ class NNConv(GNNCell):
         TypeError: If `residual` or `bias` is not a bool.
 
     Supported Platforms:
-         ``GPU`` ``Ascend``
+        ``GPU`` ``Ascend``
 
     Examples:
         >>> import mindspore as ms
