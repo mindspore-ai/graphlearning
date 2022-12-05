@@ -51,8 +51,8 @@ class GATv2Conv(GNNCell):
         - **g** (Graph) - The input graph.
 
     Outputs:
-        Tensor, the output feature of shape :math:`(N,D_{out})` where :math:`D_{out}` should be equal to
-        :math:`D_{in} * num\_attn\_head`.
+        - Tensor, the output feature of shape :math:`(N,D_{out})` where :math:`D_{out}` should be equal to
+          :math:`D_{in} * num\_attn\_head`.
 
     Raises:
         TypeError: If `in_feat_size`, `out_size`, or `num_attn_head` is not an int.

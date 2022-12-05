@@ -63,9 +63,9 @@ class CFConv(GNNCell):
         - **g** (Graph): The input graph.
 
     Outputs:
-        Tensor, output node features. The shape is :math: `(N, out_size)`.
+        - Tensor, output node features. The shape is :math: `(N, out_size)`.
 
-    Rasise:
+    Raises:
         TypeError: If 'node_feat_size' is not a positive int.
         TypeError: If 'edge_feat_size' is not a positive int.
         TypeError: If 'hidden_size' is not a positive int.

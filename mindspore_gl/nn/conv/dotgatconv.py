@@ -45,9 +45,9 @@ class DOTGATConv(GNNCell):
         - **g** (Graph): The input graph.
 
     Outputs:
-        Tensor, output node features. The shape is :math: `(N, num_heads, out_feat_size)`.
+        - Tensor, output node features. The shape is :math: `(N, num_heads, out_feat_size)`.
 
-    Rasise:
+    Raises:
         TypeError: If 'in_feat_size' is not a positive int.
         TypeError: If 'out_feat_size' is not a positive int.
         TypeError: If 'num_heads' is not a positive int.

@@ -15,6 +15,7 @@
 """GATConv Layer"""
 import math
 import mindspore as ms
+from mindspore import nn
 from mindspore._checkparam import Validator
 from mindspore.common.initializer import initializer
 from mindspore.common.initializer import XavierUniform
@@ -50,13 +51,13 @@ class GATConv(GNNCell):
         - **g** (Graph) - The input graph.
 
     Outputs:
-        Tensor, the output feature of shape :math:`(N,D_{out})` where :math:`D_{out}` should be equal to
-        :math:`D_{in} * num\_attn\_head`.
+        - Tensor, the output feature of shape :math:`(N,D_{out})` where :math:`D_{out}` should be equal to
+          :math:`D_{in} * num\_attn\_head`.
 
     Raises:
         TypeError: If `in_feat_size`, `out_size`, or `num_attn_head` is not an int.
         TypeError: If `input_drop_out_rate`, `attn_drop_out_rate`, or `leaky_relu_slope` is not a float.
-        TypeError: If `activation` is not a Cell.
+        TypeError: If `activation` is not a mindspore.nn.Cell.
         ValueError: If `input_drop_out_rate` or `attn_drop_out_rate` is not in range (0.0, 1.0]
 
     Supported Platforms:
@@ -103,6 +104,9 @@ class GATConv(GNNCell):
         if attn_drop_out_rate <= 0.0 or attn_drop_out_rate > 1.0:
             raise ValueError(f"For '{self.cls_name}', the 'attn_drop_out_rate' should be a number in range (0.0, 1.0],"
                              f"but got {attn_drop_out_rate}.")
+        if activation:
+            if not isinstance(activation, nn.Cell):
+                raise TypeError("activation type should be ms.nn.Cell")
         self.reshape = ms.ops.Reshape()
         gain = math.sqrt(2)  # gain for relu
         self.fc = ms.nn.Dense(in_feat_size, out_size * num_attn_head, weight_init=XavierUniform(gain), has_bias=False)

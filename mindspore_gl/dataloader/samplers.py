@@ -19,7 +19,7 @@ import mindspore.dataset as ds
 
 class RandomBatchSampler(ds.Sampler):
     """
-    Random Batched Node Sampler, random sample nodes form graph. The reminder sample will be dropped.
+    Random Batched Node Sampler, random sample nodes form graph. The remained sample will be dropped.
 
     Args:
         data_source(Union[List, Tuple, Iterable]): data source sample from
@@ -51,7 +51,7 @@ class RandomBatchSampler(ds.Sampler):
                             "but got batch_size = {}.".format(self.batch_size))
         self.epoch = 1
 
-    def node_iter(self):
+    def _node_iter(self):
         data_length = len(self.data_source)
         for i in range(0, data_length, self.batch_size):
             # Drop reminder
@@ -63,7 +63,7 @@ class RandomBatchSampler(ds.Sampler):
         self.epoch += 1
         random.seed(self.epoch)
         random.shuffle(self.data_source)
-        return self.node_iter()
+        return self._node_iter()
 
     def __len__(self):
         return len(self.data_source) // self.batch_size

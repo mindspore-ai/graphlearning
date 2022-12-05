@@ -47,7 +47,7 @@ class APPNPConv(GNNCell):
         - **g** (Graph): The input graph.
 
     Outputs:
-        Tensor, the output feature of shape :math:`(N,*)` where :math:`*` should be the same as input shape.
+        - Tensor, the output feature of shape :math:`(N,*)` where :math:`*` should be the same as input shape.
 
     Raises:
         TypeError: If `k` is not an int.

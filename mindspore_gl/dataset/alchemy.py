@@ -13,7 +13,7 @@
 # limitations under the License.
 # ============================================================================
 """Alchemy Dataset"""
-from typing import Optional, Union
+from typing import Union
 import pathlib
 from collections import defaultdict
 import numpy as np
@@ -30,6 +30,7 @@ class Alchemy:
 
     Args:
         root(str): path to the root directory that contains alchemy_with_mask.npz.
+        datasize(int): train data size
 
     Raises:
         TypeError: if `root` is not a str.
@@ -56,7 +57,8 @@ class Alchemy:
     - Edges: 10.02
     - Number of quantum mechanical properties: 12
 
-    Dataset can be download here: <https://alchemy.tencent.com/data/dev_v20190730.zip> & <https://alchemy.tencent.com/data/valid_v20190730.zip>
+    Dataset can be download here: `Alchemy dev <https://alchemy.tencent.com/data/dev_v20190730.zip>`_ &
+                                  `Alchemy valid <https://alchemy.tencent.com/data/valid_v20190730.zip>`_
     You can organize the dataset files into the following directory structure and read by `preprocess` API.
 
     .. code-block::
@@ -80,7 +82,7 @@ class Alchemy:
     fdef_name = pathlib.Path(RDConfig.RDDataDir) / 'BaseFeatures.fdef'
     chem_feature_factory = ChemicalFeatures.BuildFeatureFactory(str(fdef_name))
 
-    def __init__(self, root: Optional[str] = None, datasize=10000):
+    def __init__(self, root, datasize=10000):
         if not isinstance(root, str):
             raise TypeError(f"For '{self.cls_name}', the 'root' should be a str, "
                             f"but got {type(root)}.")
@@ -149,7 +151,7 @@ class Alchemy:
                     train_mask.append(1)
                     val_mask.append(0)
                 count += 1
-                num_atoms, node_feat, edges, edge_feat, label = self.file_to_graph(sdf_file)
+                num_atoms, node_feat, edges, edge_feat, label = self._file_to_graph(sdf_file)
                 if edge_feat is None:
                     continue
                 adj_coo_row += edges[0]
@@ -177,7 +179,7 @@ class Alchemy:
                  node_feat=node_feat_array, edge_feat=edges_feat_array, graph_label=graph_label_array,
                  graph_edges=graph_edges_list, graph_nodes=graph_nodes_list)
 
-    def file_to_graph(self, sdf_file):
+    def _file_to_graph(self, sdf_file):
         """
         Read sdf file and convert to feature data
         """
@@ -185,18 +187,18 @@ class Alchemy:
         mol = Chem.MolFromMolBlock(sdf, removeHs=False)
 
         num_atoms = mol.GetNumAtoms()
-        atom_feats = self.alchemy_nodes(mol)
+        atom_feats = self._alchemy_nodes(mol)
 
         edges = [x for x in range(num_atoms) for y in range(num_atoms - 1)],\
                 [y for x in range(num_atoms) for y in range(num_atoms) if x != y]
 
-        bond_feats = self.alchemy_edges(mol)
+        bond_feats = self._alchemy_edges(mol)
 
         label = self.target.loc[int(sdf_file.stem)].tolist()
         label = np.array(label).reshape(1, -1)
         return num_atoms, atom_feats, edges, bond_feats, label
 
-    def alchemy_nodes(self, mol):
+    def _alchemy_nodes(self, mol):
         """
         Featurization for all atoms in a molecule
         """
@@ -237,8 +239,9 @@ class Alchemy:
             atom_feats.append(h_u)
         return atom_feats
 
-    def alchemy_edges(self, mol):
-        """Featurization for all bonds in a molecule. The bond indices
+    def _alchemy_edges(self, mol):
+        """
+        Featurization for all bonds in a molecule. The bond indices
         """
         edges_feats = []
         num_atoms = mol.GetNumAtoms()
@@ -273,7 +276,7 @@ class Alchemy:
         Feature size of each node
 
         Returns:
-            int, the number of feature size
+            - int, the number of feature size
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -287,7 +290,7 @@ class Alchemy:
        Number of label classes
 
        Returns:
-           int, the number of classes
+           - int, the number of classes
 
        Examples:
            >>> #dataset is an instance object of Dataset
@@ -301,7 +304,7 @@ class Alchemy:
         Graph label size
 
         Returns:
-            int, size of graph label
+            - int, size of graph label
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -315,7 +318,7 @@ class Alchemy:
         Mask of training nodes
 
         Returns:
-            numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -331,7 +334,7 @@ class Alchemy:
         Mask of validation nodes
 
         Returns:
-            numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -347,7 +350,7 @@ class Alchemy:
         Train graph id
 
         Returns:
-            numpy.ndarray, array of train graph id
+            - numpy.ndarray, array of train graph id
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -361,7 +364,7 @@ class Alchemy:
         Valid graph id
 
         Returns:
-            numpy.ndarray, array of valid graph id
+            - numpy.ndarray, array of valid graph id
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -375,7 +378,7 @@ class Alchemy:
         Accumulative graph nodes count
 
         Returns:
-            numpy.ndarray, array of accumulative nodes
+            - numpy.ndarray, array of accumulative nodes
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -391,7 +394,7 @@ class Alchemy:
         Accumulative graph edges count
 
         Returns:
-            numpy.ndarray, array of accumulative edges
+            - numpy.ndarray, array of accumulative edges
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -407,7 +410,7 @@ class Alchemy:
         Total graph numbers
 
         Returns:
-            int, numbers of graph
+            - int, numbers of graph
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -421,7 +424,7 @@ class Alchemy:
         Node features
 
         Returns:
-            numpy.ndarray, array of node feature
+            - numpy.ndarray, array of node feature
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -438,7 +441,7 @@ class Alchemy:
         Edge features
 
         Returns:
-            numpy.ndarray, array of edge feature
+            - numpy.ndarray, array of edge feature
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -450,9 +453,27 @@ class Alchemy:
         return self._edge_feat
 
     def graph_feat(self, graph_idx):
+        """
+        graph node features
+
+        Args:
+            graph_idx: index of graph
+
+        Returns:
+            - numpy.ndarray, node feature of graph
+        """
         return self.node_feat[self.graph_nodes[graph_idx]: self.graph_nodes[graph_idx + 1]]
 
     def graph_edge_feat(self, graph_idx):
+        """
+        graph edge features
+
+        Args:
+            graph_idx: index of graph
+
+        Returns:
+            - numpy.ndarray, edge feature of graph
+        """
         return self.edge_feat[self.graph_edges[graph_idx]: self.graph_edges[graph_idx + 1]]
 
     @property
@@ -461,7 +482,7 @@ class Alchemy:
         Graph label
 
         Returns:
-            numpy.ndarray, array of graph label
+            - numpy.ndarray, array of graph label
 
         Examples:
             >>> #dataset is an instance object of Dataset

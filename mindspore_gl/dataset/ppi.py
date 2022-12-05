@@ -16,7 +16,7 @@
 #pylint: disable=W0702
 import os
 import os.path as osp
-from typing import Optional, Union
+from typing import Union
 import json
 import numpy as np
 import networkx as nx
@@ -79,7 +79,7 @@ class PPI:
             └── test_graph.json
     """
 
-    def __init__(self, root: Optional[str] = None):
+    def __init__(self, root):
         if not isinstance(root, str):
             raise TypeError(f"For '{self.cls_name}', the 'root' should be a str, "
                             f"but got {type(root)}.")
@@ -195,7 +195,7 @@ class PPI:
         Feature size of each node
 
         Returns:
-            int, the number of feature size
+            - int, the number of feature size
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -209,7 +209,7 @@ class PPI:
         Number of label classes
 
         Returns:
-            int, the number of classes
+            - int, the number of classes
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -223,7 +223,7 @@ class PPI:
         Mask of training nodes
 
         Returns:
-            numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -239,7 +239,7 @@ class PPI:
        Mask of test nodes
 
        Returns:
-           numpy.ndarray, array of mask
+           - numpy.ndarray, array of mask
 
        Examples:
            >>> #dataset is an instance object of Dataset
@@ -255,7 +255,7 @@ class PPI:
         Mask of validation nodes
 
         Returns:
-            numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -271,7 +271,7 @@ class PPI:
         Accumulative graph nodes count
 
         Returns:
-            numpy.ndarray, array of accumulative nodes
+            - numpy.ndarray, array of accumulative nodes
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -292,7 +292,7 @@ class PPI:
         Accumulative graph edges count
 
         Returns:
-            numpy.ndarray, array of accumulative edges
+            - numpy.ndarray, array of accumulative edges
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -308,7 +308,7 @@ class PPI:
         Train graph id
 
         Returns:
-            numpy.ndarray, array of train graph id
+            - numpy.ndarray, array of train graph id
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -322,7 +322,7 @@ class PPI:
         Valid graph id
 
         Returns:
-            numpy.ndarray, array of valid graph id
+            - numpy.ndarray, array of valid graph id
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -336,7 +336,7 @@ class PPI:
         Test graph id
 
         Returns:
-            numpy.ndarray, array of test graph id
+            - numpy.ndarray, array of test graph id
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -350,7 +350,7 @@ class PPI:
         Total graph numbers
 
         Returns:
-            int, numbers of graph
+            - int, numbers of graph
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -364,7 +364,7 @@ class PPI:
         Node features
 
         Returns:
-            numpy.ndarray, array of node feature
+            - numpy.ndarray, array of node feature
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -381,7 +381,7 @@ class PPI:
         Ground truth labels of each node
 
         Returns:
-            numpy.ndarray, array of node label
+            - numpy.ndarray, array of node label
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -393,9 +393,25 @@ class PPI:
         return self._node_label
 
     def graph_feat(self, graph_idx):
+        """
+        graph features
+        Args:
+            graph_idx: index of graph
+
+        Returns:
+            - numpy.ndarray, node feature of graph
+        """
         return self.node_feat[self.graph_nodes[graph_idx]: self.graph_nodes[graph_idx + 1]]
 
     def graph_label(self, graph_idx):
+        """
+        graph label
+        Args:
+            graph_idx: index of graph
+
+        Returns:
+            - numpy.ndarray, node label of graph
+        """
         return self.node_label[self.graph_nodes[graph_idx]: self.graph_nodes[graph_idx + 1]]
 
     def __getitem__(self, idx) -> Union[MindHomoGraph, np.ndarray]:

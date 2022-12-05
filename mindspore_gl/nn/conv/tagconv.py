@@ -48,13 +48,13 @@ class TAGConv(GNNCell):
         - **g** (Graph) - The input graph.
 
     Outputs:
-        Tensor, output node features with shape of :math:`(N, D_{out})`, where :math:`(D_{out})` should be the same as
-        `out_feat_size` in `Args`.
+        - Tensor, output node features with shape of :math:`(N, D_{out})`, where :math:`(D_{out})` should be the same as
+          `out_feat_size` in `Args`.
 
     Raises:
         TypeError: If `in_feat_size` or `out_feat_size` or `num_hops` is not an int.
         TypeError: If `bias` is not a bool.
-        TypeError: If `activation` is not a Cell.
+        TypeError: If `activation` is not a mindspore.nn.Cell.
 
     Supported Platforms:
          ``GPU`` ``Ascend``

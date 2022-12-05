@@ -50,11 +50,11 @@ class NNConv(GNNCell):
         - **g** (Graph) - The input graph.
 
     Outputs:
-        Tensor, the output feature of shape :math:`(N,D\_out)`
-        where :math:`N` is the number of nodes and :math:`D\_out` could be of any shape.
+        - Tensor, the output feature of shape :math:`(N,D\_out)`
+          where :math:`N` is the number of nodes and :math:`D\_out` could be of any shape.
 
     Raises:
-        TypeError: if `edge_embed` type is not ms.nn.Cell or `aggregator_type` is not sum
+        TypeError: if `edge_embed` type is not mindspore.nn.Cell or `aggregator_type` is not sum
         TypeError: If `in_feat_size` or `out_feat_size` is not an int.
         TypeError: If `residual` or `bias` is not a bool.
 

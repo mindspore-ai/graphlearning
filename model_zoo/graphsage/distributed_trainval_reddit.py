@@ -25,7 +25,7 @@ from mindspore.nn import Cell
 from mindspore.profiler import Profiler
 from mindspore.communication import init, get_rank, get_group_size
 
-from mindspore_gl.dataset.reddit import Reddit
+from mindspore_gl.dataset import Reddit
 from mindspore_gl.dataloader.samplers import RandomBatchSampler, DistributeRandomBatchSampler
 from mindspore_gl.dataloader.dataloader import DataLoader
 

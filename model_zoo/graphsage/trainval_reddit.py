@@ -23,7 +23,7 @@ import mindspore as ms
 from mindspore.nn import Cell
 from mindspore.profiler import Profiler
 
-from mindspore_gl.dataset.reddit import Reddit
+from mindspore_gl.dataset import Reddit
 from mindspore_gl.dataloader.samplers import RandomBatchSampler
 from mindspore_gl.dataloader.dataloader import DataLoader
 

@@ -81,8 +81,8 @@ class Set2Set(GNNCell):
     def __init__(self, input_size, num_iters, num_layers):
         super().__init__()
         self.input_size = Validator.check_positive_int(input_size, "input_size", self.cls_name)
-        self.num_iters = Validator.check_positive_int(num_iters, "in_channels", self.cls_name)
-        self.num_layers = Validator.check_positive_int(num_layers, "in_channels", self.cls_name)
+        self.num_iters = Validator.check_positive_int(num_iters, "num_iters", self.cls_name)
+        self.num_layers = Validator.check_positive_int(num_layers, "num_layers", self.cls_name)
         self.output_size = input_size * 2
         self.lstm = ms.nn.LSTM(self.output_size, self.input_size, self.num_layers)
 

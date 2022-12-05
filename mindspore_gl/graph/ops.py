@@ -270,7 +270,7 @@ class PadArray2d:
             shape( Union[List, Tuple]): input array's shape for pad.
 
         Returns:
-            memory_buffer(numpy.array), an empty numpy array with target padded shape.
+            - memory_buffer(numpy.array), an empty numpy array with target padded shape.
 
         """
         fill_value = kwargs.get("fill_value", None)
@@ -339,7 +339,7 @@ class PadHomoGraph:
         graph(MindHomoGraph): input graph
 
     Outputs:
-        MindHomoGraph, padded graph
+        - MindHomoGraph, padded graph
 
     """
 

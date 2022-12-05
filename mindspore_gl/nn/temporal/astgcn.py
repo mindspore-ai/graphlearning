@@ -337,7 +337,7 @@ class ASTGCN(GNNCell):
         - **g** (Graph) - The input graph.
 
     Outputs:
-        Tensor, output node features with shape of :math:`(B, N, T_{out})`.
+        - Tensor, output node features with shape of :math:`(B, N, T_{out})`.
 
     Raises:
         TypeError: If `n_blocks`, `in_channels`, `k`, `n_chev_filters`, `n_time_filters`, `time_conv_strides`,

@@ -40,11 +40,11 @@ class EGConv(GNNCell):
     Args:
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
-        aggregators (List[str]): aggregators to be used, default is ['symnorm']. Supported aggregators are
-            `sum`, `mean`, `max`, `min`, `std`, `var`, `symnorm`.
+        aggregators (List[str]): aggregators to be used. Supported aggregators are
+            `sum`, `mean`, `max`, `min`, `std`, `var`, `symnorm`. Default: 'symnorm'.
         num_heads (int, optional): Number of heads :math:`H`. Default: 8. Must have `out_feat_size % num_heads == 0`.
         num_bases (int, optional): Number of basis weight :math:`B`. Default: 4.
-        bias (bool, optional): Whether the layer will learn an additive bias. (default: `True`)
+        bias (bool, optional): Whether the layer will learn an additive bias. Default: True.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N, D_{in})`
@@ -53,8 +53,8 @@ class EGConv(GNNCell):
         - **g** (Graph) - The input graph.
 
     Outputs:
-        Tensor, output node features with shape of :math:`(N, D_{out})`, where :math:`(D_{out})` should be the same as
-        `out_feat_size` in `Args`.
+        - Tensor, output node features with shape of :math:`(N, D_{out})`, where :math:`(D_{out})` should be the same as
+          `out_feat_size` in `Args`.
 
     Raises:
         TypeError: If `in_feat_size` or `out_feat_size` or `num_heads` is not a positive int.
@@ -87,7 +87,7 @@ class EGConv(GNNCell):
                  aggregators: List[str],
                  num_heads: int = 8,
                  num_bases: int = 4,
-                 bias: bool = True,
+                 bias: bool = True
                  ) -> None:
         super().__init__()
         self.in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)

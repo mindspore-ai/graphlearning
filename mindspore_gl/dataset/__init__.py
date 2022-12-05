@@ -19,6 +19,7 @@ from .ppi import PPI
 from .blog_catalog import BlogCatalog
 from .alchemy import Alchemy
 from .enzymes import Enzymes
+from .reddit import Reddit
 
 __all__ = [
     "CoraV2",
@@ -26,5 +27,6 @@ __all__ = [
     "PPI",
     "BlogCatalog",
     "Alchemy",
-    "Enzymes"
+    "Enzymes",
+    "Reddit"
 ]

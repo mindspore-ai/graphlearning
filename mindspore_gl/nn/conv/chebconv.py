@@ -47,7 +47,7 @@ class ChebConv(GNNCell):
     Args:
         in_channels (int): Input node feature size.
         out_channels (int): Output node feature size.
-        k (int): Chebyshev filter size. Default: 3
+        k (int): Chebyshev filter size. Default: 3.
         bias (bool): Whether use bias. Default: True.
 
     Inputs:
@@ -59,8 +59,8 @@ class ChebConv(GNNCell):
         - **g** (Graph) - The input graph.
 
     Outputs:
-        Tensor, output node features with shape of :math:`(N, D_{out})`, where :math:`(D_{out})` should be
-        the same as `out_size` in `Args`.
+        - Tensor, output node features with shape of :math:`(N, D_{out})`, where :math:`(D_{out})` should be
+          the same as `out_size` in `Args`.
 
     Raises:
         TypeError: If `in_channels` or `out_channels` or `k` is not an int.
@@ -87,7 +87,7 @@ class ChebConv(GNNCell):
         >>> print(res.shape)
         (2, 4)
         """
-    def __init__(self, in_channels: int, out_channels: int, k: int, bias: bool = True):
+    def __init__(self, in_channels: int, out_channels: int, k: int = 3, bias: bool = True):
         super(ChebConv, self).__init__()
         self.in_channels = Validator.check_positive_int(in_channels, "in_channels", self.cls_name)
         self.out_channels = Validator.check_positive_int(out_channels, "out_channels", self.cls_name)
