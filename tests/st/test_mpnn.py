@@ -35,7 +35,7 @@ def test_mpnn():
     cmd_copy = "cp -r ../../model_zoo/mpnn/ ./ci_temp/"
     os.system(cmd_copy)
 
-    cmd_train = "python ./ci_temp/mpnn/trainval_alchemy.py --data_size 400 --epochs 60 --batch_size 128 " \
+    cmd_train = "python ./ci_temp/mpnn/trainval_alchemy.py --data_size 400 --epochs 2 --batch_size 16 " \
                 "--data_path=\"/home/workspace/mindspore_dataset/GNN_Dataset/\" >> ./ci_temp/mpnn/trainval_alchemy.log"
     os.system(cmd_train)
 
@@ -47,4 +47,4 @@ def test_mpnn():
     else:
         last_info = log_info[-2]
     test_mae = float(last_info[last_info.find('Test mae '):].replace('Test mae ', '').replace('\n', ''))
-    assert test_mae < 1.0
+    assert test_mae < 2.0
