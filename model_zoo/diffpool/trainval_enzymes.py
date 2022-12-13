@@ -17,41 +17,43 @@ import argparse
 import time
 import numpy as np
 import mindspore as ms
+import mindspore.dataset as ds
 import mindspore.nn as nn
 import mindspore.context as context
 
 from mindspore_gl.dataset import Enzymes
 from mindspore_gl.nn.gnn_cell import GNNCell
-from mindspore_gl.dataloader import RandomBatchSampler, DataLoader
+from mindspore_gl.dataloader import RandomBatchSampler
 from mindspore_gl import BatchedGraphField, BatchedGraph
 
 from src.utils import TrainOneStepCellWithGradClipping
 from src.diffpool import DiffPool
 from src.dataset import MultiHomoGraphDataset
 
+
 class LossNet(GNNCell):
     """ LossNet definition """
-
     def __init__(self, net):
         super().__init__()
         self.net = net
-        self.loss_fn = nn.loss.SoftmaxCrossEntropyWithLogits(sparse=True, reduction='none')
+        self.loss_fn = ms.nn.loss.SoftmaxCrossEntropyWithLogits(sparse=True, reduction='none')
 
     def construct(self, x, label, g: BatchedGraph):
         pred = self.net(x, g)
         return self.net.loss(pred, label, g)
 
-def get_batch_graph_field(batch_graph, node_loop, constant_graph_mask):
-    return BatchedGraphField(
-        ms.Tensor.from_numpy(np.concatenate((batch_graph.adj_coo[0], node_loop))),
-        ms.Tensor.from_numpy(np.concatenate((batch_graph.adj_coo[1], node_loop))),
-        ms.Tensor(batch_graph.node_count, ms.int32),
-        ms.Tensor(batch_graph.edge_count + batch_graph.node_count, ms.int32),
-        ms.Tensor.from_numpy(batch_graph.batch_meta.node_map_idx),
-        ms.Tensor.from_numpy(
-            np.concatenate((batch_graph.batch_meta.edge_map_idx, batch_graph.batch_meta.node_map_idx))),
-        constant_graph_mask
-    )
+
+def eval_acc(dataloader, net, np_graph_mask, val_length, batch_size):
+    count = 0
+    for data in dataloader:
+        label, node_feat, row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask = data
+        batch_homo = BatchedGraphField(row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask)
+        output = net(node_feat, *batch_homo.get_batched_graph()).asnumpy()
+        predict = np.argmax(output, axis=1)
+        count += np.sum(np.equal(predict, label) * np_graph_mask)
+    acc = count / val_length / batch_size
+    return acc
+
 
 def main(arguments):
     if arguments.fuse:
@@ -63,18 +65,30 @@ def main(arguments):
     hidden_dim, embedding_dim = 64, 64
     dataset = Enzymes(arguments.data_path)
     train_batch_sampler = RandomBatchSampler(dataset.train_graphs, batch_size=arguments.batch_size)
-    multi_graph_dataset = MultiHomoGraphDataset(dataset, arguments.batch_size, node_size=node_size, edge_size=edge_size)
-    train_dataloader = DataLoader(dataset=multi_graph_dataset, sampler=train_batch_sampler, num_workers=1,
-                                  persistent_workers=True)
     val_batch_sampler = RandomBatchSampler(dataset.val_graphs, batch_size=arguments.batch_size)
-    val_dataloader = DataLoader(dataset=multi_graph_dataset, sampler=val_batch_sampler, num_workers=0)
     test_batch_sampler = RandomBatchSampler(dataset.test_graphs, batch_size=arguments.batch_size)
-    test_dataloader = DataLoader(dataset=multi_graph_dataset, sampler=test_batch_sampler, num_workers=0)
+    train_length = len(list(train_batch_sampler))
+    val_length = len(list(val_batch_sampler))
+    test_length = len(list(test_batch_sampler))
 
-    np_graph_mask = [1] * arguments.batch_size
-    np_graph_mask.append(0)
-    constant_graph_mask = ms.Tensor(np_graph_mask, dtype=ms.int32)
-
+    train_graph_dataset = MultiHomoGraphDataset(dataset, arguments.batch_size, node_size=node_size,
+                                                edge_size=edge_size, length=train_length)
+    val_graph_dataset = MultiHomoGraphDataset(dataset, arguments.batch_size, node_size=node_size,
+                                              edge_size=edge_size, length=val_length)
+    test_graph_dataset = MultiHomoGraphDataset(dataset, arguments.batch_size, node_size=node_size,
+                                               edge_size=edge_size, length=test_length)
+    train_dataloader = ds.GeneratorDataset(train_graph_dataset, ['batched_label', 'batched_node_feat', 'row', 'col',
+                                                                 'node_count', 'edge_count', 'node_map_idx',
+                                                                 'edge_map_idx', 'graph_mask'],
+                                           sampler=train_batch_sampler, python_multiprocessing=True)
+    val_dataloader = ds.GeneratorDataset(val_graph_dataset, ['batched_label', 'batched_node_feat', 'row', 'col',
+                                                             'node_count', 'edge_count', 'node_map_idx',
+                                                             'edge_map_idx', 'graph_mask'],
+                                         sampler=val_batch_sampler, python_multiprocessing=True)
+    test_dataloader = ds.GeneratorDataset(test_graph_dataset, ['batched_label', 'batched_node_feat', 'row', 'col',
+                                                               'node_count', 'edge_count', 'node_map_idx',
+                                                               'edge_map_idx', 'graph_mask'],
+                                          sampler=test_batch_sampler, python_multiprocessing=True)
     net = DiffPool(
         input_dim=dataset.num_features,
         hidden_dim=hidden_dim,
@@ -93,41 +107,23 @@ def main(arguments):
     loss = LossNet(net)
     train_net = TrainOneStepCellWithGradClipping(loss, optimizer, arguments.clip)
     early_stopping_logger = {"round": -1, "best_val_acc": -1}
-    node_loop = np.arange(0, node_size, dtype=np.int32)
+    np_graph_mask = [1] * arguments.batch_size
+    np_graph_mask.append(0)
     for epoch in range(arguments.epochs):
         start_time = time.time()
         train_net.set_train(True)
         train_loss, total_iter = 0, 0
         for data in train_dataloader:
-            batch_graph, label, node_feat = data
-            node_feat = ms.Tensor.from_numpy(node_feat)
-            label = ms.Tensor.from_numpy(label)
-            batch_homo = get_batch_graph_field(batch_graph, node_loop, constant_graph_mask)
+            label, node_feat, row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask = data
+            batch_homo = BatchedGraphField(row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask)
             train_loss += train_net(node_feat, label, *batch_homo.get_batched_graph())
             total_iter += 1
         train_loss /= total_iter
         end_time = time.time()
 
         train_net.set_train(False)
-        train_count = 0
-        for data in train_dataloader:
-            batch_graph, label, node_feat = data
-            node_feat = ms.Tensor.from_numpy(node_feat)
-            batch_homo = get_batch_graph_field(batch_graph, node_loop, constant_graph_mask)
-            output = net(node_feat, *batch_homo.get_batched_graph()).asnumpy()
-            predict = np.argmax(output, axis=1)
-            train_count += np.sum(np.equal(predict, label) * np_graph_mask)
-        train_acc = train_count / len(train_dataloader) / arguments.batch_size
-
-        val_count = 0
-        for data in val_dataloader:
-            batch_graph, label, node_feat = data
-            node_feat = ms.Tensor.from_numpy(node_feat)
-            batch_homo = get_batch_graph_field(batch_graph, node_loop, constant_graph_mask)
-            output = net(node_feat, *batch_homo.get_batched_graph()).asnumpy()
-            predict = np.argmax(output, axis=1)
-            val_count += np.sum(np.equal(predict, label) * np_graph_mask)
-        val_acc = val_count / len(val_dataloader) / arguments.batch_size
+        train_acc = eval_acc(train_dataloader, net, np_graph_mask, train_length, arguments.batch_size)
+        val_acc = eval_acc(val_dataloader, net, np_graph_mask, val_length, arguments.batch_size)
         print('Epoch {}, Time {:.3f} s, Train loss {}, Train acc {:.3f}, '
               'Val acc {:.3f}'.format(epoch, end_time - start_time, train_loss, train_acc, val_acc))
 
@@ -142,16 +138,9 @@ def main(arguments):
             if early_stopping_logger['round'] == arguments.patience:
                 break
 
-    test_count = 0
-    for data in test_dataloader:
-        batch_graph, label, node_feat = data
-        node_feat = ms.Tensor(node_feat, ms.float32)
-        batch_homo = get_batch_graph_field(batch_graph, node_loop, constant_graph_mask)
-        output = net(node_feat, *batch_homo.get_batched_graph()).asnumpy()
-        predict = np.argmax(output, axis=1)
-        test_count += np.sum(np.equal(predict, label) * np_graph_mask)
-    test_acc = test_count / len(test_dataloader) / arguments.batch_size
+    test_acc = eval_acc(test_dataloader, net, np_graph_mask, test_length, arguments.batch_size)
     print("Test acc: {:.3f}".format(test_acc))
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='DiffPool')
