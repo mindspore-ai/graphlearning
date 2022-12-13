@@ -43,7 +43,7 @@ class CoraV2:
     consists of 10556 links. Each publication in the dataset is described by a 0/1-valued word vector indicating the
     absence/presence of the corresponding word from the dictionary. The dictionary consists of 1433 unique words.
 
-    Statistics:
+    Cora_v2 Statistics:
 
     - Nodes: 2708
     - Edges: 10556
@@ -54,7 +54,11 @@ class CoraV2:
       - Valid: 500
       - Test: 1000
 
-    Dataset can be download here: <https://github.com/kimiyoung/planetoid>
+    Dataset can be download here:
+    cora_v2 <https://data.dgl.ai/dataset/cora_v2.zip>
+    citeseer <https://data.dgl.ai/dataset/citeseer.zip>
+    pubmed <https://data.dgl.ai/dataset/pubmed.zip>
+
     You can organize the dataset files into the following directory structure and read by `process` API.
 
     .. code-block::
@@ -118,7 +122,7 @@ class CoraV2:
 
         if self._name == 'citeseer':
             test_idx_range_full = range(min(test_idx_reorder), max(test_idx_reorder)+1)
-            tx_extended = sp.lil_matrix((len(test_idx_range_full), x.shape[1]))
+            tx_extended = sp.lil_matrix((len(test_idx_range_full), tx.shape[1]))
             tx_extended[test_idx_range-min(test_idx_range), :] = tx
             tx = tx_extended
             ty_extended = np.zeros((len(test_idx_range_full), y.shape[1]))
@@ -140,8 +144,8 @@ class CoraV2:
         line_count = 0
 
         for e in graph.edges:
-            adj_coo_row.append(e[0])
-            adj_coo_col.append(e[1])
+            adj_coo_row.append(e[1])
+            adj_coo_col.append(e[0])
             line_count += 1
 
         for i in range(len(labels)):
@@ -161,9 +165,11 @@ class CoraV2:
         adj_coo_matrix = coo_matrix((np.ones(len(adj_coo_row), dtype=bool), (adj_coo_row, adj_coo_col)),
                                     shape=(num_nodes, num_nodes))
         out_degrees = np.sum(adj_coo_matrix, axis=1)
+        out_degrees = np.ravel(out_degrees)
         in_degrees = np.sum(adj_coo_matrix, axis=0)
+        in_degrees = np.ravel(in_degrees)
         adj_csr_matrix = adj_coo_matrix.tocsr()
-
+        features = np.array(features, np.float32)
         np.savez(self._path, feat=features, label=labels, test_mask=test_mask,
                  train_mask=train_mask, val_mask=val_mask, adj_coo_row=adj_coo_row, adj_coo_col=adj_coo_col,
                  adj_csr_indptr=adj_csr_matrix.indptr, adj_csr_indices=adj_csr_matrix.indices, in_degrees=in_degrees,
@@ -184,7 +190,7 @@ class CoraV2:
         Feature size of each node
 
         Returns:
-            int, the number of feature size
+            - int, the number of feature size
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -198,7 +204,7 @@ class CoraV2:
         Number of label classes
 
         Returns:
-            int, the number of classes
+            - int, the number of classes
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -212,7 +218,7 @@ class CoraV2:
         Mask of training nodes
 
         Returns:
-            numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -228,7 +234,7 @@ class CoraV2:
         Mask of test nodes
 
         Returns:
-            numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -244,7 +250,7 @@ class CoraV2:
         Mask of validation nodes
 
         Returns:
-            numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -260,7 +266,7 @@ class CoraV2:
         training nodes indexes
 
         Returns:
-            numpy.ndarray, array of training nodes
+            - numpy.ndarray, array of training nodes
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -274,7 +280,7 @@ class CoraV2:
         Number of nodes
 
         Returns:
-            int, length of csr row
+            - int, length of csr row
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -288,7 +294,7 @@ class CoraV2:
         Number of edges
 
         Returns:
-            int, length of csr col
+            - int, length of csr col
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -302,7 +308,7 @@ class CoraV2:
         Node features
 
         Returns:
-            numpy.ndarray, array of node feature
+            - numpy.ndarray, array of node feature
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -319,7 +325,7 @@ class CoraV2:
         Ground truth labels of each node
 
         Returns:
-            numpy.ndarray, array of node label
+            - numpy.ndarray, array of node label
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -335,7 +341,7 @@ class CoraV2:
         Return the adjacency matrix of COO representation
 
         Returns:
-            numpy.ndarray, array of coo matrix.
+            - numpy.ndarray, array of coo matrix.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -349,7 +355,7 @@ class CoraV2:
         Return the adjacency matrix of CSR representation.
 
         Returns:
-            numpy.ndarray, array of csr matrix.
+            - numpy.ndarray, array of csr matrix.
 
         Examples:
             >>> #dataset is an instance object of Dataset

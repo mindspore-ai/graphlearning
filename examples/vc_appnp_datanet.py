@@ -81,7 +81,7 @@ def main(train_args):
     grad_fn = ops.value_and_grad(loss, None, optimizer.parameters, has_aux=False)
 
     def train_one_step(ds):
-        train_mask = ms.Tensor.from_numpy(ds.train_mask)
+        train_mask = ms.Tensor(ds.train_mask, ms.float32)
         loss, grads = grad_fn(ds.x, ds.in_deg, ds.out_deg, train_mask, ds.y, ds.g.src_idx, ds.g.dst_idx, ds.g.n_nodes,
                               ds.g.n_edges)
         loss = ops.depend(loss, optimizer(grads))
