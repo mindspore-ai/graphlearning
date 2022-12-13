@@ -15,15 +15,16 @@
 """Predict training"""
 import argparse
 import numpy as np
+from sklearn.metrics import f1_score
+
 import mindspore as ms
 import mindspore.nn as nn
 import mindspore.ops as ops
 import mindspore.context as context
+import mindspore.dataset as ds
 
 from mindspore_gl.dataset import BlogCatalog
-from mindspore_gl.dataloader import RandomBatchSampler, Dataset, DataLoader
-from sklearn.metrics import f1_score
-
+from mindspore_gl.dataloader import RandomBatchSampler, Dataset
 
 class Model(nn.Cell):
     """Model"""
@@ -34,7 +35,6 @@ class Model(nn.Cell):
     def construct(self, node_emb):
         logits = self.dense(node_emb)
         return logits
-
 
 class LossNet(nn.Cell):
     """Lossnet"""
@@ -52,16 +52,16 @@ class LossNet(nn.Cell):
 
 class PredictDataset(Dataset):
     """Predict dataset"""
-    def __init__(self, nodes, label):
+    def __init__(self, nodes, label, length):
         self.data = nodes
         self.label = label
-        self.datalen = len(nodes)
+        self.length = length
 
     def __getitem__(self, batch_idxs):
         return np.take(self.data, batch_idxs, 0), np.take(self.label, batch_idxs, 0)
 
     def __len__(self):
-        return self.datalen
+        return self.length
 
 
 def main(arguments):
@@ -94,27 +94,22 @@ def main(arguments):
     train_mask, test_mask = mask[:int(vocab_size * arguments.train_ratio)], \
                             mask[int(vocab_size * arguments.train_ratio):]
 
-    predict_dataset = PredictDataset(node_feat, label)
-
     train_sampler = RandomBatchSampler(
         data_source=train_mask,
         batch_size=arguments.batch_size)
-
-    train_dataloader = DataLoader(
-        dataset=predict_dataset,
-        sampler=train_sampler,
-        num_workers=0,
-        persistent_workers=False)
 
     test_sampler = RandomBatchSampler(
         data_source=test_mask,
         batch_size=arguments.batch_size)
 
-    test_dataloader = DataLoader(
-        dataset=predict_dataset,
-        sampler=test_sampler,
-        num_workers=0,
-        persistent_workers=False)
+    train_dataset = PredictDataset(node_feat, label, len(list(train_sampler)))
+    test_dataset = PredictDataset(node_feat, label, len(list(test_sampler)))
+
+    train_dataloader = ds.GeneratorDataset(train_dataset, ['node_feat', 'label'],
+                                           sampler=train_sampler, python_multiprocessing=True)
+    test_dataloader = ds.GeneratorDataset(test_dataset, ['node_feat', 'label'],
+                                          sampler=test_sampler, python_multiprocessing=True)
+
     net = Model(arguments.embed_size, dataset.num_classes)
     optimizer = nn.optim.Adam(net.trainable_params(), learning_rate=arguments.multiclass_learning_rate)
     loss = LossNet(net)
@@ -125,18 +120,16 @@ def main(arguments):
         train_loss = 0
         for data in train_dataloader:
             node_feat, label = data
-            node_feat, label = ms.Tensor.from_numpy(node_feat), ms.Tensor.from_numpy(label)
             train_loss += train_net(node_feat, label).asnumpy()
-        train_loss /= len(train_dataloader)
+        train_loss /= len(list(train_sampler))
 
         train_net.set_train(False)
         test_pred, test_label = [], []
         for data in test_dataloader:
             node_feat, label = data
-            node_feat = ms.Tensor.from_numpy(node_feat)
             logits = net(node_feat).asnumpy()
             pred = np.argmax(logits, axis=1)
-            test_label.extend(label.tolist())
+            test_label.extend(label.asnumpy().tolist())
             test_pred.extend(pred.tolist())
         test_micro_f1 = f1_score(test_label, test_pred, average='micro')
         test_macro_f1 = f1_score(test_label, test_pred, average='macro')

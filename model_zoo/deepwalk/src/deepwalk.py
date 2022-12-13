@@ -71,7 +71,8 @@ class BatchRandWalk:
     """Batch Randwalk"""
     def __init__(self, graph, walk_len, win_size, neg_num, batch_size):
         self.graph = graph
-        self.walk_len = walk_len - 1 # include head node itself
+        # include head node itself
+        self.walk_len = walk_len - 1
         self.win_size = win_size
         self.neg_num = neg_num
         self.batch_size = batch_size
@@ -115,14 +116,15 @@ class BatchRandWalk:
 
 class DeepWalkDataset(Dataset):
     """Deepwalk dataset"""
-    def __init__(self, nodes, batch_fn: BatchRandWalk, repeat=1):
+    def __init__(self, nodes, batch_fn: BatchRandWalk, length: int, repeat=1):
         self.repeat = repeat
         self.data = nodes
         self.datalen = len(nodes)
         self.batch_fn = batch_fn
+        self.length = length
 
     def __getitem__(self, batch_idxs):
         return self.batch_fn([self.data[idx % self.datalen] for idx in batch_idxs])
 
     def __len__(self):
-        return len(self.data) * self.repeat
+        return self.length

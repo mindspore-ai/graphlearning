@@ -16,12 +16,11 @@
 import time
 import argparse
 import numpy as np
-import mindspore as ms
 import mindspore.nn as nn
+import mindspore.dataset as ds
 import mindspore.context as context
 
 from mindspore_gl.dataloader import RandomBatchSampler
-from mindspore_gl.dataloader import DataLoader
 from mindspore_gl.dataset import BlogCatalog
 
 from src.deepwalk import BatchRandWalk, SkipGramModel, DeepWalkDataset
@@ -49,28 +48,27 @@ def main(arguments):
         neg_num=arguments.neg_num,
         batch_size=arguments.batch_size)
 
+    sampler = RandomBatchSampler(
+        data_source=[i for i in range(n_nodes * arguments.epoch)],
+        batch_size=arguments.batch_size)
+
     deepwalk_dataset = DeepWalkDataset(
         nodes=[i for i in range(n_nodes)],
         batch_fn=batch_fn,
-        repeat=arguments.epoch)
+        repeat=arguments.epoch,
+        length=len(list(sampler))
+    )
 
     net = SkipGramModel(
         num_nodes=n_nodes + 1,  # for padding
         embed_size=arguments.embed_size,
         neg_num=arguments.neg_num)
 
-    sampler = RandomBatchSampler(
-        data_source=[i for i in range(n_nodes * arguments.epoch)],
-        batch_size=arguments.batch_size)
-
-    dataloader = DataLoader(
-        dataset=deepwalk_dataset,
-        sampler=sampler,
-        num_workers=arguments.sample_workers,
-        persistent_workers=True)
+    dataloader = ds.GeneratorDataset(deepwalk_dataset, ['src', 'dsts', 'node_mask', 'pair_count'],
+                                     sampler=sampler, python_multiprocessing=True, max_rowsize=9)
 
     lrs = []
-    data_len = len(dataloader)
+    data_len = len(sampler)
     lr = arguments.lr
     end_lr = 0.0001
     reduce_per_iter = (lr - end_lr) / data_len
@@ -85,10 +83,6 @@ def main(arguments):
     before_train = time.time()
     for curr_iter, data in enumerate(dataloader):
         src, dsts, node_mask, pair_count = data
-        src = ms.Tensor.from_numpy(src)
-        dsts = ms.Tensor.from_numpy(dsts)
-        node_mask = ms.Tensor.from_numpy(node_mask)
-
         # Since we use padding, we should not use reduceMean cause we mul with a node_mask when computing loss.
         # So here we should calculate the loss divided by pair_count.
         loss = train_net(src, dsts, node_mask) / pair_count
@@ -114,7 +108,6 @@ if __name__ == '__main__':
     parser.add_argument("--gpu", type=int, default=0, help="which gpu to use")
     parser.add_argument("--epoch", type=int, default=80, help="number of epoch")
     parser.add_argument("--lr", type=float, default=0.025, help='learning rate')
-    parser.add_argument("--sample_workers", type=int, default=10, help="number of sample workers")
     parser.add_argument("--batch_size", type=int, default=128, help="number of batch size")
     parser.add_argument("--neg_num", type=int, default=20, help="number of negative sampling")
     parser.add_argument("--walk_len", type=int, default=40, help="walk length")
