@@ -14,17 +14,21 @@
 # ============================================================================
 """Dataset"""
 import numpy as np
+import mindspore as ms
+from mindspore_gl import BatchedGraphField
 from mindspore_gl.graph import BatchHomoGraph, PadArray2d, PadHomoGraph, PadMode, PadDirection
 from mindspore_gl.dataloader import Dataset
 
 
 class MultiHomoGraphDataset(Dataset):
     """MultiHomoGraph Dataset"""
-    def __init__(self, dataset, batch_size, mode=PadMode.CONST, node_size=1100, edge_size=5000):
+    def __init__(self, dataset, batch_size, mode=PadMode.CONST, node_size=1100, edge_size=5000, length=None):
         self._dataset = dataset
         self._batch_size = batch_size
         self.batch_fn = BatchHomoGraph()
         self.batched_edge_feat = None
+        self.node_size = node_size
+        self.length = length
         if mode == PadMode.CONST:
             self.node_feat_pad_op = PadArray2d(dtype=np.float32, mode=PadMode.CONST, direction=PadDirection.COL,
                                                size=(node_size, dataset.num_features), fill_value=0)
@@ -54,4 +58,28 @@ class MultiHomoGraphDataset(Dataset):
         batched_label = self._dataset.graph_label[batch_graph_idx]
         # Pad Label
         batched_label = np.append(batched_label, batched_label[-1] * 0)
-        return batch_graph, batched_label, batched_node_feat
+
+        node_loop = np.arange(0, self.node_size, dtype=np.int32)
+        np_graph_mask = [1] * self._batch_size
+        np_graph_mask.append(0)
+        constant_graph_mask = ms.Tensor(np_graph_mask, dtype=ms.int32)
+        batchedgraphfiled = self.get_batched_graph_field(batch_graph, node_loop, constant_graph_mask)
+        row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask =\
+            batchedgraphfiled.get_batched_graph()
+        return batched_label, batched_node_feat, row, col, node_count, edge_count, node_map_idx,\
+               edge_map_idx, graph_mask
+
+    def get_batched_graph_field(self, batch_graph, node_loop, constant_graph_mask):
+        return BatchedGraphField(
+            ms.Tensor.from_numpy(np.concatenate((batch_graph.adj_coo[0], node_loop))),
+            ms.Tensor.from_numpy(np.concatenate((batch_graph.adj_coo[1], node_loop))),
+            ms.Tensor(batch_graph.node_count, ms.int32),
+            ms.Tensor(batch_graph.edge_count + batch_graph.node_count, ms.int32),
+            ms.Tensor.from_numpy(batch_graph.batch_meta.node_map_idx),
+            ms.Tensor.from_numpy(
+                np.concatenate((batch_graph.batch_meta.edge_map_idx, batch_graph.batch_meta.node_map_idx))),
+            constant_graph_mask
+        )
+
+    def __len__(self):
+        return self.length
