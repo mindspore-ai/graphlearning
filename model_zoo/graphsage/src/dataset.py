@@ -23,7 +23,7 @@ from mindspore_gl.graph.ops import PadArray2d, PadMode, PadDirection
 
 class GraphSAGEDataset(Dataset):
     """Do sampling from neighbour nodes"""
-    def __init__(self, graph_dataset, neighbor_nums, batch_size, single_size=False):
+    def __init__(self, graph_dataset, neighbor_nums, batch_size, length, single_size=False):
         self.graph_dataset = graph_dataset
         self.graph = graph_dataset[0]
         self.neighbor_nums = neighbor_nums
@@ -32,9 +32,10 @@ class GraphSAGEDataset(Dataset):
         self.batch_size = batch_size
         self.max_sampled_nodes_num = neighbor_nums[0] * neighbor_nums[1] * batch_size
         self.single_size = single_size
-
+        self.length = length
 
     def __getitem__(self, batch_nodes):
+        batch_nodes = np.array(batch_nodes, np.int32)
         res = sage_sampler_on_homo(self.graph, batch_nodes, self.neighbor_nums)
         label = array_kernel.int_1d_array_slicing(self.y, batch_nodes)
         layered_edges_0 = res['layered_edges_0']
@@ -42,7 +43,6 @@ class GraphSAGEDataset(Dataset):
         sample_edges = np.concatenate((layered_edges_0, layered_edges_1), axis=1)
         sample_edges = sample_edges[[1, 0], :]
         num_sample_edges = sample_edges.shape[1]
-
         num_sample_nodes = len(res['all_nodes'])
         max_sampled_nodes_num = self.max_sampled_nodes_num
         if self.single_size is False:
@@ -88,5 +88,7 @@ class GraphSAGEDataset(Dataset):
         pad_sample_edges = layered_edges_pad_op(sample_edges)
         feat = nid_feat_pad_op.lazy([num_sample_nodes, self.graph_dataset.num_features])
         array_kernel.float_2d_gather_with_dst(feat, self.graph_dataset.node_feat, res['all_nodes'])
-        graph_dict = {"seeds_ids": res['seeds_idx'], "label": label, "feat": feat, "pad_sample_edges": pad_sample_edges}
-        return graph_dict
+        return res['seeds_idx'], label, feat, pad_sample_edges
+
+    def __len__(self):
+        return self.length

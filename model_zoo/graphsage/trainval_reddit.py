@@ -20,12 +20,12 @@ import numpy as np
 import mindspore.nn as nn
 import mindspore.context as context
 import mindspore as ms
+import mindspore.dataset as ds
 from mindspore.nn import Cell
 from mindspore.profiler import Profiler
 
-from mindspore_gl.dataset.reddit import Reddit
+from mindspore_gl.dataset import Reddit
 from mindspore_gl.dataloader.samplers import RandomBatchSampler
-from mindspore_gl.dataloader.dataloader import DataLoader
 
 from src.graphsage import SAGENet
 from src.dataset import GraphSAGEDataset
@@ -54,16 +54,19 @@ def main():
                                                "UnsortedSegmentSum,GatherNd --enable_recompute_fusion=false "
                                                "--enable_parallel_fusion=true ")
     else:
-        context.set_context(device_target=args.device, mode=context.GRAPH_MODE, save_graphs=True,
+        context.set_context(device_target=args.device, mode=context.PYNATIVE_MODE, save_graphs=True,
                             save_graphs_path="./saved_ir/")
 
     graph_dataset = Reddit(args.data_path)
     train_sampler = RandomBatchSampler(data_source=graph_dataset.train_nodes, batch_size=args.batch_size)
     test_sampler = RandomBatchSampler(data_source=graph_dataset.test_nodes, batch_size=args.batch_size)
-    dataset = GraphSAGEDataset(graph_dataset, [25, 10], args.batch_size)
-    train_dataloader = DataLoader(dataset, sampler=train_sampler, num_workers=1)
+    train_dataset = GraphSAGEDataset(graph_dataset, [25, 10], args.batch_size, len(list(train_sampler)))
+    test_dataset = GraphSAGEDataset(graph_dataset, [25, 10], args.batch_size, len(list(test_sampler)))
+    train_dataloader = ds.GeneratorDataset(train_dataset, ['seeds_idx', 'label', 'nid_feat', 'edges'],
+                                           sampler=train_sampler, python_multiprocessing=True)
+    test_dataloader = ds.GeneratorDataset(test_dataset, ['seeds_idx', 'label', 'nid_feat', 'edges'],
+                                          sampler=test_sampler, python_multiprocessing=True)
 
-    test_dataloader = DataLoader(dataset, sampler=test_sampler, num_workers=0)
     appr_dim = math.ceil(graph_dataset.num_classes/8)*8
     model = SAGENet(graph_dataset.num_features, 256, appr_dim, graph_dataset.num_classes)
     optimizer = nn.optim.Adam(model.trainable_params(), learning_rate=args.lr, weight_decay=args.weight_decay)
@@ -76,13 +79,9 @@ def main():
         start = time.time()
         train_net.set_train(True)
         for iter_num, data in enumerate(train_dataloader):
-            seeds_idx, label, nid_feat, edges = data['seeds_ids'], data['label'], data['feat'], data['pad_sample_edges']
+            seeds_idx, nid_label, nid_feat, edges = data
             n_nodes = nid_feat.shape[0]
             n_edges = edges.shape[1]
-            seeds_idx = ms.Tensor.from_numpy(seeds_idx)
-            nid_feat = ms.Tensor.from_numpy(nid_feat)
-            nid_label = ms.Tensor.from_numpy(label)
-            edges = ms.Tensor.from_numpy(edges)
             train_loss = train_net(seeds_idx, nid_feat, nid_label, edges, n_nodes, n_edges)
             if iter_num % 10 == 0:
                 print(f"Iteration/Epoch: {iter_num}:{epoch} train loss: {train_loss}")
@@ -94,15 +93,12 @@ def main():
         correct_prediction = 0
         train_net.set_train(False)
         for iter_num, data in enumerate(test_dataloader):
-            seeds_idx, label, nid_feat, edges = data['seeds_ids'], data['label'], data['feat'], data['pad_sample_edges']
+            seeds_idx, label, nid_feat, edges = data
             n_nodes = nid_feat.shape[0]
             n_edges = edges.shape[1]
-            nid_feat = ms.Tensor.from_numpy(nid_feat)
-            edges = ms.Tensor.from_numpy(edges)
-
             out = model(nid_feat, edges, n_nodes, n_edges)
             out = out.asnumpy()
-            predict = np.argmax(out[seeds_idx], axis=1)
+            predict = np.argmax(out[seeds_idx. asnumpy()], axis=1)
             correct_prediction += len(np.nonzero(np.equal(predict, label))[0])
             total_prediction += len(seeds_idx)
         print(f"test accuracy : {correct_prediction / total_prediction}")
