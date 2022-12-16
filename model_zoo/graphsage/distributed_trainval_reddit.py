@@ -22,12 +22,12 @@ import mindspore.nn as nn
 import mindspore.context as context
 import mindspore as ms
 from mindspore.nn import Cell
+import mindspore.dataset as ds
 from mindspore.profiler import Profiler
 from mindspore.communication import init, get_rank, get_group_size
 
-from mindspore_gl.dataset.reddit import Reddit
+from mindspore_gl.dataset import Reddit
 from mindspore_gl.dataloader.samplers import RandomBatchSampler, DistributeRandomBatchSampler
-from mindspore_gl.dataloader.dataloader import DataLoader
 
 from src.graphsage import SAGENet
 from src.dataset import GraphSAGEDataset
@@ -42,6 +42,7 @@ if device_target == 'Ascend':
 else:
     init("nccl")
     single_size = False
+
 ms.set_context(mode=ms.GRAPH_MODE, device_target=device_target, save_graphs=True, save_graphs_path="./saved_ir/")
 
 class LossNet(Cell):
@@ -70,11 +71,12 @@ def main():
     train_sampler = DistributeRandomBatchSampler(rank_id, world_size, data_source=graph_dataset.train_nodes,
                                                  batch_size=args.batch_size)
     test_sampler = RandomBatchSampler(data_source=graph_dataset.test_nodes, batch_size=args.batch_size)
-    dataset = GraphSAGEDataset(graph_dataset, [25, 10], args.batch_size, single_size=single_size)
-    train_dataloader = DataLoader(dataset, sampler=train_sampler, num_workers=1)
-    test_dataloader = DataLoader(dataset, sampler=test_sampler, num_workers=0)
-    print(train_dataloader.__len__())
-    print(test_dataloader.__len__())
+    train_dataset = GraphSAGEDataset(graph_dataset, [25, 10], args.batch_size, len(list(train_sampler)), single_size)
+    test_dataset = GraphSAGEDataset(graph_dataset, [25, 10], args.batch_size, len(list(test_sampler)), single_size)
+    train_dataloader = ds.GeneratorDataset(train_dataset, ['seeds_idx', 'label', 'nid_feat', 'edges'],
+                                           sampler=train_sampler, python_multiprocessing=True)
+    test_dataloader = ds.GeneratorDataset(test_dataset, ['seeds_idx', 'label', 'nid_feat', 'edges'],
+                                          sampler=test_sampler, python_multiprocessing=True)
 
     appr_dim = math.ceil(graph_dataset.num_classes/8)*8
     model = SAGENet(graph_dataset.num_features, args.num_hidden, appr_dim, graph_dataset.num_classes)
@@ -87,16 +89,12 @@ def main():
         start = time.time()
         train_net.set_train(True)
         for iter_num, data in enumerate(train_dataloader):
-            seeds_idx, label, nid_feat, edges = data['seeds_ids'], data['label'], data['feat'], data['pad_sample_edges']
+            seeds_idx, nid_label, nid_feat, edges = data
             n_nodes = nid_feat.shape[0]
             n_edges = edges.shape[1]
-            seeds_idx = ms.Tensor.from_numpy(seeds_idx)
-            nid_feat = ms.Tensor.from_numpy(nid_feat)
-            nid_label = ms.Tensor.from_numpy(label)
-            edges = ms.Tensor.from_numpy(edges)
             train_loss = train_net(seeds_idx, nid_feat, nid_label, edges, n_nodes, n_edges)
             if iter_num % 10 == 0:
-                print(f"rank_id:{rank_id} Iteration/Epoch: {iter_num}:{epoch} train loss: {train_loss}", flush=True)
+                print(f"Iteration/Epoch: {iter_num}:{epoch} train loss: {train_loss}")
         end = time.time()
         epoch_time = end - start
         print(f"rank_id:{rank_id} Epoch/Time: {epoch}:{epoch_time}", flush=True)
@@ -105,15 +103,12 @@ def main():
         total_prediction = 0
         correct_prediction = 0
         for iter_num, data in enumerate(test_dataloader):
-            seeds_idx, label, nid_feat, edges = data['seeds_ids'], data['label'], data['feat'], data['pad_sample_edges']
+            seeds_idx, label, nid_feat, edges = data
             n_nodes = nid_feat.shape[0]
             n_edges = edges.shape[1]
-            nid_feat = ms.Tensor.from_numpy(nid_feat)
-            edges = ms.Tensor.from_numpy(edges)
-
             out = model(nid_feat, edges, n_nodes, n_edges)
             out = out.asnumpy()
-            predict = np.argmax(out[seeds_idx], axis=1)
+            predict = np.argmax(out[seeds_idx. asnumpy()], axis=1)
             correct_prediction += len(np.nonzero(np.equal(predict, label))[0])
             total_prediction += len(seeds_idx)
         print(f"rank_id:{rank_id} test accuracy : {correct_prediction / total_prediction}", flush=True)
