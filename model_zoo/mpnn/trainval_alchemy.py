@@ -13,19 +13,19 @@
 # limitations under the License.
 # ============================================================================
 """train eval"""
-import os
 import time
 import argparse
 import numpy as np
 import mindspore as ms
 from mindspore.profiler import Profiler
 import mindspore.nn as nn
+import mindspore.dataset as ds
 import mindspore.ops as ops
 import mindspore.context as context
 
 from mindspore_gl.nn import GNNCell
 from mindspore_gl import BatchedGraph, BatchedGraphField
-from mindspore_gl.dataloader import RandomBatchSampler, DataLoader
+from mindspore_gl.dataloader import RandomBatchSampler
 from mindspore_gl.dataset import Alchemy
 
 from src.mpnn import MPNNPredictor
@@ -44,35 +44,45 @@ class LossNet(GNNCell):
         predict = self.net(node_feat, edge_feat, bg)
         target = ops.Squeeze()(target)
         loss = self.loss_fn(predict, target)
-        return ms.ops.ReduceMean()(loss * bg.graph_mask)
+        loss = loss * ops.Reshape()(bg.graph_mask, (-1, 1))
+        return ms.ops.ReduceMean()(loss)
 
 
 def main(arguments):
-    os.environ['CUDA_VISIBLE_DEVICES'] = arguments.gpu
     if arguments.fuse:
         context.set_context(device_target="GPU", save_graphs=True, save_graphs_path="./computational_graph/",
-                            mode=context.GRAPH_MODE, enable_graph_kernel=True)
+                            mode=context.GRAPH_MODE, enable_graph_kernel=True, device_id=arguments.device)
     else:
-        context.set_context(device_target="GPU")
+        context.set_context(device_target="GPU", device_id=arguments.device)
 
     if arguments.profile:
         ms_profiler = Profiler(subgraph="ALL", is_detail=True, is_show_op_path=False, output_path="./prof_result")
 
     dataset = Alchemy(arguments.data_path, arguments.data_size)
-
     train_batch_sampler = RandomBatchSampler(dataset.train_graphs, batch_size=arguments.batch_size)
-    multi_graph_dataset = MultiHomoGraphDataset(dataset, arguments.batch_size)
-    train_dataloader = DataLoader(dataset=multi_graph_dataset, sampler=train_batch_sampler, num_workers=1)
-
     test_batch_sampler = RandomBatchSampler(dataset.val_graphs, batch_size=arguments.batch_size)
-    test_dataloader = DataLoader(dataset=multi_graph_dataset, sampler=test_batch_sampler, num_workers=0)
+    train_length = len(list(train_batch_sampler))
+    test_length = len(list(test_batch_sampler))
+    node_size = arguments.batch_size * 40
+    edge_size = arguments.batch_size * 1000
+    train_graph_dataset = MultiHomoGraphDataset(dataset, arguments.batch_size, node_size=node_size,
+                                                edge_size=edge_size, length=train_length)
+    test_graph_dataset = MultiHomoGraphDataset(dataset, arguments.batch_size, node_size=node_size,
+                                               edge_size=edge_size, length=test_length)
+    train_dataloader = ds.GeneratorDataset(train_graph_dataset, ['batched_label', 'batched_node_feat',
+                                                                 'batched_edge_feat', 'row', 'col',
+                                                                 'node_count', 'edge_count', 'node_map_idx',
+                                                                 'edge_map_idx', 'graph_mask'],
+                                           sampler=train_batch_sampler, python_multiprocessing=True)
+    test_dataloader = ds.GeneratorDataset(test_graph_dataset, ['batched_label', 'batched_node_feat',
+                                                               'batched_edge_feat', 'row', 'col',
+                                                               'node_count', 'edge_count', 'node_map_idx',
+                                                               'edge_map_idx', 'graph_mask'],
+                                          sampler=test_batch_sampler, python_multiprocessing=True)
 
-    ###################################
     # Graph Mask
-    ###################################
     np_graph_mask = [[1]] * (arguments.batch_size + 1)
     np_graph_mask[-1] = [0]
-    constant_graph_mask = ms.Tensor(np_graph_mask, dtype=ms.int32)
 
     net = MPNNPredictor(node_in_feats=dataset.num_features,
                         edge_in_feats=dataset.num_edge_features,
@@ -92,20 +102,9 @@ def main(arguments):
         train_loss = 0
         total_iter = 0
         for data in train_dataloader:
-            batch_graph, label, node_feat, edge_feat = data
+            label, node_feat, edge_feat, row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask = data
             # Create ms.Tensor
-            node_feat = ms.Tensor(node_feat, ms.float32)
-            edge_feat = ms.Tensor(edge_feat, ms.float32)
-            label = ms.Tensor(label, ms.float32)
-            batch_homo = BatchedGraphField(
-                ms.Tensor(batch_graph.adj_coo[0], ms.int32),
-                ms.Tensor(batch_graph.adj_coo[1], ms.int32),
-                ms.Tensor(batch_graph.node_count, ms.int32),
-                ms.Tensor(batch_graph.edge_count, ms.int32),
-                ms.Tensor(batch_graph.batch_meta.node_map_idx, ms.int32),
-                ms.Tensor(batch_graph.batch_meta.edge_map_idx, ms.int32),
-                constant_graph_mask
-            )
+            batch_homo = BatchedGraphField(row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask)
             # Train One Step
             train_loss += train_net(node_feat, edge_feat, label, *batch_homo.get_batched_graph()).asnumpy()
             total_iter += 1
@@ -116,20 +115,12 @@ def main(arguments):
         test_iter = 0
         test_mae = 0
         for data in test_dataloader:
-            batch_graph, label, node_feat, edge_feat = data
-            node_feat = ms.Tensor(node_feat, ms.float32)
-            edge_feat = ms.Tensor(edge_feat, ms.float32)
-            batch_homo = BatchedGraphField(
-                ms.Tensor(batch_graph.adj_coo[0], ms.int32),
-                ms.Tensor(batch_graph.adj_coo[1], ms.int32),
-                ms.Tensor(batch_graph.node_count, ms.int32),
-                ms.Tensor(batch_graph.edge_count, ms.int32),
-                ms.Tensor(batch_graph.batch_meta.node_map_idx, ms.int32),
-                ms.Tensor(batch_graph.batch_meta.edge_map_idx, ms.int32),
-                constant_graph_mask
-            )
+            label, node_feat, edge_feat, row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask = data
+            # Create ms.Tensor
+            batch_homo = BatchedGraphField(row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask)
             output = net(node_feat, edge_feat, *batch_homo.get_batched_graph()).asnumpy()
-            test_mae += np.sum(np.abs(output - label) * np_graph_mask) / arguments.batch_size / arguments.n_tasks
+            test_mae += np.sum(np.abs(output - label.asnumpy()) * np_graph_mask) / arguments.batch_size / \
+                        arguments.n_tasks
             test_iter += 1
         test_mae /= test_iter
         print('Epoch {}, Time {:.3f} s, Train loss {}, Test mae {:.3f}'.format(epoch, end_time - start_time, train_loss,
@@ -152,7 +143,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="MPNN")
     parser.add_argument("--data_path", type=str, help="path to dataset")
     parser.add_argument("--dataset", type=str, default="Alchemy", help="path to dataloader")
-    parser.add_argument("--gpu", type=str, default="4", help="which gpu to use")
+    parser.add_argument("--device", type=str, default=0, help="which device id to use")
     parser.add_argument("--epochs", type=int, default=250, help="number of training epochs")
     parser.add_argument('--profile', type=bool, default=False, help="feature dimension")
     parser.add_argument('--fuse', type=bool, default=False, help="enable fusion")
