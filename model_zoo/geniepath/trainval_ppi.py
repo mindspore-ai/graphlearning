@@ -20,11 +20,13 @@ from sklearn.metrics import f1_score
 
 import mindspore as ms
 import mindspore.nn as nn
+import mindspore.dataset as ds
 import mindspore.ops as ops
 import mindspore.context as context
+
 from mindspore_gl.nn import GNNCell
 from mindspore_gl.dataset import PPI
-from mindspore_gl.dataloader import RandomBatchSampler, DataLoader
+from mindspore_gl.dataloader import RandomBatchSampler
 from mindspore_gl import BatchedGraph, BatchedGraphField
 
 from src.geniepath import GeniePath, GeniePathLazy
@@ -45,25 +47,16 @@ class LossNet(GNNCell):
         return ms.ops.ReduceSum()(loss)
 
 
-def evaluate(net, dataloader, constant_graph_mask, batch_size):
+def evaluate(net, dataloader, batch_size):
     """evaluate"""
     train_pred, train_label = [], []
     for data in dataloader:
-        batch_graph, label, node_feat = data
-        node_feat = ms.Tensor.from_numpy(node_feat)
-        batch_homo = BatchedGraphField(
-            ms.Tensor.from_numpy(batch_graph.adj_coo[0]),
-            ms.Tensor.from_numpy(batch_graph.adj_coo[1]),
-            ms.Tensor(batch_graph.node_count, ms.int32),
-            ms.Tensor(batch_graph.edge_count, ms.int32),
-            ms.Tensor.from_numpy(batch_graph.batch_meta.node_map_idx),
-            ms.Tensor.from_numpy(batch_graph.batch_meta.edge_map_idx),
-            constant_graph_mask
-        )
+        label, node_feat, row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask = data
+        batch_homo = BatchedGraphField(row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask)
         logits = net(node_feat, *batch_homo.get_batched_graph()).asnumpy()
         predict = np.where(logits >= 0., 1, 0)
-        ori_node_count = int(np.sum(batch_graph.batch_meta.node_map_idx < batch_size))
-        train_label.extend(label.tolist()[:ori_node_count])
+        ori_node_count = int(np.sum(node_map_idx.asnumpy() < batch_size))
+        train_label.extend(label.asnumpy().tolist()[:ori_node_count])
         train_pred.extend(predict.tolist()[:ori_node_count])
     train_micro_f1 = f1_score(train_label, train_pred, average='micro')
     return train_micro_f1
@@ -77,17 +70,27 @@ def main(arguments):
 
     dataset = PPI(arguments.data_path)
     train_batch_sampler = RandomBatchSampler(dataset.train_graphs, batch_size=arguments.batch_size)
-    multi_graph_dataset = MultiHomoGraphDataset(dataset, arguments.batch_size)
-    train_dataloader = DataLoader(dataset=multi_graph_dataset, sampler=train_batch_sampler, num_workers=4,
-                                  persistent_workers=True, prefetch_factor=4)
-
     test_batch_sampler = RandomBatchSampler(dataset.test_graphs, batch_size=arguments.batch_size)
-    test_dataloader = DataLoader(dataset=multi_graph_dataset, sampler=test_batch_sampler, num_workers=0,
-                                 persistent_workers=False)
-
     val_batch_sampler = RandomBatchSampler(dataset.val_graphs, batch_size=arguments.batch_size)
-    val_dataloader = DataLoader(dataset=multi_graph_dataset, sampler=val_batch_sampler, num_workers=0,
-                                persistent_workers=False)
+    train_length = len(list(train_batch_sampler))
+    val_length = len(list(val_batch_sampler))
+    test_length = len(list(test_batch_sampler))
+
+    train_graph_dataset = MultiHomoGraphDataset(dataset, arguments.batch_size, length=train_length)
+    val_graph_dataset = MultiHomoGraphDataset(dataset, arguments.batch_size, length=val_length)
+    test_graph_dataset = MultiHomoGraphDataset(dataset, arguments.batch_size, length=test_length)
+    train_dataloader = ds.GeneratorDataset(train_graph_dataset, ['batched_label', 'batched_node_feat', 'row', 'col',
+                                                                 'node_count', 'edge_count', 'node_map_idx',
+                                                                 'edge_map_idx', 'graph_mask'],
+                                           sampler=train_batch_sampler, python_multiprocessing=True)
+    val_dataloader = ds.GeneratorDataset(val_graph_dataset, ['batched_label', 'batched_node_feat', 'row', 'col',
+                                                             'node_count', 'edge_count', 'node_map_idx',
+                                                             'edge_map_idx', 'graph_mask'],
+                                         sampler=val_batch_sampler, python_multiprocessing=True)
+    test_dataloader = ds.GeneratorDataset(test_graph_dataset, ['batched_label', 'batched_node_feat', 'row', 'col',
+                                                               'node_count', 'edge_count', 'node_map_idx',
+                                                               'edge_map_idx', 'graph_mask'],
+                                          sampler=test_batch_sampler, python_multiprocessing=True)
 
     if arguments.lazy:
         net = GeniePathLazy(input_dim=dataset.num_features,
@@ -105,38 +108,24 @@ def main(arguments):
     optimizer = nn.optim.Adam(net.trainable_params(), learning_rate=arguments.lr)
     loss = LossNet(net)
     train_net = nn.TrainOneStepCell(loss, optimizer)
-
-    np_graph_mask = [1] * (arguments.batch_size + 1)
-    np_graph_mask[-1] = 0
-    constant_graph_mask = ms.Tensor(np_graph_mask, dtype=ms.int32)
     for e in range(arguments.epochs + 1):
         train_net.set_train(True)
         beg = time.time()
         train_loss = 0
         for data in train_dataloader:
-            batch_graph, label, node_feat = data
-            node_feat = ms.Tensor.from_numpy(node_feat)
-            label = ms.Tensor.from_numpy(label)
-            batch_homo = BatchedGraphField(
-                ms.Tensor.from_numpy(batch_graph.adj_coo[0]),
-                ms.Tensor.from_numpy(batch_graph.adj_coo[1]),
-                ms.Tensor(batch_graph.node_count, ms.int32),
-                ms.Tensor(batch_graph.edge_count, ms.int32),
-                ms.Tensor.from_numpy(batch_graph.batch_meta.node_map_idx),
-                ms.Tensor.from_numpy(batch_graph.batch_meta.edge_map_idx),
-                constant_graph_mask
-            )
-            origin_node_count = np.sum(batch_graph.batch_meta.node_map_idx < arguments.batch_size)
+            label, node_feat, row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask = data
+            batch_homo = BatchedGraphField(row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask)
+            origin_node_count = np.sum(node_map_idx.asnumpy() < arguments.batch_size)
             train_loss += float(
                 train_net(node_feat, label, *batch_homo.get_batched_graph()).asnumpy()) / origin_node_count
-        train_loss /= len(train_dataloader) / dataset.num_classes
+        train_loss /= train_length / dataset.num_classes
         end = time.time()
 
         if e % 10 == 0:
             net.set_train(False)
-            train_micro_f1 = evaluate(net, train_dataloader, constant_graph_mask, arguments.batch_size)
-            val_micro_f1 = evaluate(net, val_dataloader, constant_graph_mask, arguments.batch_size)
-            test_micro_f1 = evaluate(net, test_dataloader, constant_graph_mask, arguments.batch_size)
+            train_micro_f1 = evaluate(net, train_dataloader, arguments.batch_size)
+            val_micro_f1 = evaluate(net, val_dataloader, arguments.batch_size)
+            test_micro_f1 = evaluate(net, test_dataloader, arguments.batch_size)
             print(
                 'Epoch {} time: {:.4f} Train loss: {:.5f} Train microF1: {:.4f} Val microF1: {:.4f} '
                 'Test microF1: {:.4f}'
@@ -155,7 +144,6 @@ if __name__ == '__main__':
     parser.add_argument("--batch_size", type=int, default=1, help="batch size for dataloader")
     parser.add_argument("--residual", type=bool, default=False, help="use residual for GAT")
     parser.add_argument('--fuse', type=bool, default=True, help="whether use graph mode")
-
     args = parser.parse_args()
     print(args)
     main(args)
