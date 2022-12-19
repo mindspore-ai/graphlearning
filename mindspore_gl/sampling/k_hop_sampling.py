@@ -36,7 +36,7 @@ def k_hop_subgraph(node_idx, num_hops, adj_coo, node_count, relabel_nodes=False,
         - **inv** (list) - the mapping from node indices in `node_idx` to their new location.
         - **edge_mask** (numpy.ndarray) - the edge mask indicating which edges were preserved.
 
-    Rasise:
+    Raises:
         TypeError: If 'num_hops' or 'node_count' is not a positive int.
         TypeError: If 'relabel_nodes' is not a bool.
         ValueError: If `flow` is not in source_to_target or target_to_source.

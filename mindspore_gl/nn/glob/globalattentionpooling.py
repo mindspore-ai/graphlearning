@@ -44,7 +44,7 @@ class GlobalAttentionPooling(GNNCell):
           where :math:`D_{out}` is the feature size of nodes
 
     Raises:
-        TypeError: if `gate_nn` type or `feat_nn` type is not ms.nn.Cell
+        TypeError: if `gate_nn` type or `feat_nn` type is not mindspore.nn.Cell
 
     Supported Platforms:
         ``GPU`` ``Ascend``
@@ -76,10 +76,10 @@ class GlobalAttentionPooling(GNNCell):
         super().__init__()
         if gate_nn:
             if not isinstance(gate_nn, nn.Cell):
-                raise TypeError("gate_nn type should be ms.nn.Cell")
+                raise TypeError("gate_nn type should be mindspore.nn.Cell")
         if feat_nn:
             if not isinstance(feat_nn, nn.Cell):
-                raise TypeError("feat_nn type should be ms.nn.Cell")
+                raise TypeError("feat_nn type should be mindspore.nn.Cell")
         self.gate_nn = gate_nn
         self.feat_nn = feat_nn
 

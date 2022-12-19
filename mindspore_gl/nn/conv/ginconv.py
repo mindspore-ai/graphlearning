@@ -50,13 +50,13 @@ class GINConv(GNNCell):
           of nodes, and :math:`*` could be of any shape.
         - **g** (Graph): The input graph.
     Outputs:
-        Tensor, output node features. The shape is :math:`(N, out_feat_size)`.
+        - Tensor, output node features. The shape is :math:`(N, out_feat_size)`.
 
     Raises:
         TypeError: If `activation` is not a Cell.
         TypeError: If `init_eps` is not a float.
         TypeError: If `learn_eps` is not a bool.
-        SyntaxError: raised when the aggregation type not in `sum`, `max` and `avg`.
+        SyntaxError: raised when the `aggregation_type` not in `sum`, `max` and `avg`.
 
     Supported Platforms:
          ``GPU`` ``Ascend``
@@ -89,7 +89,7 @@ class GINConv(GNNCell):
         init_eps = Validator.check_is_float(init_eps, "init_eps", self.cls_name)
         learn_eps = Validator.check_bool(learn_eps, "learn_eps", self.cls_name)
         if activation is not None and not isinstance(activation, ms.nn.Cell):
-            raise TypeError(f"For '{self.cls_name}', the 'activation' must a Cell, but got "
+            raise TypeError(f"For '{self.cls_name}', the 'activation' must a mindspore.nn.Cell, but got "
                             f"{type(activation).__name__}.")
         self.agg_type = aggregation_type
         if aggregation_type not in {"sum", "max", "avg"}:

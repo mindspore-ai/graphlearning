@@ -38,7 +38,7 @@ class TemporalConv(ms.nn.Cell):
           :math:`(D_{in})` should be equal to `in_channels` in `Args`.
 
     Outputs:
-        Tensor, output node features with shape of :math:`(B, D_{out}, N, T)`,
+        - Tensor, output node features with shape of :math:`(B, D_{out}, N, T)`,
         where :math:`B` is the size of batch, :math:`(D_{out})` should be the same as
         `out_channels` in `Args`, :math:`N` is the number of nodes,
         :math:`T` is the number of input time steps.
@@ -114,10 +114,10 @@ class STConv(GNNCell):
         - **g** (Graph) - The input graph.
 
     Outputs:
-        Tensor, output node features with shape of :math:`(B, D_{out}, N, T)`,
-        where :math:`B` is the size of batch, :math:`(D_{out})` should be the same as
-        `out_channels` in `Args`, :math:`N` is the number of nodes,
-        :math:`T` is the number of input time steps.
+        - Tensor, output node features with shape of :math:`(B, D_{out}, N, T)`,
+          where :math:`B` is the size of batch, :math:`(D_{out})` should be the same as
+          `out_channels` in `Args`, :math:`N` is the number of nodes,
+          :math:`T` is the number of input time steps.
 
     Raises:
         TypeError: If `num_nodes` or `in_channels` or `out_channels` or `hidden_channels`

@@ -1,5 +1,7 @@
 mindspore_gl.graph
-=====================
+==================
 
-.. automodule:: mindspore_gl.graph
-    :members:
+.. py:class:: mindspore_gl.dataset
+
+    图抽象和数据接口。
+

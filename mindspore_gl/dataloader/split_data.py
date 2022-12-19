@@ -28,16 +28,16 @@ def split_data(x, val_ratio=0.05, test_ratio=0.1, graph_type='undirected'):
         graph_type(str):The type of graph
 
     Returns:
-        g (Graph):Graph of the training set
-        train(array): Train set positive examples,shape:(train_len, 2)
-        val(array): Validation set positive example,shape:(val_len, 2)
-        test(array): Test set positive examples,shape:(test_len, 2)
+        g (Graph), Graph of the training set
+        train(array), Train set positive examples,shape:(train_len, 2)
+        val(array), Validation set positive example,shape:(val_len, 2)
+        test(array), Test set positive examples,shape:(test_len, 2)
 
     Examples:
-        >>> from util import split_data
+        >>> from mindspore_gl.dataloader import split_data
         >>> from mindspore_gl.dataset import CoraV2
         >>> ds = CoraV2('data_path')
-        >>> adj_coo, train, val, test = split_data(ds)
+        >>> adj_coo, (train, val, test) = split_data(ds)
         >>> print(train.shape, val.shape, test.shape)
         (11684, 2) (263, 2) (527, 2)
     """

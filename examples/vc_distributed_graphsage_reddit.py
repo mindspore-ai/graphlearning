@@ -29,7 +29,7 @@ from mindspore.nn import Cell
 import mindspore.dataset as ds
 from mindspore import ops
 
-from mindspore_gl.dataset.reddit import Reddit
+from mindspore_gl.dataset import Reddit
 from mindspore_gl.dataloader.samplers import RandomBatchSampler, DistributeRandomBatchSampler
 
 sys.path.append(os.path.join(os.getcwd(), "..", "model_zoo"))

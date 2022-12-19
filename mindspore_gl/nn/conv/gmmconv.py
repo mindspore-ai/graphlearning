@@ -53,8 +53,8 @@ class GMMConv(GNNCell):
         - **g** (Graph) - The input graph.
 
     Outputs:
-        Tensor, output node features with shape of :math:`(N, D_{out})`, where :math:`(D_{out})` should be the same as
-        `out_size` in `Args`.
+        - Tensor, output node features with shape of :math:`(N, D_{out})`, where :math:`(D_{out})` should be the same as
+          `out_size` in `Args`.
 
     Raises:
         SyntaxError: when the aggregator type not equals to 'sum'.

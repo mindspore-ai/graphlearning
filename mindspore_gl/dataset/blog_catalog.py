@@ -124,7 +124,7 @@ class BlogCatalog:
         Number of label classes
 
         Returns:
-            int, the number of classes
+            - int, the number of classes
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -138,7 +138,7 @@ class BlogCatalog:
         Number of nodes
 
         Returns:
-            int, length of csr row
+            - int, length of csr row
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -152,7 +152,7 @@ class BlogCatalog:
         Number of edges
 
         Returns:
-            int, length of csr col
+            - int, length of csr col
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -166,7 +166,7 @@ class BlogCatalog:
         Ground truth labels of each node
 
         Returns:
-            numpy.ndarray, array of node label
+            - numpy.ndarray, array of node label
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -182,7 +182,7 @@ class BlogCatalog:
         ID of each node
 
         Returns:
-            numpy.ndarray, array of node id
+            - numpy.ndarray, array of node id
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -198,7 +198,7 @@ class BlogCatalog:
         Return the adjacency matrix of COO representation
 
         Returns:
-            numpy.ndarray, array of coo matrix.
+            - numpy.ndarray, array of coo matrix.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -212,7 +212,7 @@ class BlogCatalog:
         Return the adjacency matrix of CSR representation.
 
         Returns:
-            numpy.ndarray, array of csr matrix.
+            - numpy.ndarray, array of csr matrix.
 
         Examples:
             >>> #dataset is an instance object of Dataset

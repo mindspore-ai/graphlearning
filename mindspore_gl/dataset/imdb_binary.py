@@ -14,7 +14,7 @@
 # ============================================================================
 """IMDBBinary"""
 #pylint: disable=W0702
-from typing import Optional, Union
+from typing import Union
 import os.path as osp
 import numpy as np
 from mindspore_gl.graph.graph import MindHomoGraph
@@ -39,7 +39,7 @@ class IMDBBinary:
 
     """
 
-    def __init__(self, root: Optional[str] = None):
+    def __init__(self, root):
         if not isinstance(root, str):
             raise TypeError(f"For '{self.cls_name}', the 'root' should be a str, "
                             f"but got {type(root)}.")

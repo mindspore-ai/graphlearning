@@ -92,7 +92,7 @@ class MindRelationGraph:
             node: global node id
 
         Returns:
-            bool, indicate if node is in this graph
+            - bool, indicate if node is in this graph
 
         """
         return node < self._adj_csr.indptr.shape[0] \
@@ -190,7 +190,7 @@ class BatchMeta:
     def graph_nodes(self):
         """
         Returns:
-            numpy.array, accumulated node sum for graphs in batched graph(first element is 0)
+            - numpy.array, accumulated node sum for graphs in batched graph(first element is 0)
 
         """
         return self._graph_nodes
@@ -199,7 +199,7 @@ class BatchMeta:
     def graph_edges(self):
         """
         Returns:
-            numpy.array, accumulated edge sum for graphs in batched graph(first element is 0)
+            - numpy.array, accumulated edge sum for graphs in batched graph(first element is 0)
         """
         return self._graph_edges
 
@@ -207,7 +207,7 @@ class BatchMeta:
     def graph_count(self):
         """
         Returns:
-            int, total graph count in this batched graph
+            - int, total graph count in this batched graph
 
         """
         return self._graph_edges.shape[0] - 1
@@ -216,7 +216,7 @@ class BatchMeta:
     def node_map_idx(self):
         """
         Returns:
-            numpy.array, array indicate graph index for each node
+            - numpy.array, array indicate graph index for each node
 
         """
         if self._node_map_idx is not None:
@@ -229,7 +229,7 @@ class BatchMeta:
     def edge_map_idx(self):
         """
         Returns:
-            numpy.array, array indicate graph index for each edge
+            - numpy.array, array indicate graph index for each edge
         """
         if self._edge_map_idx is not None:
             return self._edge_map_idx
@@ -245,7 +245,7 @@ class BatchMeta:
             graph_idx(int): graph idx for query
 
         Returns:
-            (int, int), (node_count, edge_count)
+            - (int, int), (node_count, edge_count)
         """
         assert graph_idx < self.graph_count, "index out of range"
         return (self.graph_nodes[graph_idx + 1] - self.graph_nodes[graph_idx],
@@ -296,21 +296,43 @@ class MindHomoGraph:
         self._batch_meta = None
 
     def set_topo(self, adj_csr: np.ndarray, node_dict, edge_ids: np.ndarray):
-        """initialize CSR Graph"""
+        """
+        initialize CSR Graph
+
+        Args:
+            adj_csr(mindspore_gl.graph.graph.csr_adj): adj of graph, csr type
+            node_dict(dict): node id dict
+            edge_ids(numpy.ndarray): array of edges
+        """
         self._adj_csr = adj_csr
         self._node_dict = node_dict
         self._edge_ids = edge_ids
         self._node_ids = np.array(list(node_dict.keys()))
 
     def set_topo_coo(self, adj_coo, node_dict=None, edge_ids: np.ndarray = None):
-        """initialize COO Graph"""
+        """
+        initialize COO Graph
+
+        Args:
+            adj_coo(numpy.ndarray): adj of graph, coo type
+            node_dict(dict): node id dict
+            edge_ids(numpy.ndarray): array of edges
+        """
         self._adj_coo = adj_coo
         self._node_dict = node_dict
         self._node_ids = None if node_dict is None else np.array(list(node_dict.keys()))
         self._edge_ids = edge_ids
 
     def neighbors(self, node):
-        """Query With Lazy Computation"""
+        """
+        Query With Lazy Computation
+
+        Args:
+            node(int): node idx
+
+        Returns:
+            - numpy.ndarray, sampled node
+        """
         self._check_csr()
         mapped_idx = self._node_dict.get(node, None)
         assert mapped_idx is not None
@@ -321,6 +343,15 @@ class MindHomoGraph:
         return node_ids
 
     def degree(self, node):
+        """
+        Query With Lazy Computation
+
+        Args:
+            node(int): node idx
+
+        Returns:
+            - int, degree of node
+        """
         self._check_csr()
         mapped_idx = self._node_dict.get(node, None)
         assert mapped_idx is not None
@@ -334,7 +365,7 @@ class MindHomoGraph:
         csr adj matrix
 
         Returns:
-            mindspore_gl.graph.graph.csr_adj, csr graph
+            - mindspore_gl.graph.graph.csr_adj, csr graph
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -349,7 +380,7 @@ class MindHomoGraph:
         coo adj matrix
 
         Returns:
-            numpy.ndarray, coo graph
+            - numpy.ndarray, coo graph
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -369,7 +400,7 @@ class MindHomoGraph:
         """Edge count of graph
 
         Returns:
-            int, edge numbers
+            - int, edge numbers
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -392,7 +423,7 @@ class MindHomoGraph:
         """Node count of graph
 
         Returns:
-            int, nodes numbers
+            - int, nodes numbers
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -415,7 +446,7 @@ class MindHomoGraph:
         """If the graph be batched
 
         Returns:
-            bool, the graph be batched
+            - bool, the graph be batched
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -428,7 +459,7 @@ class MindHomoGraph:
         """If the graph be batched
 
         Returns:
-            mindspore_gl.graph.graph.BatchMeta, bathc meta info
+            - mindspore_gl.graph.graph.BatchMeta, bathc meta info
 
         Examples:
             >>> #dataset is an instance object of Dataset

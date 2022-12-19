@@ -118,7 +118,7 @@ class Reddit:
         Feature size of each node
 
         Returns:
-            int, the number of feature size
+            - int, the number of feature size
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -132,7 +132,7 @@ class Reddit:
         Number of label classes
 
         Returns:
-            int, the number of classes
+            - int, the number of classes
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -146,7 +146,7 @@ class Reddit:
         Mask of training nodes
 
         Returns:
-            numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -162,7 +162,7 @@ class Reddit:
         Mask of test nodes
 
         Returns:
-            numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -178,7 +178,7 @@ class Reddit:
         Mask of validation nodes
 
         Returns:
-            numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -194,7 +194,7 @@ class Reddit:
         training nodes indexes
 
         Returns:
-            numpy.ndarray, array of training nodes
+            - numpy.ndarray, array of training nodes
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -208,7 +208,7 @@ class Reddit:
         Val nodes indexes
 
         Returns:
-            numpy.ndarray, array of val nodes
+            - numpy.ndarray, array of val nodes
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -222,7 +222,7 @@ class Reddit:
         Test nodes indexes
 
         Returns:
-            numpy.ndarray, array of test nodes
+            - numpy.ndarray, array of test nodes
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -236,7 +236,7 @@ class Reddit:
         Number of nodes
 
         Returns:
-            int, length of csr row
+            - int, length of csr row
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -250,7 +250,7 @@ class Reddit:
         Number of edges
 
         Returns:
-            int, length of csr col
+            - int, length of csr col
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -264,7 +264,7 @@ class Reddit:
         Node features
 
         Returns:
-            numpy.ndarray, array of node feature
+            - numpy.ndarray, array of node feature
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -281,7 +281,7 @@ class Reddit:
         Ground truth labels of each node
 
         Returns:
-            numpy.ndarray, array of node label
+            - numpy.ndarray, array of node label
 
         Examples:
             >>> #dataset is an instance object of Dataset

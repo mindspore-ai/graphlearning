@@ -15,7 +15,7 @@
 """Enzymes Dataset"""
 #pylint: disable=W0702
 import re
-from typing import Optional, Union
+from typing import Union
 import pathlib
 import numpy as np
 from mindspore_gl.graph import MindHomoGraph
@@ -66,7 +66,7 @@ class Enzymes:
 
     dataset_url = ""
 
-    def __init__(self, root: Optional[str] = None):
+    def __init__(self, root):
         if not isinstance(root, str):
             raise TypeError(f"For '{self.cls_name}', the 'root' should be a str, "
                             f"but got {type(root)}.")
@@ -97,7 +97,7 @@ class Enzymes:
 
     def preprocess(self):
         """process data"""
-        adj_list, graph_indic, node_attrs, graph_labels, label_dim = self.get_info()
+        adj_list, graph_indic, node_attrs, graph_labels, label_dim = self._get_info()
         max_node_nums = 0
         graph_edges, graph_nodes = [0], [0]
         adj_coo_row, adj_coo_col = [], []
@@ -137,7 +137,7 @@ class Enzymes:
                  test_mask=test_mask, node_feat=node_attrs, graph_label=graph_labels, max_num_node=max_node_nums,
                  graph_edges=graph_edges, graph_nodes=graph_nodes, label_dim=label_dim)
 
-    def get_info(self):
+    def _get_info(self):
         """get graphs info"""
         filename_graph_indic = self._root / 'ENZYMES_graph_indicator.txt'
         graph_indic = {}
@@ -199,7 +199,7 @@ class Enzymes:
         Feature size of each node
 
         Returns:
-            int, the number of feature size
+            - int, the number of feature size
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -213,7 +213,7 @@ class Enzymes:
         Number of label classes
 
         Returns:
-            int, the number of classes
+            - int, the number of classes
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -226,10 +226,10 @@ class Enzymes:
     @property
     def max_num_node(self):
         """
-        Max number of label in one graph
+        Max number of nodes in one graph
 
         Returns:
-            int, the max number of node number
+            - int, the max number of node number
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -245,7 +245,7 @@ class Enzymes:
         Mask of training nodes
 
         Returns:
-            numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -261,7 +261,7 @@ class Enzymes:
         Mask of test nodes
 
         Returns:
-            numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -277,7 +277,7 @@ class Enzymes:
         Mask of validation nodes
 
         Returns:
-            numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -293,7 +293,7 @@ class Enzymes:
         Accumulative graph nodes count
 
         Returns:
-            numpy.ndarray, array of accumulative nodes
+            - numpy.ndarray, array of accumulative nodes
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -309,7 +309,7 @@ class Enzymes:
         Accumulative graph edges count
 
         Returns:
-            numpy.ndarray, array of accumulative edges
+            - numpy.ndarray, array of accumulative edges
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -325,7 +325,7 @@ class Enzymes:
         Train graph id
 
         Returns:
-            numpy.ndarray, array of train graph id
+            - numpy.ndarray, array of train graph id
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -339,7 +339,7 @@ class Enzymes:
         Valid graph id
 
         Returns:
-            numpy.ndarray, array of valid graph id
+            - numpy.ndarray, array of valid graph id
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -353,7 +353,7 @@ class Enzymes:
         Test graph id
 
         Returns:
-            numpy.ndarray, array of test graph id
+            - numpy.ndarray, array of test graph id
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -367,7 +367,7 @@ class Enzymes:
         Total graph numbers
 
         Returns:
-            int, numbers of graph
+            - int, numbers of graph
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -381,7 +381,7 @@ class Enzymes:
         Node features
 
         Returns:
-            numpy.ndarray, array of node feature
+            - numpy.ndarray, array of node feature
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -392,6 +392,14 @@ class Enzymes:
         return self._node_feat
 
     def graph_feat(self, graph_idx):
+        """
+        graph features
+        Args:
+            graph_idx: index of graph
+
+        Returns:
+            - numpy.ndarray, node feature of graph
+        """
         return self.node_feat[self.graph_nodes[graph_idx]: self.graph_nodes[graph_idx + 1]]
 
     @property
@@ -400,7 +408,7 @@ class Enzymes:
         Graph label
 
         Returns:
-            numpy.ndarray, array of graph label
+            - numpy.ndarray, array of graph label
 
         Examples:
             >>> #dataset is an instance object of Dataset

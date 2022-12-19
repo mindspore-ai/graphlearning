@@ -44,8 +44,8 @@ class GCNConv2(GNNCell):
         - **g** (Graph) - The input graph.
 
     Outputs:
-        Tensor, output node features with shape of :math:`(N, D_{out})`, where :math:`(D_{out})` should be the same as
-        `out_size` in `Args`.
+        - Tensor, output node features with shape of :math:`(N, D_{out})`, where :math:`(D_{out})` should be the same as
+          `out_size` in `Args`.
 
     Raises:
         TypeError: If `in_feat_size` or `out_size` is not an int.

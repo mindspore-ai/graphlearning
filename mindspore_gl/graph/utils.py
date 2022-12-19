@@ -47,7 +47,7 @@ class ArrayPool:
             size(Union[List, Tuple]): request array's size
 
         Returns:
-            Union[numpy.array, None], return None is request size has no array left, else return the array.
+            - Union[numpy.array, None], return None is request size has no array left, else return the array.
 
         """
         key = "_".join(list(map(str, size)))
@@ -86,7 +86,7 @@ class SharedArrayPool:
             shared_array: input shared_numpy.SharedNDArray
 
         Returns:
-            bool, indicate if certain shared_array if available for reuse.
+            - bool, indicate if certain shared_array if available for reuse.
         """
         return memory_kernel.py_ref_count(shared_array.shm.buf) == 1 and not shared_array.shared
 
@@ -98,7 +98,7 @@ class SharedArrayPool:
             size(Union[List, Tuple]): request array's size
 
         Returns:
-            Union[numpy.array, None], return None is request size has no array left, else return the array.
+            - Union[numpy.array, None], return None is request size has no array left, else return the array.
 
         """
         key = "_".join(list(map(str, size)))

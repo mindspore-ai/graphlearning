@@ -32,7 +32,7 @@ def random_walk_unbias_on_homo(homo_graph: MindHomoGraph,
         walk_length(int): sample path length
 
     Returns:
-        array, sample node (len(seeds), walk_length)
+        - array, sample node :math:`(len(seeds), walk_length)`
 
     Raises:
         TypeError: If `walk_length` is not a positive integer.

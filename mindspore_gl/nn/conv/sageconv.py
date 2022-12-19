@@ -54,15 +54,15 @@ class SAGEConv(GNNCell):
         - **g** (Graph) - The input graph.
 
     Outputs:
-        Tensor, the output feature of shape :math:`(N,D\_out)`.
-        where :math:`N` is the number of nodes and :math:`D\_out` could be of any shape.
+        - Tensor, the output feature of shape :math:`(N,D\_out)`.
+          where :math:`N` is the number of nodes and :math:`D\_out` could be of any shape.
 
     Raises:
         TypeError: If `in_feat_size` or `out_feat_size` is not an int.
         TypeError: If `bias` is not a bool.
         KeyError: if `aggregator` type is not pool, lstm or mean.
-        TypeError: if `activation` type is not ms.nn.Cell
-        TypeError: if `norm` type is not ms.nn.Cell
+        TypeError: if `activation` type is not mindspore.nn.Cell
+        TypeError: if `norm` type is not mindspore.nn.Cell
 
     Supported Platforms:
         ``GPU`` ``Ascend``

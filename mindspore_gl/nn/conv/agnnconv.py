@@ -44,9 +44,9 @@ class AGNNConv(GNNCell):
         - **g** (Graph): The input graph.
 
     Outputs:
-        Tensor, output node features, where the shape should be the same as input 'x'.
+        - Tensor, output node features, where the shape should be the same as input 'x'.
 
-    Rasise:
+    Raises:
         TypeError: If 'init_beta' is not a float.
         TypeError: If 'learn_beta' is not a bool.
 

@@ -55,13 +55,13 @@ class GCNConv(GNNCell):
         - **g** (Graph) - The input graph.
 
     Outputs:
-        Tensor, output node features with shape of :math:`(N, D_{out})`, where :math:`(D_{out})` should be the same as
-        `out_size` in `Args`.
+        - Tensor, output node features with shape of :math:`(N, D_{out})`, where :math:`(D_{out})` should be the same as
+          `out_size` in `Args`.
 
     Raises:
         TypeError: If `in_feat_size` or `out_size` is not an int.
         TypeError: If `dropout` is not a float.
-        TypeError: If `activation` is not a Cell.
+        TypeError: If `activation` is not a mindspore.nn.Cell.
         ValueError: If `dropout` is not in range (0.0, 1.0]
 
     Supported Platforms:
@@ -99,7 +99,7 @@ class GCNConv(GNNCell):
             raise ValueError(f"For '{self.cls_name}', the 'keep_prob' should be a number in range (0.0, 1.0], "
                              f"but got {dropout}.")
         if activation is not None and not isinstance(activation, Cell):
-            raise TypeError(f"For '{self.cls_name}', the 'activation' must a Cell, but got "
+            raise TypeError(f"For '{self.cls_name}', the 'activation' must a mindspore.nn.Cell, but got "
                             f"{type(activation).__name__}.")
         self.fc = ms.nn.Dense(in_feat_size, out_size, weight_init=XavierUniform(), has_bias=False)
         self.bias = ms.Parameter(initializer('zero', (out_size), ms.float32), name="bias")

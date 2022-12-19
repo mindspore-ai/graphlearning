@@ -18,9 +18,7 @@ import numpy as np
 
 class MetrLa:
     """
-    METR-LA is a large-scale dataset collected from 1500 traffic loop detectors in
-    Los Angeles country road network. This dataset includes speed, volume and occupancy
-    data, covering approximately 3,420 miles.
+    METR-LA  Dataset, a source dataset for reading and parsing METR-LA dataset.
 
     Args:
         root(str): path to the root directory that contains METR-LA/adj_mat.npy and
@@ -41,6 +39,25 @@ class MetrLa:
         >>> dataset = MetrLa(root)
         >>> features, labels = dataset.get_data(in_timestep, out_timestep)
 
+    About METR-LA dataset:
+        METR-LA is a large-scale dataset collected from 1500 traffic loop detectors in
+        Los Angeles country road network. This dataset includes speed, volume and occupancy
+        data, covering approximately 3,420 miles.
+
+    Statistics:
+
+    - Time step: 12,6850
+    - Nodes: 207
+    - Edges: 1515
+
+    Dataset can be download here: <https://graphmining.ai/temporal_datasets/METR-LA.zip>
+    You can organize the dataset files into the following directory structure and read by `preprocess` API.
+
+    .. code-block::
+
+        .
+        ├── adj_mat.npy
+        └── node_values.npy
     """
     def __init__(self, root):
         if not isinstance(root, str):
@@ -102,7 +119,7 @@ class MetrLa:
         Number of nodes
 
         Returns:
-            int, number of node
+            - int, number of node
 
         Examples:
             >>> #dataset is an instance object of Dataset

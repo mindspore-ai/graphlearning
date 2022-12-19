@@ -44,7 +44,6 @@ class MeanConv(GNNCell):
     Args:
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
-        aggregator_type (str): Type of aggregator, should in 'pool', 'lstm' and 'mean'.
         feat_drop (float): The keep rate, greater than 0 and less equal than 1. E.g. dropout=0.9,
             dropping out 10% of input units. Default: 0.6.
         bias (bool): Whether use bias.
@@ -59,14 +58,13 @@ class MeanConv(GNNCell):
         - **g** (Graph) - The input graph.
 
     Outputs:
-        Tensor, the output feature of shape :math:`(N\_v,D\_out)`.
-        where :math:`N\_v` is the number of self nodes and :math:`D\_out` could be of any shape
+        - Tensor, the output feature of shape :math:`(N\_v,D\_out)`.
+          where :math:`N\_v` is the number of self nodes and :math:`D\_out` could be of any shape
 
     Raises:
-        SyntaxError: when aggregator type not supported.
         TypeError: If `in_feat_size` or `out_feat_size` is not an int.
         TypeError: If `bias` is not a bool.
-        TypeError: If `norm` is not a Cell.
+        TypeError: If `norm` is not a mindspore.nn.Cell.
         ValueError: If `dropout` is not in range (0.0, 1.0]
         ValueError: If `activation` is not tanh or relu.
 
@@ -114,7 +112,7 @@ class MeanConv(GNNCell):
             raise ValueError(f"For '{self.cls_name}', the 'keep_prob' should be a number in range (0.0, 1.0], "
                              f"but got {dropout}.")
         if norm is not None and not isinstance(norm, Cell):
-            raise TypeError(f"For '{self.cls_name}', the 'activation' must a Cell, but got "
+            raise TypeError(f"For '{self.cls_name}', the 'activation' must a mindspore.nn.Cell, but got "
                             f"{type(norm).__name__}.")
         self.feat_drop = ms.nn.Dropout(feat_drop)
         self.concat = P.Concat(axis=1)
