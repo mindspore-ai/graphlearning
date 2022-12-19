@@ -1,9 +1,7 @@
 mindspore_gl.utils
 ==================
 
-.. py:class:: mindspore_gl.utils
-
-    utils初始化
+utils初始化
 
 .. py:function:: mindspore_gl.utils.pca(matrix: numpy.ndarray, k: int = None, niter: int = 2, norm: bool = False)
 
@@ -22,3 +20,6 @@ mindspore_gl.utils
         - **TypeError** - 如果 `k` 或 `niter` 不是正整数。
         - **TypeError** - 如果 `matrix` 不是numpy.ndarry。
         - **TypeError** - 如果 `norm` 不是bool。
+
+.. automodule:: mindspore_gl.utils
+    :members:

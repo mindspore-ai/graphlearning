@@ -34,9 +34,10 @@ mindspore_gl.dataloader
 
     可映射数据集定义，用抽象类表示数据集。
     所有数据集都都应该对它进行继承，它代表从key到样本的映射关系。
-    所有子类都应该具备：meth:`__getitem__'，它实现了通过给定key来获取实例。
+    所有子类都应该具备 :meth:`__getitem__`，它实现了通过给定key来获取实例。
 
-    Note：
+    .. note::
         :class: `mindspore_gl.dataloader.Dataloader` 需要一个 `Dataset` 实例作为输入。它通过 `Sampler` 返回的索引来执行。
 
-
+.. automodule:: mindspore_gl.dataloader
+    :members:

@@ -40,7 +40,7 @@ mindspore_gl.nn.SAGPooling
         - **src_perm** (Tensor) - 更新的src节点。
         - **dst_perm** (Tensor) - 更新的dst节点。
         - **perm** (Tensor) - 更新节点索引之前topk节点的节点索引。Shape为 :math:`M`，其中 :math:`M` 等于 `Inputs` 中的 `perm_num` 。
-        - **perm_score (Tensor) - 更新节点的投影分数。
+        - **perm_score** (Tensor) - 更新节点的投影分数。
 
     异常：
         - **TypeError** - 如果 `in_feat_size` 或 `out_size` 不是int。
