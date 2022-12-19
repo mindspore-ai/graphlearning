@@ -27,8 +27,8 @@ mindspore_gl.dataset.Alchemy
     - Edges: 10.02
     - 量子力学性质数量: 12
 
-    下载地址：`Alchemy dev <https://alchemy.tencent.com/data/dev_v20190730.zip>`_
-            `Alchemy valid <https://alchemy.tencent.com/data/valid_v20190730.zip>`_ 。
+    下载地址：`Alchemy dev <https://alchemy.tencent.com/data/dev_v20190730.zip>`_ 
+    `Alchemy valid <https://alchemy.tencent.com/data/valid_v20190730.zip>`_ 。
     您可以将数据集文件组织到以下目录结构中，并通过 `preprocess` API读取。
 
     .. code-block::

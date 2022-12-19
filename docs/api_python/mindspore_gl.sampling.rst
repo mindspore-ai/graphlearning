@@ -1,9 +1,7 @@
 mindspore_gl.sampling
 =====================
 
-.. py:class:: mindspore_gl.sampling
-
-    图数据的采样API。
+图数据的采样API。
 
 .. py:function:: mindspore_gl.sampling.k_hop_subgraph(node_idx, num_hops, adj_coo, node_count, relabel_nodes=False, flow='source_to_target')
 
@@ -90,3 +88,6 @@ mindspore_gl.sampling
         - **TypeError** - 如果 `homo_graph` 不是MindHomoGraph类。
         - **TypeError** - 如果 `seeds` 不是numpy.array。
         - **TypeError** - 如果 `neighbor_nums` 不是List。
+
+.. automodule:: mindspore_gl.sampling
+    :members:
