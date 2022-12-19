@@ -1,7 +1,7 @@
 mindspore_gl.nn.STConv
 ======================
 
-.. py:class:: mindspore_gl.nn.STConv(num_nodes: int, in_channels: int, hidden_channels: int, out_channels: int, kernel_size: int, k: int, bias: bool = True)
+.. py:class:: mindspore_gl.nn.STConv(num_nodes: int, in_channels: int, hidden_channels: int, out_channels: int, kernel_size: int = 3, k: int = 3, bias: bool = True)
 
     STGCN层。
     来自论文 `A deep learning framework for traffic forecasting arXiv preprint arXiv:1709.04875, 2017.`_ 。

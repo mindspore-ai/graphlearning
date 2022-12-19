@@ -157,9 +157,9 @@ class STConv(GNNCell):
                  in_channels: int,
                  hidden_channels: int,
                  out_channels: int,
-                 kernel_size: int,
-                 k: int,
-                 bias: bool = True,):
+                 kernel_size: int = 3,
+                 k: int = 3,
+                 bias: bool = True):
         super().__init__()
         self.num_nodes = Validator.check_positive_int(num_nodes, "num_nodes", self.cls_name)
         self.in_channels = Validator.check_positive_int(in_channels, "in_channels", self.cls_name)

@@ -57,57 +57,64 @@ def remove_self_loop(adj, mode='dense'):
 
     return adj
 
-def add_self_loop(adj, node, fill_value, mode='dense'):
-    """
+def add_self_loop(edge_index, edge_weight, node, fill_value, mode='dense'):
+    r"""
     Feature:
-    ADD the selp loop from the input coo matrix,
+    ADD the self loop from the input coo matrix,
     you can choose to operate on a dense matrix or a matrix in coo format
 
     Args:
-        adj(Tensor): COO matrix
+        edge_index (Tensor): Edge index. The shape is :math:`(2, N\_e)`
+            where :math:`N\_e` is the number of edges.
+        edge_weight (Tensor): Edge weights. The shape is :math:`(N\_e)`
+            where :math:`N\_e` is the number of edges.
         node(int): Number of nodes
         fill_value(Tensor): self-loop value
         mode(str): type of operation matrix
 
     Returns:
-        The object after adding the diagonal matrix
-        'dense' returns the dense Tensor type
-        'coo' returns the coo Tensor type
+        if `mode` is 'dense':
+        - **new_adj** (Tensor) - dense matrix.
+        if `mode` is 'coo'：
+        - **edge_index** (Tensor) - new edge_index.
+        - **edge_weight** (Tensor) - new edge_weight
 
     Raises:
         ValueError: if `mode` not is coo or dense.
+        ValueError: if `fill_value` length not equal to `node`.
         TypeError: If `node` is not a positive int.
 
     Examples:
         >>> from mindspore import Tensor
-        >>> from mindspore import COOTensor
         >>> from mindspore_gl.graph import add_self_loop
-        >>> indices = Tensor([[0, 1], [1, 2], [2, 0]], dtype=ms.int32)
-        >>> values = Tensor([1, 2, 1], dtype=ms.float32)
-        >>> shape = (3, 3)
-        >>> adj = COOTensor(indices, values, shape)
+        >>> edge_index = [[1, 1, 2, 2], [0, 2, 0, 1]]
+        >>> edge_index = ms.Tensor(edge_index, ms.int32)
+        >>> edge_weight = Tensor([1, 1, 1, 1], ms.float32)
         >>> node = 3
-        >>> fill_value = Tensor([1, 1, 1], ms.float32)
-        >>> new_adj = add_self_loop(adj, node, fill_value, mode='dense')
+        >>> fill_value = Tensor([2, 2, 2], ms.float32)
+        >>> new_adj = add_self_loop(edge_index, edge_weight, node, fill_value, mode='dense')
         >>> print(new_adj)
-        [[1. 1. 0.]
-         [0. 1. 2.]
-         [1. 0. 1.]]
-         >>> new_adj = add_self_loop(adj, node, fill_value, mode='coo')
-         >>> print(new_adj.indices)
-         [[0 1]
-          [1 2]
-          [2 0]
-          [0 0]
-          [1 1]
-          [2 2]]
-         >>> print(new_adj.values)
-         [1. 2. 1. 1. 1. 1.]
+        [[2. 0. 0.]
+         [1. 2. 1.]
+         [1. 1. 2.]]
+        >>> edge_index, edge_weight = add_self_loop(edge_index, edge_weight, node, fill_value, mode='coo')
+        >>> print(edge_index)
+        [[1 1 2 2 0 1 2]
+         [0 2 0 1 0 1 2]]
+        >>> print(edge_weight)
+        [1. 1. 1. 1. 2. 2. 2.]
     """
     if not isinstance(node, int):
         raise TypeError("The node data type is {},\
                         but it should be int.".format(type(node)))
-    assert mode in ['coo', 'dense'], 'Invalid mode'
+    if mode not in ['coo', 'dense']:
+        raise TypeError("The node type is {},\
+                                but it should be 'coo' or 'dense'.".format(type(mode)))
+    if fill_value.shape[0] != node:
+        raise ValueError("The fill_value length must equal to node")
+    indices = ops.Transpose()(edge_index, (1, 0))
+    shape = (node, node)
+    adj = ms.COOTensor(indices, edge_weight, shape)
     shape = adj.shape
     range_index = nn.Range(0, node, 1)
     loop_index = range_index()
@@ -121,4 +128,8 @@ def add_self_loop(adj, node, fill_value, mode='dense'):
     new_adj = COOTensor(edge_index, edge_attr, shape)
     if mode == 'dense':
         new_adj = new_adj.to_dense()
-    return new_adj
+        return new_adj
+    edge_index = new_adj.indices
+    edge_index = ops.Transpose()(edge_index, (1, 0))
+    edge_weight = new_adj.values
+    return edge_index, edge_weight
