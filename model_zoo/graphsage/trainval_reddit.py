@@ -49,13 +49,13 @@ class LossNet(Cell):
 def main():
     if args.fuse and args.device == "GPU":
         context.set_context(device_target="GPU", save_graphs=True, save_graphs_path="./computational_graph/",
-                            mode=context.GRAPH_MODE, enable_graph_kernel=True,
+                            mode=context.GRAPH_MODE, enable_graph_kernel=True, device_id=args.device_id,
                             graph_kernel_flags="--enable_expand_ops=Gather --enable_cluster_ops=TensorScatterAdd,"
                                                "UnsortedSegmentSum,GatherNd --enable_recompute_fusion=false "
                                                "--enable_parallel_fusion=true ")
     else:
-        context.set_context(device_target=args.device, mode=context.PYNATIVE_MODE, save_graphs=True,
-                            save_graphs_path="./saved_ir/")
+        context.set_context(device_target=args.device, mode=context.GRAPH_MODE, save_graphs=True,
+                            save_graphs_path="./saved_ir/", device_id=args.device_id)
 
     graph_dataset = Reddit(args.data_path)
     train_sampler = RandomBatchSampler(data_source=graph_dataset.train_nodes, batch_size=args.batch_size)
@@ -111,7 +111,7 @@ def main():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Graphsage")
     parser.add_argument("--data-path", type=str, help="path to dataloader")
-    parser.add_argument("--gpu", type=int, default=0, help="which gpu to use")
+    parser.add_argument("--device_id", type=int, default=0, help="which device id to use")
     parser.add_argument("--batch_size", type=int, default=1024, help="batch size ")
     parser.add_argument("--dropout", type=float, default=0.5, help="drop out keep rate")
     parser.add_argument("--epochs", type=int, default=200, help="number of training epochs")

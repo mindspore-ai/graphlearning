@@ -46,13 +46,13 @@ class LossNet(GNNCell):
 def main():
     if args.fuse and args.device == "GPU":
         context.set_context(device_target="GPU", save_graphs=True, save_graphs_path="./computational_graph/",
-                            mode=context.GRAPH_MODE, enable_graph_kernel=True,
+                            mode=context.GRAPH_MODE, enable_graph_kernel=True, device_id=args.device_id,
                             graph_kernel_flags="--enable_expand_ops=Gather --enable_cluster_ops=TensorScatterAdd,"
                                                "UnsortedSegmentSum,GatherNd --enable_recompute_fusion=false "
                                                "--enable_parallel_fusion=true ")
     else:
         context.set_context(device_target=args.device, mode=context.GRAPH_MODE, save_graphs=True,
-                            save_graphs_path="./saved_ir/")
+                            save_graphs_path="./saved_ir/", device_id=args.device_id)
     epochs = args.epochs
     lr = args.lr
     weight_decay = args.weight_decay
@@ -132,7 +132,6 @@ def main():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="GAT")
     parser.add_argument("--data-path", type=str, help="path to dataloader")
-    parser.add_argument("--gpu", type=int, default=4, help="which gpu to use")
     parser.add_argument("--batch_size", type=int, default=32, help="batch size ")
     parser.add_argument("--epochs", type=int, default=1, help="number of training epochs")
     parser.add_argument("--in-timestep", type=int, default=12, help="length of input timestep")
@@ -151,6 +150,7 @@ if __name__ == "__main__":
     parser.add_argument('--profile', type=bool, default=False, help="training profiling")
     parser.add_argument('--fuse', type=bool, default=False, help="enable fusion")
     parser.add_argument("--device", type=str, default="GPU", help="which device to use")
+    parser.add_argument("--device_id", type=int, default=0, help="which device id to use")
     args = parser.parse_args()
     print(args)
     main()

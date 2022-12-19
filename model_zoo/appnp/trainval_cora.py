@@ -47,10 +47,11 @@ class LossNet(GNNCell):
 
 def main():
     """train appnp"""
-    if args.fuse:
-        context.set_context(device_target="GPU", mode=context.GRAPH_MODE, enable_graph_kernel=True)
+    if args.fuse and args.device == "GPU":
+        context.set_context(device_target=args.device, mode=context.GRAPH_MODE, enable_graph_kernel=True,
+                            device_id=args.device_id)
     else:
-        context.set_context(device_target="GPU", mode=context.PYNATIVE_MODE)
+        context.set_context(device_target=args.device, mode=context.GRAPH_MODE, device_id=args.device_id)
     num_hidden = args.num_hidden
     feat_dropout = args.feat_dropout
     edge_dropout = args.edge_dropout
@@ -119,7 +120,8 @@ def main():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='APPNP for whole-graph classification')
     parser.add_argument("--data_path", type=str, default='/home/dataset/', help="path to dataset")
-    parser.add_argument("--gpu", type=int, default=0, help="which gpu to use")
+    parser.add_argument("--device", type=str, default="GPU", help="which device to use")
+    parser.add_argument("--device_id", type=int, default=0, help="which device id to use")
     parser.add_argument('--epochs', type=int, default=200, help='number of epochs to train (default: 200)')
     parser.add_argument('--lr', type=float, default=0.01, help='learning rate (default: 0.01)')
     parser.add_argument("--weight_decay", type=float, default=5e-4, help="weight decay")

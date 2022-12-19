@@ -42,11 +42,11 @@ class LossNet(GNNCell):
         return ms.ops.ReduceSum()(loss)
 
 def main(arguments):
-    if arguments.fuse:
-        context.set_context(device_target="GPU", save_graphs=True, save_graphs_path="./computational_graph/",
-                            mode=context.GRAPH_MODE, enable_graph_kernel=True)
+    if arguments.fuse and arguments.device == "GPU":
+        context.set_context(device_target=arguments.device, save_graphs=True, save_graphs_path="./computational_graph/",
+                            mode=context.GRAPH_MODE, enable_graph_kernel=True, device_id=arguments.device_id)
     else:
-        context.set_context(device_target="GPU")
+        context.set_context(device_target=arguments.device, device_id=arguments.device_id)
 
     dataset = CoraV2(arguments.data_path, 'pubmed')
     train_mask = dataset.train_mask
@@ -100,7 +100,8 @@ def main(arguments):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='GeniePath')
     parser.add_argument("--data_path", type=str, help="path to dataset")
-    parser.add_argument("--gpu", type=int, default=0, help="which gpu to use")
+    parser.add_argument("--device", type=str, default="GPU", help="which device to use")
+    parser.add_argument("--device_id", type=int, default=0, help="which device id to use")
     parser.add_argument("--hidden_dim", type=int, default=16, help="hidden layer dimension")
     parser.add_argument("--num_layers", type=int, default=2, help="number of GeniePath layers")
     parser.add_argument("--epochs", type=int, default=500, help="number of epochs")

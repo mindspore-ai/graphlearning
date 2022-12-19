@@ -49,11 +49,11 @@ class LossNet(GNNCell):
 
 
 def main(arguments):
-    if arguments.fuse:
-        context.set_context(device_target="GPU", save_graphs=True, save_graphs_path="./computational_graph/",
-                            mode=context.GRAPH_MODE, enable_graph_kernel=True, device_id=arguments.device)
+    if arguments.fuse and arguments.device == "GPU":
+        context.set_context(device_target=arguments.device, save_graphs=True, save_graphs_path="./computational_graph/",
+                            mode=context.GRAPH_MODE, enable_graph_kernel=True, device_id=arguments.device_id)
     else:
-        context.set_context(device_target="GPU", device_id=arguments.device)
+        context.set_context(device_target=arguments.device, device_id=arguments.device_id)
 
     if arguments.profile:
         ms_profiler = Profiler(subgraph="ALL", is_detail=True, is_show_op_path=False, output_path="./prof_result")
@@ -143,7 +143,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="MPNN")
     parser.add_argument("--data_path", type=str, help="path to dataset")
     parser.add_argument("--dataset", type=str, default="Alchemy", help="path to dataloader")
-    parser.add_argument("--device", type=str, default=0, help="which device id to use")
+    parser.add_argument("--device", type=str, default="GPU", help="which device to use")
+    parser.add_argument("--device_id", type=int, default=0, help="which device id to use")
     parser.add_argument("--epochs", type=int, default=250, help="number of training epochs")
     parser.add_argument('--profile', type=bool, default=False, help="feature dimension")
     parser.add_argument('--fuse', type=bool, default=False, help="enable fusion")

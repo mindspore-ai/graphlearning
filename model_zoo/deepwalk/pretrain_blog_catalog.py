@@ -32,11 +32,11 @@ def main(arguments):
         if arguments.save_file_path[-1] != '/':
             arguments.save_file_path = arguments.save_file_path + '/'
 
-    if arguments.fuse:
-        context.set_context(device_target="GPU", save_graphs=True, save_graphs_path="./computational_graph/",
-                            mode=context.GRAPH_MODE, enable_graph_kernel=True)
+    if arguments.fuse and arguments.device == "GPU":
+        context.set_context(device_target=arguments.device, save_graphs=True, save_graphs_path="./computational_graph/",
+                            mode=context.GRAPH_MODE, enable_graph_kernel=True, device_id=arguments.device_id)
     else:
-        context.set_context(device_target="GPU")
+        context.set_context(device_target=arguments.device, device_id=arguments.device_id)
 
     dataset = BlogCatalog(arguments.data_path)
     n_nodes = dataset.node_count
@@ -100,12 +100,13 @@ def main(arguments):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Deepwalk')
     parser.add_argument("--data_path", type=str, help="path to dataloader")
+    parser.add_argument("--device", type=str, default="GPU", help="which device to use")
+    parser.add_argument("--device_id", type=int, default=0, help="which device id to use")
     parser.add_argument("--save_file_path", type=str, default=None,
                         help="path to save embedding weight. If None, data_path will be used.")
     parser.add_argument("--save_file_name", type=str, default="deepwalk_embedding.npz",
                         help="file name of saved embedding weight")
     parser.add_argument("--dataset", type=str, default="BlogCatalog", help="dataset")
-    parser.add_argument("--gpu", type=int, default=0, help="which gpu to use")
     parser.add_argument("--epoch", type=int, default=80, help="number of epoch")
     parser.add_argument("--lr", type=float, default=0.025, help='learning rate')
     parser.add_argument("--batch_size", type=int, default=128, help="number of batch size")
