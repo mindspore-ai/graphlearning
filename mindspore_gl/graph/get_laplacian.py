@@ -17,13 +17,15 @@ from mindspore_gl.graph.self_loop import add_self_loop
 import mindspore as ms
 from mindspore import ops
 
-def get_laplacian(edge_index, edge_weight, normalization, num_nodes):
+
+def get_laplacian(edge_index, num_nodes, edge_weight=None, normalization='sym'):
     r"""
     get laplacian matrix
 
     Args:
         edge_index (Tensor): Edge index. The shape is :math:`(2, N\_e)`
             where :math:`N\_e` is the number of edges.
+        num_nodes (int): Number of nodes.
         edge_weight (Tensor): Edge weights. The shape is :math:`(N\_e)`
             where :math:`N\_e` is the number of edges.
         normalization (str): Normalization method.
@@ -35,7 +37,6 @@ def get_laplacian(edge_index, edge_weight, normalization, num_nodes):
                \mathbf{D}^{-1/2}`
             3. :obj:`"rw"`: Random-walk normalization
                :math:`\mathbf{L} = \mathbf{I} - \mathbf{D}^{-1} \mathbf{A}`
-        num_nodes (int): Number of nodes.
 
     Returns:
         - **edge_index** (Tensor) - normalized edge_index.
@@ -51,16 +52,17 @@ def get_laplacian(edge_index, edge_weight, normalization, num_nodes):
         >>> edge_index = ms.Tensor(edge_index, ms.int32)
         >>> num_nodes = 3
         >>> edge_weight = ms.Tensor([1, 2, 1, 2], ms.float32)
-        >>> edge_index, edge_weight = get_laplacian(edge_index, edge_weight, 'sym',num_nodes)
+        >>> edge_index, edge_weight = get_laplacian(edge_index, num_nodes, edge_weight, 'sym')
         >>> print(edge_index)
         [[1 1 2 2 0 1 2]
-        [0 2 0 1 0 1 2]]
+         [0 2 0 1 0 1 2]]
         >>> print(edge_weight)
         [-0.        -0.6666666 -0.        -0.6666666  1.         1.
-        1.       ]
+          1.       ]
     """
 
-    assert normalization in [None, 'sym', 'rw'], 'Invalid normalization'
+    if normalization not in [None, 'sym', 'rw']:
+        raise TypeError("Invalid normalization, normalization must be 'sym', 'rm' or None")
 
     if edge_weight is None:
         edge_weight = ms.ops.Ones()(edge_index.shape[1], ms.float32)
@@ -69,16 +71,10 @@ def get_laplacian(edge_index, edge_weight, normalization, num_nodes):
     out = ops.Zeros()(num_nodes, ms.float32)
     index = ops.ExpandDims()(row, -1)
     deg = ops.TensorScatterAdd()(out, index, edge_weight)
-    indices = ops.Transpose()(edge_index, (1, 0))
-    shape = (num_nodes, num_nodes)
     fill_values = ms.ops.Ones()(num_nodes, ms.float32)
     if normalization is None:
         # L = D - A.
-        adj = ms.COOTensor(indices, edge_weight, shape)
-        new_adj = add_self_loop(adj, num_nodes, fill_values, 'coo')
-        edge_index = new_adj.indices
-        edge_index = ops.Transpose()(edge_index, (1, 0))
-        edge_weight = new_adj.values
+        edge_index, edge_weight = add_self_loop(edge_index, edge_weight, num_nodes, fill_values, 'coo')
         edge_weight = ops.Concat()((-edge_weight, deg))
     elif normalization == 'sym':
         # Compute A_norm = -D^{-1/2} A D^{-1/2}.
@@ -88,11 +84,7 @@ def get_laplacian(edge_index, edge_weight, normalization, num_nodes):
         deg_inv_sqrt = ops.MaskedFill()(deg_inv_sqrt, mask, 0.0)
         edge_weight = deg_inv_sqrt[row] * edge_weight * deg_inv_sqrt[col]
         # # L = I - A_norm.
-        adj = ms.COOTensor(indices, -edge_weight, shape)
-        new_adj = add_self_loop(adj, num_nodes, fill_values, 'coo')
-        edge_index = new_adj.indices
-        edge_index = ops.Transpose()(edge_index, (1, 0))
-        edge_weight = new_adj.values
+        edge_index, edge_weight = add_self_loop(edge_index, -edge_weight, num_nodes, fill_values, 'coo')
     else:
         # Compute A_norm = -D^{-1} A.
         deg_inv = 1.0 / deg
@@ -100,11 +92,6 @@ def get_laplacian(edge_index, edge_weight, normalization, num_nodes):
         mask = ops.logical_not(mask)
         deg_inv = ops.MaskedFill()(deg_inv, mask, 0.0)
         edge_weight = deg_inv[row] * edge_weight
-
         # L = I - A_norm.
-        adj = ms.COOTensor(indices, -edge_weight, shape)
-        new_adj = add_self_loop(adj, num_nodes, fill_values, 'coo')
-        edge_index = new_adj.indices
-        edge_index = ops.Transpose()(edge_index, (1, 0))
-        edge_weight = new_adj.values
+        edge_index, edge_weight = add_self_loop(edge_index, -edge_weight, num_nodes, fill_values, 'coo')
     return edge_index, edge_weight

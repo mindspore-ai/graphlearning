@@ -14,11 +14,12 @@
 # ============================================================================
 """ test graph ops """
 import math
+import scipy.sparse as sp
 import numpy as np
 import mindspore as ms
 from mindspore_gl.dataset.imdb_binary import IMDBBinary
 from mindspore_gl.graph import BatchHomoGraph, PadHomoGraph, PadMode, PadArray2d,\
-    MindHomoGraph, get_laplacian, PadDirection, norm, UnBatchHomoGraph
+    MindHomoGraph, get_laplacian, PadDirection, norm, UnBatchHomoGraph, remove_self_loop, add_self_loop
 import pytest
 
 dataset = IMDBBinary("/home/workspace/mindspore_dataset/GNN_Dataset/")
@@ -215,7 +216,7 @@ def test_laplacian():
     edge_index = [src_idx, dst_idx]
     edge_index = ms.Tensor(edge_index, ms.int32)
     edge_weight = ms.Tensor([1, 2, 1, 2, 1, 2, 1, 2], ms.float32)
-    _, edge_weight = get_laplacian(edge_index, edge_weight, 'sym', num_nodes)
+    _, edge_weight = get_laplacian(edge_index, num_nodes, edge_weight, 'sym')
     expect_output = np.array([-0., -1.1547005, -0., -0.8164965, -0.7071067, -1.1547005, -0.40824825,
                               -1.4142134, 1., 1., 1., 1., 1., 1., 1.])
     assert np.allclose(edge_weight.asnumpy(), expect_output)
@@ -232,3 +233,42 @@ def test_norm():
     expect_output = np.array([-0., -0.7071067, -0., -0.7071067, -1., -0.7071067, -0.7071067,
                               -1., 1., 1., 1., 1., 1., 1., 1.])
     assert np.allclose(edge_weight.asnumpy(), expect_output)
+
+def test_remove_loop():
+    """
+    Feature: Test that the removal of self-loops is performed correctly.
+    Description: Test remove self loop
+    Expectation: Output result
+    """
+
+    adj = sp.csr_matrix(([1, 1, 1, 1], ([0, 1, 2, 3], [0, 1, 2, 3])), shape=(4, 4)).tocoo()
+    adj_new = remove_self_loop(adj, mode='dense')
+    for i in range(3):
+        assert adj_new[i][i] == 0
+
+    adj = sp.csr_matrix(([1, 2, 3, 4], ([0, 1, 2, 2], [0, 1, 2, 1])), shape=(3, 3)).tocoo()
+    adj = remove_self_loop(adj, 'coo')
+    assert ~adj.diagonal().any()
+
+def test_add_loop():
+    """
+    Feature: Test that adding a self-loop is executed correctly.
+    Description: Test add self loop
+    Expectation: Output result
+    """
+
+    edge_index = [src_idx, dst_idx]
+    edge_index = ms.Tensor(edge_index, ms.int32)
+    edge_weight = ms.Tensor([1, 2, 1, 2, 1, 2, 1, 2], ms.float32)
+    node = 7
+    fill_value = ms.Tensor([1] * node, ms.float32)
+    new_adj = add_self_loop(edge_index, edge_weight, node, fill_value, mode='dense')
+    for i in range(node):
+        assert new_adj[i][i] != 0
+
+    edge_index, edge_weight = add_self_loop(edge_index, edge_weight, node, fill_value, mode='coo')
+    count = 0
+    for i in range(edge_index.shape[1]):
+        if edge_index[0, i] == edge_index[1, i]:
+            count += 1
+    assert count >= node
