@@ -23,7 +23,7 @@ class SortPooling(GNNCell):
     r"""
     Apply sort pooling to the nodes in the graph.
 
-    From the paper `End-to-End Deep Learning Architecture for Graph Classification <https://www.cse.wustl.edu/~ychen/public/DGCNN.pdf>`_.
+    From the paper `End-to-End Deep Learning Architecture for Graph Classification <https://www.cse.wustl.edu/~ychen/public/DGCNN.pdf>`_ .
     The sorting pool first sorts the node features in ascending order along the feature dimension,
     and then selects the ranking features of top-k nodes (sorted by the maximum value of each node).
 

@@ -23,7 +23,7 @@ from .. import GNNCell
 class Set2Set(GNNCell):
     r"""
     Sequence to sequence for sets.
-    From the paper `Order Matters: Sequence to sequence for sets <https://arxiv.org/abs/1511.06391>`_.
+    From the paper `Order Matters: Sequence to sequence for sets <https://arxiv.org/abs/1511.06391>`_ .
 
     For each subgraph in the batched graph, compute:
 

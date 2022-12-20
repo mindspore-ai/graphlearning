@@ -3,7 +3,7 @@ mindspore_gl.nn.EGConv
 
 .. py:class:: mindspore_gl.nn.EGConv(in_feat_size: int, out_feat_size: int, aggregators: List[str], num_heads: int = 8, num_bases: int = 4, bias: bool = True) -> None
 
-    高效图卷积，来自论文 `Adaptive Filters and Aggregator Fusion for Efficient Graph Convolutions <https://arxiv.org/abs/2104.01481>`_ 。
+    高效图卷积。来自论文 `Adaptive Filters and Aggregator Fusion for Efficient Graph Convolutions <https://arxiv.org/abs/2104.01481>`_ 。
 
     .. math::
         h_i^{(l+1)} = {\LARGE ||}_{h=1}^{H} \sum_{\oplus \in \mathcal{A}} \sum_{b=1}^{B} w_{h,\oplus,b}^{(l)}

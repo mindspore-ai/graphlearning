@@ -12,10 +12,10 @@ mindspore_gl.dataloader
         - **graph_type** (str) - 图的类型。默认值：undirected。
 
     返回：
-        g (Graph)， 训练集的图。
-        train(array)， 训练集正示例，shape:(train_len, 2)。
-        val(array)， 验证集正示例，shape:(val_len, 2)。
-        test(array)， 测试集正示例，shape:(test_len, 2)。
+        - **train** (numpy.ndarray) - 训练集，shape :math:`(train_len, 2)` 。
+        - **val** (numpy.ndarray) - 验证集，shape :math:`(val_len, 2)` 。
+        - **test** (numpy.ndarray) - 测试集，shape :math:`(test_len, 2)` 。
+
 
 
 .. py:class:: mindspore_gl.dataloader.RandomBatchSampler(data_source, batch_size)
@@ -37,7 +37,7 @@ mindspore_gl.dataloader
     所有子类都应该具备 :meth:`__getitem__`，它实现了通过给定key来获取实例。
 
     .. note::
-        :class: `mindspore_gl.dataloader.Dataloader` 需要一个 `Dataset` 实例作为输入。它通过 `Sampler` 返回的索引来执行。
+        :class:`mindspore_gl.dataloader.Dataloader` 需要一个 `Dataset` 实例作为输入。它通过 `Sampler` 返回的索引来执行。
 
 .. automodule:: mindspore_gl.dataloader
     :members:

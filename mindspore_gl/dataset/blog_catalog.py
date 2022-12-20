@@ -40,7 +40,7 @@ class BlogCatalog:
 
     About BlogCatalog dataset:
 
-    This is the data set crawled from BlogCatalog ( http://www.blogcatalog.com ). BlogCatalog is a social blog
+    This is the data set crawled from `BlogCatalog <http://www.blogcatlog.com>`_ . BlogCatalog is a social blog
     directory website. This contains the friendship network crawled and group memberships. For easier understanding,
     all the contents are organized in CSV file format.
 
@@ -50,7 +50,8 @@ class BlogCatalog:
     - Edges: 333,983
     - Number of Classes: 39
 
-    Dataset can be download here: <https://figshare.com/articles/dataset/BlogCatalog_dataset/11923611>
+    Dataset can be download here: `BlogCatalog <https://figshare.com/articles/dataset/BlogCatalog_dataset/11923611>`_ .
+
     You can organize the dataset files into the following directory structure and read by `preprocess` API.
 
     .. code-block::
@@ -79,14 +80,14 @@ class BlogCatalog:
         self._npz_file = None
 
         if os.path.exists(self._path) and os.path.isfile(self._path):
-            self.load()
+            self._load()
         elif os.path.exists(self._root):
-            self.preprocess()
-            self.load()
+            self._preprocess()
+            self._load()
         else:
             raise Exception('data file does not exist')
 
-    def preprocess(self):
+    def _preprocess(self):
         """Process data"""
         nodes = pd.read_csv(ops.join(self._root, 'nodes.csv'), header=None)
         nodes = list(nodes.values[:, 0])
@@ -111,7 +112,7 @@ class BlogCatalog:
         np.savez(self._path, num_classes=len(groups), adj_csr_indptr=indptr,
                  adj_csr_indices=indces, label=label, vocab=vocab)
 
-    def load(self):
+    def _load(self):
         """Load the saved npz dataset from files."""
         self._npz_file = np.load(self._path)
         self._csr_row = self._npz_file['adj_csr_indptr'].astype(np.int32)
@@ -121,10 +122,10 @@ class BlogCatalog:
     @property
     def num_classes(self):
         """
-        Number of label classes
+        Number of label classes.
 
         Returns:
-            - int, the number of classes
+            - int, the number of classes.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -135,10 +136,10 @@ class BlogCatalog:
     @property
     def node_count(self):
         """
-        Number of nodes
+        Number of nodes.
 
         Returns:
-            - int, length of csr row
+            - int, length of csr row.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -149,10 +150,10 @@ class BlogCatalog:
     @property
     def edge_count(self):
         """
-        Number of edges
+        Number of edges.
 
         Returns:
-            - int, length of csr col
+            - int, length of csr col.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -163,10 +164,10 @@ class BlogCatalog:
     @property
     def node_label(self):
         """
-        Ground truth labels of each node
+        Ground truth labels of each node.
 
         Returns:
-            - numpy.ndarray, array of node label
+            - numpy.ndarray, array of node label.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -179,10 +180,10 @@ class BlogCatalog:
     @property
     def vocab(self):
         """
-        ID of each node
+        ID of each node.
 
         Returns:
-            - numpy.ndarray, array of node id
+            - numpy.ndarray, array of node id.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -195,7 +196,7 @@ class BlogCatalog:
     @property
     def adj_coo(self):
         """
-        Return the adjacency matrix of COO representation
+        Return the adjacency matrix of COO representation.
 
         Returns:
             - numpy.ndarray, array of coo matrix.

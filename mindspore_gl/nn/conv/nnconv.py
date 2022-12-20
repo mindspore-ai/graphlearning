@@ -26,7 +26,7 @@ from .. import GNNCell
 class NNConv(GNNCell):
     r"""
     Graph convolutional layer.
-    From the paper `Neural Message Passing for Quantum Chemistry <https://arxiv.org/pdf/1704.01212.pdf>`_.
+    From the paper `Neural Message Passing for Quantum Chemistry <https://arxiv.org/pdf/1704.01212.pdf>`_ .
 
     .. math::
         h_{i}^{l+1} = h_{i}^{l} + \mathrm{aggregate}\left(\left\{
@@ -38,9 +38,9 @@ class NNConv(GNNCell):
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
         edge_embed (Cell): Edge embedding function Cell.
-        aggregator_type (str): Type of aggregator, should be 'sum'.
-        residual (bool): Whether use residual.
-        bias (bool): Whether use bias.
+        aggregator_type (str): Type of aggregator, should be 'sum'. Default: sum.
+        residual (bool): Whether use residual. Default: False.
+        bias (bool): Whether use bias. Default: True.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N,D\_in)`

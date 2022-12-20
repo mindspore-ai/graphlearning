@@ -25,14 +25,14 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more
     Can choose to consider self-loop, directed graph or undirected graph operation
 
     Args:
-        positive(list or array): All positive sample edges, shape: :math:`(col_len, row_len)`
-        node(int): number of node
-        num_neg_samples(int): Negative sample length
-        mode(str): type of operation matrix
-        re(str): type of input data
+        positive(list or array): All positive sample edges, shape: :math:`(col_len, row_len)`.
+        node(int): number of node.
+        num_neg_samples(int): Negative sample length.
+        mode(str): type of operation matrix. Default: undirected.
+        re(str): type of input data. Default: more.
 
     Returns:
-        array, Negative sample edge set, shape is :math:`(num_neg_samples, 2)`
+        - **array** - Negative sample edge set, shape is :math:`(num_neg_samples, 2)`
 
     Raises:
         TypeError: If 'positive' is not a list or ndarry.

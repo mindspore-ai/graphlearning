@@ -24,7 +24,7 @@ from .. import GNNCell
 class TAGConv(GNNCell):
     r"""
     Topology adaptation graph convolutional layer.
-    From the paper `Topology Adaptive Graph Convolutional Networks <https://arxiv.org/pdf/1710.10370.pdf>`_.
+    From the paper `Topology Adaptive Graph Convolutional Networks <https://arxiv.org/pdf/1710.10370.pdf>`_ .
 
     .. math::
         H^{K} = {\sum}_{k=0}^K (D^{-1/2} A D^{-1/2})^{k} X {\Theta}_{k}
@@ -34,9 +34,9 @@ class TAGConv(GNNCell):
     Args:
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
-        num_hops (int): Number of hops.
-        bias (bool): Whether use bias.
-        activation (Cell): Activation function, default is None.
+        num_hops (int): Number of hops. Default: 2.
+        bias (bool): Whether use bias. Default: True.
+        activation (Cell): Activation function. Default: None.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N, D_{in})`
@@ -57,7 +57,7 @@ class TAGConv(GNNCell):
         TypeError: If `activation` is not a mindspore.nn.Cell.
 
     Supported Platforms:
-         ``GPU`` ``Ascend``
+        ``GPU`` ``Ascend``
 
     Examples:
         >>> import mindspore as ms

@@ -23,7 +23,7 @@ from .. import GNNCell
 
 class SAGPooling(GNNCell):
     r"""
-    The self-attention pooling operator from the `Self-Attention Graph
+    The self-attention pooling operator. From the `Self-Attention Graph
     Pooling <https://arxiv.org/abs/1904.08082>`_ and `Understanding
     Attention and Generalization in Graph Neural Networks
     <https://arxiv.org/abs/1905.02850>`_ papers.
@@ -43,11 +43,9 @@ class SAGPooling(GNNCell):
     Args:
         in_channels (int): Size of each input sample.
         GNN (GNNCell): A graph neural network layer for calculating projection scores. only GCNConv2 is supported.
-            (default: :obj:`mindspore_gl.nn.conv.GCNConv2`)
-        activation (Cell): The nonlinearity to use.
-            (default: :obj:`mindspore.nn.Tanh`)
-        multiplier (Float): A scalar for scaling node feature.
-            (default: :obj:1.0)
+             Default: mindspore_gl.nn.conv.GCNConv2.
+        activation (Cell): The nonlinearity to use. Default: mindspore.nn.Tanh.
+        multiplier (Float): A scalar for scaling node feature. Default: 1.
 
     Inputs:
         - **x** (Tensor) - The input node features to be updated. The shape is :math:`(N, D)`

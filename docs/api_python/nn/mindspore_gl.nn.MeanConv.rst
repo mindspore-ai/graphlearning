@@ -3,7 +3,7 @@ mindspore_gl.nn.MeanConv
 
 .. py:class:: mindspore_gl.nn.MeanConv(in_feat_size: int, out_feat_size: int, feat_drop=0.6, bias=False, norm=None, activation: mindspore.nn.cell.Cell = None)
 
-    GraphSAGE层，来自论文 `Inductive Representation Learning on Large Graphs <https://arxiv.org/pdf/1706.02216.pdf>`_。
+    GraphSAGE层。来自论文 `Inductive Representation Learning on Large Graphs <https://arxiv.org/pdf/1706.02216.pdf>`_。
 
     .. math::
         h_{\mathcal{N}(i)}^{(l+1)} = \mathrm{aggregate}

@@ -25,13 +25,13 @@ class GCNConv2(GNNCell):
     r"""
     Graph Convolution Network Layer.
     from the paper `Semi-Supervised Classification with Graph Convolutional Networks
-    <https://arxiv.org/abs/1609.02907>`_.
+    <https://arxiv.org/abs/1609.02907>`_ .
 
     .. math::
         `h_i^{(l+1)} = (\sum_{j\in\mathcal{N}(i)}h_j^{(l)}W_1^{(l)}+b^{(l)} )+h_i^{(l)}W_2^{(l)}`
 
     :math:`\mathcal{N}(i)` represents the neighbour node of :math:`i`.
-    :math:`W_1` and `W_2` correspond to fc layers for neighbor nodes and root node.
+    :math:`W_1` and :math:`W_2` correspond to fc layers for neighbor nodes and root node.
 
     Args:
         in_feat_size (int): Input node feature size.

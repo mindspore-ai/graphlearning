@@ -24,9 +24,9 @@ mindspore_gl.dataset.PPI
     - 类的数量: 121
     - 标签分类:
 
-        - Train examples: 20
-        - Valid examples: 2
-        - Test examples: 2
+      - Train examples: 20
+      - Valid examples: 2
+      - Test examples: 2
 
     下载地址：`PPI <https://data.dgl.ai/dataset/pi.zip>`_ 。
     您可以将数据集文件组织到以下目录结构中，并通过 `preprocess` API读取。
@@ -47,15 +47,6 @@ mindspore_gl.dataset.PPI
             ├── test_labels.npy
             ├── test_graph_id.npy
             └── test_graph.json
-
-
-    .. py:method:: mindspore_gl.dataset.PPI.preprocess()
-
-        处理数据。
-
-    .. py:method:: mindspore_gl.dataset.PPI.load()
-
-        从文件加载保存的npz数据集。
 
     .. py:method:: mindspore_gl.dataset.PPI.num_features
         :property:

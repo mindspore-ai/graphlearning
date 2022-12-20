@@ -21,8 +21,8 @@ from mindspore_gl.nn import GNNCell
 
 class ChebConv(GNNCell):
     r"""
-    from the paper
-    `Convolutional Neural Networks on Graphs with Fast Localized Spectral
+    Chebyshev Spectral Graph Convolution layer.
+    From the paper `Convolutional Neural Networks on Graphs with Fast Localized Spectral
     Filtering <https://arxiv.org/abs/1606.09375>`_ paper.
 
     .. math::

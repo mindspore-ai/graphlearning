@@ -25,6 +25,7 @@ mindspore_gl.dataset.Enzymes
     - 类的数量: 6
 
     下载地址： `ENZYMES <https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets/ENZYMES.zip>`_ 。
+
     您可以将数据集文件组织到以下目录结构中，并通过 `preprocess` API读取。
 
     .. code-block::
@@ -36,14 +37,6 @@ mindspore_gl.dataset.Enzymes
         ├── ENZYMES_node_attributes.txt
         ├── ENZYMES_node_labels.txt
         └── README.txt
-
-    .. py:method:: mindspore_gl.dataset.Enzymes.preprocess()
-
-        处理数据。
-
-    .. py:method:: mindspore_gl.dataset.Enzymes.load()
-
-        从文件加载保存的npz数据集。
 
     .. py:method:: mindspore_gl.dataset.Enzymes.num_features
         :property:

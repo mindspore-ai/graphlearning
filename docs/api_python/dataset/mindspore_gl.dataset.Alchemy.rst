@@ -24,7 +24,7 @@ mindspore_gl.dataset.Alchemy
 
     - 图: 99776
     - 节点: 9.71
-    - Edges: 10.02
+    - 边: 10.02
     - 量子力学性质数量: 12
 
     下载地址：`Alchemy dev <https://alchemy.tencent.com/data/dev_v20190730.zip>`_ 
@@ -46,14 +46,6 @@ mindspore_gl.dataset.Alchemy
             │ ├── atom_11
             │ └── atom_12
             └── valid_target.csv
-
-    .. py:method:: mindspore_gl.dataset.Alchemy.preprocess()
-
-        处理数据。
-
-    .. py:method:: mindspore_gl.dataset.Alchemy.load()
-
-        从文件加载保存的npz数据集。
 
     .. py:method:: mindspore_gl.dataset.Alchemy.num_features
         :property:

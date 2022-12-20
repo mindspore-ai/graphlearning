@@ -14,7 +14,7 @@ mindspore_gl.dataset.BlogCatalog
 
     关于BlogCatalog数据集：
 
-    这是从BlogCatalog(http://www.blogcatlog.com)爬取的数据集。BlogCatalog是一个社交博客目录网站，其中包含已爬取的友谊网络和组成员资格。为了便于理解，所有内容都以CSV文件格式组织。
+    这是从 `BlogCatalog <http://www.blogcatlog.com>`_ 爬取的数据集。BlogCatalog是一个社交博客目录网站，其中包含已爬取的友谊网络和组成员资格。为了便于理解，所有内容都以CSV文件格式组织。
 
     信息统计：
 
@@ -33,14 +33,6 @@ mindspore_gl.dataset.BlogCatalog
             ├── group-edges.csv
             ├── groups.csv
             └── nodes.csv
-
-    .. py:method:: mindspore_gl.dataset.BlogCatalog.preprocess()
-
-        处理数据。
-
-    .. py:method:: mindspore_gl.dataset.BlogCatalog.load()
-
-        从文件加载保存的npz数据集。
 
     .. py:method:: mindspore_gl.dataset.BlogCatalog.num_classes
         :property:

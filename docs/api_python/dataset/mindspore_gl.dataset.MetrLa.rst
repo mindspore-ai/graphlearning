@@ -3,7 +3,7 @@ mindspore_gl.dataset.MetrLa
 
 .. py:class:: mindspore_gl.dataset.MetrLa(root)
 
-    METR-LA是一个大规模数据集，从洛杉矶乡村公路网的1500个交通环路检测器收集来。此数据集包括速度、面积和占用率数据，覆盖约3420英里。
+    METR-LA，用于读取和解析METR-LA数据集的源数据集。
 
     参数：
         - **root** (str) - 包含METR-LA/adj_mat.npy和METR-LA/node_values.npy的根目录路径。
@@ -36,10 +36,6 @@ mindspore_gl.dataset.MetrLa
         .
         ├── adj_mat.npy
         └── node_values.npy
-
-    .. py:method:: mindspore_gl.dataset.MetrLa.load()
-
-        加载数据。
 
     .. py:method:: mindspore_gl.dataset.MetrLa.node_num
         :property:

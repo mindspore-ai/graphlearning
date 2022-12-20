@@ -23,8 +23,8 @@ from .. import GNNCell
 
 class MeanConv(GNNCell):
     r"""
-    GraphSAGE Layer, from the paper `Inductive Representation Learning on Large Graphs
-    <https://arxiv.org/pdf/1706.02216.pdf>`_.
+    GraphSAGE Layer. From the paper `Inductive Representation Learning on Large Graphs
+    <https://arxiv.org/pdf/1706.02216.pdf>`_ .
 
     .. math::
         h_{\mathcal{N}(i)}^{(l+1)} = \mathrm{aggregate}
@@ -46,9 +46,9 @@ class MeanConv(GNNCell):
         out_feat_size (int): Output node feature size.
         feat_drop (float): The keep rate, greater than 0 and less equal than 1. E.g. dropout=0.9,
             dropping out 10% of input units. Default: 0.6.
-        bias (bool): Whether use bias.
-        norm (Cell): Normalization function Cell, default is None.
-        activation (Cell): Activation function Cell, default is None.
+        bias (bool): Whether use bias. Default: False.
+        norm (Cell): Normalization function Cell. Default: None.
+        activation (Cell): Activation function Cell. Default: None.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N,D\_in)`

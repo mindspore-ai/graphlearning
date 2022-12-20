@@ -20,15 +20,15 @@ from mindspore import ops
 
 def get_laplacian(edge_index, num_nodes, edge_weight=None, normalization='sym'):
     r"""
-    get laplacian matrix
+    Get laplacian matrix.
 
     Args:
         edge_index (Tensor): Edge index. The shape is :math:`(2, N\_e)`
             where :math:`N\_e` is the number of edges.
         num_nodes (int): Number of nodes.
         edge_weight (Tensor): Edge weights. The shape is :math:`(N\_e)`
-            where :math:`N\_e` is the number of edges.
-        normalization (str): Normalization method.
+            where :math:`N\_e` is the number of edges. Default: None.
+        normalization (str): Normalization method. Default: sym.
 
             1. :obj:`None`: No normalization
                :math:`\mathbf{L} = \mathbf{D} - \mathbf{A}`

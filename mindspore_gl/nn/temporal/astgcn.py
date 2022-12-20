@@ -73,7 +73,7 @@ class TemporalAttention(nn.Cell):
     r"""
     An implementation of the Temporal Attention Module. For details see the paper: `"Attention Based Spatial-Temporal
     Graph Convolutional Networks for Traffic Flow Forecasting."
-    <https://ojs.aaai.org/index.php/AAAI/article/view/3881>`_.
+    <https://ojs.aaai.org/index.php/AAAI/article/view/3881>`_ .
 
     Args:
         in_channels (int): Number of input features.
@@ -121,7 +121,7 @@ class ChebConvAttention(GNNCell):
     r"""
     An implementation of the chebyshev spectral graph convolutional operator with attention.
     For details see the paper: `"Attention Based Spatial-Temporal Graph Convolutional Networks
-    for Traffic Flow Forecasting." <https://ojs.aaai.org/index.php/AAAI/article/view/3881>`_.
+    for Traffic Flow Forecasting." <https://ojs.aaai.org/index.php/AAAI/article/view/3881>`_ .
 
     Args:
         in_channels (int): Number of input features.
@@ -209,7 +209,7 @@ class ASTGCNBlock(GNNCell):
     r"""
     An implementation of the Attention Based Spatial-Temporal Graph Convolutional Block.
     For details see the paper: `"Attention Based Spatial-Temporal Graph Convolutional Networks
-    for Traffic Flow Forecasting." <https://ojs.aaai.org/index.php/AAAI/article/view/3881>`_.
+    for Traffic Flow Forecasting." <https://ojs.aaai.org/index.php/AAAI/article/view/3881>`_ .
 
     Args:
         in_channels (int): Input node feature size.
@@ -314,9 +314,9 @@ class ASTGCNBlock(GNNCell):
 
 class ASTGCN(GNNCell):
     r"""
-    Attention Based Spatial-Temporal Graph Convolutional Networks from the paper
+    Attention Based Spatial-Temporal Graph Convolutional Networks. From the paper
     `Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic
-    Flow Forecasting <https://ojs.aaai.org/index.php/AAAI/article/view/3881>`_.
+    Flow Forecasting <https://ojs.aaai.org/index.php/AAAI/article/view/3881>`_ .
 
     Args:
         n_blocks (int): Number of ASTGCN Blocks
@@ -328,8 +328,8 @@ class ASTGCN(GNNCell):
         num_for_predict (int): Number of predictions to make in the future.
         len_input (int): Length of the input sequence.
         n_vertices (int): Number of vertices in the graph.
-        normalization (str, optional): The normalization scheme for the graph Laplacian (default: "sym").
-        bias (bool, optional): Whether the layer will learn an additive bias. (default: `True`)
+        normalization (str, optional): The normalization scheme for the graph Laplacian. Default: None.
+        bias (bool, optional): Whether the layer will learn an additive bias. Default: True.
 
     Inputs:
         - **x** (Tensor) - The input node features for T time periods. The shape is :math:`(B, N, F_{in}, T_{in})`
@@ -345,7 +345,7 @@ class ASTGCN(GNNCell):
         ValueError: If `normalization` is not 'sym'.
 
     Supported Platforms:
-         ``GPU`` ``Ascend``
+        ``GPU`` ``Ascend``
 
     Examples:
         >>> import numpy as np
@@ -387,7 +387,7 @@ class ASTGCN(GNNCell):
                  n_vertices: int,
                  normalization: Optional[str] = None,
                  bias: bool = True,
-                 ) -> None:
+                 ):
         super().__init__()
         self.n_blocks = Validator.check_positive_int(n_blocks, "n_blocks", self.cls_name)
         self.in_channels = Validator.check_positive_int(in_channels, "in_channels", self.cls_name)

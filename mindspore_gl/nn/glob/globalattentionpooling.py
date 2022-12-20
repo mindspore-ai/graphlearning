@@ -23,7 +23,7 @@ from .. import GNNCell
 class GlobalAttentionPooling(GNNCell):
     r"""
     Apply global attention pooling to the nodes in the graph.
-    From the paper `Gated Graph Sequence Neural Networks <https://arxiv.org/pdf/1511.05493.pdf>`_.
+    From the paper `Gated Graph Sequence Neural Networks <https://arxiv.org/pdf/1511.05493.pdf>`_ .
 
     .. math::
         r^{(i)} = \sum_{k=1}^{N_i}\mathrm{softmax}\left(f_{gate}
@@ -32,7 +32,7 @@ class GlobalAttentionPooling(GNNCell):
     Args:
         gate_nn (Cell): The neural network for computing attention score for each feature.
         feat_nn (Cell): The neural network applied to each feature
-            before combining each feature with an attention score.
+            before combining each feature with an attention score. Default: None.
 
     Inputs:
         - **x** (Tensor) - The input node features to be updated. The shape is :math:`(N, D)`

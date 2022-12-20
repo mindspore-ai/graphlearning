@@ -23,7 +23,7 @@ from .. import GNNCell
 class GINConv(GNNCell):
     r"""
     Graph isomorphic network layer.
-    From the paper `How Powerful are Graph Neural Networks? <https://arxiv.org/pdf/1810.00826.pdf>`_.
+    From the paper `How Powerful are Graph Neural Networks? <https://arxiv.org/pdf/1810.00826.pdf>`_ .
 
     .. math::
         h_i^{(l+1)} = f_\Theta \left((1 + \epsilon) h_i^{l} +
@@ -39,9 +39,9 @@ class GINConv(GNNCell):
 
     Args:
         activation (Cell): Activation function.
-        init_eps (float): Init value of eps.
-        learn_eps (bool): Whether eps is learnable.
-        aggregation_type (str): Type of aggregation, should in `sum`, `max` and `avg`.
+        init_eps (float): Init value of eps. Default: 0.
+        learn_eps (bool): Whether eps is learnable. Default: False.
+        aggregation_type (str): Type of aggregation, should in `sum`, `max` and `avg`. Default: sum.
 
     Inputs:
         - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,
@@ -59,7 +59,7 @@ class GINConv(GNNCell):
         SyntaxError: raised when the `aggregation_type` not in `sum`, `max` and `avg`.
 
     Supported Platforms:
-         ``GPU`` ``Ascend``
+        ``GPU`` ``Ascend``
 
     Examples:
         >>> import mindspore as ms

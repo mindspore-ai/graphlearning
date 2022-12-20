@@ -68,11 +68,11 @@ def pca(matrix: np.ndarray, k: int = None, niter: int = 2, norm: bool = False):
     and will return the first k dimensionality-reduced features.
 
     Args:
-        matrix(ndarray): Input features, shape:(B, F)
-        k(int): target dimension for dimensionality reduction
+        matrix(ndarray): Input features, shape is :math:`(B, F)`.
+        k(int): target dimension for dimensionality reduction. Default: None.
         niter(int): the number of subspace iterations to conduct
-            and it must be a nonnegative integer.
-        norm(bool): Whether the output is normalized
+            and it must be a nonnegative integer. Default: 2.
+        norm(bool): Whether the output is normalized. Default: False.
 
     Return:
         ndarray, Features after dimensionality reduction

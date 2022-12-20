@@ -3,7 +3,7 @@ mindspore_gl.nn.GATConv
 
 .. py:class:: mindspore_gl.nn.GATConv(in_feat_size: int, out_size: int, num_attn_head: int, input_drop_out_rate: float = 1.0, attn_drop_out_rate: float = 1.0, leaky_relu_slope: float = 0.2, activation=None, add_norm=False) -> None
 
-    图Attention网络，来自论文 `Graph Attention Network <https://arxiv.org/pdf/1710.10903.pdf>`_ 。
+    图Attention网络。来自论文 `Graph Attention Network <https://arxiv.org/pdf/1710.10903.pdf>`_ 。
 
     .. math::
         h_i^{(l+1)} = \sum_{j\in \mathcal{N}(i)} \alpha_{i,j} W^{(l)} h_j^{(l)}

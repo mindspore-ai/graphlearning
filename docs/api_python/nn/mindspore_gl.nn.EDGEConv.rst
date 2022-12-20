@@ -3,7 +3,7 @@ mindspore_gl.nn.EDGEConv
 
 .. py:class:: mindspore_gl.nn.EDGEConv(in_feat_size: int, out_feat_size: int, batch_norm: bool, bias=True)
 
-    EdgeConv层，来自论文 `Dynamic Graph CNN for Learning on Point Clouds <https://arxiv.org/pdf/1801.07829>`_ 。
+    EdgeConv层。来自论文 `Dynamic Graph CNN for Learning on Point Clouds <https://arxiv.org/pdf/1801.07829>`_ 。
 
     .. math::
         h_i^{(l+1)} = \max_{j \in \mathcal{N}(i)} (
