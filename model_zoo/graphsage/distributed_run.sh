@@ -27,8 +27,8 @@ script_self=$(readlink -f "$0")
 self_path=$(dirname "${script_self}")
 
 if [ "${DEVICE_TARGET}" = "GPU" ]; then
-  export CUDA_VISIBLE_DEVICES=1,2,3,4
-  export CUDA_NUM=4
+  export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
+  export CUDA_NUM=8
   rm -rf device
   mkdir device
   cp -r src ./device
