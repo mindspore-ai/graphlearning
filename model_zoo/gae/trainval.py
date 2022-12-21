@@ -94,14 +94,14 @@ def main():
     weight_decay = args.weight_decay
     mode = args.mode
 
-    if args.fuse:
-        context.set_context(device_target="GPU", save_graphs=True, save_graphs_path="./computational_graph/",
-                            mode=context.GRAPH_MODE, enable_graph_kernel=True,
+    if args.fuse and args.device == "GPU":
+        context.set_context(device_target=args.device, save_graphs=True, save_graphs_path="./computational_graph/",
+                            mode=context.GRAPH_MODE, enable_graph_kernel=True, device_id=args.device_id,
                             graph_kernel_flags="--enable_expand_ops=Gather --enable_cluster_ops=TensorScatterAdd,"
                                                "UnsortedSegmentSum, GatherNd --enable_recompute_fusion=false "
                                                "--enable_parallel_fusion=true ")
     else:
-        context.set_context(device_target="GPU", mode=context.GRAPH_MODE)
+        context.set_context(device_target=args.device, mode=context.GRAPH_MODE, device_id=args.device_id)
 
     if args.profile:
         ms_profiler = Profiler(subgraph="ALL", is_detail=True, is_show_op_path=False, output_path="./prof_result")
@@ -185,7 +185,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='GCN for whole-graph classification')
     parser.add_argument("--data_name", type=str, default='cora_v2', choices=["cora_v2", "citeseer", "pubmed"])
     parser.add_argument("--data_path", type=str, default='./data/', help="path to dataset")
-    parser.add_argument("--gpu", type=int, default=0, help="which gpu to use")
+    parser.add_argument("--device", type=str, default="GPU", help="which device to use")
+    parser.add_argument("--device_id", type=int, default=0, help="which device id to use")
     parser.add_argument('--epochs', type=int, default=200, help='number of epochs to train(default: 200)')
     parser.add_argument('--lr', type=float, default=1e-2, help='learning rate(default: 0.01)')
     parser.add_argument("--weight_decay", type=float, default=0.0, help="weight decay")

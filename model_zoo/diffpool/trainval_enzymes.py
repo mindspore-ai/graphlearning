@@ -56,11 +56,11 @@ def eval_acc(dataloader, net, np_graph_mask, val_length, batch_size):
 
 
 def main(arguments):
-    if arguments.fuse:
-        context.set_context(device_target="GPU", save_graphs=True, save_graphs_path="./computational_graph/",
-                            mode=context.GRAPH_MODE, enable_graph_kernel=True)
+    if arguments.fuse and arguments.device == "GPU":
+        context.set_context(device_target=arguments.device, save_graphs=True, save_graphs_path="./computational_graph/",
+                            mode=context.GRAPH_MODE, enable_graph_kernel=True, device_id=arguments.device_id)
     else:
-        context.set_context(device_target="GPU")
+        context.set_context(device_target=arguments.device, device_id=arguments.device_id)
     node_size, edge_size = 1200, 5000
     hidden_dim, embedding_dim = 64, 64
     dataset = Enzymes(arguments.data_path)
@@ -145,6 +145,8 @@ def main(arguments):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='DiffPool')
     parser.add_argument('--data_path', dest='data_path', help='Input Dataset path')
+    parser.add_argument("--device", type=str, default="GPU", help="which device to use")
+    parser.add_argument("--device_id", type=int, default=0, help="which device id to use")
     parser.add_argument('--pool_ratio', dest='pool_ratio', default=0.10, type=float, help='ratio of pooling')
     parser.add_argument('--num_pool', dest='num_pool', default=1, type=int, help='numbers of pooling layer')
     parser.add_argument('--link_pred', dest='linkpred', default=True, help='switch of link prediction object')
