@@ -25,15 +25,15 @@ def knn_graph(feat: np.ndarray, k: int, dis: int = None, \
     and returns the reconstructed graph.
 
     Args:
-      feat(array):Node Feature Matrix, shape:(N, F)
-      k(int):k neighbors
-      dis(int):limit distance
-      loop(bool):Whether to keep self-loop
-      gpu(bool):gpu acceleration
-      device(int):device number
+      feat(array): Node Feature Matrix, shape is :math:`(N, F)`.
+      k(int): k neighbors.
+      dis(int): limit distance. Default: None.
+      loop(bool): Whether to keep self-loop. Default: False.
+      gpu(bool): gpu acceleration. Default: True.
+      device(int): device number. Default: 0.
 
     Returns:
-        coo, Rebuilt graph
+        - **coo** - Rebuilt graph
 
     Examples:
         >>> import numpy as np

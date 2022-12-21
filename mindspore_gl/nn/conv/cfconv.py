@@ -38,7 +38,9 @@ class ShiftedSoftplus(ms.nn.Cell):
 class CFConv(GNNCell):
     r"""
     CFConv in SchNet.
-    From the paper `SchNet: A continuous-filter convolutional neural network for modeling quantum interactions <https://arxiv.org/abs/1706.08566>`_.
+    From the paper `SchNet: A continuous-filter convolutional neural network for modeling quantum
+    interactions <https://arxiv.org/abs/1706.08566>`_ .
+
     It combines node and edge features in messaging and updates node representations.
 
     .. math::
@@ -63,7 +65,7 @@ class CFConv(GNNCell):
         - **g** (Graph): The input graph.
 
     Outputs:
-        - Tensor, output node features. The shape is :math: `(N, out_size)`.
+        - Tensor, output node features. The shape is :math:`(N, out_size)`.
 
     Raises:
         TypeError: If 'node_feat_size' is not a positive int.

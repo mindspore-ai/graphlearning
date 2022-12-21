@@ -29,7 +29,7 @@ class BatchHomoGraph:
     BatchHomoGraph, batch list of MindHomoGraph into a single MindHomoGraph with some batch_meta information.
 
     Inputs:
-        graph_list(List[MindHomoGraph]): To list of MindHomoGraph
+        graph_list(List[MindHomoGraph]): To list of MindHomoGraph.
 
     Examples:
         >>> from mindspore_gl.graph.ops import BatchHomoGraph
@@ -146,16 +146,16 @@ class PadArray2d:
         dtype(numpy.dtype): To determine result's data type.
         direction(PadDirection): Pad direction for array, PadDirection.
             ROW means we will pad along axis=1, PadDirection.COl means we will pad along axis=0.
-        fill_value(Union[float, int, None]): Fill value for padded region.
+        fill_value(Union[float, int, None]): Fill value for padded region. Default: None.
         reset_with_fill_value(bool): PadArray2d will reuse memory buffer,
-            you can set this value to False if you dont care about the padded value.
+            you can set this value to False if you dont care about the padded value. Default: True.
         mode(PadMode): Pad mode for array, if PadMode.CONST, this op will pad array to user-specific size.
             If PadMode.AUTO, this will choose padded result length according to input's length.
-            The expected length can be calculated as 2^ceil(log2(input_length)).
-        size(Union[List, Tuple]): User specific size for padding result.
+            The expected length can be calculated as 2^ceil(log2(input_length)). Default: PadMode.AUTO.
+        size(Union[List, Tuple]): User specific size for padding result. Default: None.
         use_shared_numpy(bool): If we use SharedNDArray for speeding up inter process communication.
             This is recommended if you do feature collection and feature padding in child process and
-            need inter process communication for graph feature.
+            need inter process communication for graph feature. Default: False.
 
     Inputs:
         input_array(numpy.array): input numpy array for pad
@@ -324,22 +324,22 @@ class PadArray2d:
 class PadHomoGraph:
     """
     Pad MindHomoGraph, We pad graph by adding additional nodes and edges between these nodes. In short,
-    PadHomoGraph(graph1) = BatchHomoGraph(graph1, fake_graph)
-    node count and edge count in fake_graph is determined by user-specific parameters
+    :math:`PadHomoGraph(graph1) = BatchHomoGraph(graph1, fake_graph)`
+    node count and edge count in fake_graph is determined by user-specific parameters.
 
     Args:
-        n_node(Union(int, None)): target graph's node count
-        n_edge(Union(int, None)): target graph's edge count
+        n_node(Union(int, None)): target graph's node count. Default: None.
+        n_edge(Union(int, None)): target graph's edge count. Default: None.
         mode(PadMode): Pad mode, if PadMode.CONST, target graph will have n_node nodes and n_edge edges. If PadMode.AUTO
             target graph's node_count and edge_count is calculated according to input graph's size by
-            n_node = 2^ceil(log2(input_graph.node_count)),
-            n_edge = 2^ceil(log2(input_graph.edge_count))
+            :math:`n_node = 2^ceil(log2(input_graph.node_count))` ,
+            :math:`n_edge = 2^ceil(log2(input_graph.edge_count))` . Default: PadMode.AUTO.
 
     Inputs:
-        graph(MindHomoGraph): input graph
+        - **graph** (MindHomoGraph) - input graph.
 
     Outputs:
-        - MindHomoGraph, padded graph
+        - MindHomoGraph, padded graph.
 
     """
 

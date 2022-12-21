@@ -54,11 +54,12 @@ class PPI:
     - Number of Classes: 121
     - Label split:
 
-    - Train examples: 20
-    - Valid examples: 2
-    - Test examples: 2
+      - Train examples: 20
+      - Valid examples: 2
+      - Test examples: 2
 
     Dataset can be download here: <https://data.dgl.ai/dataset/ppi.zip>
+
     You can organize the dataset files into the following directory structure and read by `preprocess` API.
 
     .. code-block::
@@ -100,15 +101,15 @@ class PPI:
         self._graph_label = None
 
         if os.path.exists(self._path) and os.path.isfile(self._path):
-            self.load()
+            self._load()
         elif os.path.exists(self._root):
-            self.preprocess()
-            self.load()
+            self._preprocess()
+            self._load()
         else:
             raise Exception('data file does not exist')
-        self.load()
+        self._load()
 
-    def preprocess(self):
+    def _preprocess(self):
         """process data"""
         node_feat = np.empty((1, 50))
         node_label = np.empty((1, 121))
@@ -176,7 +177,7 @@ class PPI:
                  test_mask=test_mask, node_feat=node_feat, node_label=node_label, node_nums=node_nums,
                  graph_edges=graph_edge, graph_nodes=graph_node)
 
-    def load(self):
+    def _load(self):
         """Load the saved npz dataset from files."""
         self._npz_file = np.load(self._path, allow_pickle=True)
         self._edge_array = self._npz_file['edge_array'].astype(np.int32)
@@ -192,10 +193,10 @@ class PPI:
     @property
     def num_features(self):
         """
-        Feature size of each node
+        Feature size of each node.
 
         Returns:
-            - int, the number of feature size
+            - int, the number of feature size.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -206,10 +207,10 @@ class PPI:
     @property
     def num_classes(self):
         """
-        Number of label classes
+        Number of label classes.
 
         Returns:
-            - int, the number of classes
+            - int, the number of classes.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -220,10 +221,10 @@ class PPI:
     @property
     def train_mask(self):
         """
-        Mask of training nodes
+        Mask of training nodes.
 
         Returns:
-            - numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -236,10 +237,10 @@ class PPI:
     @property
     def test_mask(self):
         """
-       Mask of test nodes
+       Mask of test nodes.
 
        Returns:
-           - numpy.ndarray, array of mask
+           - numpy.ndarray, array of mask.
 
        Examples:
            >>> #dataset is an instance object of Dataset
@@ -252,10 +253,10 @@ class PPI:
     @property
     def val_mask(self):
         """
-        Mask of validation nodes
+        Mask of validation nodes.
 
         Returns:
-            - numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -268,10 +269,10 @@ class PPI:
     @property
     def graph_nodes(self):
         """
-        Accumulative graph nodes count
+        Accumulative graph nodes count.
 
         Returns:
-            - numpy.ndarray, array of accumulative nodes
+            - numpy.ndarray, array of accumulative nodes.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -289,10 +290,10 @@ class PPI:
     @property
     def graph_edges(self):
         """
-        Accumulative graph edges count
+        Accumulative graph edges count.
 
         Returns:
-            - numpy.ndarray, array of accumulative edges
+            - numpy.ndarray, array of accumulative edges.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -305,10 +306,10 @@ class PPI:
     @property
     def train_graphs(self):
         """
-        Train graph id
+        Train graph id.
 
         Returns:
-            - numpy.ndarray, array of train graph id
+            - numpy.ndarray, array of train graph id.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -319,10 +320,10 @@ class PPI:
     @property
     def val_graphs(self):
         """
-        Valid graph id
+        Valid graph id.
 
         Returns:
-            - numpy.ndarray, array of valid graph id
+            - numpy.ndarray, array of valid graph id.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -333,10 +334,10 @@ class PPI:
     @property
     def test_graphs(self):
         """
-        Test graph id
+        Test graph id.
 
         Returns:
-            - numpy.ndarray, array of test graph id
+            - numpy.ndarray, array of test graph id.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -347,10 +348,10 @@ class PPI:
     @property
     def graph_count(self):
         """
-        Total graph numbers
+        Total graph numbers.
 
         Returns:
-            - int, numbers of graph
+            - int, numbers of graph.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -361,10 +362,10 @@ class PPI:
     @property
     def node_feat(self):
         """
-        Node features
+        Node features.
 
         Returns:
-            - numpy.ndarray, array of node feature
+            - numpy.ndarray, array of node feature.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -378,10 +379,10 @@ class PPI:
     @property
     def node_label(self):
         """
-        Ground truth labels of each node
+        Ground truth labels of each node.
 
         Returns:
-            - numpy.ndarray, array of node label
+            - numpy.ndarray, array of node label.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -394,23 +395,25 @@ class PPI:
 
     def graph_feat(self, graph_idx):
         """
-        graph features
+        graph features.
+
         Args:
-            graph_idx: index of graph
+            graph_idx: index of graph.
 
         Returns:
-            - numpy.ndarray, node feature of graph
+            - numpy.ndarray, node feature of graph.
         """
         return self.node_feat[self.graph_nodes[graph_idx]: self.graph_nodes[graph_idx + 1]]
 
     def graph_label(self, graph_idx):
         """
-        graph label
+        graph label.
+
         Args:
-            graph_idx: index of graph
+            graph_idx: index of graph.
 
         Returns:
-            - numpy.ndarray, node label of graph
+            - numpy.ndarray, node label of graph.
         """
         return self.node_label[self.graph_nodes[graph_idx]: self.graph_nodes[graph_idx + 1]]
 

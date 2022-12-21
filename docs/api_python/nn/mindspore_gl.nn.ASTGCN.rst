@@ -1,9 +1,9 @@
 mindspore_gl.nn.ASTGCN
 ======================
 
-.. py:class:: mindspore_gl.nn.ASTGCN(n_blocks: int, in_channels: int, k: int, n_chev_filters: int, n_time_filters: int, time_conv_strides: int, num_for_predict: int, len_input: int, n_vertices: int, normalization: Union[str, NoneType] = None, bias: bool = True) -> None
+.. py:class:: mindspore_gl.nn.ASTGCN(n_blocks: int, in_channels: int, k: int, n_chev_filters: int, n_time_filters: int, time_conv_strides: int, num_for_predict: int, len_input: int, n_vertices: int, normalization: Union[str, NoneType] = None, bias: bool = True)
 
-    基于Attention的Spatial-Temporal图卷积网络，来自于论文 `Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic
+    基于Attention的时空图卷积网络。来自于论文 `Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic
     Flow Forecasting <https://ojs.aaai.org/index.php/AAAI/article/view/3881>`_ 。
 
     参数：

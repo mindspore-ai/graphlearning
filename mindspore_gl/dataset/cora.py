@@ -55,9 +55,12 @@ class CoraV2:
       - Test: 1000
 
     Dataset can be download here:
-    cora_v2 <https://data.dgl.ai/dataset/cora_v2.zip>
-    citeseer <https://data.dgl.ai/dataset/citeseer.zip>
-    pubmed <https://data.dgl.ai/dataset/pubmed.zip>
+
+    `cora_v2 <https://data.dgl.ai/dataset/cora_v2.zip>`_
+
+    `citeseer <https://data.dgl.ai/dataset/citeseer.zip>`_
+
+    `pubmed <https://data.dgl.ai/dataset/pubmed.zip>`_
 
     You can organize the dataset files into the following directory structure and read by `process` API.
 
@@ -96,14 +99,14 @@ class CoraV2:
         self._npz_file = None
 
         if os.path.exists(self._path) and os.path.isfile(self._path):
-            self.load()
+            self._load()
         elif os.path.exists(self._root):
-            self.preprocess()
-            self.load()
+            self._preprocess()
+            self._load()
         else:
             raise Exception('data file does not exist')
 
-    def preprocess(self):
+    def _preprocess(self):
         """Download and process data"""
         names = ['y', 'tx', 'ty', 'allx', 'ally', 'graph']
         objects = []
@@ -176,7 +179,7 @@ class CoraV2:
                  out_degrees=out_degrees, adj_csr_data=adj_csr_matrix.data,
                  n_edges=num_edges, n_nodes=num_nodes, n_classes=onehot_labels.shape[1])
 
-    def load(self):
+    def _load(self):
         """Load the saved npz dataset from files."""
         self._npz_file = np.load(self._path)
         self._csr_row = self._npz_file['adj_csr_indptr'].astype(np.int32)

@@ -3,8 +3,8 @@ mindspore_gl.nn.GATv2Conv
 
 .. py:class:: mindspore_gl.nn.GATv2Conv(in_feat_size: int, out_size: int, num_attn_head: int, input_drop_out_rate: float = 1.0, attn_drop_out_rate: float = 1.0, leaky_relu_slope: float = 0.2, activation=None, add_norm=False) -> None
 
-    图 Attention 网络v2，来自论文 `How Attentive Are Graph Attention Networks?
-    <https://arxiv.org/pdf/2105.14491.pdf>`_，它修复了GATv2的静态注意力问题。
+    图 Attention 网络v2。来自论文 `How Attentive Are Graph Attention Networks?
+    <https://arxiv.org/pdf/2105.14491.pdf>`_ ，它修复了GATv2的静态注意力问题。
 
     .. math::
         h_i^{(l+1)} = \sum_{j\in \mathcal{N}(i)} \alpha_{i,j} W^{(l)} h_j^{(l)}

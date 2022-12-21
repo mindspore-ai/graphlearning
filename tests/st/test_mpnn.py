@@ -29,8 +29,8 @@ def test_mpnn():
     """
     if not os.path.exists('./ci_temp'):
         os.mkdir('ci_temp')
-    if os.path.exists('ci_temp/gcn'):
-        shutil.rmtree('ci_temp/gcn')
+    if os.path.exists('ci_temp/mpnn'):
+        shutil.rmtree('ci_temp/mpnn')
 
     cmd_copy = "cp -r ../../model_zoo/mpnn/ ./ci_temp/"
     os.system(cmd_copy)

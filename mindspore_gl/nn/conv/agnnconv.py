@@ -22,7 +22,7 @@ from .. import GNNCell
 class AGNNConv(GNNCell):
     r"""
     Attention Based Graph Neural Network.
-    From the paper `Attention-based Graph Neural Network for Semi-Supervised Learning <https://arxiv.org/abs/1803.03735>`_.
+    From the paper `Attention-based Graph Neural Network for Semi-Supervised Learning <https://arxiv.org/abs/1803.03735>`_ .
 
     .. math::
         H^{l+1} = P H^{l}
@@ -35,8 +35,8 @@ class AGNNConv(GNNCell):
     :math:`\beta` is a single scalar parameter.
 
     Args:
-        init_beta (float): Init :math:`\beta`, a single scalar parameter.
-        learn_beta (bool): Whether :math:`\beta` is learnable.
+        init_beta (float): Init :math:`\beta`, a single scalar parameter. Default: 1.0.
+        learn_beta (bool): Whether :math:`\beta` is learnable. Default: True.
 
     Inputs:
         - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,

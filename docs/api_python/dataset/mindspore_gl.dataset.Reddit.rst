@@ -34,14 +34,6 @@ mindspore_gl.dataset.Reddit
         ├── reddit_graph.npz
         └── reddit_smaller.npz
 
-    .. py:method:: mindspore_gl.dataset.Reddit.preprocess()
-
-        处理数据。
-
-    .. py:method:: mindspore_gl.dataset.Reddit.load()
-
-        从文件中加载保存的npz数据集。
-
     .. py:method:: mindspore_gl.dataset.Reddit.num_features
         :property:
 

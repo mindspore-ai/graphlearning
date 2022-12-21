@@ -22,7 +22,7 @@ from .. import GNNCell
 class DOTGATConv(GNNCell):
     r"""
     Applying a dot product version of self-attention in GAT.
-    From the paper `Graph Attention Network <https://arxiv.org/pdf/1710.10903.pdf>`__.
+    From the paper `Graph Attention Network <https://arxiv.org/pdf/1710.10903.pdf>`_ .
 
     .. math::
         h_i^{(l+1)} = \sum_{j\in \mathcal{N}(i)} \alpha_{i, j} h_j^{(l)}
@@ -37,7 +37,7 @@ class DOTGATConv(GNNCell):
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
         num_heads (int): Number of attention head used in GAT.
-        bias (bool): Whether use bias.
+        bias (bool): Whether use bias. Default: False.
 
     Inputs:
         - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,
@@ -45,7 +45,7 @@ class DOTGATConv(GNNCell):
         - **g** (Graph): The input graph.
 
     Outputs:
-        - Tensor, output node features. The shape is :math: `(N, num_heads, out_feat_size)`.
+        - Tensor, output node features. The shape is :math:`(N, num_heads, out_feat_size)`.
 
     Raises:
         TypeError: If 'in_feat_size' is not a positive int.

@@ -3,7 +3,7 @@ mindspore_gl.nn.GatedGraphConv
 
 .. py:class:: mindspore_gl.nn.GatedGraphConv(in_feat_size: int, out_feat_size: int, n_steps: int, n_etype: int, bias=True)
 
-    门控图卷积层，来自论文 `Gated Graph Sequence Neural Networks <https://arxiv.org/pdf/1511.05493.pdf>`_ 。
+    门控图卷积层。来自论文 `Gated Graph Sequence Neural Networks <https://arxiv.org/pdf/1511.05493.pdf>`_ 。
 
     .. math::
         h_{i}^{0} = [ x_i \| \mathbf{0} ] \\

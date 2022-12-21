@@ -3,7 +3,7 @@ mindspore_gl.nn.SAGPooling
 
 .. py:class:: mindspore_gl.nn.SAGPooling(in_channels: int, GNN=<class 'mindspore_gl.nn.conv.gcnconv2.GCNConv2'>, activation=<class 'mindspore.nn.layer.activation.Tanh'>, multiplier=1.0) -> None
 
-    来自 `Self-Attention Graph Pooling <https://arxiv.org/abs/1904.08082>`_ 和
+    基于self-attention的池化操作。来自 `Self-Attention Graph Pooling <https://arxiv.org/abs/1904.08082>`_ 和
     `Understanding Attention and Generalization in Graph Neural Networks <https://arxiv.org/abs/1905.02850>`_ 。
 
     如果 :obj:`min_score` :math:`\tilde{\alpha}` 是 :obj:`None`：

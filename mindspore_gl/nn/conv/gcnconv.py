@@ -27,7 +27,7 @@ class GCNConv(GNNCell):
     r"""
     Graph Convolution Network Layer.
     from the paper `Semi-Supervised Classification with Graph Convolutional Networks
-    <https://arxiv.org/abs/1609.02907>`_.
+    <https://arxiv.org/abs/1609.02907>`_ .
 
     .. math::
         h_i^{(l+1)} = \sigma(b^{(l)} + \sum_{j\in\mathcal{N}(i)}\frac{1}{c_{ji}}h_j^{(l)}W^{(l)})
@@ -41,7 +41,7 @@ class GCNConv(GNNCell):
     Args:
         in_feat_size (int): Input node feature size.
         out_size (int): Output node feature size.
-        activation (Cell): Activation function, default is None.
+        activation (Cell): Activation function. Default: None.
         dropout (float): The keep rate, greater than 0 and less equal than 1. E.g. dropout=0.9,
             dropping out 10% of input units. Default: 0.5.
 
@@ -65,7 +65,7 @@ class GCNConv(GNNCell):
         ValueError: If `dropout` is not in range (0.0, 1.0]
 
     Supported Platforms:
-         ``GPU`` ``Ascend``
+        ``GPU`` ``Ascend``
 
     Examples:
         >>> import mindspore as ms

@@ -25,8 +25,8 @@ from .. import GNNCell
 
 class EGConv(GNNCell):
     r"""
-    Efficient Graph Convolution from the paper `Adaptive Filters and Aggregator Fusion for Efficient Graph Convolutions
-    <https://arxiv.org/abs/2104.01481>`_.
+    Efficient Graph Convolution. From the paper `Adaptive Filters and Aggregator Fusion for Efficient Graph Convolutions
+    <https://arxiv.org/abs/2104.01481>`_ .
 
     .. math::
         h_i^{(l+1)} = {\LARGE ||}_{h=1}^{H} \sum_{\oplus \in \mathcal{A}} \sum_{b=1}^{B} w_{h,\oplus,b}^{(l)}
@@ -118,7 +118,7 @@ class EGConv(GNNCell):
         self.stack = ms.ops.Stack(axis=1)
         self.eps = 1e-5
 
-    def combine(self, weights, aggregated):
+    def _combine(self, weights, aggregated):
         aggregated = aggregated.view(-1, self.agg_num * self.num_bases, self.out_feat_size // self.num_heads)
         x = self.matmul(weights, aggregated)
         x = x.view(-1, self.out_feat_size)
@@ -166,4 +166,4 @@ class EGConv(GNNCell):
                 out = [v.x for v in g.dst_vertex]
             outs.append(out)
         aggregated = self.stack(outs)
-        return self.combine(weights, aggregated)
+        return self._combine(weights, aggregated)

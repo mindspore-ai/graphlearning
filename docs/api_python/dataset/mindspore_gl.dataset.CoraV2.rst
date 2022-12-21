@@ -19,15 +19,22 @@ mindspore_gl.dataset.CoraV2
     数据：
 
     - 节点: 2708
-    - Edges: 10556
+    - 边: 10556
     - 类的数量: 7
     - 标签分类:
 
-        - Train: 140
-        - Valid: 500
-        - Test: 1000
+      - Train: 140
+      - Valid: 500
+      - Test: 1000
 
-    下载地址：`Cora <https://github.com/kimiyoung/planetoid>`_ 。
+    下载地址：
+
+    `cora_v2 <https://data.dgl.ai/dataset/cora_v2.zip>`_
+
+    `citeseer <https://data.dgl.ai/dataset/citeseer.zip>`_
+
+    `pubmed <https://data.dgl.ai/dataset/pubmed.zip>`_
+
     您可以将数据集文件组织到以下目录结构中，并通过 `process` API读取。
 
     .. code-block::
@@ -42,14 +49,6 @@ mindspore_gl.dataset.CoraV2
             ├── ind.cora_v2.ty
             ├── ind.cora_v2.x
             └── ind.cora_v2.y
-
-    .. py:method:: mindspore_gl.dataset.CoraV2.preprocess()
-
-        下载并处理数据。
-
-    .. py:method:: mindspore_gl.dataset.CoraV2.load()
-
-        加载已保存的npz文件。
 
     .. py:method:: mindspore_gl.dataset.CoraV2.num_features
         :property:

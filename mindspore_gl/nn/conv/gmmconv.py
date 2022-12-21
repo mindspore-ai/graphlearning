@@ -24,7 +24,7 @@ from .. import GNNCell
 class GMMConv(GNNCell):
     r"""
     Gaussian mixture model convolutional layer.
-    From the paper `Geometric Deep Learning on Graphs and Manifolds using Mixture Model CNNs <http://openaccess.thecvf.com/content_cvpr_2017/papers/Monti_Geometric_Deep_Learning_CVPR_2017_paper.pdf>`_.
+    From the paper `Geometric Deep Learning on Graphs and Manifolds using Mixture Model CNNs <http://openaccess.thecvf.com/content_cvpr_2017/papers/Monti_Geometric_Deep_Learning_CVPR_2017_paper.pdf>`_ .
 
     .. math::
         u_{ij} = f(x_i, x_j), x_j \in \mathcal{N}(i) \\
@@ -41,9 +41,9 @@ class GMMConv(GNNCell):
         out_feat_size (int): Output node feature size.
         coord_dim (int): Dimension of pseudo-coordinates.
         n_kernels (int): Number of kernels.
-        residual (bool): Whether use residual.
-        bias (bool): Whether use bias.
-        aggregator_type (str): Type of aggregator, should be 'sum'.
+        residual (bool): Whether use residual. Default: False.
+        bias (bool): Whether use bias. Default: False.
+        aggregator_type (str): Type of aggregator, should be 'sum'. Default: sum.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N, D_{in})`
@@ -62,7 +62,7 @@ class GMMConv(GNNCell):
         TypeError: If `bias` or `residual` is not a bool.
 
     Supported Platforms:
-         ``GPU`` ``Ascend``
+        ``GPU`` ``Ascend``
 
     Examples:
         >>> import mindspore as ms

@@ -50,7 +50,8 @@ class MetrLa:
     - Nodes: 207
     - Edges: 1515
 
-    Dataset can be download here: <https://graphmining.ai/temporal_datasets/METR-LA.zip>
+    Dataset can be download here: `METR-LA <https://graphmining.ai/temporal_datasets/METR-LA.zip>`_ .
+
     You can organize the dataset files into the following directory structure and read by `preprocess` API.
 
     .. code-block::
@@ -66,15 +67,14 @@ class MetrLa:
         self._root = root
         self._adj = os.path.join(root, 'adj_mat.npy')
         self._node = os.path.join(root, 'node_values.npy')
-        self.load()
 
         if os.path.exists(self._adj) and os.path.isfile(self._adj) and \
             os.path.exists(self._node) and os.path.isfile(self._node):
-            self.load()
+            self._load()
         else:
             raise Exception('data file does not exist')
 
-    def load(self):
+    def _load(self):
         """load data"""
         self.adj = np.load(self._adj)
         index = np.nonzero(self.adj)
@@ -89,7 +89,7 @@ class MetrLa:
 
     def get_data(self, in_timestep, out_timestep):
         """
-        get sequence time feature and label
+        get sequence time feature and label.
 
         Args:
             in_timestep(int): numbers of input time sequence.
@@ -116,10 +116,10 @@ class MetrLa:
     @property
     def node_num(self):
         """
-        Number of nodes
+        Number of nodes.
 
         Returns:
-            - int, number of node
+            - int, number of node.
 
         Examples:
             >>> #dataset is an instance object of Dataset

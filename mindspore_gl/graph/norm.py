@@ -27,8 +27,8 @@ def norm(edge_index, num_nodes, edge_weight=None, normalization='sym',
             where :math:`N\_e` is the number of edges.
         num_nodes (int): Number of nodes.
         edge_weight (Tensor): Edge weights. The shape is :math:`(N\_e)`
-            where :math:`N\_e` is the number of edges.
-        normalization (str): Normalization method.
+            where :math:`N\_e` is the number of edges. Default: dense.
+        normalization (str): Normalization method. Default: sym.
 
             1. :obj:`None`: No normalization
                :math:`\mathbf{L} = \mathbf{D} - \mathbf{A}`
@@ -37,8 +37,8 @@ def norm(edge_index, num_nodes, edge_weight=None, normalization='sym',
                \mathbf{D}^{-1/2}`
             3. :obj:`"rw"`: Random-walk normalization
                :math:`\mathbf{L} = \mathbf{I} - \mathbf{D}^{-1} \mathbf{A}`
-        lambda_max (int, float): Lambda value of graph.
-        batch (Tensor): Batch vector.
+        lambda_max (int, float): Lambda value of graph. Default: dense.
+        batch (Tensor): Batch vector. Default: dense.
 
     Returns:
         - **edge_index** (Tensor) - normalized edge_index.

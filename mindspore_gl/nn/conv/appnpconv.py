@@ -24,7 +24,8 @@ from .. import GNNCell
 class APPNPConv(GNNCell):
     r"""
     Approximate Personalization Propagation in Neural Prediction Layers.
-    From the paper `Predict then Propagate: Graph Neural Networks meet Personalized PageRank <https://arxiv.org/pdf/1810.05997.pdf>`_.
+    From the paper `Predict then Propagate: Graph Neural Networks meet Personalized
+    PageRank <https://arxiv.org/pdf/1810.05997.pdf>`_ .
 
     .. math::
         H^{0} = X \\

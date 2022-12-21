@@ -3,7 +3,7 @@ mindspore_gl.nn.ChebConv
 
 .. py:class:: mindspore_gl.nn.ChebConv(in_channels: int, out_channels: int, k: int, bias: bool = True)
 
-    来自论文 `Convolutional Neural Networks on Graphs with Fast Localized Spectral Filtering <https://arxiv.org/abs/1606.09375>`_ 。
+    切比雪夫谱图卷积层。来自论文 `Convolutional Neural Networks on Graphs with Fast Localized Spectral Filtering <https://arxiv.org/abs/1606.09375>`_ 。
 
     .. math::
         \mathbf{X}^{\prime} = {\sigma}(\sum_{k=1}^{K} \mathbf{\beta}^{k} \cdot

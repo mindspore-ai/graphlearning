@@ -49,7 +49,9 @@ class Enzymes:
     - Edges: 62.14
     - Number of Classes: 6
 
-    Dataset can be download here: <https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets/ENZYMES.zip>
+    Dataset can be download here:
+    `ENZYMES <https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets/ENZYMES.zip>`_ .
+
     You can organize the dataset files into the following directory structure and read by `preprocess` API.
 
     .. code-block::
@@ -88,14 +90,14 @@ class Enzymes:
         self._test_mask = None
 
         if self._root.is_dir() and self._path.is_file():
-            self.load()
+            self._load()
         elif self._root.is_dir():
-            self.preprocess()
-            self.load()
+            self._preprocess()
+            self._load()
         else:
             raise Exception('data file does not exist')
 
-    def preprocess(self):
+    def _preprocess(self):
         """process data"""
         adj_list, graph_indic, node_attrs, graph_labels, label_dim = self._get_info()
         max_node_nums = 0
@@ -186,7 +188,7 @@ class Enzymes:
             index_graph[k] = [u - 1 for u in set(index_graph[k])]
         return adj_list, graph_indic, node_attrs, graph_labels, label_dim
 
-    def load(self):
+    def _load(self):
         """Load the saved npz dataset from files."""
         self._npz_file = np.load(self._path)
         self._edge_array = self._npz_file['edge_array']
@@ -196,10 +198,10 @@ class Enzymes:
     @property
     def num_features(self):
         """
-        Feature size of each node
+        Feature size of each node.
 
         Returns:
-            - int, the number of feature size
+            - int, the number of feature size.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -210,10 +212,10 @@ class Enzymes:
     @property
     def label_dim(self):
         """
-        Number of label classes
+        Number of label classes.
 
         Returns:
-            - int, the number of classes
+            - int, the number of classes.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -226,10 +228,10 @@ class Enzymes:
     @property
     def max_num_node(self):
         """
-        Max number of nodes in one graph
+        Max number of nodes in one graph.
 
         Returns:
-            - int, the max number of node number
+            - int, the max number of node number.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -242,10 +244,10 @@ class Enzymes:
     @property
     def train_mask(self):
         """
-        Mask of training nodes
+        Mask of training nodes.
 
         Returns:
-            - numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -258,10 +260,10 @@ class Enzymes:
     @property
     def test_mask(self):
         """
-        Mask of test nodes
+        Mask of test nodes.
 
         Returns:
-            - numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -274,10 +276,10 @@ class Enzymes:
     @property
     def val_mask(self):
         """
-        Mask of validation nodes
+        Mask of validation nodes.
 
         Returns:
-            - numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -290,10 +292,10 @@ class Enzymes:
     @property
     def graph_nodes(self):
         """
-        Accumulative graph nodes count
+        Accumulative graph nodes count.
 
         Returns:
-            - numpy.ndarray, array of accumulative nodes
+            - numpy.ndarray, array of accumulative nodes.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -306,10 +308,10 @@ class Enzymes:
     @property
     def graph_edges(self):
         """
-        Accumulative graph edges count
+        Accumulative graph edges count.
 
         Returns:
-            - numpy.ndarray, array of accumulative edges
+            - numpy.ndarray, array of accumulative edges.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -322,10 +324,10 @@ class Enzymes:
     @property
     def train_graphs(self):
         """
-        Train graph id
+        Train graph id.
 
         Returns:
-            - numpy.ndarray, array of train graph id
+            - numpy.ndarray, array of train graph id.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -336,10 +338,10 @@ class Enzymes:
     @property
     def val_graphs(self):
         """
-        Valid graph id
+        Valid graph id.
 
         Returns:
-            - numpy.ndarray, array of valid graph id
+            - numpy.ndarray, array of valid graph id.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -350,10 +352,10 @@ class Enzymes:
     @property
     def test_graphs(self):
         """
-        Test graph id
+        Test graph id.
 
         Returns:
-            - numpy.ndarray, array of test graph id
+            - numpy.ndarray, array of test graph id.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -364,10 +366,10 @@ class Enzymes:
     @property
     def graph_count(self):
         """
-        Total graph numbers
+        Total graph numbers.
 
         Returns:
-            - int, numbers of graph
+            - int, numbers of graph.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -378,10 +380,10 @@ class Enzymes:
     @property
     def node_feat(self):
         """
-        Node features
+        Node features.
 
         Returns:
-            - numpy.ndarray, array of node feature
+            - numpy.ndarray, array of node feature.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -393,22 +395,23 @@ class Enzymes:
 
     def graph_feat(self, graph_idx):
         """
-        graph features
+        graph features.
+
         Args:
-            graph_idx: index of graph
+            graph_idx: index of graph.
 
         Returns:
-            - numpy.ndarray, node feature of graph
+            - numpy.ndarray, node feature of graph.
         """
         return self.node_feat[self.graph_nodes[graph_idx]: self.graph_nodes[graph_idx + 1]]
 
     @property
     def graph_label(self):
         """
-        Graph label
+        Graph label.
 
         Returns:
-            - numpy.ndarray, array of graph label
+            - numpy.ndarray, array of graph label.
 
         Examples:
             >>> #dataset is an instance object of Dataset

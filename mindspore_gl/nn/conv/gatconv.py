@@ -25,7 +25,7 @@ from .. import GNNCell
 
 class GATConv(GNNCell):
     r"""
-    Graph Attention Network, from the paper `Graph Attention Network <https://arxiv.org/pdf/1710.10903.pdf>`_.
+    Graph Attention Network. From the paper `Graph Attention Network <https://arxiv.org/pdf/1710.10903.pdf>`_ .
 
     .. math::
         h_i^{(l+1)} = \sum_{j\in \mathcal{N}(i)} \alpha_{i,j} W^{(l)} h_j^{(l)}
@@ -43,7 +43,7 @@ class GATConv(GNNCell):
         input_drop_out_rate (float): Keep rate of input drop out. Default: 1.0.
         attn_drop_out_rate (float): Keep rate of attention drop out. Default: 1.0.
         leaky_relu_slope (float): Slope for leaky relu. Default: 0.2.
-        activation (Cell): Activation function, default is None.
+        activation (Cell): Activation function. Default: None.
         add_norm: Whether the edge information needs normalization or not. Default: False.
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N,D_{in})`

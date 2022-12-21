@@ -57,8 +57,10 @@ class Alchemy:
     - Edges: 10.02
     - Number of quantum mechanical properties: 12
 
-    Dataset can be download here: `Alchemy dev <https://alchemy.tencent.com/data/dev_v20190730.zip>`_ &
-                                  `Alchemy valid <https://alchemy.tencent.com/data/valid_v20190730.zip>`_
+    Dataset can be download here: `Alchemy dev <https://alchemy.tencent.com/data/dev_v20190730.zip>`_
+    and
+    `Alchemy valid <https://alchemy.tencent.com/data/valid_v20190730.zip>`_ .
+
     You can organize the dataset files into the following directory structure and read by `preprocess` API.
 
     .. code-block::
@@ -105,14 +107,14 @@ class Alchemy:
         self._datasize = datasize
 
         if self._root.is_dir() and self._path.is_file():
-            self.load()
+            self._load()
         elif self._root.is_dir():
-            self.preprocess()
-            self.load()
+            self._preprocess()
+            self._load()
         else:
             raise Exception('data file does not exist')
 
-    def preprocess(self):
+    def _preprocess(self):
         """process data"""
         node_feat_array, edges_feat_array, graph_label_array = None, None, None
         adj_coo_row, adj_coo_col = [], []
@@ -263,7 +265,7 @@ class Alchemy:
         return edges_feats
 
 
-    def load(self):
+    def _load(self):
         """Load the saved npz dataset from files."""
         self._npz_file = np.load(self._path, allow_pickle=True)
         self._edge_array = self._npz_file['edge_array'].astype(np.int64)
@@ -273,10 +275,10 @@ class Alchemy:
     @property
     def num_features(self):
         """
-        Feature size of each node
+        Feature size of each node.
 
         Returns:
-            - int, the number of feature size
+            - int, the number of feature size.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -287,10 +289,10 @@ class Alchemy:
     @property
     def num_edge_features(self):
         """
-       Number of label classes
+       Number of label classes.
 
        Returns:
-           - int, the number of classes
+           - int, the number of classes.
 
        Examples:
            >>> #dataset is an instance object of Dataset
@@ -301,10 +303,10 @@ class Alchemy:
     @property
     def n_tasks(self):
         """
-        Graph label size
+        Graph label size.
 
         Returns:
-            - int, size of graph label
+            - int, size of graph label.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -315,10 +317,10 @@ class Alchemy:
     @property
     def train_mask(self):
         """
-        Mask of training nodes
+        Mask of training nodes.
 
         Returns:
-            - numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -331,10 +333,10 @@ class Alchemy:
     @property
     def val_mask(self):
         """
-        Mask of validation nodes
+        Mask of validation nodes.
 
         Returns:
-            - numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -350,7 +352,7 @@ class Alchemy:
         Train graph id
 
         Returns:
-            - numpy.ndarray, array of train graph id
+            - numpy.ndarray, array of train graph id.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -364,7 +366,7 @@ class Alchemy:
         Valid graph id
 
         Returns:
-            - numpy.ndarray, array of valid graph id
+            - numpy.ndarray, array of valid graph id.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -378,7 +380,7 @@ class Alchemy:
         Accumulative graph nodes count
 
         Returns:
-            - numpy.ndarray, array of accumulative nodes
+            - numpy.ndarray, array of accumulative nodes.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -391,10 +393,10 @@ class Alchemy:
     @property
     def graph_edges(self):
         """
-        Accumulative graph edges count
+        Accumulative graph edges count.
 
         Returns:
-            - numpy.ndarray, array of accumulative edges
+            - numpy.ndarray, array of accumulative edges.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -407,10 +409,10 @@ class Alchemy:
     @property
     def graph_count(self):
         """
-        Total graph numbers
+        Total graph numbers.
 
         Returns:
-            - int, numbers of graph
+            - int, numbers of graph.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -421,10 +423,10 @@ class Alchemy:
     @property
     def node_feat(self):
         """
-        Node features
+        Node features.
 
         Returns:
-            - numpy.ndarray, array of node feature
+            - numpy.ndarray, array of node feature.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -438,10 +440,10 @@ class Alchemy:
     @property
     def edge_feat(self):
         """
-        Edge features
+        Edge features.
 
         Returns:
-            - numpy.ndarray, array of edge feature
+            - numpy.ndarray, array of edge feature.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -454,35 +456,35 @@ class Alchemy:
 
     def graph_feat(self, graph_idx):
         """
-        graph node features
+        graph node features.
 
         Args:
-            graph_idx: index of graph
+            graph_idx: index of graph.
 
         Returns:
-            - numpy.ndarray, node feature of graph
+            - numpy.ndarray, node feature of graph.
         """
         return self.node_feat[self.graph_nodes[graph_idx]: self.graph_nodes[graph_idx + 1]]
 
     def graph_edge_feat(self, graph_idx):
         """
-        graph edge features
+        graph edge features.
 
         Args:
-            graph_idx: index of graph
+            graph_idx: index of graph.
 
         Returns:
-            - numpy.ndarray, edge feature of graph
+            - numpy.ndarray, edge feature of graph.
         """
         return self.edge_feat[self.graph_edges[graph_idx]: self.graph_edges[graph_idx + 1]]
 
     @property
     def graph_label(self):
         """
-        Graph label
+        Graph label.
 
         Returns:
-            - numpy.ndarray, array of graph label
+            - numpy.ndarray, array of graph label.
 
         Examples:
             >>> #dataset is an instance object of Dataset

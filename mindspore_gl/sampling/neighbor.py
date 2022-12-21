@@ -35,10 +35,10 @@ def sage_sampler_on_homo(homo_graph: MindHomoGraph, seeds: np.array, neighbor_nu
         neighbor_nums(List): neighbor nums for each hop
 
     Returns:
-        - layered_edges_{idx}(numpy.array), edge array for hop idx
-        - layered_eids_{idx}(numpy.array), edge id array for hop idx
-        - all_nodes, all nodes' global ids
-        - seeds_idx, seeds local ids
+        - **layered_edges_{idx}** (numpy.array) - edge array for hop idx
+        - **layered_eids_{idx}** (numpy.array) - edge id array for hop idx
+        - **all_nodes** - all nodes' global ids
+        - **seeds_idx** - seeds local ids
 
     Raises:
         TypeError: If 'homo_graph' is not a MindHomoGraph class.

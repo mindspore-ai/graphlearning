@@ -55,8 +55,8 @@ class HomoGraphConv(GNNCell):
 
 class GatedGraphConv(ms.nn.Cell):
     r"""
-    Gated Graph Convolution Layer, from the paper `Gated Graph Sequence Neural Networks
-    <https://arxiv.org/pdf/1511.05493.pdf>`_.
+    Gated Graph Convolution Layer. From the paper `Gated Graph Sequence Neural Networks
+    <https://arxiv.org/pdf/1511.05493.pdf>`_ .
 
     .. math::
         h_{i}^{0} = [ x_i \| \mathbf{0} ] \\
@@ -70,7 +70,7 @@ class GatedGraphConv(ms.nn.Cell):
         out_feat_size (int): Output node feature size.
         n_steps (int): Number of steps.
         n_etype (int): Number of edge types.
-        bias (bool): Whether use bias.
+        bias (bool): Whether use bias. Default: True.
 
     Inputs:
         - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,

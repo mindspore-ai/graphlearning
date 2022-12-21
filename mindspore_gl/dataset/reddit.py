@@ -50,7 +50,8 @@ class Reddit:
     - Edges: 114,615,892
     - Number of classes: 41
 
-    Dataset can be download here: <https://data.dgl.ai/dataset/reddit.zip>
+    Dataset can be download here: `Reddit <https://data.dgl.ai/dataset/reddit.zip>`_ .
+
     You can organize the dataset files into the following directory structure and read by `preprocess` API.
 
     .. code-block::
@@ -81,14 +82,14 @@ class Reddit:
         self._npz_file = None
 
         if self._path.is_file():
-            self.load()
+            self._load()
         elif self._root.is_dir():
-            self.preprocess()
-            self.load()
+            self._preprocess()
+            self._load()
         else:
             raise Exception('data file does not exist')
 
-    def preprocess(self):
+    def _preprocess(self):
         """process data"""
         coo_adj = sp.load_npz(self._root / "reddit_graph.npz")
         csr = coo_adj.tocsr()
@@ -104,7 +105,7 @@ class Reddit:
         np.savez(self._path, adj_csr_indptr=indptr, adj_csr_indices=indices, feat=features, label=labels,
                  train_mask=train_mask, val_mask=val_mask, test_mask=test_mask)
 
-    def load(self):
+    def _load(self):
         """Load the saved npz dataset from files."""
         self._npz_file = np.load(self._path)
         self._csr_row = self._npz_file['adj_csr_indptr'].astype(np.int32)
@@ -115,10 +116,10 @@ class Reddit:
     @property
     def num_features(self):
         """
-        Feature size of each node
+        Feature size of each node.
 
         Returns:
-            - int, the number of feature size
+            - int, the number of feature size.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -129,10 +130,10 @@ class Reddit:
     @property
     def num_classes(self):
         """
-        Number of label classes
+        Number of label classes.
 
         Returns:
-            - int, the number of classes
+            - int, the number of classes.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -143,10 +144,10 @@ class Reddit:
     @property
     def train_mask(self):
         """
-        Mask of training nodes
+        Mask of training nodes.
 
         Returns:
-            - numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -159,10 +160,10 @@ class Reddit:
     @property
     def test_mask(self):
         """
-        Mask of test nodes
+        Mask of test nodes.
 
         Returns:
-            - numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -175,10 +176,10 @@ class Reddit:
     @property
     def val_mask(self):
         """
-        Mask of validation nodes
+        Mask of validation nodes.
 
         Returns:
-            - numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -191,10 +192,10 @@ class Reddit:
     @property
     def train_nodes(self):
         """
-        training nodes indexes
+        training nodes indexes.
 
         Returns:
-            - numpy.ndarray, array of training nodes
+            - numpy.ndarray, array of training nodes.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -205,10 +206,10 @@ class Reddit:
     @property
     def val_nodes(self):
         """
-        Val nodes indexes
+        Val nodes indexes.
 
         Returns:
-            - numpy.ndarray, array of val nodes
+            - numpy.ndarray, array of val nodes.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -219,10 +220,10 @@ class Reddit:
     @property
     def test_nodes(self):
         """
-        Test nodes indexes
+        Test nodes indexes.
 
         Returns:
-            - numpy.ndarray, array of test nodes
+            - numpy.ndarray, array of test nodes.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -233,10 +234,10 @@ class Reddit:
     @property
     def node_count(self):
         """
-        Number of nodes
+        Number of nodes.
 
         Returns:
-            - int, length of csr row
+            - int, length of csr row.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -247,10 +248,10 @@ class Reddit:
     @property
     def edge_count(self):
         """
-        Number of edges
+        Number of edges.
 
         Returns:
-            - int, length of csr col
+            - int, length of csr col.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -261,10 +262,10 @@ class Reddit:
     @property
     def node_feat(self):
         """
-        Node features
+        Node features.
 
         Returns:
-            - numpy.ndarray, array of node feature
+            - numpy.ndarray, array of node feature.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -278,10 +279,10 @@ class Reddit:
     @property
     def node_label(self):
         """
-        Ground truth labels of each node
+        Ground truth labels of each node.
 
         Returns:
-            - numpy.ndarray, array of node label
+            - numpy.ndarray, array of node label.
 
         Examples:
             >>> #dataset is an instance object of Dataset

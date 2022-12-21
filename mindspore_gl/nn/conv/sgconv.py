@@ -23,7 +23,7 @@ from .. import GNNCell
 class SGConv(GNNCell):
     r"""
     Simplified Graph convolutional layer.
-    From the paper `Simplifying Graph Convolutional Networks <https://arxiv.org/pdf/1902.07153.pdf>`_.
+    From the paper `Simplifying Graph Convolutional Networks <https://arxiv.org/pdf/1902.07153.pdf>`_ .
 
     .. math::
         H^{K} = (\tilde{D}^{-1/2} \tilde{A} \tilde{D}^{-1/2})^K X \Theta
@@ -33,10 +33,10 @@ class SGConv(GNNCell):
     Args:
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
-        num_hops (int): Number of hops.
-        cached (bool): Whether use cached.
-        bias (bool): Whether use bias.
-        norm (Cell): Normalization function Cell, default is None.
+        num_hops (int): Number of hops. Default: 1.
+        cached (bool): Whether use cached. Default: True.
+        bias (bool): Whether use bias. Default: True.
+        norm (Cell): Normalization function Cell. Default: None.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N, D_{in})`
@@ -57,7 +57,7 @@ class SGConv(GNNCell):
         TypeError: If `norm` is not a Cell.
 
     Supported Platforms:
-         ``GPU`` ``Ascend`` (PYNATIVE MODE ONLY)
+        ``GPU`` ``Ascend`` (PYNATIVE MODE ONLY)
 
     Examples:
         >>> import mindspore as ms

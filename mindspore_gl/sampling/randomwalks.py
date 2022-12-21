@@ -27,12 +27,12 @@ def random_walk_unbias_on_homo(homo_graph: MindHomoGraph,
     random walks on homo graph.
 
     Args:
-        homo_graph(MindHomoGraph): the source graph which is sampled from
-        seeds(np.ndarray) : random seeds for sampling
-        walk_length(int): sample path length
+        homo_graph(MindHomoGraph): the source graph which is sampled from.
+        seeds(np.ndarray) : random seeds for sampling.
+        walk_length(int): sample path length.
 
     Returns:
-        - array, sample node :math:`(len(seeds), walk_length)`
+        - **array** - sample node :math:`(len(seeds), walk_length)`.
 
     Raises:
         TypeError: If `walk_length` is not a positive integer.

@@ -16,7 +16,7 @@ mindspore_gl.nn.AGNNConv
     :math:`\beta` 是单个标量参数。
 
     参数：
-        - **init_beta** (float) - 初始化 :math:`\β` ，单个标量参数。默认值：1.0。
+        - **init_beta** (float) - 初始化 :math:`\beta` ，单个标量参数。默认值：1.0。
         - **learn_beta** (bool) - 是否 :math:`\beta` 可学习。默认值：True。
 
     输入：

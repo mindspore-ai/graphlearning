@@ -35,7 +35,7 @@ class GNNCell(Cell):
         Enable display code comparison.
 
         Args:
-            screen_width (int): Determines the screen width on which the code is displayed.
+            screen_width (int): Determines the screen width on which the code is displayed. Default: 200.
 
         Examples:
             >>> from mindspore_gl.nn import GNNCell

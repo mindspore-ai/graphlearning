@@ -3,8 +3,9 @@ mindspore_gl.nn.STConv
 
 .. py:class:: mindspore_gl.nn.STConv(num_nodes: int, in_channels: int, hidden_channels: int, out_channels: int, kernel_size: int = 3, k: int = 3, bias: bool = True)
 
-    STGCN层。
-    来自论文 `A deep learning framework for traffic forecasting arXiv preprint arXiv:1709.04875, 2017.`_ 。
+    时空图卷积层。
+    来自论文 `A deep learning framework for traffic forecasting
+    arXiv preprint arXiv:1709.04875, 2017. <https://arxiv.org/pdf/1709.04875.pdf>`_ 。
     STGCN层包含2个时间卷积层和1个图卷积层（ChebyNet）。
 
     参数：
@@ -26,7 +27,7 @@ mindspore_gl.nn.STConv
         - **g** (Graph) - 输入图。
 
     输出：
-        - Tensor，输出节点特征，shape为:math:`(B,D_{out},N,T)`，
+        - Tensor，输出节点特征，shape为 :math:`(B,D_{out},N,T)`，
           其中 :math:`B` 是批处理的大小， :math:`(D_{out})` 应与
           `Args` 中的 `out_channels` ， :math:`N` 是节点数，
           :math:`T` 是输入时间步数。

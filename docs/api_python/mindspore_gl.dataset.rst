@@ -14,3 +14,4 @@ mindspore_gl.dataset
     mindspore_gl.dataset.BlogCatalog
     mindspore_gl.dataset.Alchemy
     mindspore_gl.dataset.Enzymes
+    mindspore_gl.dataset.Reddit

@@ -36,7 +36,7 @@ class AvgPooling(GNNCell):
           where :math:`D_{out}` is the feature size of nodes
 
     Supported Platforms:
-         ``GPU`` ``Ascend``
+        ``GPU`` ``Ascend``
 
     Examples:
         >>> import numpy as np

@@ -21,7 +21,7 @@ from .. import GNNCell
 
 class EDGEConv(GNNCell):
     r"""
-    EdgeConv layer, from the paper `Dynamic Graph CNN for Learning on Point Clouds <https://arxiv.org/pdf/1801.07829>`_.
+    EdgeConv layer. From the paper `Dynamic Graph CNN for Learning on Point Clouds <https://arxiv.org/pdf/1801.07829>`_ .
 
     .. math::
         h_i^{(l+1)} = \max_{j \in \mathcal{N}(i)} (
@@ -34,7 +34,7 @@ class EDGEConv(GNNCell):
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
         batch_norm (bool): Whether use batch norm.
-        bias (bool): Whether use bias.
+        bias (bool): Whether use bias. Default: True.
 
     Inputs:
         - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,

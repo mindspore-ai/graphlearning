@@ -20,8 +20,8 @@ from .. import GNNCell
 
 class SAGEConv(GNNCell):
     r"""
-    GraphSAGE Layer, from the paper `Inductive Representation Learning on Large Graphs
-    <https://arxiv.org/pdf/1706.02216.pdf>`_.
+    GraphSAGE Layer. From the paper `Inductive Representation Learning on Large Graphs
+    <https://arxiv.org/pdf/1706.02216.pdf>`_ .
 
     .. math::
         h_{\mathcal{N}(i)}^{(l+1)} = \mathrm{aggregate}
@@ -41,7 +41,7 @@ class SAGEConv(GNNCell):
     Args:
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
-        aggregator_type (str): Type of aggregator, should in 'pool', 'lstm' and 'mean'. Default: 'pool'.
+        aggregator_type (str): Type of aggregator, should in 'pool', 'lstm' and 'mean'. Default: pool.
         bias (bool): Whether use bias. Default: True.
         norm (Cell): Normalization function Cell. Default: None.
         activation (Cell): Activation function Cell. Default: None.

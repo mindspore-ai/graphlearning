@@ -26,8 +26,8 @@ def k_hop_subgraph(node_idx, num_hops, adj_coo, node_count, relabel_nodes=False,
         num_hops(int): sampling 'num_hops' hop subgraph.
         adj_coo(numpy.ndarray): input adj of graph.
         node_count(int): the number of nodes.
-        relabel_nodes(bool): node indexes need relabel or not.
-        flow: the visit direction.
+        relabel_nodes(bool): node indexes need relabel or not. Default: False.
+        flow: the visit direction. Default: source_to_target.
 
     Returns:
         res(dict), has 4 keys 'subset', 'adj_coo', 'inv', 'edge_mask', where,

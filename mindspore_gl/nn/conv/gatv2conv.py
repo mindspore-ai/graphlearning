@@ -24,7 +24,7 @@ from .. import GNNCell
 
 class GATv2Conv(GNNCell):
     r"""
-    Graph Attention Network v2, from the paper `How Attentive Are Graph Attention Networks?
+    Graph Attention Network v2. From the paper `How Attentive Are Graph Attention Networks?
     <https://arxiv.org/pdf/2105.14491.pdf>`_, which fixes the static attention problem of GATv2.
 
     .. math::
@@ -43,7 +43,7 @@ class GATv2Conv(GNNCell):
         input_drop_out_rate (float): Keep rate of input drop out. Default: 1.0.
         attn_drop_out_rate (float): Keep rate of attention drop out. Default: 1.0.
         leaky_relu_slope (float): Slope for leaky relu. Default: 0.2.
-        activation (Cell): Activation function, default is None.
+        activation (Cell): Activation function. Default: None.
         add_norm: Whether the edge information needs normalization or not. Default: False.
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N,D_{in})`

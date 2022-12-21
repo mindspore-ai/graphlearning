@@ -16,8 +16,11 @@ mindspore_gl.graph.add_self_loop
 
     返回：
         如果 `mode` 等于'dense'：
+
         - **new_adj** (Tensor) - 添加对角矩阵后的对象。
+
         如果 `mode` 等于'coo'：
+
         - **edge_index** (Tensor) - 新的边索引。
         - **edge_weight** (Tensor) - 新的边权重。
 

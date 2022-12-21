@@ -3,7 +3,7 @@ mindspore_gl.nn.SAGEConv
 
 .. py:class:: mindspore_gl.nn.SAGEConv(in_feat_size: int, out_feat_size: int, aggregator_type: str = 'pool', bias=True, norm=None, activation: mindspore.nn.cell.Cell = None)
 
-    GraphSAGE层，来自论文 `Inductive Representation Learning on Large Graphs <https://arxiv.org/pdf/1706.02216.pdf>`_。
+    GraphSAGE层。来自论文 `Inductive Representation Learning on Large Graphs <https://arxiv.org/pdf/1706.02216.pdf>`_。
 
     .. math::
         h_{\mathcal{N}(i)}^{(l+1)} = \mathrm{aggregate}
