@@ -66,6 +66,8 @@ class MultiHomoGraphDataset(Dataset):
         batchedgraphfiled = self.get_batched_graph_field(batch_graph, node_loop, constant_graph_mask)
         row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask =\
             batchedgraphfiled.get_batched_graph()
+        batched_label = batched_label.astype('int32')
+        batched_node_feat = batched_node_feat.astype('float32')
         return batched_label, batched_node_feat, row, col, node_count, edge_count, node_map_idx,\
                edge_map_idx, graph_mask
 

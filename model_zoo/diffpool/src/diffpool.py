@@ -138,6 +138,7 @@ class DiffPoolBatchedGraphLayer(GNNCell):
             ops.Ones()(ops.Shape()(g.src_idx), ms.int32),
             (node_count, node_count)
         )
+        adj = adj.astype('float32')
         adj[-1][-1] = 0
         if self.link_pred:
             self.link_pred_loss = LinkPredLoss()(adj, assign_tensor, g.ver_subgraph_idx, g.graph_mask)
