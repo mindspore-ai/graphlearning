@@ -10,7 +10,7 @@ mindspore_gl.graph.add_self_loop
     参数：
         - **edge_index** (Tensor) - 边索引。shape为 :math:`(2, N\_e)` 其中 :math:`N\_e` 是边的数量。
         - **edge_weight** (Tensor) - 边权重。shape为 :math:`(N\_e)` 其中 :math:`N\_e` 是边的数量。默认值：None。
-        - **num_nodes** (int) - 节点数。
+        - **node** (int) - 节点数。
         - **fill_value** (Tensor) - 自循环值。
         - **mode** (str) - 操作矩阵的类型。默认值：dense。
 

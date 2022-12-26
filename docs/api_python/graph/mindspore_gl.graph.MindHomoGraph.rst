@@ -11,8 +11,8 @@ mindspore_gl.graph.MindHomoGraph
 
         参数：
             - **adj_csr** (mindspore_gl.graph.graph.csr_adj) - 图的邻接矩阵，csr格式。
-            - **node_dict** (numpy.ndarray) - 节点id字典。
-            - **edge_ids** - 边数组。
+            - **node_dict** (dict) - 节点id字典。
+            - **edge_ids** (numpy.ndarray) - 边数组。
 
     .. py:method:: mindspore_gl.graph.MindHomoGraph.set_topo_coo(adj_coo, node_dict=None, edge_ids: numpy.ndarray = None)
 
@@ -20,8 +20,8 @@ mindspore_gl.graph.MindHomoGraph
 
         参数：
             - **adj_coo** (numpy.ndarray) - 图的邻接矩阵，coo格式。
-            - **node_dict** (numpy.ndarray) - 节点id字典。默认值：None。
-            - **edge_ids** - 边数组。默认值：None。
+            - **node_dict** (dict) - 节点id字典。默认值：None。
+            - **edge_ids** (numpy.ndarray) - 边数组。默认值：None。
 
     .. py:method:: mindspore_gl.graph.MindHomoGraph.neighbors(node)
 

@@ -12,7 +12,7 @@ mindspore_gl.nn.ASTGCN
         - **k** (int) - Chebyshev polynomials的阶。
         - **n_chev_filters** (int) - Chebyshev过滤器的数量。
         - **n_time_filters** (int) - 时间过滤器的数量。
-        - **time_con_strides** (int) - 时间卷积期间的时间步长。
+        - **time_conv_strides** (int) - 时间卷积期间的时间步长。
         - **num_for_predict** (int) - 未来要进行的预测数。
         - **len_input** (int) - 输入序列的长度。
         - **n_vertices** (int) - 图中的顶点数。

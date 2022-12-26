@@ -19,10 +19,10 @@ import scipy.sparse as sp
 def split_data(x, val_ratio=0.05, test_ratio=0.1, graph_type='undirected'):
     """
     Cut the training set into training set, validation set and test set according to the proportion of user input,
-    and perform graph reconstruction on the training set, and then return
+    and perform graph reconstruction on the training set, and then return.
 
     Args:
-        x: Graph Structured Dataset
+        x (mindspore_gl.dataloader.Dataset): Graph Structured Dataset
         val_ratio(float): Validation set proportion. Default: 0.05.
         test_ratio(float): Test set proportion. Default: 0.1.
         graph_type(str):The type of graph. Default: 'undirected'.

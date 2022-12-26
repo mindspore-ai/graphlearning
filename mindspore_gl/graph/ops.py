@@ -29,7 +29,7 @@ class BatchHomoGraph:
     BatchHomoGraph, batch list of MindHomoGraph into a single MindHomoGraph with some batch_meta information.
 
     Inputs:
-        graph_list(List[MindHomoGraph]): To list of MindHomoGraph.
+        - **graph_list** (List[MindHomoGraph]) - To list of MindHomoGraph.
 
     Examples:
         >>> from mindspore_gl.graph.ops import BatchHomoGraph
@@ -158,7 +158,7 @@ class PadArray2d:
             need inter process communication for graph feature. Default: False.
 
     Inputs:
-        input_array(numpy.array): input numpy array for pad
+        - **input_array** (numpy.array) - input numpy array for pad.
 
     Raises:
         ValueError: pad size should be provided when padding mode is PadMode.CONST.

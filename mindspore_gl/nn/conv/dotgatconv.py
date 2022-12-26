@@ -41,7 +41,7 @@ class DOTGATConv(GNNCell):
 
     Inputs:
         - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,
-          and math:`*` could be of any shape.
+          and :math:`*` could be of any shape.
         - **g** (Graph): The input graph.
 
     Outputs:

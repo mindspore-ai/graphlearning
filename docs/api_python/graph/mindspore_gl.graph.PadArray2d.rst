@@ -28,7 +28,7 @@ mindspore_gl.graph.PadArray2d
         Lazy数组填充，将只确定填充结果形状，并返回一个具有目标形状的空数组。
 
         参数：
-            - **shape** ( Union[List, Tuple]) - 需要填充的输入数组的形状。
+            - **shape** (Union[List, Tuple]) - 需要填充的输入数组的形状。
 
         返回：
             memory_buffer(numpy.array)，一个空的numpy数组，具有目标填充形状。

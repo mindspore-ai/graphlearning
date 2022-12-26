@@ -1,7 +1,7 @@
 mindspore_gl.nn.ChebConv
 ========================
 
-.. py:class:: mindspore_gl.nn.ChebConv(in_channels: int, out_channels: int, k: int, bias: bool = True)
+.. py:class:: mindspore_gl.nn.ChebConv(in_channels: int, out_channels: int, k: int = 3, bias: bool = True)
 
     切比雪夫谱图卷积层。来自论文 `Convolutional Neural Networks on Graphs with Fast Localized Spectral Filtering <https://arxiv.org/abs/1606.09375>`_ 。
 
