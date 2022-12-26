@@ -27,7 +27,7 @@ def k_hop_subgraph(node_idx, num_hops, adj_coo, node_count, relabel_nodes=False,
         adj_coo(numpy.ndarray): input adj of graph.
         node_count(int): the number of nodes.
         relabel_nodes(bool): node indexes need relabel or not. Default: False.
-        flow: the visit direction. Default: source_to_target.
+        flow (str): the visit direction. Default: 'source_to_target'.
 
     Returns:
         res(dict), has 4 keys 'subset', 'adj_coo', 'inv', 'edge_mask', where,
@@ -39,7 +39,7 @@ def k_hop_subgraph(node_idx, num_hops, adj_coo, node_count, relabel_nodes=False,
     Raises:
         TypeError: If 'num_hops' or 'node_count' is not a positive int.
         TypeError: If 'relabel_nodes' is not a bool.
-        ValueError: If `flow` is not in source_to_target or target_to_source.
+        ValueError: If `flow` is not in 'source_to_target' or 'target_to_source'.
 
     Supported Platforms:
         ``GPU`` ``Ascend``

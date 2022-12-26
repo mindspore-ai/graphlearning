@@ -28,17 +28,17 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more
         positive(list or array): All positive sample edges, shape: :math:`(col_len, row_len)`.
         node(int): number of node.
         num_neg_samples(int): Negative sample length.
-        mode(str): type of operation matrix. Default: undirected.
-        re(str): type of input data. Default: more.
+        mode(str): type of operation matrix. Default: 'undirected'.
+        re(str): type of input data. Default: 'more'.
 
     Returns:
-        - **array** - Negative sample edge set, shape is :math:`(num_neg_samples, 2)`
+        - **array** - Negative sample edge set, shape is :math:`(num_neg_samples, 2)`.
 
     Raises:
         TypeError: If 'positive' is not a list or ndarry.
         TypeError: If 'node' is not a positive int.
-        TypeError: If 're' is not in more or other.
-        ValueError: If `mode` is not in bipartite, undirected or other.
+        TypeError: If 're' is not in 'more' or other.
+        ValueError: If `mode` is not in 'bipartite', 'undirected' or other.
 
     Examples:
         >>> from mindspore_gl.sampling import negative_sample

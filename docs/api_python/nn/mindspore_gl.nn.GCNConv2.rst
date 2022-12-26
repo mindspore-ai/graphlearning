@@ -8,7 +8,7 @@ mindspore_gl.nn.GCNConv2
     <https://arxiv.org/abs/1609.02907>`_ 。
 
     .. math::
-        `h_i^{(l+1)} = (\sum_{j\in\mathcal{N}(i)}h_j^{(l)}W_1^{(l)}+b^{(l)} )+h_i^{(l)}W_2^{(l)}`
+        h_i^{(l+1)} = (\sum_{j\in\mathcal{N}(i)}h_j^{(l)}W_1^{(l)}+b^{(l)} )+h_i^{(l)}W_2^{(l)}
 
     :math:`\mathcal{N}(i)` 表示 :math:`i` 的邻居节点。
     :math:`W_1` 和 `W_2` 对应邻居节点和根节点的fc层。

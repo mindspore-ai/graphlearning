@@ -44,7 +44,8 @@ class GATv2Conv(GNNCell):
         attn_drop_out_rate (float): Keep rate of attention drop out. Default: 1.0.
         leaky_relu_slope (float): Slope for leaky relu. Default: 0.2.
         activation (Cell): Activation function. Default: None.
-        add_norm: Whether the edge information needs normalization or not. Default: False.
+        add_norm (bool): Whether the edge information needs normalization or not. Default: False.
+
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N,D_{in})`
           where :math:`N` is the number of nodes and :math:`D_{in}` could be of any shape.

@@ -459,7 +459,7 @@ class Alchemy:
         graph node features.
 
         Args:
-            graph_idx: index of graph.
+            graph_idx (int): index of graph.
 
         Returns:
             - numpy.ndarray, node feature of graph.
@@ -471,7 +471,7 @@ class Alchemy:
         graph edge features.
 
         Args:
-            graph_idx: index of graph.
+            graph_idx (int): index of graph.
 
         Returns:
             - numpy.ndarray, edge feature of graph.

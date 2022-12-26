@@ -398,7 +398,7 @@ class PPI:
         graph features.
 
         Args:
-            graph_idx: index of graph.
+            graph_idx (int): index of graph.
 
         Returns:
             - numpy.ndarray, node feature of graph.
@@ -410,7 +410,7 @@ class PPI:
         graph label.
 
         Args:
-            graph_idx: index of graph.
+            graph_idx (int): index of graph.
 
         Returns:
             - numpy.ndarray, node label of graph.

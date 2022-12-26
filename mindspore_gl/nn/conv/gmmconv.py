@@ -43,7 +43,7 @@ class GMMConv(GNNCell):
         n_kernels (int): Number of kernels.
         residual (bool): Whether use residual. Default: False.
         bias (bool): Whether use bias. Default: False.
-        aggregator_type (str): Type of aggregator, should be 'sum'. Default: sum.
+        aggregator_type (str): Type of aggregator, should be 'sum'. Default: 'sum'.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N, D_{in})`

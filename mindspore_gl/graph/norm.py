@@ -28,14 +28,14 @@ def norm(edge_index, num_nodes, edge_weight=None, normalization='sym',
         num_nodes (int): Number of nodes.
         edge_weight (Tensor): Edge weights. The shape is :math:`(N\_e)`
             where :math:`N\_e` is the number of edges. Default: dense.
-        normalization (str): Normalization method. Default: sym.
+        normalization (str): Normalization method. Default: 'sym'.
 
-            1. :obj:`None`: No normalization
+            1. `None`: No normalization
                :math:`\mathbf{L} = \mathbf{D} - \mathbf{A}`
-            2. :obj:`"sym"`: Symmetric normalization
+            2. `'sym'`: Symmetric normalization
                :math:`\mathbf{L} = \mathbf{I} - \mathbf{D}^{-1/2} \mathbf{A}
                \mathbf{D}^{-1/2}`
-            3. :obj:`"rw"`: Random-walk normalization
+            3. `'rw'`: Random-walk normalization
                :math:`\mathbf{L} = \mathbf{I} - \mathbf{D}^{-1} \mathbf{A}`
         lambda_max (int, float): Lambda value of graph. Default: dense.
         batch (Tensor): Batch vector. Default: dense.
@@ -45,7 +45,7 @@ def norm(edge_index, num_nodes, edge_weight=None, normalization='sym',
         - **edge_weight** (Tensor) - normalized edge_weight
 
     Raises:
-        ValueError: if `normalization` not is None or sym or rw.
+        ValueError: if `normalization` not is None or 'sym' or 'rw'.
 
     Examples:
         >>> import mindspore as ms

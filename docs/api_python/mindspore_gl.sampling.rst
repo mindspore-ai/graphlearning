@@ -10,7 +10,7 @@ mindspore_gl.sampling
     参数：
         - **node_idx** (int, list, tuple or numpy.ndarray) - 围绕 `node_idx` 采样子图。
         - **num_hops** (int) - 在子图上采样 `num_hops` 跳。
-        - **ad_coo** (numpy.ndarray) - 输入图的邻接矩阵。
+        - **adj_coo** (numpy.ndarray) - 输入图的邻接矩阵。
         - **node_count** (int) - 节点数。
         - **relabel_nodes** (bool) - 节点索引是否需要重新标签。默认值：False。
         - **flow** (str) - 访问方向。默认值：source_to_target。
