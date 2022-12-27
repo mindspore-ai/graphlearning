@@ -19,20 +19,20 @@ import numpy as np
 import mindspore_gl.bucket_kernel
 
 def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more'):
-    """
+    r"""
     Input all positive sample edge sets, and specify the negative sample length,
     and then return the negative sample edge set of the same length, and will not repeat the positive samples
     Can choose to consider self-loop, directed graph or undirected graph operation
 
     Args:
-        positive(list or array): All positive sample edges, shape: :math:`(col_len, row_len)`.
+        positive(list or array): All positive sample edges, shape: :math:`(col\_len, row\_len)`.
         node(int): number of node.
         num_neg_samples(int): Negative sample length.
         mode(str): type of operation matrix. Default: 'undirected'.
         re(str): type of input data. Default: 'more'.
 
     Returns:
-        - **array** - Negative sample edge set, shape is :math:`(num_neg_samples, 2)`.
+        - **array** - Negative sample edge set, shape is :math:`(num\_neg\_samples, 2)`.
 
     Raises:
         TypeError: If 'positive' is not a list or ndarry.

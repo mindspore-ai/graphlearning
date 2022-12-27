@@ -18,7 +18,7 @@ mindspore_gl.nn.EGConv
         - **in_feat_size** (int) - 输入节点特征大小。
         - **out_feat_size** (int) - 输出节点特征大小。
         - **aggregators** (List[str]) - 要使用的聚合器。支持的聚合器为 'sum'、'mean'、'max'、'min'、'std'、'var'、'symnorm'。默认值：symnorm。
-        - **num_heads** (int, 可选) - 头数 :math:`H` 。必须具有 :math:`out_feat_size % num_heads == 0` 。默认值：8。
+        - **num_heads** (int, 可选) - 头数 :math:`H` 。必须具有 :math:`out\_feat\_size % num\_heads == 0` 。默认值：8。
         - **num_bases** (int, 可选) - 基础权重数 :math:`B` 。默认值：4。
         - **bias** (bool, 可选) - 是否加入可学习偏差。默认值：True。
 

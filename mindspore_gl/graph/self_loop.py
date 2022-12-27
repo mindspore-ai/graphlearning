@@ -72,11 +72,11 @@ def add_self_loop(edge_index, edge_weight, node, fill_value, mode='dense'):
         mode(str): type of operation matrix. Default: dense.
 
     Returns:
-        if `mode` is 'dense':
+        if `mode` is 'dense',
 
         - **new_adj** (Tensor) - dense matrix.
 
-        if `mode` is 'coo':
+        if `mode` is 'coo',
 
         - **edge_index** (Tensor) - new edge_index.
         - **edge_weight** (Tensor) - new edge_weight

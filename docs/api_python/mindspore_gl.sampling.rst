@@ -35,14 +35,14 @@ mindspore_gl.sampling
     可以选择考虑自循环、有向图或无向图操作。
 
     参数：
-        - **positive** (list or array) - 所有正样本边，shape为 :math:`(col_len,row_len)`
+        - **positive** (list or array) - 所有正样本边，shape为 :math:`(col\_len,row\_len)`
         - **node** (int) - 节点数。
         - **num_neg_samples** (int) - 负样本长度。
         - **mode** (str) - 运算矩阵的类型。默认值：undirected。
         - **re** (str) - 输入数据类型。默认值：more。
 
     返回：
-        数组，负采样边集，shape为 :math:`(num_neg_samples, 2)`
+        数组，负采样边集，shape为 :math:`(num\_neg\_samples, 2)`
 
     异常：
         - **TypeError** - 如果 `positive` 不是List或numpy.ndarry。
@@ -64,7 +64,7 @@ mindspore_gl.sampling
         - **TypeError** - 如果 `seeds` 不是numpy.int32。
 
     返回：
-        数组，示例节点 :math:`(len(seeds), walk_length)`
+        数组，示例节点 :math:`(len(seeds), walk\_length)`
 
 .. py:function:: mindspore_gl.sampling.sage_sampler_on_homo(homo_graph: mindspore_gl.graph.graph.MindHomoGraph, seeds: <built-in function array>, neighbor_nums: List[int])
 
