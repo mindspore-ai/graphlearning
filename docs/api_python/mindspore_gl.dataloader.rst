@@ -12,9 +12,9 @@ mindspore_gl.dataloader
         - **graph_type** (str) - 图的类型。默认值：undirected。
 
     返回：
-        - **train** (numpy.ndarray) - 训练集，shape :math:`(train_len, 2)` 。
-        - **val** (numpy.ndarray) - 验证集，shape :math:`(val_len, 2)` 。
-        - **test** (numpy.ndarray) - 测试集，shape :math:`(test_len, 2)` 。
+        - **train** (numpy.ndarray) - 训练集，shape :math:`(train\_len, 2)` 。
+        - **val** (numpy.ndarray) - 验证集，shape :math:`(val\_len, 2)` 。
+        - **test** (numpy.ndarray) - 测试集，shape :math:`(test\_len, 2)` 。
 
 
 
@@ -34,7 +34,7 @@ mindspore_gl.dataloader
 
     可映射数据集定义，用抽象类表示数据集。
     所有数据集都都应该对它进行继承，它代表从key到样本的映射关系。
-    所有子类都应该具备 :meth:`__getitem__`，它实现了通过给定key来获取实例。
+    所有子类都应该具备 `__getitem__`，它实现了通过给定key来获取实例。
 
     .. note::
         :class:`mindspore_gl.dataloader.Dataloader` 需要一个 `Dataset` 实例作为输入。它通过 `Sampler` 返回的索引来执行。

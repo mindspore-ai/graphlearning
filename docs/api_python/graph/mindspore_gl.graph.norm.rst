@@ -5,7 +5,7 @@ mindspore_gl.graph.norm
 
     图laplacian归一化。
 
-    输入：
+    参数：
         - **edge_index** (Tensor) - 边索引。Shape为 :math:`(2, N\_e)` 其中 :math:`N\_e` 是边的数量。
         - **num_nodes** (int) - 节点数。
         - **edge_weight** (Tensor) - 边权重。Shape为 :math:`(N\_e)` 其中 :math:`N\_e` 是边的数量。默认值：None。

@@ -23,7 +23,7 @@ __all__ = ['random_walk_unbias_on_homo']
 def random_walk_unbias_on_homo(homo_graph: MindHomoGraph,
                                seeds: np.ndarray,
                                walk_length: int):
-    """
+    r"""
     random walks on homo graph.
 
     Args:
@@ -32,7 +32,7 @@ def random_walk_unbias_on_homo(homo_graph: MindHomoGraph,
         walk_length(int): sample path length.
 
     Returns:
-        - **array** - sample node :math:`(len(seeds), walk_length)`.
+        - **array** - sample node :math:`(len(seeds), walk\_length)`.
 
     Raises:
         TypeError: If `walk_length` is not a positive integer.

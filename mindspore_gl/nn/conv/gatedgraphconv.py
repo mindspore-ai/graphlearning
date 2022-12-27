@@ -81,7 +81,7 @@ class GatedGraphConv(ms.nn.Cell):
         - **n_edges** (List): The number of edges for each edge type.
 
     Outputs:
-        - Tensor, output node features. The shape is :math:`(N, out_feat_size)`.
+        - Tensor, output node features. The shape is :math:`(N, out\_feat\_size)`.
 
     Raises:
         TypeError: If `in_feat_size` is not a positive int.

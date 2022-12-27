@@ -3,7 +3,6 @@ mindspore_gl.graph.add_self_loop
 
 .. py:function:: mindspore_gl.graph.add_self_loop(edge_index, edge_weight, node, fill_value, mode='dense')
 
-    功能：
     从输入coo矩阵中添加自循环。
     可以选择对dense矩阵或coo格式的矩阵进行操作。
 

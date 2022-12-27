@@ -27,7 +27,7 @@ mindspore_gl.nn.DOTGATConv
         - ***g** (Graph) - 输入图。
 
     输出：
-        - Tensor，输出节点特征。Shape为 :math:`(N, num_heads, out_feat_size)` 。
+        - Tensor，输出节点特征。Shape为 :math:`(N, num\_heads, out\_feat\_size)` 。
 
     异常：
         - **TypeError** - 如果 `in_feat_size` 不是正整数。

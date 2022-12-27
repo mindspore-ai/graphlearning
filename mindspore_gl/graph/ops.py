@@ -322,9 +322,9 @@ class PadArray2d:
 
 
 class PadHomoGraph:
-    """
+    r"""
     Pad MindHomoGraph, We pad graph by adding additional nodes and edges between these nodes. In short,
-    :math:`PadHomoGraph(graph1) = BatchHomoGraph(graph1, fake_graph)`
+    :math:`PadHomoGraph(graph1) = BatchHomoGraph(graph1, fake\_graph)`
     node count and edge count in fake_graph is determined by user-specific parameters.
 
     Args:
@@ -332,8 +332,8 @@ class PadHomoGraph:
         n_edge(Union(int, None)): target graph's edge count. Default: None.
         mode(PadMode): Pad mode, if PadMode.CONST, target graph will have n_node nodes and n_edge edges. If PadMode.AUTO
             target graph's node_count and edge_count is calculated according to input graph's size by
-            :math:`n_node = 2^ceil(log2(input_graph.node_count))` ,
-            :math:`n_edge = 2^ceil(log2(input_graph.edge_count))` . Default: PadMode.AUTO.
+            :math:`n\_node = 2^ceil(log2(input\_graph.node\_count))` ,
+            :math:`n\_edge = 2^ceil(log2(input\_graph.edge\_count))` . Default: PadMode.AUTO.
 
     Inputs:
         - **graph** (MindHomoGraph) - input graph.

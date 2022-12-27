@@ -29,7 +29,7 @@ mindspore_gl.nn.CFConv
         - **g** (Graph) - 输入图表。
 
     输出：
-        - Tensor，输出节点功能。Shape为 :math:`(N, out_size)` 。
+        - Tensor，输出节点功能。Shape为 :math:`(N, out\_size)` 。
 
     异常：
         - **TypeError** - 如果 `node_feat_size` 不是正整数。

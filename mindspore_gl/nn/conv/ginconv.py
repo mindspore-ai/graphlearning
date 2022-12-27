@@ -50,7 +50,7 @@ class GINConv(GNNCell):
           of nodes, and :math:`*` could be of any shape.
         - **g** (Graph): The input graph.
     Outputs:
-        - Tensor, output node features. The shape is :math:`(N, out_feat_size)`.
+        - Tensor, output node features. The shape is :math:`(N, out\_feat\_size)`.
 
     Raises:
         TypeError: If `activation` is not a Cell.
