@@ -4,7 +4,7 @@
 - Datasets
 - Environment Requirements
 - Quick Start
-- Experiment results (acc)
+- Experiment results
 
 ## Graph Convolutional Networks (GCN)
 
@@ -18,7 +18,9 @@ This repository contains a implementation of GCN based on MindSpore and GraphLea
 
 ## Datasets
 
-The experiment is based on [Cora-ML](https://github.com/kimiyoung/planetoid), which was extracted in "Deep gaussian embedding of attributed graphs: Unsupervised inductive learning via ranking." ICLR 2018
+The experiment is based on [Cora-ML](https://github.com/kimiyoung/planetoid), which was extracted in "Deep gaussian embedding of attributed graphs: Unsupervised inductive learning via ranking." ICLR 2018.
+
+For distributed training, the experiment is based on [Reddit dataset](https://data.dgl.ai/dataset/reddit.zip).
 
 ## Environment Requirements
 
@@ -27,10 +29,36 @@ The experiment is based on [Cora-ML](https://github.com/kimiyoung/planetoid), wh
 
 ## Quick Start
 
-CUDA_VISIBLE_DEVICES=0 python model_zoo/gcn/trainval_cora.py --data_path  {data_path}
+`CUDA_VISIBLE_DEVICES=0 python model_zoo/gcn/trainval_cora.py --data_path  {data_path}`
+
+## Distributed Training
+
+GPU:\
+`bash model_zoo/gcn/distributed_run.sh GPU {DATA_PATH}`
+
+Ascend:\
+`bash model_zoo/gcn/distributed_run.sh Ascend {DATA_PATH}`
 
 ## Experiment results
 
-Cora dataset
+**Cora dataset**
 
 Test acc: 0.8280
+
+**Reddit dataset**
+
+The results on Reddit dataset are shown in the table following.
+
+- NPU
+
+  | device    |   1*Ascend 910     | 4*Ascend 910 |
+  | --------- | :----------------: | :----------: |
+  | acc       |       0.9268       |      0.9247  |
+  | used time |       1064s        |     280s     |
+
+- GPU
+
+  | device | 1*V100 | 4*V100 |
+  | --------- | :----------------: |  :----------: |
+  | acc       |       0.9224       | 0.9249 |
+  | used time |       80s       |  55s |

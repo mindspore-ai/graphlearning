@@ -40,7 +40,7 @@ def test_distributed_graphsage():
     os.system(cmd_copy)
     os.environ['DEVICE_TARGET'] = "GPU"
     cmd_train = "mpirun --allow-run-as-root -n 8 python ./ci_temp/dist/graphsage/distributed_trainval_reddit.py" \
-                " --data-path /home/workspace/mindspore_dataset/GNN_Dataset/ --epochs 2 >>" \
+                " --data-path /home/workspace/mindspore_dataset/GNN_Dataset/ --epochs 1 >>" \
                 "./ci_temp/dist/graphsage/trainval_reddit.log"
     ret = os.system(cmd_train)
     assert ret == 0
