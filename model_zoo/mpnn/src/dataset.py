@@ -72,6 +72,8 @@ class MultiHomoGraphDataset(Dataset):
         constant_graph_mask = ms.Tensor(np_graph_mask, dtype=ms.int32)
         batchedgraphfiled = self.get_batched_graph_field(batch_graph, constant_graph_mask)
         row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask = batchedgraphfiled.get_batched_graph()
+        batched_label = batched_label.astype('float32')
+        batched_node_feat = batched_node_feat.astype('float32')
         return batched_label, batched_node_feat, batched_edge_feat, row, col, node_count, edge_count, node_map_idx,\
                edge_map_idx, graph_mask
 
