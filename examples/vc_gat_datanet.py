@@ -53,6 +53,26 @@ class LossNet(GNNCell):
         return ms.ops.ReduceSum()(loss) / ms.ops.ReduceSum()(train_mask)
 
 
+class DataNet(ms.nn.Cell):
+    """DataNet"""
+
+    def __init__(self, ds, net):
+        super().__init__()
+        self.x = ds.x
+        self.in_deg = ds.in_deg
+        self.out_deg = ds.out_deg
+        self.train_mask = ms.Tensor(ds.train_mask, ms.float32)
+        self.y = ds.y
+        self.src_idx = ds.g.src_idx
+        self.dst_idx = ds.g.dst_idx
+        self.n_nodes = ds.g.n_nodes
+        self.n_edges = ds.g.n_edges
+        self.net = net
+
+    def construct(self):
+        return self.net(self.x, self.y, self.train_mask, self.src_idx, self.dst_idx, self.n_nodes, self.n_edges)
+
+
 def main(train_args):
     """train procedure"""
     if train_args.fuse:
@@ -85,21 +105,14 @@ def main(train_args):
                  add_norm=True)
     optimizer = nn.optim.Adam(net.trainable_params(), learning_rate=train_args.lr, weight_decay=train_args.weight_decay)
     loss = LossNet(net)
+    train_net = nn.TrainOneStepCell(loss, optimizer)
+    train_net = DataNet(ds, train_net)
     total = 0.
     warm_up = 3
-
-    grad_fn = ops.value_and_grad(loss, None, optimizer.parameters, has_aux=False)
-
-    def train_one_step(ds):
-        train_mask = ms.Tensor(ds.train_mask, ms.float32)
-        loss, grads = grad_fn(ds.x, ds.y, train_mask, ds.g.src_idx, ds.g.dst_idx, ds.g.n_nodes, ds.g.n_edges)
-        loss = ops.depend(loss, optimizer(grads))
-        return loss
-
     for e in range(train_args.epochs):
         beg = time.time()
-        net.set_train()
-        train_loss = train_one_step(ds)
+        train_net.set_train()
+        train_loss = train_net()
         end = time.time()
         dur = end - beg
         if e >= warm_up:
