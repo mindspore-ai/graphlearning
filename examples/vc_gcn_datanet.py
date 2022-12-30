@@ -50,6 +50,29 @@ class LossNet(GNNCell):
         loss = loss * train_mask
         return ms.ops.ReduceSum()(loss) / ms.ops.ReduceSum()(train_mask)
 
+
+class DataNet(ms.nn.Cell):
+    """data net"""
+
+    def __init__(self, ds, net):
+        super().__init__()
+        self.x = ds.x
+        self.in_deg = ds.in_deg
+        self.out_deg = ds.out_deg
+        self.train_mask = ms.Tensor(ds.train_mask, ms.float32)
+        self.y = ds.y
+        self.src_idx = ds.g.src_idx
+        self.dst_idx = ds.g.dst_idx
+        self.n_nodes = ds.g.n_nodes
+        self.n_edges = ds.g.n_edges
+        print("dataset contains ", self.n_nodes, "nodes", self.n_edges, "edges")
+        self.net = net
+
+    def construct(self):
+        return self.net(self.x, self.in_deg, self.out_deg, self.train_mask, self.y, self.src_idx, self.dst_idx,
+                        self.n_nodes, self.n_edges)
+
+
 def main(train_args):
     if train_args.fuse:
         context.set_context(device_target="GPU", save_graphs=True, save_graphs_path="./computational_graph/",
@@ -72,25 +95,19 @@ def main(train_args):
                  activation=ms.nn.ELU)
     optimizer = nn.optim.Adam(net.trainable_params(), learning_rate=train_args.lr, weight_decay=train_args.weight_decay)
     loss = LossNet(net)
-    grad_fn = ops.value_and_grad(loss, None, optimizer.parameters, has_aux=False)
-
-    def train_one_step(ds):
-        train_mask = ms.Tensor(ds.train_mask, ms.float32)
-        loss, grads = grad_fn(ds.x, ds.in_deg, ds.out_deg, train_mask, ds.y, ds.g.src_idx, ds.g.dst_idx, ds.g.n_nodes,
-                              ds.g.n_edges)
-        loss = ops.depend(loss, optimizer(grads))
-        return loss
-
-    total = 0
+    train_net = nn.TrainOneStepCell(loss, optimizer)
+    train_net = DataNet(ds, train_net)
+    total = 0.
     warm_up = 3
     for e in range(train_args.epochs):
         beg = time.time()
-        net.set_train()
-        train_loss = train_one_step(ds)
+        train_net.set_train()
+        train_loss = train_net()
         end = time.time()
         dur = end - beg
         if e >= warm_up:
             total = total + dur
+
         test_mask = ds.test_mask
         if test_mask is not None:
             net.set_train(False)

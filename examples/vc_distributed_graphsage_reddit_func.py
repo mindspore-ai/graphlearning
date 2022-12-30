@@ -13,27 +13,29 @@
 # limitations under the License.
 # ============================================================================
 """distributed graphsage model implemented using mindspore-gl"""
-import os
-import argparse
 import time
+import argparse
+import os
+import sys
 import math
+
 import numpy as np
+import mindspore as ms
+from mindspore.profiler import Profiler
 import mindspore.nn as nn
 import mindspore.context as context
-import mindspore as ms
+from mindspore.communication import init, get_rank, get_group_size
 from mindspore.nn import Cell
 import mindspore.dataset as ds
-from mindspore.profiler import Profiler
-from mindspore.communication import init, get_rank, get_group_size
+from mindspore import ops
 
 from mindspore_gl.dataset import Reddit
 from mindspore_gl.dataloader.samplers import RandomBatchSampler, DistributeRandomBatchSampler
 
-from src.graphsage import SAGENet
-from src.dataset import GraphSAGEDataset
-
 sys.path.append(os.path.join(os.getcwd(), "..", "model_zoo"))
-
+# pylint: disable=C0413
+from graphsage import SAGENet
+from graphsage.src.dataset import GraphSAGEDataset
 
 device_target = 'GPU'
 init("nccl")
@@ -72,29 +74,35 @@ def main():
                                            sampler=train_sampler, python_multiprocessing=True)
     test_dataloader = ds.GeneratorDataset(test_dataset, ['seeds_idx', 'label', 'nid_feat', 'edges'],
                                           sampler=test_sampler, python_multiprocessing=True)
+    if args.profile:
+        ms_profiler = Profiler(subgraph="ALL", is_detail=True, is_show_op_path=False, output_path="./prof_result")
 
     appr_dim = math.ceil(graph_dataset.num_classes/8)*8
     model = SAGENet(graph_dataset.num_features, args.num_hidden, appr_dim, graph_dataset.num_classes)
     optimizer = nn.optim.Adam(model.trainable_params(), learning_rate=args.lr, weight_decay=args.weight_decay)
     loss = LossNet(model)
-    train_net = nn.TrainOneStepCell(loss, optimizer)
-    if args.profile:
-        ms_profiler = Profiler(subgraph="ALL", is_detail=True, is_show_op_path=False, output_path="./prof_result")
+    grad_fn = ops.value_and_grad(loss, None, optimizer.parameters, has_aux=False)
+
+    def train_one_step(data):
+        seeds_idx, label, nid_feat, edges = data
+        n_nodes = nid_feat.shape[0]
+        n_edges = edges.shape[1]
+        loss, grads = grad_fn(seeds_idx, nid_feat, label, edges, n_nodes, n_edges)
+        loss = ops.depend(loss, optimizer(grads))
+        return loss
+
     for epoch in range(args.epochs):
         start = time.time()
-        train_net.set_train(True)
+        model.set_train(True)
         for iter_num, data in enumerate(train_dataloader):
-            seeds_idx, nid_label, nid_feat, edges = data
-            n_nodes = nid_feat.shape[0]
-            n_edges = edges.shape[1]
-            train_loss = train_net(seeds_idx, nid_feat, nid_label, edges, n_nodes, n_edges)
+            train_loss = train_one_step(data)
             if iter_num % 10 == 0:
-                print(f"Iteration/Epoch: {iter_num}:{epoch} train loss: {train_loss}")
+                print(f"rank_id:{rank_id} Iteration/Epoch: {iter_num}:{epoch} train loss: {train_loss}", flush=True)
         end = time.time()
         epoch_time = end - start
         print(f"rank_id:{rank_id} Epoch/Time: {epoch}:{epoch_time}", flush=True)
 
-        train_net.set_train(False)
+        model.set_train(False)
         total_prediction = 0
         correct_prediction = 0
         for iter_num, data in enumerate(test_dataloader):
@@ -103,13 +111,13 @@ def main():
             n_edges = edges.shape[1]
             out = model(nid_feat, edges, n_nodes, n_edges)
             out = out.asnumpy()
-            predict = np.argmax(out[seeds_idx. asnumpy()], axis=1)
+            seeds_idx = seeds_idx.asnumpy()
+            predict = np.argmax(out[seeds_idx], axis=1)
             correct_prediction += len(np.nonzero(np.equal(predict, label))[0])
             total_prediction += len(seeds_idx)
         print(f"rank_id:{rank_id} test accuracy : {correct_prediction / total_prediction}", flush=True)
     if args.profile:
         ms_profiler.analyse()
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Graphsage")
