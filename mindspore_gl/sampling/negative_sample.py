@@ -25,20 +25,31 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more
     Can choose to consider self-loop, directed graph or undirected graph operation
 
     Args:
-        positive(list or array): All positive sample edges, shape: :math:`(col\_len, row\_len)`.
+        positive(list or numpy.ndarray): All positive sample edges.
         node(int): number of node.
         num_neg_samples(int): Negative sample length.
         mode(str): type of operation matrix. Default: 'undirected'.
+
+          - undirected: undirected graph.
+
+          - bipartite: bipartite graph.
+
+          - other: other type graph.
+
         re(str): type of input data. Default: 'more'.
+
+          - more: positive array shape :math:(data_length, 2).
+
+          - other: positive array shape :math:(2, data_length).
 
     Returns:
         - **array** - Negative sample edge set, shape is :math:`(num\_neg\_samples, 2)`.
 
     Raises:
-        TypeError: If 'positive' is not a list or ndarry.
+        TypeError: If 'positive' is not a list or numpy.ndarry.
         TypeError: If 'node' is not a positive int.
-        TypeError: If 're' is not in 'more' or other.
-        ValueError: If `mode` is not in 'bipartite', 'undirected' or other.
+        TypeError: If 're' is not in 'more' or 'other'.
+        ValueError: If `mode` is not in 'bipartite', 'undirected' or 'other'.
 
     Examples:
         >>> from mindspore_gl.sampling import negative_sample

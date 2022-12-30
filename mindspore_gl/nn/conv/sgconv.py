@@ -16,6 +16,7 @@
 import math
 import mindspore as ms
 from mindspore.common.initializer import XavierUniform
+from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 from .. import GNNCell
 
@@ -28,7 +29,7 @@ class SGConv(GNNCell):
     .. math::
         H^{K} = (\tilde{D}^{-1/2} \tilde{A} \tilde{D}^{-1/2})^K X \Theta
 
-    Where :math:`$\tilde{A}=A+I`.
+    Where :math:`\tilde{A}=A+I`.
 
     Args:
         in_feat_size (int): Input node feature size.
@@ -36,7 +37,7 @@ class SGConv(GNNCell):
         num_hops (int): Number of hops. Default: 1.
         cached (bool): Whether use cached. Default: True.
         bias (bool): Whether use bias. Default: True.
-        norm (Cell): Normalization function Cell. Default: None.
+        norm (mindspore.nn.Cell): Normalization function Cell. Default: None.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N, D_{in})`
@@ -57,7 +58,7 @@ class SGConv(GNNCell):
         TypeError: If `norm` is not a Cell.
 
     Supported Platforms:
-        ``GPU`` ``Ascend`` (PYNATIVE MODE ONLY)
+        ``Ascend`` ``GPU`` (PYNATIVE MODE ONLY)
 
     Examples:
         >>> import mindspore as ms
@@ -90,7 +91,7 @@ class SGConv(GNNCell):
                  num_hops: int = 1,
                  cached: bool = True,
                  bias: bool = True,
-                 norm: ms.nn.Cell = None):
+                 norm=None):
         super().__init__()
         self.in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
         self.out_feat_size = Validator.check_positive_int(out_feat_size, "out_feat_size", self.cls_name)
@@ -98,7 +99,7 @@ class SGConv(GNNCell):
         self.bias = Validator.check_bool(bias, "bias", self.cls_name)
         self.cached = Validator.check_bool(cached, "cached", self.cls_name)
         if norm is not None and not isinstance(norm, Cell):
-            raise TypeError(f"For '{self.cls_name}', the 'activation' must a Cell, but got "
+            raise TypeError(f"For '{self.cls_name}', the 'activation' must a mindspore.nn.Cell, but got "
                             f"{type(norm).__name__}.")
         self.dense = ms.nn.Dense(self.in_feat_size, self.out_feat_size, has_bias=self.bias,
                                  weight_init=XavierUniform(math.sqrt(2)))

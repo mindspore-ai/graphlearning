@@ -14,7 +14,6 @@
 # ============================================================================
 """NNConv Layer"""
 import math
-
 import mindspore as ms
 from mindspore.common.initializer import XavierUniform
 from mindspore import nn
@@ -37,7 +36,7 @@ class NNConv(GNNCell):
     Args:
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
-        edge_embed (Cell): Edge embedding function Cell.
+        edge_embed (mindspore.nn.Cell): Edge embedding function Cell.
         aggregator_type (str): Type of aggregator, should be 'sum'. Default: 'sum'.
         residual (bool): Whether use residual. Default: False.
         bias (bool): Whether use bias. Default: True.
@@ -59,7 +58,7 @@ class NNConv(GNNCell):
         TypeError: If `residual` or `bias` is not a bool.
 
     Supported Platforms:
-        ``GPU`` ``Ascend``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import mindspore as ms
@@ -85,7 +84,7 @@ class NNConv(GNNCell):
     def __init__(self,
                  in_feat_size: int,
                  out_feat_size: int,
-                 edge_embed: ms.nn.Cell,
+                 edge_embed,
                  aggregator_type: str = "sum",
                  residual=False,
                  bias=True):
@@ -96,7 +95,7 @@ class NNConv(GNNCell):
         bias = Validator.check_bool(bias, "bias", self.cls_name)
         if edge_embed:
             if not isinstance(edge_embed, nn.Cell):
-                raise TypeError("edge_embed type should be ms.nn.Cell")
+                raise TypeError("edge_embed type should be mindspore.nn.Cell")
         if aggregator_type != "sum":
             raise TypeError("Don't support aggregator type other than sum.")
         self.edge_embed = edge_embed

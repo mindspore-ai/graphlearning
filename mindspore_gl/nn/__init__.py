@@ -81,3 +81,4 @@ __all__ = [
     'SumPooling',
     'WeightAndSum'
 ]
+__all__.sort()

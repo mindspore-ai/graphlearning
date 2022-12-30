@@ -17,7 +17,7 @@ import unittest
 import numpy as np
 import networkx
 from scipy.sparse import csr_matrix
-from mindspore_gl.graph.graph import MindHomoGraph, CsrAdj
+from mindspore_gl.graph import MindHomoGraph, CsrAdj
 from mindspore_gl.sampling.neighbor import sage_sampler_on_homo
 from mindspore_gl.sampling.randomwalks import random_walk_unbias_on_homo
 

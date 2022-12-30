@@ -1,7 +1,7 @@
 mindspore_gl.nn.GINConv
 =======================
 
-.. py:class:: mindspore_gl.nn.GINConv(activation: mindspore.nn.cell.Cell, init_eps=0.0, learn_eps=False, aggregation_type='sum')
+.. py:class:: mindspore_gl.nn.GINConv(activation, init_eps=0., learn_eps=False, aggregation_type="sum")
 
     图同构网络层。
     从论文 `How Powerful are Graph Neural Networks? <https://arxiv.org/pdf/1810.00826.pdf>`_ 。
@@ -19,7 +19,7 @@ mindspore_gl.nn.GINConv
         \right\}\right)\right)
 
     参数：
-        - **activation** (Cell) - 激活函数。
+        - **activation** (mindspore.nn.Cell) - 激活函数。
         - **init_eps** (float) - eps的初始化值。默认值：0.0。
         - **learn_eps** (bool) - eps是否可学习。默认值：False。
         - **aggregation_type** (str) - 聚合类型，应在'sum'、'max'和'avg'中。默认值：sum。

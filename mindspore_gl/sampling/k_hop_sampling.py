@@ -29,6 +29,10 @@ def k_hop_subgraph(node_idx, num_hops, adj_coo, node_count, relabel_nodes=False,
         relabel_nodes(bool): node indexes need relabel or not. Default: False.
         flow (str): the visit direction. Default: 'source_to_target'.
 
+          - source_to_target: from source node to target node.
+
+          - target_to_source: from target node to source node.
+
     Returns:
         res(dict), has 4 keys 'subset', 'adj_coo', 'inv', 'edge_mask', where,
         - **subset** (numpy.ndarray) - nodes' idx of sampled K-hop subgraph.
@@ -42,7 +46,7 @@ def k_hop_subgraph(node_idx, num_hops, adj_coo, node_count, relabel_nodes=False,
         ValueError: If `flow` is not in 'source_to_target' or 'target_to_source'.
 
     Supported Platforms:
-        ``GPU`` ``Ascend``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> from mindspore_gl.graph import MindHomoGraph

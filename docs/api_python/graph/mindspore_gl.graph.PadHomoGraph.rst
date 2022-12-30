@@ -9,7 +9,7 @@ mindspore_gl.graph.PadHomoGraph
     参数：
         - **n_node** (Union(int, None)) - 目标图的节点计数。默认值：None。
         - **n_edge** (Union(int, None)) - 目标图的边计数。默认值：None。
-        - **mode** (PadMode) - Pad模式，如果选择PadMode.CONST，虚构图将具有n_node数量的节点和n_edge数量的边。如果为PadMode.AUTO，虚构图的node_count和edge_count是根据输入图的大小通过 :math:`n\_node = 2^ceil(log2(input\_graph.node\_count)), n_edge = 2^ceil(log2(input\_graph.edge\_count))` 计算的。默认值：PadMode.AUTO。
+        - **mode** (PadMode) - Pad模式，如果选择PadMode.CONST，虚构图将具有n_node数量的节点和n_edge数量的边。如果为PadMode.AUTO，虚构图的node_count和edge_count是根据输入图的大小通过 :math:`n\_node = 2^{ceil(log2(input\_graph.node\_count))}, n\_edge = 2^{ceil(log2(input\_graph.edge\_count))}` 计算的。默认值：PadMode.AUTO。
 
     输入：
         - **graph** (MindHomoGraph) - 输入图。

@@ -47,8 +47,8 @@ class MeanConv(GNNCell):
         feat_drop (float): The keep rate, greater than 0 and less equal than 1. E.g. dropout=0.9,
             dropping out 10% of input units. Default: 0.6.
         bias (bool): Whether use bias. Default: False.
-        norm (Cell): Normalization function Cell. Default: None.
-        activation (Cell): Activation function Cell. Default: None.
+        norm (mindspore.nn.Cell): Normalization function Cell. Default: None.
+        activation (mindspore.nn.Cell): Activation function Cell. Default: None.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N,D\_in)`
@@ -69,7 +69,7 @@ class MeanConv(GNNCell):
         ValueError: If `activation` is not tanh or relu.
 
     Supported Platforms:
-        ``GPU`` ``Ascend``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import mindspore as ms
@@ -96,7 +96,7 @@ class MeanConv(GNNCell):
                  feat_drop=0.6,
                  bias=False,
                  norm=None,
-                 activation: ms.nn.Cell = None):
+                 activation=None):
         super().__init__()
         self.in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
         self.out_feat_size = Validator.check_positive_int(out_feat_size, "in_feat_size", self.cls_name)
@@ -108,7 +108,7 @@ class MeanConv(GNNCell):
             self.activation = P.ReLU()
         else:
             raise ValueError("activation should be tanh or relu")
-        if dropout <= 0.0 or dropout > 1.0:
+        if feat_drop <= 0.0 or feat_drop > 1.0:
             raise ValueError(f"For '{self.cls_name}', the 'keep_prob' should be a number in range (0.0, 1.0], "
                              f"but got {dropout}.")
         if norm is not None and not isinstance(norm, Cell):

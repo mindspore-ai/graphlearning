@@ -82,7 +82,7 @@ class APPNPConv(GNNCell):
     def __init__(self,
                  k: int,
                  alpha: float,
-                 edge_drop=1.0) -> None:
+                 edge_drop=1.0):
         super().__init__()
         self.k_ = Validator.check_positive_int(k, "k", self.cls_name)
         self.alpha_ = Validator.check_is_float(alpha, "alpha", self.cls_name)

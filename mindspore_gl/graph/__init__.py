@@ -34,3 +34,4 @@ __all__ = [
     "BatchMeta",
     "UnBatchHomoGraph"
 ]
+__all__.sort()

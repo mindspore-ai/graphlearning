@@ -16,7 +16,7 @@
 import pytest
 import numpy as np
 from mindspore_gl.sampling.k_hop_sampling import k_hop_subgraph
-from mindspore_gl.graph.graph import MindHomoGraph
+from mindspore_gl.graph import MindHomoGraph
 
 
 @pytest.mark.level0

@@ -1,7 +1,7 @@
 mindspore_gl.nn.SAGEConv
 ========================
 
-.. py:class:: mindspore_gl.nn.SAGEConv(in_feat_size: int, out_feat_size: int, aggregator_type: str = 'pool', bias=True, norm=None, activation: mindspore.nn.cell.Cell = None)
+.. py:class:: mindspore_gl.nn.SAGEConv(in_feat_size: int, out_feat_size: int, aggregator_type: str = 'pool', bias=True, norm=None, activation=None)
 
     GraphSAGE层。来自论文 `Inductive Representation Learning on Large Graphs <https://arxiv.org/pdf/1706.02216.pdf>`_。
 
@@ -25,8 +25,8 @@ mindspore_gl.nn.SAGEConv
         - **out_feat_size** (int) - 输出节点特征大小。
         - **aggregator_type** (str) - 聚合器的类型，应在'pool'、'lstm'和'mean'中。默认值：pool。
         - **bias** (bool) - 是否使用偏差。默认值：True。
-        - **norm** (Cell) - 归一化函数单元。默认值：None。
-        - **activation** (Cell) - 激活函数Cell。默认值：None。
+        - **norm** (mindspore.nn.Cell) - 归一化函数单元。默认值：None。
+        - **activation** (mindspore.nn.Cell) - 激活函数Cell。默认值：None。
 
     输入：
         - **x** (Tensor) - 输入节点特征。Shape为 :math:`(N,D\_in)`

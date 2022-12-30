@@ -43,8 +43,8 @@ class SAGEConv(GNNCell):
         out_feat_size (int): Output node feature size.
         aggregator_type (str): Type of aggregator, should in 'pool', 'lstm' and 'mean'. Default: 'pool'.
         bias (bool): Whether use bias. Default: True.
-        norm (Cell): Normalization function Cell. Default: None.
-        activation (Cell): Activation function Cell. Default: None.
+        norm (mindspore.nn.Cell): Normalization function Cell. Default: None.
+        activation (mindspore.nn.Cell): Activation function Cell. Default: None.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N,D\_in)`
@@ -65,7 +65,7 @@ class SAGEConv(GNNCell):
         TypeError: if `norm` type is not mindspore.nn.Cell
 
     Supported Platforms:
-        ``GPU`` ``Ascend``
+        ``Ascend`` ``GPU``
 
     Examples:
        >>> import mindspore as ms
@@ -93,7 +93,7 @@ class SAGEConv(GNNCell):
                  aggregator_type: str = "pool",
                  bias=True,
                  norm=None,
-                 activation: ms.nn.Cell = None):
+                 activation=None):
         super().__init__()
         self.in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
         self.out_feat_size = Validator.check_positive_int(out_feat_size, "out_feat_size", self.cls_name)
@@ -102,11 +102,11 @@ class SAGEConv(GNNCell):
 
         if activation:
             if not isinstance(activation, nn.Cell):
-                raise TypeError("activation type should be ms.nn.Cell")
+                raise TypeError("activation type should be mindspore.nn.Cell")
 
         if norm:
             if not isinstance(norm, nn.Cell):
-                raise TypeError("norm type should be ms.nn.Cell")
+                raise TypeError("norm type should be mindspore.nn.Cell")
 
         self.in_feat_size = in_feat_size
         self.out_feat_size = out_feat_size

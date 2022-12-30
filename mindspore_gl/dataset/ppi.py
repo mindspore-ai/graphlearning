@@ -21,23 +21,11 @@ import json
 import numpy as np
 import networkx as nx
 from networkx.readwrite import json_graph
-from mindspore_gl.graph.graph import MindHomoGraph
+from mindspore_gl.graph import MindHomoGraph
 
 class PPI:
     """
     PPI  Dataset, a source dataset for reading and parsing PPI dataset.
-
-    Args:
-        root(str): path to the root directory that contains ppi_with_mask.npz.
-
-    Raises:
-        TypeError: if `root` is not a str.
-        RuntimeError: if `root` does not contain data files.
-
-    Examples:
-        >>> from mindspore_gl.dataset.ppi import PPI
-        >>> root = "path/to/ppi"
-        >>> dataset = PPI(root)
 
     About PPI dataset:
 
@@ -78,6 +66,18 @@ class PPI:
             ├── test_labels.npy
             ├── test_graph_id.npy
             └── test_graph.json
+
+    Args:
+        root(str): path to the root directory that contains ppi_with_mask.npz.
+
+    Raises:
+        TypeError: if `root` is not a str.
+        RuntimeError: if `root` does not contain data files.
+
+    Examples:
+        >>> from mindspore_gl.dataset.ppi import PPI
+        >>> root = "path/to/ppi"
+        >>> dataset = PPI(root)
     """
 
     def __init__(self, root):

@@ -15,7 +15,6 @@
 """Claesses for Graph data structure"""
 from typing import Dict
 from collections import namedtuple
-
 import numpy as np
 import mindspore_gl.sample_kernel as kernel
 
@@ -189,6 +188,8 @@ class BatchMeta:
     @property
     def graph_nodes(self):
         """
+        nodes of graph.
+
         Returns:
             - numpy.array, accumulated node sum for graphs in batched graph(first element is 0)
 
@@ -198,6 +199,8 @@ class BatchMeta:
     @property
     def graph_edges(self):
         """
+        edges of graph.
+
         Returns:
             - numpy.array, accumulated edge sum for graphs in batched graph(first element is 0)
         """
@@ -206,6 +209,8 @@ class BatchMeta:
     @property
     def graph_count(self):
         """
+        graph nums.
+
         Returns:
             - int, total graph count in this batched graph
 
@@ -215,6 +220,8 @@ class BatchMeta:
     @property
     def node_map_idx(self):
         """
+        index of node list.
+
         Returns:
             - numpy.array, array indicate graph index for each node
 
@@ -228,6 +235,8 @@ class BatchMeta:
     @property
     def edge_map_idx(self):
         """
+        index of edge list.
+
         Returns:
             - numpy.array, array indicate graph index for each edge
         """
@@ -254,13 +263,13 @@ class BatchMeta:
 
 class MindHomoGraph:
     """
-    in-memory homo graph, edge_type == 1
+    Build in-memory homo graph.
 
     Examples:
         >>> import numpy as np
         >>> import networkx
         >>> from scipy.sparse import csr_matrix
-        >>> from mindspore_gl.graph.graph import MindHomoGraph, CsrAdj
+        >>> from mindspore_gl.graph import MindHomoGraph, CsrAdj
         >>> node_count = 20
         >>> edge_prob = 0.1
         >>> graph = networkx.generators.random_graphs.fast_gnp_random_graph(node_count, edge_prob)
@@ -300,7 +309,7 @@ class MindHomoGraph:
         initialize CSR Graph
 
         Args:
-            adj_csr(mindspore_gl.graph.graph.csr_adj): adj of graph, csr type
+            adj_csr(mindspore_gl.graph.csr_adj): adj of graph, csr type
             node_dict(dict): node id dict
             edge_ids(numpy.ndarray): array of edges
         """
@@ -344,7 +353,7 @@ class MindHomoGraph:
 
     def degree(self, node):
         """
-        Query With Lazy Computation
+        Query With Lazy Computation node degree.
 
         Args:
             node(int): node idx
@@ -365,7 +374,7 @@ class MindHomoGraph:
         csr adj matrix
 
         Returns:
-            - mindspore_gl.graph.graph.csr_adj, csr graph
+            - mindspore_gl.graph.csr_adj, csr graph
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -459,7 +468,7 @@ class MindHomoGraph:
         """If the graph be batched
 
         Returns:
-            - mindspore_gl.graph.graph.BatchMeta, bathc meta info
+            - mindspore_gl.graph.BatchMeta, bathc meta info
 
         Examples:
             >>> #dataset is an instance object of Dataset

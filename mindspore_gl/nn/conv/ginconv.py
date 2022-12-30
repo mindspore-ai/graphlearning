@@ -59,7 +59,7 @@ class GINConv(GNNCell):
         SyntaxError: raised when the `aggregation_type` not in `'sum'`, `'max'` and `'avg'`.
 
     Supported Platforms:
-        ``GPU`` ``Ascend``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import mindspore as ms
@@ -81,7 +81,7 @@ class GINConv(GNNCell):
     """
 
     def __init__(self,
-                 activation: ms.nn.Cell,
+                 activation,
                  init_eps=0.,
                  learn_eps=False,
                  aggregation_type="sum"):

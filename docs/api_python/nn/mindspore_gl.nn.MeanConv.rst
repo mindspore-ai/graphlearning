@@ -1,7 +1,7 @@
 mindspore_gl.nn.MeanConv
 ========================
 
-.. py:class:: mindspore_gl.nn.MeanConv(in_feat_size: int, out_feat_size: int, feat_drop=0.6, bias=False, norm=None, activation: mindspore.nn.cell.Cell = None)
+.. py:class:: mindspore_gl.nn.MeanConv(in_feat_size: int, out_feat_size: int, feat_drop=0.6, bias=False, norm=None, activation=None)
 
     GraphSAGE层。来自论文 `Inductive Representation Learning on Large Graphs <https://arxiv.org/pdf/1706.02216.pdf>`_。
 
@@ -25,8 +25,8 @@ mindspore_gl.nn.MeanConv
         - **out_feat_size** (int) - 输出节点特征大小。
         - **feat_drop** (float) - 保持率，大于0，小于1。例如，dropout=0.9，抛弃10%的输入单元。默认值：0.6。
         - **bias** (bool) - 是否使用偏置。默认值：False。
-        - **norm** (Cell) - 归一化函数单元。默认值：None。
-        - **activation** (Cell) - 激活函数Cell。默认值：None。
+        - **norm** (mindspore.nn.Cell) - 归一化函数单元。默认值：None。
+        - **activation** (mindspore.nn.Cell) - 激活函数Cell。默认值：None。
 
     输入：
         - **x** (Tensor) - 输入节点特征。Shape为 :math:`(N,D\_in)`

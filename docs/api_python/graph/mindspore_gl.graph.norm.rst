@@ -12,7 +12,7 @@ mindspore_gl.graph.norm
         - **normalization** (str) - 归一化方法。默认值： 'sym'。
 
           1. `None`：无
-             :math:`\Mathbf{L}=\Mathbf{D}-\Mathbf{A}`
+             :math:`\mathbf{L}=\mathbf{D}-\mathbf{A}`
 
           2. `'sym'`：对称归一化
              :math:`\mathbf{L} = \mathbf{I} - \mathbf{D}^{-1/2} \mathbf{A} \mathbf{D}^{-1/2}`

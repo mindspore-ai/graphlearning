@@ -24,3 +24,4 @@ __all__ = [
     "random_walk_unbias_on_homo",
     "sage_sampler_on_homo"
 ]
+__all__.sort()

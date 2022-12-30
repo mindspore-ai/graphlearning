@@ -18,3 +18,4 @@ from .pca import pca
 __all__ = [
     "pca"
 ]
+__all__.sort()

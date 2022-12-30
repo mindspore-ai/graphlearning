@@ -62,7 +62,7 @@ class GMMConv(GNNCell):
         TypeError: If `bias` or `residual` is not a bool.
 
     Supported Platforms:
-        ``GPU`` ``Ascend``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import mindspore as ms

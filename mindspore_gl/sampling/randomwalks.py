@@ -13,22 +13,22 @@
 # limitations under the License.
 # ============================================================================
 """random walks on graphs"""
-import numpy as np
-from mindspore_gl.graph.graph import MindHomoGraph
+import numpy
+import mindspore_gl
 from mindspore_gl import sample_kernel
 
 __all__ = ['random_walk_unbias_on_homo']
 
 
-def random_walk_unbias_on_homo(homo_graph: MindHomoGraph,
-                               seeds: np.ndarray,
+def random_walk_unbias_on_homo(homo_graph: mindspore_gl.graph.MindHomoGraph,
+                               seeds: numpy.ndarray,
                                walk_length: int):
     r"""
-    random walks on homo graph.
+    random walks sampling on homo graph.
 
     Args:
-        homo_graph(MindHomoGraph): the source graph which is sampled from.
-        seeds(np.ndarray) : random seeds for sampling.
+        homo_graph(mindspore_gl.graph.MindHomoGraph): the source graph which is sampled from.
+        seeds(numpy.ndarray) : random seeds for sampling.
         walk_length(int): sample path length.
 
     Returns:
@@ -39,13 +39,13 @@ def random_walk_unbias_on_homo(homo_graph: MindHomoGraph,
         TypeError: If `seeds` is not numpy.ndarray int 32.
 
     Supported Platforms:
-        ``GPU`` ``Ascend``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import numpy as np
         >>> import networkx
         >>> from scipy.sparse import csr_matrix
-        >>> from mindspore_gl.graph.graph import MindHomoGraph, CsrAdj
+        >>> from mindspore_gl.graph import MindHomoGraph, CsrAdj
         >>> from mindspore_gl.sampling.randomwalks import random_walk_unbias_on_homo
         >>> node_count = 10000
         >>> edge_prob = 0.1
@@ -73,9 +73,9 @@ def random_walk_unbias_on_homo(homo_graph: MindHomoGraph,
          [   4 4354 9551 5224 3156 8693  346 8899 6046 6011 5310]]
     """
 
-    if not isinstance(seeds, np.ndarray):
+    if not isinstance(seeds, numpy.ndarray):
         raise TypeError("The positive data type is {},\
-                        but it should be ndarray or list.".format(type(seeds)))
+                        but it should be numpy ndarray or list.".format(type(seeds)))
     if not isinstance(walk_length, int) or walk_length <= 0:
         raise TypeError("The node type is {},\
                         but it should be positive int.".format(type(walk_length)))

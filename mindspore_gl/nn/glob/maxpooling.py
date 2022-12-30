@@ -36,7 +36,7 @@ class MaxPooling(GNNCell):
           where :math:`D_{out}` is the feature size of nodes
 
     Supported Platforms:
-        ``GPU`` ``Ascend``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import numpy as np

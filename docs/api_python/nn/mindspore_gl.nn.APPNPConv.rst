@@ -1,7 +1,7 @@
 mindspore_gl.nn.APPNPConv
 =========================
 
-.. py:class:: mindspore_gl.nn.APPNPConv(k: int, alpha: float, edge_drop=1.0) -> None
+.. py:class:: mindspore_gl.nn.APPNPConv(k: int, alpha: float, edge_drop=1.0)
 
     神经预测层中的近似个性化传播。
     来自论文 `Predict then Propagate: Graph Neural Networks meet Personalized PageRank <https://arxiv.org/pdf/1810.05997.pdf>`_ 。

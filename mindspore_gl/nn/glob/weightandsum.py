@@ -39,7 +39,7 @@ class WeightAndSum(GNNCell):
         TypeError: If `in_feat_size` is not an int.
 
     Supported Platforms:
-        ``GPU`` ``Ascend``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import numpy as np

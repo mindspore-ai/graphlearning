@@ -15,7 +15,8 @@
 """Sampling neighbor"""
 from typing import List
 import numpy as np
-from mindspore_gl.graph.graph import MindHomoGraph
+import mindspore_gl
+from mindspore_gl.graph import MindHomoGraph
 from mindspore_gl import sample_kernel
 
 
@@ -25,7 +26,7 @@ def map_edge_index(layered_edges, reindex_dict):
     return layered_edges
 
 
-def sage_sampler_on_homo(homo_graph: MindHomoGraph, seeds: np.array, neighbor_nums: List[int]):
+def sage_sampler_on_homo(homo_graph: mindspore_gl.graph.MindHomoGraph, seeds, neighbor_nums: List[int]):
     """
     GraphSage sampling on MindHomoGraph
 
@@ -42,17 +43,17 @@ def sage_sampler_on_homo(homo_graph: MindHomoGraph, seeds: np.array, neighbor_nu
 
     Raises:
         TypeError: If 'homo_graph' is not a MindHomoGraph class.
-        TypeError: If 'seeds' is not a np.array.
+        TypeError: If 'seeds' is not a numpy.ndarray.
         TypeError: If 'neighbor_nums' is not a list.
 
     Supported Platforms:
-        ``GPU`` ``Ascend``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import networkx
         >>> import numpy as np
         >>> from scipy.sparse import csr_matrix
-        >>> from mindspore_gl.graph.graph import MindHomoGraph, CsrAdj
+        >>> from mindspore_gl.graph import MindHomoGraph, CsrAdj
         >>> from mindspore_gl.sampling.neighbor import sage_sampler_on_homo
         >>> node_count = 10
         >>> edge_prob = 0.3

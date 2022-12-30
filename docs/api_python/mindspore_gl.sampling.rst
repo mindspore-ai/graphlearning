@@ -15,11 +15,15 @@ mindspore_gl.sampling
         - **relabel_nodes** (bool) - 节点索引是否需要重新标签。默认值：False。
         - **flow** (str) - 访问方向。默认值：source_to_target。
 
+          - source_to_target: 从源节点到目标节点。
+
+          - target_to_source: 从目标节点到源节点。
+
     返回：
         res(dict)，有4个键“subset”、“ad_coo”、“inv”、“edge_mask”，其中，
 
-        - **subset** (numpy.array) - 采样K跳的子图节点idx。
-        - **ad_coo** (numpy.array) - 采样K跳的子图邻接矩阵。
+        - **subset** (numpy.ndarray) - 采样K跳的子图节点idx。
+        - **ad_coo** (numpy.ndarray) - 采样K跳的子图邻接矩阵。
         - **inv** (list) - 从 `node_idx` 中的节点索引到其新位置的映射。
         - **edge_mask** (numpy.array) - 边掩码，指示保留哪些边。
 
@@ -35,11 +39,22 @@ mindspore_gl.sampling
     可以选择考虑自循环、有向图或无向图操作。
 
     参数：
-        - **positive** (list or array) - 所有正样本边，shape为 :math:`(col\_len,row\_len)`
+        - **positive** (list or array) - 所有正样本边。
         - **node** (int) - 节点数。
         - **num_neg_samples** (int) - 负样本长度。
         - **mode** (str) - 运算矩阵的类型。默认值：undirected。
+
+          - undirected: 无向图。
+
+          - bipartite: 二部图。
+
+          - other: 其他类型图。
+
         - **re** (str) - 输入数据类型。默认值：more。
+
+          - more: `positive` 数组shape为 :math:`(data_length, 2)` 。
+
+          - other: `positive` 数组shape为 :math:`(2, data_length)` 。
 
     返回：
         数组，负采样边集，shape为 :math:`(num\_neg\_samples, 2)`
@@ -47,16 +62,16 @@ mindspore_gl.sampling
     异常：
         - **TypeError** - 如果 `positive` 不是List或numpy.ndarry。
         - **TypeError** - 如果 `node` 不是正整数。
-        - **TypeError** - 如果 `re` 不在more或其他中。
-        - **ValueError** - 如果 `mode` 不是bipartite、undirected或other。
+        - **TypeError** - 如果 `re` 不在"more"或"other”中。
+        - **ValueError** - 如果 `mode` 不是"bipartite"、"undirected"或"other"。
 
-.. py:function:: mindspore_gl.sampling.random_walk_unbias_on_homo(homo_graph: mindspore_gl.graph.graph.MindHomoGraph, seeds: numpy.ndarray, walk_length: int)
+.. py:function:: mindspore_gl.sampling.random_walk_unbias_on_homo(homo_graph: mindspore_gl.graph.MindHomoGraph, seeds: numpy.ndarray, walk_length: int)
 
-    同构图上的随机游走
+    同构图上的随机游走采样。
 
     参数：
-        - **homo_graph** (MindHomoGraph) - 采样的源图。
-        - **seeds** (np.ndarray) - 用于采样的随机种子。
+        - **homo_graph** (mindspore_gl.graph.MindHomoGraph) - 采样的源图。
+        - **seeds** (numpy.ndarray) - 用于采样的随机种子。
         - **walk_length** (int) - 采样路径长度。
 
     异常：
@@ -66,23 +81,23 @@ mindspore_gl.sampling
     返回：
         数组，示例节点 :math:`(len(seeds), walk\_length)`
 
-.. py:function:: mindspore_gl.sampling.sage_sampler_on_homo(homo_graph: mindspore_gl.graph.graph.MindHomoGraph, seeds: <built-in function array>, neighbor_nums: List[int])
+.. py:function:: mindspore_gl.sampling.sage_sampler_on_homo(homo_graph: mindspore_gl.graph.MindHomoGraph, seeds, neighbor_nums: List[int])
 
     MindHomoGraph上的GraphSage采样。
 
     参数：
-        - **homo_graph** (MindHomoGraph) - 输入图。
-        - **seeds** (numpy.array) - 邻居采样的起始节点。
+        - **homo_graph** (mindspore_gl.graph.MindHomoGraph) - 输入图。
+        - **seeds** (numpy.ndarray) - 邻居采样的起始节点。
         - **neighbor_nums** (List) - 每跳的邻居数量。
 
     返回：
-        layered_edges_{idx}(numpy.array)，第idx跳时采样的边数组。
+        - layered_edges_{idx}(numpy.ndarray)，第idx跳时采样的边数组。
 
-        layered_eids_{idx}(numpy.array)，第idx跳时采样的边上点的ID。
+        - layered_eids_{idx}(numpy.ndarray)，第idx跳时采样的边上点的ID。
 
-        all_nodes，所有节点的ID。
+        - all_nodes，所有节点的ID。
 
-        seeds_idx，种子的ID。
+        - seeds_idx，种子的ID。
 
     异常：
         - **TypeError** - 如果 `homo_graph` 不是MindHomoGraph类。
