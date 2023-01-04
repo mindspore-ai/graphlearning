@@ -1,7 +1,7 @@
 mindspore_gl.nn.SGConv
 ======================
 
-.. py:class:: mindspore_gl.nn.SGConv(in_feat_size: int, out_feat_size: int, num_hops: int = 1, cached: bool = True, bias: bool = True, norm: mindspore.nn.cell.Cell = None)
+.. py:class:: mindspore_gl.nn.SGConv(in_feat_size: int, out_feat_size: int, num_hops: int = 1, cached: bool = True, bias: bool = True, norm=None)
 
     简化的图卷积层。
     来自论文 `Simplifying Graph Convolutional Networks <https://arxiv.org/pdf/1902.07153.pdf>`_ 。
@@ -9,7 +9,7 @@ mindspore_gl.nn.SGConv
     .. math::
         H^{K} = (\tilde{D}^{-1/2} \tilde{A} \tilde{D}^{-1/2})^K X \Theta
 
-    其中 :math:`$\tilde{A}=A+I` 。
+    其中 :math:`\tilde{A}=A+I` 。
 
     参数：
         - **in_feat_size** (int) - 输入节点特征大小。
@@ -17,7 +17,7 @@ mindspore_gl.nn.SGConv
         - **num_hops** (int) - hop的数量。默认值：1。
         - **cached** (bool) - 是否使用缓存。默认值：True。
         - **bias** (bool) - 是否使用偏差。默认值：True。
-        - **norm** (Cell) - 归一化函数Cell。默认值为None。
+        - **norm** (mindspore.nn.Cell) - 归一化函数Cell。默认值为None。
 
     输入：
         - **x** (Tensor) - 输入节点功能。Shape为 :math:`(N,D_{in})`

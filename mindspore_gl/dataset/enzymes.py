@@ -24,18 +24,6 @@ class Enzymes:
     """
     Enzymes Dataset, a source dataset for reading and parsing Enzymes dataset.
 
-    Args:
-        root(str): path to the root directory that contains enzymes_with_mask.npz.
-
-    Raises:
-        TypeError: if `root` is not a str.
-        RuntimeError: if `root` does not contain data files.
-
-    Examples:
-        >>> from mindspore_gl.dataset import Enzymes
-        >>> root = "path/to/enzymes"
-        >>> dataset = Enzymes(root)
-
     About Enzymes dataset:
 
     ENZYMES is a dataset of protein tertiary structures obtained from (Borgwardt et al., 2005) consisting of 600 enzymes
@@ -64,6 +52,17 @@ class Enzymes:
         ├── ENZYMES_node_labels.txt
         └── README.txt
 
+    Args:
+        root(str): path to the root directory that contains enzymes_with_mask.npz.
+
+    Raises:
+        TypeError: if `root` is not a str.
+        RuntimeError: if `root` does not contain data files.
+
+    Examples:
+        >>> from mindspore_gl.dataset import Enzymes
+        >>> root = "path/to/enzymes"
+        >>> dataset = Enzymes(root)
     """
 
     dataset_url = ""

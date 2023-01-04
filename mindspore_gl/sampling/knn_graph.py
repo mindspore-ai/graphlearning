@@ -18,14 +18,14 @@ import mindspore as ms
 import scipy.sparse as sp
 import numpy as np
 
-def knn_graph(feat: np.ndarray, k: int, dis: int = None, \
+def knn_graph(feat, k: int, dis: int = None, \
               loop: bool = False, gpu: bool = True, device: int = 0):
     r"""
     Computes graph edges to the nearest k points,
     and returns the reconstructed graph.
 
     Args:
-      feat(array): Node Feature Matrix, shape is :math:`(N, F)`.
+      feat(numpy.ndarray): Node Feature Matrix, shape is :math:`(N, F)`.
       k(int): k neighbors.
       dis(int): limit distance. Default: None.
       loop(bool): Whether to keep self-loop. Default: False.
@@ -47,7 +47,7 @@ def knn_graph(feat: np.ndarray, k: int, dis: int = None, \
     """
     if not isinstance(feat, np.ndarray):
         raise TypeError("The feat type is {},\
-                        but it should be np.ndarray.".format(type(feat)))
+                        but it should be numpy.ndarray.".format(type(feat)))
     if not isinstance(k, int):
         raise TypeError("The k type is {},\
                         but it should be int.".format(type(k)))

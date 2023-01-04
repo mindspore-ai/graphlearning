@@ -17,6 +17,7 @@ import math
 import mindspore as ms
 from mindspore.common.initializer import XavierUniform
 from mindspore import nn
+from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 from .. import GNNCell
 
@@ -29,14 +30,14 @@ class TAGConv(GNNCell):
     .. math::
         H^{K} = {\sum}_{k=0}^K (D^{-1/2} A D^{-1/2})^{k} X {\Theta}_{k}
 
-    where :math:`\Theta}_{k}` represents a linear weight to add the results of different hop counts.
+    where :math:`{\Theta}_{k}` represents a linear weight to add the results of different hop counts.
 
     Args:
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
         num_hops (int): Number of hops. Default: 2.
         bias (bool): Whether use bias. Default: True.
-        activation (Cell): Activation function. Default: None.
+        activation (mindspore.nn.Cell): Activation function. Default: None.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N, D_{in})`
@@ -57,7 +58,7 @@ class TAGConv(GNNCell):
         TypeError: If `activation` is not a mindspore.nn.Cell.
 
     Supported Platforms:
-        ``GPU`` ``Ascend``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import mindspore as ms
@@ -84,14 +85,14 @@ class TAGConv(GNNCell):
                  out_feat_size: int,
                  num_hops: int = 2,
                  bias: bool = True,
-                 activation: ms.nn.Cell = None):
+                 activation=None):
         super().__init__()
         in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
         out_feat_size = Validator.check_positive_int(out_feat_size, "out_feat_size", self.cls_name)
         num_hops = Validator.check_positive_int(num_hops, "num_hops", self.cls_name)
         bias = Validator.check_bool(bias, "bias", self.cls_name)
         if activation is not None and not isinstance(activation, nn.Cell):
-            raise TypeError(f"For '{self.cls_name}', the 'activation' must a Cell, but got "
+            raise TypeError(f"For '{self.cls_name}', the 'activation' must a mindspore.nn.Cell, but got "
                             f"{type(activation).__name__}.")
         self.dense = ms.nn.Dense(in_feat_size * (num_hops + 1), out_feat_size, has_bias=bias,
                                  weight_init=XavierUniform(math.sqrt(2)))

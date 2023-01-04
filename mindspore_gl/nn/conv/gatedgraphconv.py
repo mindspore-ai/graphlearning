@@ -15,6 +15,7 @@
 """GatedGraphConv Layer"""
 import math
 import mindspore as ms
+from mindspore._checkparam import Validator
 from mindspore.common.initializer import XavierUniform
 from mindspore_gl import Graph
 from .. import GNNCell

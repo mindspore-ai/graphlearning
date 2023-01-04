@@ -5,14 +5,6 @@ mindspore_gl.dataset.Enzymes
 
     ENZYMES数据集，用于读取和解析ENZYMES数据集的源数据集。
 
-    参数：
-        - **root** (str) - 包含enzymes_with_mask.npz的根目录的路径。
-
-    异常：
-        - **TypeError** - 如果 `root` 不是str。
-        - **RuntimeError** - 如果 `root` 不包含数据文件。
-
-
     有关ENZYMES数据集：
 
     ENZYMES是蛋白质三级结构数据集(Borgwardt等人，2005年)，由来自布伦达酶数据库（Schomburg等人，2004年）的600个酶组成。任务是将每个酶正确地分配给6个EC顶级类中的一个。
@@ -38,13 +30,54 @@ mindspore_gl.dataset.Enzymes
         ├── ENZYMES_node_labels.txt
         └── README.txt
 
-    .. py:method:: mindspore_gl.dataset.Enzymes.num_features
+    参数：
+        - **root** (str) - 包含enzymes_with_mask.npz的根目录的路径。
+
+    异常：
+        - **TypeError** - 如果 `root` 不是str。
+        - **RuntimeError** - 如果 `root` 不包含数据文件。
+
+    .. py:method:: mindspore_gl.dataset.Enzymes.graph_count
         :property:
 
-        每个节点的特征数量。
+        图的总数量。
 
         返回：
-            int，特征大小的数量。
+            int，图的数量。
+
+    .. py:method:: mindspore_gl.dataset.Enzymes.graph_edges
+        :property:
+
+        累计图边数。
+
+        返回：
+            numpy.ndarray，累积边数组。
+
+    .. py:method:: mindspore_gl.dataset.Enzymes.graph_feat(graph_idx)
+
+        图上每个节点的特征。
+
+        参数：
+            - **graph_idx** (int) - 图索引。
+
+        返回：
+            numpy.ndarray，图的节点特征。
+
+    .. py:method:: mindspore_gl.dataset.Enzymes.graph_label
+        :property:
+
+        图标签。
+
+        返回：
+            numpy.ndarray，图标签数组。
+
+    .. py:method:: mindspore_gl.dataset.Enzymes.graph_nodes
+        :property:
+
+        累计图节点数。
+
+        返回：
+            numpy.ndarray，累计节点数组。
 
     .. py:method:: mindspore_gl.dataset.Enzymes.label_dim
         :property:
@@ -62,61 +95,21 @@ mindspore_gl.dataset.Enzymes
         返回：
             int，节点数中的最大数。
 
-    .. py:method:: mindspore_gl.dataset.Enzymes.train_mask
+    .. py:method:: mindspore_gl.dataset.Enzymes.node_feat
         :property:
 
-        训练节点掩码。
+        节点特征。
 
         返回：
-            numpy.ndarray，掩码数组。
+            numpy.ndarray，节点特征数组。
 
-    .. py:method:: mindspore_gl.dataset.Enzymes.test_mask
+    .. py:method:: mindspore_gl.dataset.Enzymes.num_features
         :property:
 
-        测试节点掩码。
+        每个节点的特征数量。
 
         返回：
-            numpy.ndarray，掩码数组。
-
-    .. py:method:: mindspore_gl.dataset.Enzymes.val_mask
-        :property:
-
-        校验节点掩码。
-
-        返回：
-            numpy.ndarray，掩码数组。
-
-    .. py:method:: mindspore_gl.dataset.Enzymes.graph_nodes
-        :property:
-
-        累计图节点数。
-
-        返回：
-            numpy.ndarray，累计节点数组。
-
-    .. py:method:: mindspore_gl.dataset.Enzymes.graph_edges
-        :property:
-
-        累计图边数。
-
-        返回：
-            numpy.ndarray，累积边数组。
-
-    .. py:method:: mindspore_gl.dataset.Enzymes.train_graphs
-        :property:
-
-        训练图ID。
-
-        返回：
-            numpy.ndarray，训练图ID数组。
-
-    .. py:method:: mindspore_gl.dataset.Enzymes.val_graphs
-        :property:
-
-        有效的图表ID。
-
-        返回：
-            numpy.ndarray，校验图ID数组。
+            int，特征大小的数量。
 
     .. py:method:: mindspore_gl.dataset.Enzymes.test_graphs
         :property:
@@ -126,36 +119,42 @@ mindspore_gl.dataset.Enzymes
         返回：
             numpy.ndarray，测试图ID数组。
 
-    .. py:method:: mindspore_gl.dataset.Enzymes.graph_count
+    .. py:method:: mindspore_gl.dataset.Enzymes.test_mask
         :property:
 
-        图的总数量。
+        测试节点掩码。
 
         返回：
-            int，图的数量。
+            numpy.ndarray，掩码数组。
 
-    .. py:method:: mindspore_gl.dataset.Enzymes.node_feat
+    .. py:method:: mindspore_gl.dataset.Enzymes.train_graphs
         :property:
 
-        节点特征。
+        训练图ID。
 
         返回：
-            numpy.ndarray，节点特征数组。
+            numpy.ndarray，训练图ID数组。
 
-    .. py:method:: mindspore_gl.dataset.Enzymes.graph_label
+    .. py:method:: mindspore_gl.dataset.Enzymes.train_mask
         :property:
 
-        图标签。
+        训练节点掩码。
 
         返回：
-            numpy.ndarray，图标签数组。
+            numpy.ndarray，掩码数组。
 
-    .. py:method:: mindspore_gl.dataset.Enzymes.graph_feat(graph_idx)
+    .. py:method:: mindspore_gl.dataset.Enzymes.val_graphs
+        :property:
 
-        图上每个节点的特征。
-
-        参数：
-            - **graph_idx** (int) - 图索引。
+        有效的图表ID。
 
         返回：
-            numpy.ndarray，图的节点特征。
+            numpy.ndarray，校验图ID数组。
+
+    .. py:method:: mindspore_gl.dataset.Enzymes.val_mask
+        :property:
+
+        校验节点掩码。
+
+        返回：
+            numpy.ndarray，掩码数组。

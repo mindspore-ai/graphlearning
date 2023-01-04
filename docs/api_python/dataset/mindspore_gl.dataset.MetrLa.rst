@@ -5,19 +5,6 @@ mindspore_gl.dataset.MetrLa
 
     METR-LA，用于读取和解析METR-LA数据集的源数据集。
 
-    参数：
-        - **root** (str) - 包含METR-LA/adj_mat.npy和METR-LA/node_values.npy的根目录路径。
-
-    输入：
-        - **in_timestep** (int) - 输入时序数。
-        - **out_timestep** (int) - 输出时序数。
-
-    异常：
-        - **TypeError** - 如果 `root` 不是str。
-        - **RuntimeError** - 如果 `root` 不包含数据文件。
-        - **TypeError** - 如果 `in_timestep` 或 `out_timestep` 不是正整数。
-
-
     有关METR-LA数据集：
 
     METR-LA是一个大规模数据集，从洛杉矶乡村公路网的1500个交通环路探测器中收集。此数据集包括速度、体积和占用数据，覆盖约3,420英里。
@@ -37,13 +24,17 @@ mindspore_gl.dataset.MetrLa
         ├── adj_mat.npy
         └── node_values.npy
 
-    .. py:method:: mindspore_gl.dataset.MetrLa.node_num
-        :property:
+    参数：
+        - **root** (str) - 包含METR-LA/adj_mat.npy和METR-LA/node_values.npy的根目录路径。
 
-        节点数。
+    输入：
+        - **in_timestep** (int) - 输入时序数。
+        - **out_timestep** (int) - 输出时序数。
 
-        返回：
-            int，节点数。
+    异常：
+        - **TypeError** - 如果 `root` 不是str。
+        - **RuntimeError** - 如果 `root` 不包含数据文件。
+        - **TypeError** - 如果 `in_timestep` 或 `out_timestep` 不是正整数。
 
     .. py:method:: mindspore_gl.dataset.MetrLa.get_data(in_timestep, out_timestep)
 
@@ -52,3 +43,11 @@ mindspore_gl.dataset.MetrLa
         参数：
             - **in_timestep** (int) - 输入时序数。
             - **out_timestep** (int) - 输出时序数。
+
+    .. py:method:: mindspore_gl.dataset.MetrLa.node_num
+        :property:
+
+        节点数。
+
+        返回：
+            int，节点数。

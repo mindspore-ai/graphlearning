@@ -53,6 +53,8 @@ node_feat = ms.Tensor([
 ], ms.float32)
 n_nodes = 7
 n_edges = 8
+edge_feat_size = 7
+edge_feat = ones([n_edges, 4], ms.float32)
 src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6], ms.int32)
 dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4], ms.int32)
 in_degree = np.zeros(shape=n_nodes, dtype=np.int)
@@ -134,12 +136,13 @@ def test_cfconv():
     net.node_embedding_layer.weight.set_data(node_embedding_weight)
     net.out_embedding_layer[0].weight.set_data(out_embedding_weight)
     output = net(node_feat, edge_feat, *graph_field.get_graph())
-    expect_output = np.array([[341.28683, 341.28683, 341.28683, 341.28683],
-                              [683.2668, 683.2668, 683.2668, 683.2668],
-                              [0, 0, 0, 0], [3147.352, 3147.352, 3147.352, 3147.352],
-                              [2792.3188, 2792.3188, 2792.3188, 2792.3188],
-                              [4033.8284, 4033.8284, 4033.8284, 4033.8284],
-                              [317.01743, 317.01743, 317.01743, 317.01743]])
+    expect_output = np.array([[2071.8567, 2071.8567, 2071.8567, 2071.8567],
+                              [4144.4062, 4144.4062, 4144.4062, 4144.4062],
+                              [0., 0., 0., 0.],
+                              [5387.936, 5387.936, 5387.936, 5387.936],
+                              [6009.701, 6009.701, 6009.701, 6009.701],
+                              [6009.701, 6009.701, 6009.701, 6009.701],
+                              [4973.4263, 4973.4263, 4973.4263, 4973.4263]])
     assert np.allclose(output.asnumpy(), expect_output)
 
 
@@ -161,13 +164,13 @@ def test_chebconv():
     net.lins[1].weight.set_data(lins_weight_1)
     net.lins[2].weight.set_data(lins_weight_2)
     output = net(node_feat, edge_feat, *graph_field.get_graph())
-    expect_output = np.array([[2.8000002, 2.8000002, 2.8000002, 2.8000002],
-                              [7.6000004, 7.6000004, 7.6000004, 7.6000004],
+    expect_output = np.array([[10., 10., 10., 10.],
+                              [40., 40., 40., 40.],
                               [0., 0., 0., 0.],
-                              [39.940002, 39.940002, 39.940002, 39.940002],
-                              [46.5, 46.5, 46.5, 46.5],
-                              [47.88, 47.88, 47.88, 47.88],
-                              [8.36, 8.36, 8.36, 8.36]])
+                              [84., 84., 84., 84.],
+                              [135., 135., 135., 135.],
+                              [81., 81., 81., 81.],
+                              [82., 82., 82., 82.]])
     assert np.allclose(output.asnumpy(), expect_output)
 
 
@@ -447,18 +450,17 @@ def test_nnconv():
     expect_output = np.array([[0.20668711, -0.531371], [0.4133742, -1.062742], [0., 0.],
                               [0.5373865, -1.3815646], [0.5993926, -1.5409758], [0.5993926, -1.5409758],
                               [0.49604905, -1.2752904]])
-    edge_feat_size = 7
     nn_node_feat = ms.Tensor([[1, 2, 3, 4, 1, 2, 3, 4], [2, 4, 1, 3, 2, 4, 1, 3],
                               [1, 3, 2, 4, 1, 3, 2, 4], [9, 7, 5, 8, 9, 7, 5, 8],
                               [8, 7, 6, 5, 8, 7, 6, 5], [8, 6, 4, 6, 8, 6, 4, 6],
                               [1, 2, 1, 1, 1, 2, 1, 1]],
                              ms.float32)
-    edge_feat = ones([n_edges, 7], ms.float32)
+    nn_edge_feat = ones([n_edges, 7], ms.float32)
     edge_func = ms.nn.Dense(edge_feat_size, 2)
     nnconv = NNConv(in_feat_size=8, out_feat_size=2, edge_embed=edge_func)
     nnconv.edge_embed.weight.set_data(nn_weight)
     nnconv.edge_embed.bias.set_data(nn_bias)
-    output = nnconv(nn_node_feat, edge_feat, *graph_field.get_graph())
+    output = nnconv(nn_node_feat, nn_edge_feat, *graph_field.get_graph())
     assert np.allclose(output.asnumpy(), expect_output)
 
 

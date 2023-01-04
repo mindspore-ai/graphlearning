@@ -47,7 +47,7 @@ class GlobalAttentionPooling(GNNCell):
         TypeError: if `gate_nn` type or `feat_nn` type is not mindspore.nn.Cell
 
     Supported Platforms:
-        ``GPU`` ``Ascend``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import numpy as np

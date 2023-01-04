@@ -28,20 +28,6 @@ class Alchemy:
     """
     Alchemy dataset, a source dataset for reading and parsing Alchemy dataset.
 
-    Args:
-        root(str): path to the root directory that contains alchemy_with_mask.npz.
-        datasize(int): train data size
-
-    Raises:
-        TypeError: if `root` is not a str.
-        RuntimeError: if `root` does not contain data files.
-        ValueError: if `datasize` is more than 99776.
-
-    Examples:
-        >>> from mindspore_gl.dataset import Alchemy
-        >>> root = "path/to/alchemy"
-        >>> dataset = Alchemy(root)
-
     About Alchemy dataset:
     The Tencent Quantum Lab has recently introduced a new molecular dataset, called Alchemy, to facilitate the
     development of new machine learning models useful for chemistry and materials science.
@@ -79,6 +65,19 @@ class Alchemy:
             │ └── atom_12
             └── valid_target.csv
 
+    Args:
+        root(str): path to the root directory that contains alchemy_with_mask.npz.
+        datasize(int): train data size
+
+    Raises:
+        TypeError: if `root` is not a str.
+        RuntimeError: if `root` does not contain data files.
+        ValueError: if `datasize` is more than 99776.
+
+    Examples:
+        >>> from mindspore_gl.dataset import Alchemy
+        >>> root = "path/to/alchemy"
+        >>> dataset = Alchemy(root)
     """
     dataset_url = ""
     fdef_name = pathlib.Path(RDConfig.RDDataDir) / 'BaseFeatures.fdef'

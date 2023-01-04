@@ -72,7 +72,7 @@ class AGNNConv(GNNCell):
     """
 
     def __init__(self,
-                 init_beta: float = 1.,
+                 init_beta: float = 1.0,
                  learn_beta: bool = True):
         super().__init__()
         init_beta = Validator.check_is_float(init_beta, "init_beta", self.cls_name)

@@ -14,7 +14,7 @@
 # ============================================================================
 """Graph Utils."""
 from typing import Union, List, Tuple, Iterable
-import numpy as np
+import numpy
 import mindspore_gl.dataloader.shared_numpy as shared_numpy
 import mindspore_gl.memory_kernel as memory_kernel
 
@@ -26,7 +26,7 @@ class ArrayPool:
     def __init__(self):
         self.array_pool = {}
 
-    def put(self, size, array: np.ndarray):
+    def put(self, size, array: numpy.ndarray):
         """
         put a array into array pool
 
@@ -39,7 +39,7 @@ class ArrayPool:
             self.array_pool[key] = []
         self.array_pool[key].append(array)
 
-    def pop(self, size) -> np.ndarray:
+    def pop(self, size) -> numpy.ndarray:
         """
         pop a array from array pool
 

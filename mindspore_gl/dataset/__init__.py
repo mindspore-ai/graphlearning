@@ -32,3 +32,4 @@ __all__ = [
     "Reddit",
     "IMDBBinary"
 ]
+__all__.sort()

@@ -16,6 +16,7 @@
 from .version import __version__, mindspore_version_check
 from .parser import *
 from .nn import *
+from .graph import *
 
 __all__ = parser.__all__
 __all__.extend(nn.__all__)

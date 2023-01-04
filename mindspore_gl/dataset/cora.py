@@ -19,23 +19,12 @@ import numpy as np
 import networkx as nx
 import scipy.sparse as sp
 from scipy.sparse import coo_matrix, csr_matrix
-from mindspore_gl.graph.graph import MindHomoGraph, CsrAdj
+from mindspore_gl.graph import MindHomoGraph, CsrAdj
 
 
 class CoraV2:
     r"""
     Cora Dataset, a source dataset for reading and parsing Cora dataset.
-
-    Args:
-        root(str): path to the root directory that contains cora_v2_with_mask.npz.
-        name(str): select dataset type, optional: ["cora_v2", "citeseer", "pubmed"].
-    Raises:
-        RuntimeError: If root does not contain data files.
-
-    Examples:
-        >>> from mindspore_gl.dataset import CoraV2
-        >>> root = "path/to/cora_v2_with_mask.npz"
-        >>> dataset = CoraV2(root)
 
     About Cora dataset:
 
@@ -76,6 +65,24 @@ class CoraV2:
             ├── ind.cora_v2.ty
             ├── ind.cora_v2.x
             └── ind.cora_v2.y
+
+    Args:
+        root(str): path to the root directory that contains cora_v2_with_mask.npz.
+        name(str): select dataset type, optional: ["cora_v2", "citeseer", "pubmed"].
+
+          - cora_v2: Machine learning papers.
+
+          - citeseer: Agents, AI, DB, IR, ML and HCI papers.
+
+          - pubmed: Scientific publications on diabetes.
+
+    Raises:
+        RuntimeError: If root does not contain data files.
+
+    Examples:
+        >>> from mindspore_gl.dataset import CoraV2
+        >>> root = "path/to/cora_v2_with_mask.npz"
+        >>> dataset = CoraV2(root)
     """
 
     def __init__(self, root, name='cora_v2'):

@@ -21,25 +21,13 @@ import os.path as osp
 import urllib.request
 import zipfile
 import numpy as np
-from mindspore_gl.graph.graph import MindHomoGraph
+from mindspore_gl.graph import MindHomoGraph
 
 
 class IMDBBinary:
 
     """
     IMDBBinary Dataset, a source dataset for reading and parsing IMDBBinary dataset.
-
-    Args:
-        root(str): path to the root directory that contains imdb_binary_with_mask.npz
-
-    Raises:
-        TypeError: if `root` is not a str.
-        RuntimeError: if `root` does not contain data files.
-
-    Examples:
-        >>> from mindspore_gl.dataset.imdb_binary import IMDBBinary
-        >>> root = "path/to/imdb_binary"
-        >>> dataset = IMDBBinary(root)
 
     About IMDBBinary dataset:
 
@@ -69,6 +57,17 @@ class IMDBBinary:
         ├── IMDB-BINARY_graph_indicator.txt
         └── IMDB-BINARY_graph_labels.txt
 
+    Args:
+        root(str): path to the root directory that contains imdb_binary_with_mask.npz
+
+    Raises:
+        TypeError: if `root` is not a str.
+        RuntimeError: if `root` does not contain data files.
+
+    Examples:
+        >>> from mindspore_gl.dataset.imdb_binary import IMDBBinary
+        >>> root = "path/to/imdb_binary"
+        >>> dataset = IMDBBinary(root)
     """
     url = 'https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets/IMDB-BINARY.zip'
     def __init__(self, root):

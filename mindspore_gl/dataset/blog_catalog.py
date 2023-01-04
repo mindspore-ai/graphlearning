@@ -19,28 +19,16 @@ import numpy as np
 import pandas as pd
 from scipy.sparse import coo_matrix
 from scipy.sparse import csr_matrix
-from mindspore_gl.graph.graph import MindHomoGraph, CsrAdj
+from mindspore_gl.graph import MindHomoGraph, CsrAdj
 
 
 class BlogCatalog:
     """
     BlogCatalog Dataset, a source dataset for reading and parsing BlogCatalog dataset.
 
-    Args:
-        root(str): path to the root directory that contains blog_catalog.npz.
-
-    Raises:
-        TypeError: if `root` is not a str.
-        RuntimeError: if `root` does not contain data files.
-
-    Examples:
-        >>> from mindspore_gl.dataset.blog_catalog import BlogCatalog
-        >>> root = "path/to/blog_catalog"
-        >>> dataset = BlogCatalog(root)
-
     About BlogCatalog dataset:
 
-    This is the data set crawled from `BlogCatalog <http://www.blogcatlog.com>`_ . BlogCatalog is a social blog
+    This is the data set crawled from BlogCatalog. BlogCatalog is a social blog
     directory website. This contains the friendship network crawled and group memberships. For easier understanding,
     all the contents are organized in CSV file format.
 
@@ -62,6 +50,18 @@ class BlogCatalog:
             ├── group-edges.csv
             ├── groups.csv
             └── nodes.csv
+
+    Args:
+        root(str): path to the root directory that contains blog_catalog.npz.
+
+    Raises:
+        TypeError: if `root` is not a str.
+        RuntimeError: if `root` does not contain data files.
+
+    Examples:
+        >>> from mindspore_gl.dataset.blog_catalog import BlogCatalog
+        >>> root = "path/to/blog_catalog"
+        >>> dataset = BlogCatalog(root)
     """
     def __init__(self, root):
         if not isinstance(root, str):

@@ -5,16 +5,9 @@ mindspore_gl.dataset.BlogCatalog
 
     BlogCatalog数据集，用于读取和解析BlogCatalog数据集的源数据集。
 
-    参数：
-        - **root** (str) - 包含BlogCatalog.npz的根目录的路径。
-
-    异常：
-        - **TypeError** - 如果 `root` 不是str。
-        - **RuntimeError** - 如果 `root` 不包含数据文件。
-
     关于BlogCatalog数据集：
 
-    这是从 `BlogCatalog <http://www.blogcatlog.com>`_ 爬取的数据集。BlogCatalog是一个社交博客目录网站，其中包含已爬取的友谊网络和组成员资格。为了便于理解，所有内容都以CSV文件格式组织。
+    这是从BlogCatalog爬取的数据集。BlogCatalog是一个社交博客目录网站，其中包含已爬取的友谊网络和组成员资格。为了便于理解，所有内容都以CSV文件格式组织。
 
     信息统计：
 
@@ -34,45 +27,12 @@ mindspore_gl.dataset.BlogCatalog
             ├── groups.csv
             └── nodes.csv
 
-    .. py:method:: mindspore_gl.dataset.BlogCatalog.num_classes
-        :property:
+    参数：
+        - **root** (str) - 包含BlogCatalog.npz的根目录的路径。
 
-        标签种类数量。
-
-        返回：
-            int，种类量。
-
-    .. py:method:: mindspore_gl.dataset.BlogCatalog.node_count
-        :property:
-
-        节点数。
-
-        返回：
-            int，csr行的长度。
-
-    .. py:method:: mindspore_gl.dataset.BlogCatalog.edge_count
-        :property:
-
-        边数。
-
-        返回：
-            int，csr列的长度。
-
-    .. py:method:: mindspore_gl.dataset.BlogCatalog.node_label
-        :property:
-
-        基于每个节点的真实标签。
-
-        返回：
-            numpy.ndarray，节点标签数组。
-
-    .. py:method:: mindspore_gl.dataset.BlogCatalog.vocab
-        :property:
-
-        各节点ID。
-
-        返回：
-            numpy.ndarray，节点ID数组。
+    异常：
+        - **TypeError** - 如果 `root` 不是str。
+        - **RuntimeError** - 如果 `root` 不包含数据文件。
 
     .. py:method:: mindspore_gl.dataset.BlogCatalog.adj_coo
         :property:
@@ -89,3 +49,43 @@ mindspore_gl.dataset.BlogCatalog
 
         返回：
             numpy.ndarray，csr矩阵的数组。
+
+    .. py:method:: mindspore_gl.dataset.BlogCatalog.edge_count
+        :property:
+
+        边数。
+
+        返回：
+            int，csr列的长度。
+
+    .. py:method:: mindspore_gl.dataset.BlogCatalog.node_count
+        :property:
+
+        节点数。
+
+        返回：
+            int，csr行的长度。
+
+    .. py:method:: mindspore_gl.dataset.BlogCatalog.node_label
+        :property:
+
+        基于每个节点的真实标签。
+
+        返回：
+            numpy.ndarray，节点标签数组。
+
+    .. py:method:: mindspore_gl.dataset.BlogCatalog.num_classes
+        :property:
+
+        标签种类数量。
+
+        返回：
+            int，种类量。
+
+    .. py:method:: mindspore_gl.dataset.BlogCatalog.vocab
+        :property:
+
+        各节点ID。
+
+        返回：
+            numpy.ndarray，节点ID数组。

@@ -24,18 +24,6 @@ class Reddit:
     """
     Reddit Dataset, a source dataset for reading and parsing Reddit dataset.
 
-    Args:
-        root(str): path to the root directory that contains reddit_with_mask.npz
-
-    Raises:
-        TypeError: if `root` is not a str.
-        RuntimeError: if `root` does not contain data files.
-
-    Examples:
-        >>> from mindspore_gl.dataset import Reddit
-        >>> root = "path/to/reddit"
-        >>> dataset = Reddit(root)
-
     About Reddit dataset:
 
     The node label in this case is the community, or “subreddit”, that a post belongs to.
@@ -57,9 +45,19 @@ class Reddit:
     .. code-block::
         .
         ├── reddit_data.npz
-        ├── reddit_graph.npz
-        └── reddit_smaller.npz
+        └── reddit_graph.npz
 
+    Args:
+        root(str): path to the root directory that contains reddit_with_mask.npz
+
+    Raises:
+        TypeError: if `root` is not a str.
+        RuntimeError: if `root` does not contain data files.
+
+    Examples:
+        >>> from mindspore_gl.dataset import Reddit
+        >>> root = "path/to/reddit"
+        >>> dataset = Reddit(root)
     """
 
     def __init__(self, root):

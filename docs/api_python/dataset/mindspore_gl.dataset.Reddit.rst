@@ -5,13 +5,6 @@ mindspore_gl.dataset.Reddit
 
     Reddit 数据集，用于读取和解析Reddit数据集的源数据集。
 
-    参数：
-        - **root** (str) - 包含reddit_with_mask.npz的根目录路径。
-
-    异常：
-        - **TypeError** - 如果 `root` 不是str。
-        - **RuntimeError** - 如果 `root` 不包含数据文件。
-
     有关Reddit数据集：
 
     在这种情况下，节点标签是社区，或帖子所属的“subreddit”。
@@ -31,80 +24,14 @@ mindspore_gl.dataset.Reddit
 
         .
         ├── reddit_data.npz
-        ├── reddit_graph.npz
-        └── reddit_smaller.npz
+        └── reddit_graph.npz
 
-    .. py:method:: mindspore_gl.dataset.Reddit.num_features
-        :property:
+    参数：
+        - **root** (str) - 包含reddit_with_mask.npz的根目录路径。
 
-        每个节点的特征数量。
-
-        返回：
-            int，特征的数量。
-
-    .. py:method:: mindspore_gl.dataset.Reddit.num_classes
-        :property:
-
-        标签类的数量。
-
-        返回：
-            int，类的数量。
-
-    .. py:method:: mindspore_gl.dataset.Reddit.train_mask
-        :property:
-
-        训练节点掩码。
-
-        返回：
-            numpy.ndarray，掩码数组。
-
-    .. py:method:: mindspore_gl.dataset.Reddit.val_mask
-        :property:
-
-        校验节点掩码。
-
-        返回：
-            numpy.ndarray，掩码数组。
-
-    .. py:method:: mindspore_gl.dataset.Reddit.test_mask
-        :property:
-
-        测试节点掩码。
-
-        返回：
-            numpy.ndarray，掩码数组。
-
-    .. py:method:: mindspore_gl.dataset.Reddit.train_nodes
-        :property:
-
-        训练节点索引。
-
-        返回：
-            numpy.ndarray，训练节点的array。
-
-    .. py:method:: mindspore_gl.dataset.Reddit.val_nodes
-        :property:
-
-        验证节点索引。
-
-        返回：
-            numpy.ndarray，验证节点的array。
-
-    .. py:method:: mindspore_gl.dataset.Reddit.test_nodes
-        :property:
-
-        测试节点索引。
-
-        返回：
-            numpy.ndarray，测试节点的array。
-
-    .. py:method:: mindspore_gl.dataset.Reddit.node_count
-        :property:
-
-        节点数量。
-
-        返回：
-            int，csr行的长度。
+    异常：
+        - **TypeError** - 如果 `root` 不是str。
+        - **RuntimeError** - 如果 `root` 不包含数据文件。
 
     .. py:method:: mindspore_gl.dataset.Reddit.edge_count
         :property:
@@ -113,6 +40,14 @@ mindspore_gl.dataset.Reddit
 
         返回：
             int，csr列的长度。
+
+    .. py:method:: mindspore_gl.dataset.Reddit.node_count
+        :property:
+
+        节点数量。
+
+        返回：
+            int，csr行的长度。
 
     .. py:method:: mindspore_gl.dataset.Reddit.node_feat
         :property:
@@ -129,3 +64,67 @@ mindspore_gl.dataset.Reddit
 
         返回：
             numpy.ndarray，节点标签的array。
+
+    .. py:method:: mindspore_gl.dataset.Reddit.num_classes
+        :property:
+
+        标签类的数量。
+
+        返回：
+            int，类的数量。
+
+    .. py:method:: mindspore_gl.dataset.Reddit.num_features
+        :property:
+
+        每个节点的特征数量。
+
+        返回：
+            int，特征的数量。
+
+    .. py:method:: mindspore_gl.dataset.Reddit.test_mask
+        :property:
+
+        测试节点掩码。
+
+        返回：
+            numpy.ndarray，掩码数组。
+
+    .. py:method:: mindspore_gl.dataset.Reddit.test_nodes
+        :property:
+
+        测试节点索引。
+
+        返回：
+            numpy.ndarray，测试节点的array。
+
+    .. py:method:: mindspore_gl.dataset.Reddit.train_mask
+        :property:
+
+        训练节点掩码。
+
+        返回：
+            numpy.ndarray，掩码数组。
+
+    .. py:method:: mindspore_gl.dataset.Reddit.train_nodes
+        :property:
+
+        训练节点索引。
+
+        返回：
+            numpy.ndarray，训练节点的array。
+
+    .. py:method:: mindspore_gl.dataset.Reddit.val_mask
+        :property:
+
+        校验节点掩码。
+
+        返回：
+            numpy.ndarray，掩码数组。
+
+    .. py:method:: mindspore_gl.dataset.Reddit.val_nodes
+        :property:
+
+        验证节点索引。
+
+        返回：
+            numpy.ndarray，验证节点的array。

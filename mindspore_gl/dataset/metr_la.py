@@ -20,25 +20,6 @@ class MetrLa:
     """
     METR-LA  Dataset, a source dataset for reading and parsing METR-LA dataset.
 
-    Args:
-        root(str): path to the root directory that contains METR-LA/adj_mat.npy and
-            METR-LA/node_values.npy.
-
-    Inputs:
-        - **in_timestep** (int) - numbers of input time sequence.
-        - **out_timestep** (int) - numbers of output time sequence.
-
-    Raises:
-        TypeError: if `root` is not a str.
-        RuntimeError: if `root` does not contain data files.
-        TypeError: If `in_timestep` or `out_timestep` is not a positive int.
-
-    Examples:
-        >>> from mindspore_gl.dataset.ppi import MetrLa
-        >>> root = "path/to/metrla"
-        >>> dataset = MetrLa(root)
-        >>> features, labels = dataset.get_data(in_timestep, out_timestep)
-
     About METR-LA dataset:
         METR-LA is a large-scale dataset collected from 1500 traffic loop detectors in
         Los Angeles country road network. This dataset includes speed, volume and occupancy
@@ -59,6 +40,25 @@ class MetrLa:
         .
         ├── adj_mat.npy
         └── node_values.npy
+
+    Args:
+        root(str): path to the root directory that contains METR-LA/adj_mat.npy and
+            METR-LA/node_values.npy.
+
+    Inputs:
+        - **in_timestep** (int) - numbers of input time sequence.
+        - **out_timestep** (int) - numbers of output time sequence.
+
+    Raises:
+        TypeError: if `root` is not a str.
+        RuntimeError: if `root` does not contain data files.
+        TypeError: If `in_timestep` or `out_timestep` is not a positive int.
+
+    Examples:
+        >>> from mindspore_gl.dataset.ppi import MetrLa
+        >>> root = "path/to/metrla"
+        >>> dataset = MetrLa(root)
+        >>> features, labels = dataset.get_data(in_timestep, out_timestep)
     """
     def __init__(self, root):
         if not isinstance(root, str):

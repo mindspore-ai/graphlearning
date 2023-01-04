@@ -34,7 +34,7 @@ class BatchHomoGraph:
     Examples:
         >>> from mindspore_gl.graph.ops import BatchHomoGraph
         >>> import numpy as np
-        >>> from mindspore_gl.graph.graph import MindHomoGraph
+        >>> from mindspore_gl.graph import MindHomoGraph
         >>> graph_list = []
         >>> for _ in range(5):
         ...     graph = MindHomoGraph()
@@ -91,7 +91,7 @@ class UnBatchHomoGraph:
     Examples:
         >>> from mindspore_gl.graph.ops import BatchHomoGraph
         >>> import numpy as np
-        >>> from mindspore_gl.graph.graph import MindHomoGraph
+        >>> from mindspore_gl.graph import MindHomoGraph
         >>> graph_list = []
         >>> for _ in range(5):
         ...     graph = MindHomoGraph()
@@ -332,8 +332,8 @@ class PadHomoGraph:
         n_edge(Union(int, None)): target graph's edge count. Default: None.
         mode(PadMode): Pad mode, if PadMode.CONST, target graph will have n_node nodes and n_edge edges. If PadMode.AUTO
             target graph's node_count and edge_count is calculated according to input graph's size by
-            :math:`n\_node = 2^ceil(log2(input\_graph.node\_count))` ,
-            :math:`n\_edge = 2^ceil(log2(input\_graph.edge\_count))` . Default: PadMode.AUTO.
+            :math:`n\_node = 2^{ceil(log2(input\_graph.node\_count))}` ,
+            :math:`n\_edge = 2^{ceil(log2(input\_graph.edge\_count))}` . Default: PadMode.AUTO.
 
     Inputs:
         - **graph** (MindHomoGraph) - input graph.

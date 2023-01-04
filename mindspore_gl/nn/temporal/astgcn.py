@@ -345,7 +345,7 @@ class ASTGCN(GNNCell):
         ValueError: If `normalization` is not 'sym'.
 
     Supported Platforms:
-        ``GPU`` ``Ascend``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import numpy as np

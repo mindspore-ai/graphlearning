@@ -88,7 +88,7 @@ class EGConv(GNNCell):
                  num_heads: int = 8,
                  num_bases: int = 4,
                  bias: bool = True
-                 ) -> None:
+                 ):
         super().__init__()
         self.in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
         self.out_feat_size = Validator.check_positive_int(out_feat_size, "out_feat_size", self.cls_name)

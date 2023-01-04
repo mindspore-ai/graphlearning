@@ -54,7 +54,7 @@ class Set2Set(GNNCell):
         TypeError: If `input_size` or `num_iters` or `num_layers` is not an int.
 
     Supported Platforms:
-        ``GPU`` ``Ascend``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import numpy as np

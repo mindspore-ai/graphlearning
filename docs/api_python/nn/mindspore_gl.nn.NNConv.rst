@@ -1,7 +1,7 @@
 mindspore_gl.nn.NNConv
 ======================
 
-.. py:class:: mindspore_gl.nn.NNConv(in_feat_size: int, out_feat_size: int, edge_embed: mindspore.nn.cell.Cell, aggregator_type: str = 'sum', residual=False, bias=True)
+.. py:class:: mindspore_gl.nn.NNConv(in_feat_size: int, out_feat_size: int, edge_embed, aggregator_type: str = 'sum', residual=False, bias=True)
 
     图卷积层。
     来自论文 `Neural Message Passing for Quantum Chemistry <https://arxiv.org/pdf/1704.01212.pdf>`_ 。
@@ -15,7 +15,7 @@ mindspore_gl.nn.NNConv
     参数：
         - **in_feat_size** (int) - 输入节点特征大小。
         - **out_feat_size** (int) - 输出节点特征大小。
-        - **edge_embed** (Cell) - 边嵌入函数单元。
+        - **edge_embed** (mindspore.nn.Cell) - 边嵌入函数单元。
         - **aggregator_type** (str) - 聚合器的类型。默认值：sum。
         - **residual** (bool) - 是否使用残差。默认值：False。
         - **bias** (bool) - 是否使用偏差。默认值：True。

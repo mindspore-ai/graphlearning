@@ -13,10 +13,8 @@
 # limitations under the License.
 # ============================================================================
 """utils"""
-import numpy as np
 
-
-def get_indptr_from_coo_src(src_index: np.ndarray, result_array):
+def get_indptr_from_coo_src(src_index: numpy.ndarray, result_array):
     """get indptr from coo"""
     cum_sum = 0
     index_ptr = 1

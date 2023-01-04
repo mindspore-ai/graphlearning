@@ -3,7 +3,7 @@ mindspore_gl.utils
 
 utils初始化
 
-.. py:function:: mindspore_gl.utils.pca(matrix: numpy.ndarray, k: int = None, niter: int = 2, norm: bool = False)
+.. py:function:: mindspore_gl.utils.pca(matrix: np.ndarray, k: int = None, niter: int = 2, norm: bool = False)
 
     对矩阵执行线性主成分分析（PCA），并将返回前k个降维特征。
 

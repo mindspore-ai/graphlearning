@@ -43,7 +43,7 @@ class SortPooling(GNNCell):
         TypeError: If `k` is not an int.
 
     Supported Platforms:
-        ``GPU`` ``Ascend``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import numpy as np

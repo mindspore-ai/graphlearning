@@ -18,7 +18,7 @@ from six.moves import urllib
 import numpy as np
 from scipy.sparse import coo_matrix
 import mindspore as ms
-from mindspore_gl.graph.graph import MindHomoGraph, CsrAdj
+from mindspore_gl.graph import MindHomoGraph, CsrAdj
 from mindspore_gl.sampling import random_walk_unbias_on_homo
 
 

@@ -28,8 +28,6 @@ class SAGPooling(GNNCell):
     Attention and Generalization in Graph Neural Networks
     <https://arxiv.org/abs/1905.02850>`_ papers.
 
-    if :obj:`min_score` :math:`\tilde{\alpha}` is :obj:`None`:
-
     .. math::
         \mathbf{y} &= \textrm{GNN}(\mathbf{X}, \mathbf{A})
 
@@ -73,7 +71,7 @@ class SAGPooling(GNNCell):
         TypeError: If `in_feat_size` or `out_size` is not an int.
 
     Supported Platforms:
-        ``GPU`` ``Ascend``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import numpy as np
@@ -103,7 +101,7 @@ class SAGPooling(GNNCell):
                  in_channels: int,
                  GNN=GCNConv2,
                  activation=ms.nn.Tanh,
-                 multiplier=1.0) -> None:
+                 multiplier=1.0):
         super().__init__()
         self.in_channels = Validator.check_positive_int(in_channels, "in_channels", self.cls_name)
         if GNN is not GCNConv2:
