@@ -18,7 +18,7 @@ This repository contains a implementation of APPNP based on MindSpore and GraphL
 
 ## Datasets
 
-The experiment is based on [Cora-ML](https://github.com/kimiyoung/planetoid), which was extracted in "Deep gaussian embedding of attributed graphs: Unsupervised inductive learning via ranking." ICLR 2018
+The experiment is based on [Cora-ML](https://data.dgl.ai/dataset/cora_v2.zip), which was extracted in "Deep gaussian embedding of attributed graphs: Unsupervised inductive learning via ranking." ICLR 2018
 
 ## Environment Requirements
 

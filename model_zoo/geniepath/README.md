@@ -18,7 +18,7 @@ This repository contains a implementation of Deepwalk based on MindSpore and Gra
 
 ## Datasets
 
-This experiment is based on node classification datasets ([Pubmed citation network](https://data.dgl.ai/dataset/ppi.zip) dataset and [Protein-Protein Interaction]() dataset).
+This experiment is based on node classification datasets ([Pubmed citation network](https://data.dgl.ai/dataset/pubmed.zip) dataset and [Protein-Protein Interaction](https://data.dgl.ai/dataset/ppi.zip) dataset).
 
 ## Environment Requirements
 
