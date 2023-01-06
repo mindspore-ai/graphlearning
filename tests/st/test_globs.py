@@ -319,7 +319,7 @@ def test_set2set():
     assert np.max(np.abs((first - second))) < delta
 
 
-@pytest.mark.lebel0
+@pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_sagpooling():

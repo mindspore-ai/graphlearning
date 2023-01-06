@@ -32,8 +32,8 @@ def remove_self_loop(adj, mode='dense'):
 
     Returns:
         - **adj** (scipy.sparse.coo) - The object after removing the diagonal matrix.
-        'dense' returns the Tensor type.
-        'coo' returns the scipy.sparse.coo type.
+          'dense' returns the Tensor type.
+          'coo' returns the scipy.sparse.coo type.
 
     Examples:
         >>> from mindspore_gl.graph.self_loop import remove_self_loop

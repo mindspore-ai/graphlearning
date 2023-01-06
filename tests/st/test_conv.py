@@ -74,7 +74,7 @@ graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
 
 
 # test conv api
-@pytest.mark.lebel0
+@pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_agnnconv():
@@ -92,7 +92,7 @@ def test_agnnconv():
     assert np.allclose(output.asnumpy(), expect_output)
 
 
-@pytest.mark.lebel0
+@pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_appnpconv():
@@ -116,7 +116,7 @@ def test_appnpconv():
     assert np.allclose(output.asnumpy(), expect_output)
 
 
-@pytest.mark.lebel0
+@pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_cfconv():
@@ -146,7 +146,7 @@ def test_cfconv():
     assert np.allclose(output.asnumpy(), expect_output)
 
 
-@pytest.mark.lebel0
+@pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_chebconv():
@@ -174,7 +174,7 @@ def test_chebconv():
     assert np.allclose(output.asnumpy(), expect_output)
 
 
-@pytest.mark.lebel0
+@pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_dotgatconv():
@@ -199,7 +199,7 @@ def test_dotgatconv():
     assert np.allclose(output.asnumpy(), expect_output)
 
 
-@pytest.mark.lebel0
+@pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_edgeconv():
@@ -225,7 +225,7 @@ def test_edgeconv():
     assert np.allclose(output.asnumpy(), expect_output)
 
 
-@pytest.mark.lebel0
+@pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_egconv():
@@ -251,7 +251,7 @@ def test_egconv():
     assert np.allclose(output.asnumpy(), expect_output)
 
 
-@pytest.mark.lebel0
+@pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_gatconv():
@@ -279,7 +279,7 @@ def test_gatconv():
     assert np.allclose(output.asnumpy(), expect_output)
 
 
-@pytest.mark.lebel0
+@pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_gatedgraphconv():
@@ -322,7 +322,7 @@ def test_gatedgraphconv():
     assert np.allclose(output.asnumpy(), expect_output)
 
 
-@pytest.mark.lebel0
+@pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_gatv2conv():
@@ -350,7 +350,7 @@ def test_gatv2conv():
     assert np.allclose(output.asnumpy(), expect_output)
 
 
-@pytest.mark.lebel0
+@pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_gcnconv2():
@@ -376,7 +376,7 @@ def test_gcnconv2():
     assert np.allclose(output.asnumpy(), expect_output)
 
 
-@pytest.mark.lebel0
+@pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_tagconv():
@@ -400,7 +400,7 @@ def test_tagconv():
     assert np.allclose(output.asnumpy(), expect_output)
 
 
-@pytest.mark.lebel0
+@pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_sageconv():
@@ -434,7 +434,7 @@ def test_sageconv():
     assert np.allclose(output.asnumpy(), expect_output)
 
 
-@pytest.mark.lebel0
+@pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_nnconv():
@@ -464,7 +464,7 @@ def test_nnconv():
     assert np.allclose(output.asnumpy(), expect_output)
 
 
-@pytest.mark.lebel0
+@pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_stconv():
@@ -550,7 +550,7 @@ def test_stconv():
     assert np.allclose(output.asnumpy(), expected)
 
 
-@pytest.mark.lebel0
+@pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_gmmconv():
@@ -579,6 +579,9 @@ def test_gmmconv():
     assert np.allclose(output.asnumpy(), expect_output)
 
 
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
 def test_meanconv():
     """
     Features:   MEANConv
@@ -600,7 +603,7 @@ def test_meanconv():
     assert np.allclose(output.asnumpy(), expect_output)
 
 
-@pytest.mark.lebel0
+@pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_ginconv():
@@ -618,7 +621,7 @@ def test_ginconv():
     assert np.allclose(output.asnumpy(), expect_output)
 
 
-@pytest.mark.lebel0
+@pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_gcnconv():
@@ -638,6 +641,10 @@ def test_gcnconv():
     output = gcnconv(node_feat, in_degree, out_degree, *graph_field.get_graph())
     assert np.allclose(output.asnumpy(), expect_output)
 
+
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
 def test_sgconv():
     """
     Features:    SGConv

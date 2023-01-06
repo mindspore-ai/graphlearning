@@ -146,6 +146,6 @@ class GATConv(GNNCell):
             feat = [u.feat_src for u in v.innbs]
             v.h = g.sum(attn * feat)
             v.h = v.h + self.bias
-            if self.activation:
+            if self.activation is not None:
                 v.h = self.activation(v.h)
         return ms.ops.Flatten()([v.h for v in g.dst_vertex])

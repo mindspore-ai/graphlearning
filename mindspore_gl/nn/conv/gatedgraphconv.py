@@ -145,10 +145,11 @@ class GatedGraphConv(ms.nn.Cell):
             x = ms.ops.Concat(axis=-1)(x, ms.ops.Zeros()((ms.ops.Shape()(x)[0], self.out_feat_size - self.in_feat_size),
                                                          ms.float32))
         for _ in range(self.n_steps):
-            out = self.cell_list[0](x, src_idx[0], dst_idx[0], n_nodes, n_edges[i])
+            out = self.cell_list[0](x, src_idx[0], dst_idx[0], n_nodes, n_edges)
             for i in range(1, self.n_etype):
-                out += self.cell_list[i](x, src_idx[i], dst_idx[i], n_nodes, n_edges[i])
+                out += self.cell_list[i](x, src_idx[i], dst_idx[i], n_nodes, n_edges)
             if self.gru is not None:
                 out = self.gru(out, x)
+                x = out
             x = out
-        return out
+        return x
