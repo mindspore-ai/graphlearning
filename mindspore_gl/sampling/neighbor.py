@@ -28,18 +28,18 @@ def map_edge_index(layered_edges, reindex_dict):
 
 def sage_sampler_on_homo(homo_graph: mindspore_gl.graph.MindHomoGraph, seeds, neighbor_nums: List[int]):
     """
-    GraphSage sampling on MindHomoGraph
+    GraphSage sampling on MindHomoGraph.
 
     Args:
-        homo_graph(MindHomoGraph): input graph
-        seeds(numpy.array): start nodes for neighbor sampling
-        neighbor_nums(List): neighbor nums for each hop
+        homo_graph(mindspore_gl.graph.MindHomoGraph): input graph.
+        seeds(numpy.ndarray): start nodes for neighbor sampling.
+        neighbor_nums(List): neighbor nums for each hop.
 
     Returns:
-        - **layered_edges_{idx}** (numpy.array) - edge array for hop idx
-        - **layered_eids_{idx}** (numpy.array) - edge id array for hop idx
-        - **all_nodes** - all nodes' global ids
-        - **seeds_idx** - seeds local ids
+        - **layered_edges_{idx}** (numpy.array) - edge array for hop idx.
+        - **layered_eids_{idx}** (numpy.array) - edge id array for hop idx.
+        - **all_nodes** - all nodes' global ids.
+        - **seeds_idx** - seeds local ids.
 
     Raises:
         TypeError: If 'homo_graph' is not a MindHomoGraph class.

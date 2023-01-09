@@ -39,7 +39,7 @@ mindspore_gl.sampling
     可以选择考虑自循环、有向图或无向图操作。
 
     参数：
-        - **positive** (list or array) - 所有正样本边。
+        - **positive** (list or numpy.ndarray) - 所有正样本边。
         - **node** (int) - 节点数。
         - **num_neg_samples** (int) - 负样本长度。
         - **mode** (str) - 运算矩阵的类型。默认值：undirected。
@@ -52,9 +52,9 @@ mindspore_gl.sampling
 
         - **re** (str) - 输入数据类型。默认值：more。
 
-          - more: `positive` 数组shape为 :math:`(data_length, 2)` 。
+          - more: `positive` 数组shape为 :math:`(data\_length, 2)` 。
 
-          - other: `positive` 数组shape为 :math:`(2, data_length)` 。
+          - other: `positive` 数组shape为 :math:`(2, data\_length)` 。
 
     返回：
         数组，负采样边集，shape为 :math:`(num\_neg\_samples, 2)`

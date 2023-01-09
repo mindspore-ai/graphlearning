@@ -151,7 +151,8 @@ class PadArray2d:
             you can set this value to False if you dont care about the padded value. Default: True.
         mode(PadMode): Pad mode for array, if PadMode.CONST, this op will pad array to user-specific size.
             If PadMode.AUTO, this will choose padded result length according to input's length.
-            The expected length can be calculated as 2^ceil(log2(input_length)). Default: PadMode.AUTO.
+            The expected length can be calculated as 2^ceil(log2(input_length)).
+            Default: mindspore_gl.graph.PadMode.AUTO.
         size(Union[List, Tuple]): User specific size for padding result. Default: None.
         use_shared_numpy(bool): If we use SharedNDArray for speeding up inter process communication.
             This is recommended if you do feature collection and feature padding in child process and
@@ -270,7 +271,7 @@ class PadArray2d:
             shape( Union[List, Tuple]): input array's shape for pad.
 
         Returns:
-            - memory_buffer(numpy.array), an empty numpy array with target padded shape.
+            - **memory_buffer** (numpy.ndarray) - an empty numpy array with target padded shape.
 
         """
         fill_value = kwargs.get("fill_value", None)

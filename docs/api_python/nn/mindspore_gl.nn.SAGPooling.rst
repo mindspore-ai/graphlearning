@@ -1,7 +1,7 @@
 mindspore_gl.nn.SAGPooling
 ==========================
 
-.. py:class:: mindspore_gl.nn.SAGPooling(in_channels: int, GNN=mindspore_gl.nn.GCNConv2, activation=ms.nn.Tanh, multiplier=1.0)
+.. py:class:: mindspore_gl.nn.SAGPooling(in_channels: int, GNN=GCNConv2, activation=ms.nn.Tanh, multiplier=1.0)
 
     基于self-attention的池化操作。来自 `Self-Attention Graph Pooling <https://arxiv.org/abs/1904.08082>`_ 和
     `Understanding Attention and Generalization in Graph Neural Networks <https://arxiv.org/abs/1905.02850>`_ 。

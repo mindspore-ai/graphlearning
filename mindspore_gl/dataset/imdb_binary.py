@@ -90,11 +90,11 @@ class IMDBBinary:
         self._test_mask = None
 
         if osp.exists(self._path):
-            self.load()
+            self._load()
         else:
             path, file_name = self._download(self._root)
-            self.process(path, file_name)
-            self.load()
+            self._process(path, file_name)
+            self._load()
 
     def _download(self, save_dir):
         """Download dataset"""
@@ -116,7 +116,7 @@ class IMDBBinary:
         os.remove(path)
         return unzip_path, unzip_name
 
-    def process(self, path, file_name):
+    def _process(self, path, file_name):
         """Process data"""
         label_file_name = file_name+'_graph_labels.txt'
         label_path = osp.join(path, label_file_name)
@@ -171,7 +171,7 @@ class IMDBBinary:
                  node_feat=self._node_feat, graph_label=self._graph_label,
                  graph_edges=self._graph_edges, graph_nodes=self._graph_nodes)
 
-    def load(self):
+    def _load(self):
         """Load the saved npz dataset from files."""
         self._npz_file = np.load(self._path)
         self._edge_array = self._npz_file['edge_array'].astype(np.int32)

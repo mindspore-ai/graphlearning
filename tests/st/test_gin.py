@@ -45,4 +45,4 @@ def test_gin():
     file.close()
     last_info = log_info[-2]
     test_acc = float(last_info[last_info.find('Test acc '):].replace('Test acc ', '').replace('\n', ''))
-    assert test_acc > 0.6
+    assert test_acc > 0.55

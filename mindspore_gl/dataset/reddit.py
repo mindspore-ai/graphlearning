@@ -43,6 +43,7 @@ class Reddit:
     You can organize the dataset files into the following directory structure and read by `preprocess` API.
 
     .. code-block::
+
         .
         ├── reddit_data.npz
         └── reddit_graph.npz
