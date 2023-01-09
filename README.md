@@ -41,10 +41,11 @@ applications. For more details, please refer to <https://gitee.com/mindspore/gra
 
 Due the dependency between MindSpore Graph Learning and MindSpore, please follow the table below and install the corresponding MindSpore verision from [MindSpore download page](https://www.mindspore.cn/versions/en).
 
-| MindSpore Graph Learning Version |                             Branch                             | MindSpore version |
-|:--------------------------------:|:--------------------------------------------------------------:|:---------------:|
-|              master              | [master](https://gitee.com/mindspore/graphlearning/tree/master/) |      >=1.7.1    |
-|              0.1.0               |  [r0.1](https://gitee.com/mindspore/graphlearning/tree/r0.1/)  |      >=1.6.1    |
+| MindSpore Graph Learning Version |                              Branch                              | MindSpore version |
+|:--------------------------------:|:----------------------------------------------------------------:|:-----------------:|
+|              master              | [master](https://gitee.com/mindspore/graphlearning/tree/master/) |      >=1.7.1      |
+|              0.1.0               |   [r0.1](https://gitee.com/mindspore/graphlearning/tree/r0.1/)   |      >=1.6.1      |
+|              0.2.0               |   [r0.2](https://gitee.com/mindspore/graphlearning/tree/r0.2/)   |     >=1.10.1      |
 
 ### Installation Methods
 
