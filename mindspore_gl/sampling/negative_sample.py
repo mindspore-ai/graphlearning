@@ -38,9 +38,9 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more
 
         re(str): type of input data. Default: 'more'.
 
-          - more: positive array shape :math:(data_length, 2).
+          - more: positive array shape :math:`(data\_length, 2)`.
 
-          - other: positive array shape :math:(2, data_length).
+          - other: positive array shape :math:`(2, data\_length)`.
 
     Returns:
         - **array** - Negative sample edge set, shape is :math:`(num\_neg\_samples, 2)`.
