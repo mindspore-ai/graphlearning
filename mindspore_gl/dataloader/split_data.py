@@ -32,6 +32,9 @@ def split_data(x, val_ratio=0.05, test_ratio=0.1, graph_type='undirected'):
         - **val** (numpy.ndarray) - Validation set positive example, shape :math:`(val\_len, 2)` .
         - **test** (numpy.ndarray) - Test set positive examples, shape :math:`(test\_len, 2)` .
 
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
     Examples:
         >>> from mindspore_gl.dataloader import split_data
         >>> from mindspore_gl.dataset import CoraV2

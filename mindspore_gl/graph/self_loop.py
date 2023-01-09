@@ -35,6 +35,9 @@ def remove_self_loop(adj, mode='dense'):
           'dense' returns the Tensor type.
           'coo' returns the scipy.sparse.coo type.
 
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
     Examples:
         >>> from mindspore_gl.graph.self_loop import remove_self_loop
         >>> import scipy.sparse as sp
@@ -85,6 +88,9 @@ def add_self_loop(edge_index, edge_weight, node, fill_value, mode='dense'):
         ValueError: if `mode` not is coo or dense.
         ValueError: if `fill_value` length not equal to `node`.
         TypeError: If `node` is not a positive int.
+
+    Supported Platforms:
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> from mindspore import Tensor

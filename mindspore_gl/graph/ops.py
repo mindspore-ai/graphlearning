@@ -31,6 +31,9 @@ class BatchHomoGraph:
     Inputs:
         - **graph_list** (List[MindHomoGraph]) - To list of MindHomoGraph.
 
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
     Examples:
         >>> from mindspore_gl.graph.ops import BatchHomoGraph
         >>> import numpy as np
@@ -88,6 +91,9 @@ class UnBatchHomoGraph:
     """
     Return list of MindHomoGraph from a Batched MindHomoGraph.
 
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
     Examples:
         >>> from mindspore_gl.graph.ops import BatchHomoGraph
         >>> import numpy as np
@@ -122,7 +128,24 @@ class UnBatchHomoGraph:
 class PadMode(Enum):
     """
     Padding Mode, for graph and 2d array.
+
+      - PadMode.CONST: padding the array into user specified shape.
+
+      - PadMode.AUTO: auto generate the padding shape.
+
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
+    Examples:
+        >>> from mindspore_gl.graph import PadMode
+        >>> const = PadMode.CONST
+        >>> print(const.name, const.value)
+        CONST 1
+        >>> auto = PadMode.AUTO
+        >>> print(auto.name, auto.value)
+        AUTO 2
     """
+
     CONST = 1
     AUTO = 2
 
@@ -130,7 +153,24 @@ class PadMode(Enum):
 class PadDirection(Enum):
     """
     Padding Direction for 2d array specifically.
+
+      - PadDirection.ROW: padding in the direction of the row.
+
+      - PadDirection.COL: padding in the direction of the col.
+
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
+    Examples:
+        >>> from mindspore_gl.graph import PadDirection
+        >>> row = PadDirection.ROW
+        >>> print(row.name, row.value)
+        ROW 1
+        >>> col = PadDirection.COL
+        >>> print(col.name, col.value)
+        COL 2
     """
+
     ROW = 1
     COL = 2
 
@@ -162,6 +202,9 @@ class PadArray2d:
 
     Raises:
         ValueError: pad size should be provided when padding mode is PadMode.CONST.
+
+    Supported Platforms:
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> from mindspore_gl.graph.ops import PadArray2d, PadMode, PadDirection
@@ -341,6 +384,31 @@ class PadHomoGraph:
     Outputs:
         - MindHomoGraph, padded graph.
 
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
+    Examples:
+        >>> from mindspore_gl.graph.ops import BatchHomoGraph, PadHomoGraph, PadMode
+        >>> import numpy as np
+        >>> from mindspore_gl.graph.graph import MindHomoGraph
+        >>> graph_list = []
+        >>> for _ in range(1):
+        ...     graph = MindHomoGraph()
+        ...     edges = np.array([[0, 2, 2, 3, 4, 5, 5, 6], [1, 0, 1, 5, 3, 4, 6, 4]])
+        ...     graph.set_topo_coo(edges)
+        ...     graph.node_count = 7
+        ...     graph.edge_count = 8
+        ...     graph_list.append(graph)
+        >>> batch_fn = BatchHomoGraph()
+        >>> batch_graph = batch_fn(graph_list)
+        >>> n_node = graph.node_count + 1
+        >>> n_edge = graph.edge_count + 30
+        >>> pad_graph_op = PadHomoGraph(mode=PadMode.CONST, n_node=n_node, n_edge=n_edge)
+        >>> pad_res = pad_graph_op(batch_graph)
+        >>> print(pad_res[0].edge_count, pad_res[1].edge_count)
+        8   30
+        >>> print(pad_res[0].node_count, pad_res[1].node_count)
+        7   1
     """
 
     def __init__(self, n_node=None, mode=PadMode.AUTO, n_edge=None):

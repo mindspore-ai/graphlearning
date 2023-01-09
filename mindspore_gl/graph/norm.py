@@ -47,6 +47,9 @@ def norm(edge_index, num_nodes, edge_weight=None, normalization='sym',
     Raises:
         ValueError: if `normalization` not is None or 'sym' or 'rw'.
 
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
     Examples:
         >>> import mindspore as ms
         >>> from mindspore_gl.graph import norm

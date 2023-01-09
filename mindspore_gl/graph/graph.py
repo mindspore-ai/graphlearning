@@ -18,8 +18,43 @@ from collections import namedtuple
 import numpy as np
 import mindspore_gl.sample_kernel as kernel
 
-CsrAdj = namedtuple("csr_adj", ['indptr', 'indices'])
+CsrAdjNameTuple = namedtuple("csr_adj", ['indptr', 'indices'])
 
+
+class CsrAdj(CsrAdjNameTuple):
+    """
+    Build the csr matrix nametuple.
+
+    Args:
+        indptr (numpy.ndarry): indptr of scr matrix.
+        indices (numpy.ndarry): indices of scr matrix.
+
+    Raises:
+        TypeError: If `indptr` or `indices` is not a numpy.ndarray.
+        TypeError: If `indptr` or `indices` is not a one dimesion array.
+
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
+    Examples:
+        >>> import numpy as np
+        >>> from mindspore_gl.graph.graph import CsrAdj
+        >>> indptr = np.array([0, 2, 3, 6])
+        >>> indices = np.array([0, 2, 2, 0, 1, 2])
+        >>> csr_adj = CsrAdj(indptr, indices)
+        >>> print(csr_adj)
+        CsrAdj(indptr=array([0, 2, 3, 6]), indices=array([0, 2, 2, 0, 1, 2]))
+    """
+    def __init__(self, indptr, indices):
+        if not isinstance(indptr, np.ndarray):
+            raise TypeError("'indptr' type must be numpy.ndarray, but get {}.".format(type(indptr)))
+        if len(indptr.shape) >= 2 and indptr.shape[1] >= 2:
+            raise TypeError("'indptr' shape must 1 dimesion, but get {}.".format(indptr.shape))
+        if not isinstance(indices, np.ndarray):
+            raise TypeError("'indices' type must be numpy.ndarray, but get {}.".format(type(indices)))
+        if len(indices.shape) >= 2 and indices.shape[1] >= 2:
+            raise TypeError("'indices' shape must 1 dimesion, but get {}.".format(indices.shape))
+        super(CsrAdj, self).__init__()
 
 def coo_to_csr():
     raise NotImplementedError()
@@ -169,6 +204,9 @@ class BatchMeta:
         graph_nodes(numpy.array): accumulated node sum for graphs in batched graph(first element is 0).
         graph_edges(numpy.array): accumulated edge sum for graphs in batched graph(first element is 0).
 
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
     Examples:
         >>> from mindspore_gl.graph import BatchMeta
         >>> graph_nodes = np.array([0, 20, 40, 60, 80])
@@ -264,6 +302,9 @@ class BatchMeta:
 class MindHomoGraph:
     """
     Build in-memory homo graph.
+
+    Supported Platforms:
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import numpy as np
