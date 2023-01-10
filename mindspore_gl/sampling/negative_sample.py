@@ -51,6 +51,9 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more
         TypeError: If 're' is not in 'more' or 'other'.
         ValueError: If `mode` is not in 'bipartite', 'undirected' or 'other'.
 
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
     Examples:
         >>> from mindspore_gl.sampling import negative_sample
         >>> positive = [[1,2],[2,3]]

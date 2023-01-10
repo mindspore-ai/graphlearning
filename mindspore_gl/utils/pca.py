@@ -82,6 +82,9 @@ def pca(matrix: np.ndarray, k: int = None, niter: int = 2, norm: bool = False):
         TypeError: If 'matrix' is not a ndarry.
         TypeError: If 'norm' is not a bool.
 
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
     Examples:
         >>> import numpy as np
         >>> from mindspore_gl.utils import pca

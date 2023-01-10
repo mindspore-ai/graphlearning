@@ -35,6 +35,9 @@ def knn_graph(feat, k: int, dis: int = None, \
     Returns:
         - **coo** - Rebuilt graph
 
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
     Examples:
         >>> import numpy as np
         >>> from mindspore_gl.sampling import knn_graph

@@ -28,6 +28,9 @@ class RandomBatchSampler(ds.Sampler):
     Raises:
         TypeError: If `batch_size` is not a positive integer.
 
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
     Examples:
         >>> from mindspore_gl.dataloader.samplers import RandomBatchSampler
         >>> ds = list(range(10))

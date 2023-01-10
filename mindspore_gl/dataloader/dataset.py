@@ -32,6 +32,16 @@ class Dataset(Generic[Tco]):
     Note:
         :class:`mindspore_gl.dataloader.Dataloader` needs a `Dataset` instance as input. It is mutually exclusive
         with `Sampler` which yields indices.
+
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
+    Examples:
+        >>> from mindspore_gl.dataloader import Dataset
+        >>> class MyDataset(Dataset):
+        >>>    def __init__(self, *args, **kwargs):
+        >>>         ...
+        >>> my_dataset = MyDataset()
     """
     def __getitem__(self, index):
         raise NotImplementedError
