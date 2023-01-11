@@ -9,15 +9,15 @@ mindspore_gl.graph
     :template: classtemplate.rst
 
     mindspore_gl.graph.add_self_loop
-    mindspore_gl.graph.remove_self_loop
     mindspore_gl.graph.get_laplacian
     mindspore_gl.graph.norm
-    mindspore_gl.graph.MindHomoGraph
+    mindspore_gl.graph.remove_self_loop
     mindspore_gl.graph.BatchHomoGraph
+    mindspore_gl.graph.BatchMeta
+    mindspore_gl.graph.CsrAdj
+    mindspore_gl.graph.MindHomoGraph
     mindspore_gl.graph.PadArray2d
+    mindspore_gl.graph.PadDirection
     mindspore_gl.graph.PadHomoGraph
     mindspore_gl.graph.PadMode
-    mindspore_gl.graph.PadDirection
-    mindspore_gl.graph.CsrAdj
-    mindspore_gl.graph.BatchMeta
     mindspore_gl.graph.UnBatchHomoGraph

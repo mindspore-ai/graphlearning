@@ -29,10 +29,6 @@ class Dataset(Generic[Tco]):
     All datasets should subclass it which represent a map relation from key to sample.
     All subclass should overwrite `__getitem__`, which implement fetch a sample given a key.
 
-    Note:
-        :class:`mindspore_gl.dataloader.Dataloader` needs a `Dataset` instance as input. It is mutually exclusive
-        with `Sampler` which yields indices.
-
     Supported Platforms:
         ``Ascend`` ``GPU``
 
