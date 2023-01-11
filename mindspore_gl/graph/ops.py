@@ -129,9 +129,8 @@ class PadMode(Enum):
     """
     Padding Mode, for graph and 2d array.
 
-      - PadMode.CONST: padding the array into user specified shape.
-
-      - PadMode.AUTO: auto generate the padding shape.
+    - PadMode.CONST: padding the array into user specified shape.
+    - PadMode.AUTO: auto generate the padding shape.
 
     Supported Platforms:
         ``Ascend`` ``GPU``
@@ -154,9 +153,8 @@ class PadDirection(Enum):
     """
     Padding Direction for 2d array specifically.
 
-      - PadDirection.ROW: padding in the direction of the row.
-
-      - PadDirection.COL: padding in the direction of the col.
+    - PadDirection.ROW: padding in the direction of the row.
+    - PadDirection.COL: padding in the direction of the col.
 
     Supported Platforms:
         ``Ascend`` ``GPU``
