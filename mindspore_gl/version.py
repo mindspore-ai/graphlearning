@@ -1,7 +1,6 @@
 """version info and check."""
 # pylint: disable=C0111
-import time
-__version__ = 'master'
+__version__ = '0.2.0a'
 
 def mindspore_version_check():
     """
@@ -10,22 +9,21 @@ def mindspore_version_check():
     version is not compatibale with current MindSpore Graph Learning verision,
     it will print a warning.
 
-    Raise:
+    Raises:
         ImportError: If the MindSpore can not be imported.
     """
 
+    ms_gl_version_match = {'0.1': '1.6.1', '0.2.0a': '1.10.1',
+                           'master': '1.10.1'}
     try:
         import mindspore as ms
-        from mindspore import log as logger
     except (ImportError, ModuleNotFoundError):
         print("Can not find MindSpore in current environment. Please install "
               "MindSpore before using MindSpore Graph Learning, by following "
               "the instruction at https://www.mindspore.cn/install")
         raise
 
-    ms_gl_version_match = {'0.1': '1.6.1', '0.2': '1.10.1',
-                           'master': '1.10.1'}
-
+    from mindspore import log as logger
     ms_version = ms.__version__
     logger.info("Current MindSpore version is {}".format(ms_version))
     required_verision = ms_gl_version_match[__version__]
@@ -55,4 +53,3 @@ def mindspore_version_check():
         for i in range(warning_countdown, 0, -1):
             logger.warning(
                 f"Please pay attention to the above warning, countdown: {i}")
-            time.sleep(1)
