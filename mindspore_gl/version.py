@@ -1,6 +1,6 @@
 """version info and check."""
 # pylint: disable=C0111
-__version__ = '0.2.0a'
+__version__ = '0.2.0a0'
 
 def mindspore_version_check():
     """
@@ -13,7 +13,7 @@ def mindspore_version_check():
         ImportError: If the MindSpore can not be imported.
     """
 
-    ms_gl_version_match = {'0.1': '1.6.1', '0.2.0a': '1.10.1',
+    ms_gl_version_match = {'0.1': '1.6.1', '0.2.0a0': '1.10.1',
                            'master': '1.10.1'}
     try:
         import mindspore as ms
