@@ -64,7 +64,7 @@ mindspore_gl.dataset.PPI
         返回：
             numpy.ndarray，累积边数组。
 
-    .. py:method:: mindspore_gl.dataset.PPI.graph_feat(graph_idx)
+    .. py:method:: mindspore_gl.dataset.PPI.graph_node_feat(graph_idx)
 
         图上每个节点的特征。
 
@@ -116,7 +116,7 @@ mindspore_gl.dataset.PPI
         返回：
             int，类的数量。
 
-    .. py:method:: mindspore_gl.dataset.PPI.num_features
+    .. py:method:: mindspore_gl.dataset.PPI.node_feat_size
         :property:
 
         每个节点的特征大小。

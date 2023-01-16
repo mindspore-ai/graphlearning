@@ -77,7 +77,7 @@ def main():
     node_label = ms.Tensor(ds.node_label)
 
     # model
-    net = GCNNet(data_feat_size=ds.num_features,
+    net = GCNNet(data_feat_size=ds.node_feat_size,
                  hidden_dim_size=num_hidden,
                  n_classes=ds.num_classes,
                  dropout=dropout,

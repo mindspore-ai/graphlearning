@@ -78,7 +78,7 @@ def main(arguments):
 
     net = GinNet(num_layers=arguments.num_layers,
                  num_mlp_layers=arguments.num_mlp_layers,
-                 input_dim=dataset.num_features,
+                 input_dim=dataset.node_feat_size,
                  hidden_dim=arguments.hidden_dim,
                  output_dim=dataset.num_classes,
                  final_dropout=arguments.final_dropout,
@@ -144,20 +144,20 @@ if __name__ == "__main__":
     parser.add_argument("--device", type=str, default="GPU", help="which device to use")
     parser.add_argument("--data_path", type=str, help="path to dataset")
     parser.add_argument("--dataset", type=str, default="IMDBBINARY", help="dataset")
-    parser.add_argument('--epochs', type=int, default=350, help='number of epochs to train (default: 350)')
-    parser.add_argument('--batch_size', type=int, default=64, help='input batch size for training (default: 64)')
+    parser.add_argument('--epochs', type=int, default=350, help='training epoch')
+    parser.add_argument('--batch_size', type=int, default=64, help='batch size of input data')
     parser.add_argument('--iters_per_epoch', type=int, default=50,
-                        help='number of iterations per each epoch (default: 50)')
+                        help='number of iterations during per each epoch')
     parser.add_argument('--num_layers', type=int, default=5,
-                        help='number of layers INCLUDING the input one (default: 5)')
+                        help='number of layers networks')
     parser.add_argument('--num_mlp_layers', type=int, default=2,
                         help='number of layers for MLP EXCLUDING the input one (default: 2). 1 means linear model.')
     parser.add_argument('--hidden_dim', type=int, default=32, help='number of hidden units (default: 64)')
-    parser.add_argument('--final_dropout', type=float, default=0.5, help='final layer dropout (default: 0.5)')
+    parser.add_argument('--final_dropout', type=float, default=0.5, help='dropout rate in final layer')
     parser.add_argument('--graph_pooling_type', type=str, default="sum", choices=["sum", "avg"],
-                        help='Pooling for over nodes in a graph: sum or average')
+                        help='Pooling method for nodes in a graph: sum or average')
     parser.add_argument('--neighbor_pooling_type', type=str, default="sum", choices=["sum", "avg", "max"],
-                        help='Pooling for over neighboring nodes: sum, average or max')
+                        help='Pooling method for neighboring nodes: sum, average or max')
     parser.add_argument('--learn_eps', action="store_true", default=True,
                         help='Whether to learn the epsilon weighting for the center nodes. '
                              'Does not affect training accuracy though.')

@@ -20,9 +20,10 @@ import pandas as pd
 from scipy.sparse import coo_matrix
 from scipy.sparse import csr_matrix
 from mindspore_gl.graph import MindHomoGraph, CsrAdj
+from .base_dataset import BaseDataSet
 
-
-class BlogCatalog:
+#pylint: disable=W0223
+class BlogCatalog(BaseDataSet):
     """
     BlogCatalog Dataset, a source dataset for reading and parsing BlogCatalog dataset.
 

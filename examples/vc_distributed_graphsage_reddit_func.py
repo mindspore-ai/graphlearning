@@ -78,7 +78,7 @@ def main():
         ms_profiler = Profiler(subgraph="ALL", is_detail=True, is_show_op_path=False, output_path="./prof_result")
 
     appr_dim = math.ceil(graph_dataset.num_classes/8)*8
-    model = SAGENet(graph_dataset.num_features, args.num_hidden, appr_dim, graph_dataset.num_classes)
+    model = SAGENet(graph_dataset.node_feat_size, args.num_hidden, appr_dim, graph_dataset.num_classes)
     optimizer = nn.optim.Adam(model.trainable_params(), learning_rate=args.lr, weight_decay=args.weight_decay)
     loss = LossNet(model)
     grad_fn = ops.value_and_grad(loss, None, optimizer.parameters, has_aux=False)

@@ -34,7 +34,7 @@ class GraphMapSchema:
         init
         """
         self.num_node_features = 0
-        self.num_edge_features = 0
+        self.edge_feat_size = 0
         self.union_schema_in_mindrecord = {
             "first_id": {"type": "int64"},
             "second_id": {"type": "int64"},
@@ -109,13 +109,13 @@ class GraphMapSchema:
         self._valid(feature_names, feature_datatypes, feature_shapes)
 
         for name, data_type, shape in zip(feature_names, feature_datatypes, feature_shapes):
-            field_key = f"edge_feature_{self.num_edge_features + 1}"
+            field_key = f"edge_feature_{self.edge_feat_size + 1}"
             field_value = {"type": data_type.value[0], "shape": shape.shape}
             self.union_schema_in_mindrecord[field_key] = field_value
             meta_value = {"name": field_key}
             meta_value.update(field_value)
             self.meta.edge_feat_info[name] = meta_value
-            self.num_edge_features += 1
+            self.edge_feat_size += 1
 
     def add_meta_variants(self, meta: Dict):
         """
@@ -160,7 +160,7 @@ class GraphMapSchema:
             node_graph["node_feature_index"] = np.array([-1], dtype="int32")
 
         node_graph["edge_feature_index"] = np.array([-1], dtype="int32")
-        for i in range(self.num_edge_features):
+        for i in range(self.edge_feat_size):
             k = i + 1
             graph_field_key = 'edge_feature_' + str(k)
             graph_field_type = self.union_schema_in_mindrecord[graph_field_key]["type"]
@@ -187,7 +187,7 @@ class GraphMapSchema:
         if "weight" in edge:
             edge_graph["weight"] = edge["weight"]
 
-        for i in range(self.num_edge_features):
+        for i in range(self.edge_feat_size):
             k = i + 1
             edge_field_key = 'feature_' + str(k)
             graph_field_key = 'edge_feature_' + str(k)

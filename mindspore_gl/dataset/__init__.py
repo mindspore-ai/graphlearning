@@ -21,8 +21,10 @@ from .alchemy import Alchemy
 from .enzymes import Enzymes
 from .reddit import Reddit
 from .imdb_binary import IMDBBinary
+from .base_dataset import BaseDataSet
 
 __all__ = [
+    "BaseDataSet",
     "CoraV2",
     "MetrLa",
     "PPI",

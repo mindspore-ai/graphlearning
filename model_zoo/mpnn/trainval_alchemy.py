@@ -84,8 +84,8 @@ def main(arguments):
     np_graph_mask = [[1]] * (arguments.batch_size + 1)
     np_graph_mask[-1] = [0]
 
-    net = MPNNPredictor(node_in_feats=dataset.num_features,
-                        edge_in_feats=dataset.num_edge_features,
+    net = MPNNPredictor(node_in_feats=dataset.node_feat_size,
+                        edge_in_feats=dataset.edge_feat_size,
                         node_out_feats=arguments.node_out_feats,
                         edge_hidden_feats=arguments.edge_hidden_feats,
                         n_tasks=arguments.n_tasks)

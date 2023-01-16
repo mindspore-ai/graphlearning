@@ -67,7 +67,7 @@ def main():
     x_train, x_test, y_train, y_test = train_test_split(features, labels, test_size=0.2, shuffle=True)
     edge_index = metr.edge_index
     edge_attr = metr.edge_attr
-    node_num = metr.node_num
+    node_num = metr.node_count
     mask = edge_index[0] != edge_index[1]
     edge_index = edge_index[:, mask]
     edge_attr = edge_attr[mask]

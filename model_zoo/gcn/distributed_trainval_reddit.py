@@ -107,7 +107,7 @@ def main():
                                            sampler=train_sampler, python_multiprocessing=True, num_parallel_workers=1)
     test_dataloader = ds.GeneratorDataset(test_dataset, ['seeds_idx', 'label', 'nid_feat', 'edges'],
                                           sampler=test_sampler, python_multiprocessing=True, num_parallel_workers=1)
-    model = GCNNet(graph_dataset.num_features, 256, graph_dataset.num_classes, dropout=0.5, activation=ms.nn.ELU)
+    model = GCNNet(graph_dataset.node_feat_size, 256, graph_dataset.num_classes, dropout=0.5, activation=ms.nn.ELU)
     optimizer = nn.optim.Adam(model.trainable_params(), learning_rate=args.lr, weight_decay=args.weight_decay)
     loss = LossNet(model)
     train_net = nn.TrainOneStepCell(loss, optimizer)

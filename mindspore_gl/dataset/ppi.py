@@ -22,8 +22,11 @@ import numpy as np
 import networkx as nx
 from networkx.readwrite import json_graph
 from mindspore_gl.graph import MindHomoGraph
+from .base_dataset import BaseDataSet
 
-class PPI:
+
+#pylint: disable=W0223
+class PPI(BaseDataSet):
     """
     PPI  Dataset, a source dataset for reading and parsing PPI dataset.
 
@@ -191,7 +194,7 @@ class PPI:
         self._node_label = self._npz_file['node_label']
 
     @property
-    def num_features(self):
+    def node_feat_size(self):
         """
         Feature size of each node.
 
@@ -200,7 +203,7 @@ class PPI:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> num_features = dataset.num_features
+            >>> node_feat_size = dataset.node_feat_size
         """
         return self.node_feat.shape[-1]
 
@@ -393,7 +396,7 @@ class PPI:
 
         return self._node_label
 
-    def graph_feat(self, graph_idx):
+    def graph_node_feat(self, graph_idx):
         """
         graph features.
 
@@ -405,9 +408,9 @@ class PPI:
         """
         return self.node_feat[self.graph_nodes[graph_idx]: self.graph_nodes[graph_idx + 1]]
 
-    def graph_label(self, graph_idx):
+    def graph_node_label(self, graph_idx):
         """
-        graph label.
+        node on graph label.
 
         Args:
             graph_idx (int): index of graph.

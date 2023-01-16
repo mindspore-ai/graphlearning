@@ -86,7 +86,7 @@ mindspore_gl.dataset.IMDBBinary
         返回：
             int，图标签的种类。
 
-    .. py:method:: mindspore_gl.dataset.IMDBBinary.num_edge_features
+    .. py:method:: mindspore_gl.dataset.IMDBBinary.edge_feat_size
         :property:
 
         标签类数量。
@@ -94,7 +94,7 @@ mindspore_gl.dataset.IMDBBinary
         返回：
             int，类的数量。
 
-    .. py:method:: mindspore_gl.dataset.IMDBBinary.num_features
+    .. py:method:: mindspore_gl.dataset.IMDBBinary.node_feat_size
         :property:
 
         每个节点的特征数量。

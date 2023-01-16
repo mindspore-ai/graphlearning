@@ -84,7 +84,7 @@ mindspore_gl.dataset.Alchemy
         返回：
             numpy.ndarray，累积边数组。
 
-    .. py:method:: mindspore_gl.dataset.Alchemy.graph_feat(graph_idx)
+    .. py:method:: mindspore_gl.dataset.Alchemy.graph_node_feat(graph_idx)
         :property:
 
         图上每个节点的特征。
@@ -127,7 +127,7 @@ mindspore_gl.dataset.Alchemy
         返回：
             numpy.ndarray，节点特征数组。
 
-    .. py:method:: mindspore_gl.dataset.Alchemy.num_edge_features
+    .. py:method:: mindspore_gl.dataset.Alchemy.edge_feat_size
         :property:
 
         标签类数量。
@@ -135,7 +135,7 @@ mindspore_gl.dataset.Alchemy
         返回：
             int，类的数量。
 
-    .. py:method:: mindspore_gl.dataset.Alchemy.num_features
+    .. py:method:: mindspore_gl.dataset.Alchemy.node_feat_size
         :property:
 
         每个节点的特征数量。

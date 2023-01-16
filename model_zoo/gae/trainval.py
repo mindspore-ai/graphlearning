@@ -146,7 +146,7 @@ def main():
     pos_weight = get_pos_weight(n_nodes, adj_coo.sum())
 
     # model and optimizer
-    encoder = GCNEncoder(data_feat_size=ds.num_features,
+    encoder = GCNEncoder(data_feat_size=ds.node_feat_size,
                          hidden_dim_size=(hidden1_dim, hidden2_dim),
                          activate=(ms.nn.ReLU(), None),
                          name='GAE')
