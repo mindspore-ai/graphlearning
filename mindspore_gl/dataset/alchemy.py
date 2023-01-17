@@ -23,8 +23,11 @@ from rdkit.Chem import ChemicalFeatures
 from rdkit import RDConfig
 import pandas as pd
 from tqdm import tqdm
+from .base_dataset import BaseDataSet
 
-class Alchemy:
+
+#pylint: disable=W0223
+class Alchemy(BaseDataSet):
     """
     Alchemy dataset, a source dataset for reading and parsing Alchemy dataset.
 
@@ -272,7 +275,7 @@ class Alchemy:
         self._graphs = np.array(list(range(len(self._graph_edges))))
 
     @property
-    def num_features(self):
+    def node_feat_size(self):
         """
         Feature size of each node.
 
@@ -281,12 +284,12 @@ class Alchemy:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> num_features = dataset.num_features
+            >>> node_feat_size = dataset.node_feat_size
         """
         return self.node_feat.shape[-1]
 
     @property
-    def num_edge_features(self):
+    def edge_feat_size(self):
         """
        Number of label classes.
 
@@ -300,7 +303,7 @@ class Alchemy:
         return self.edge_feat.shape[-1]
 
     @property
-    def n_tasks(self):
+    def num_classes(self):
         """
         Graph label size.
 
@@ -453,7 +456,7 @@ class Alchemy:
 
         return self._edge_feat
 
-    def graph_feat(self, graph_idx):
+    def graph_node_feat(self, graph_idx):
         """
         graph node features.
 
@@ -492,6 +495,7 @@ class Alchemy:
         if self._graph_label is None:
             self._graph_label = self._npz_file["graph_label"]
         return self._graph_label
+
 
     def __getitem__(self, idx) -> Union[MindHomoGraph, np.ndarray]:
         assert idx < self.graph_count, "Index out of range"

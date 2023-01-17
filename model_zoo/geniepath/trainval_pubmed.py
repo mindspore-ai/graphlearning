@@ -66,13 +66,13 @@ def main(arguments):
     train_mask_tensor = ms.Tensor(train_mask, ms.int32)
 
     if arguments.lazy:
-        net = GeniePathLazy(input_dim=dataset.num_features,
+        net = GeniePathLazy(input_dim=dataset.node_feat_size,
                             output_dim=dataset.num_classes,
                             hidden_dim=arguments.hidden_dim,
                             num_layers=arguments.num_layers,
                             num_attn_head=arguments.num_attn_head)
     else:
-        net = GeniePath(input_dim=dataset.num_features,
+        net = GeniePath(input_dim=dataset.node_feat_size,
                         output_dim=dataset.num_classes,
                         hidden_dim=arguments.hidden_dim,
                         num_layers=arguments.num_layers,

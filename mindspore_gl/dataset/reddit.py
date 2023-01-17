@@ -14,13 +14,16 @@
 # ============================================================================
 """Reddit Dataset"""
 #pylint: disable=W0702
-
 from pathlib import Path
 import numpy as np
 import scipy.sparse as sp
+from scipy.sparse import csr_matrix
 from mindspore_gl.graph import MindHomoGraph, CsrAdj
+from .base_dataset import BaseDataSet
 
-class Reddit:
+
+#pylint: disable=W0223
+class Reddit(BaseDataSet):
     """
     Reddit Dataset, a source dataset for reading and parsing Reddit dataset.
 
@@ -113,7 +116,7 @@ class Reddit:
         self._nodes = np.array(list(range(len(self._csr_row) - 1)))
 
     @property
-    def num_features(self):
+    def node_feat_size(self):
         """
         Feature size of each node.
 
@@ -122,7 +125,7 @@ class Reddit:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> num_features = dataset.num_features
+            >>> node_feat_size = dataset.node_feat_size
         """
         return self.node_feat.shape[1]
 
@@ -290,6 +293,34 @@ class Reddit:
         if self._node_label is None:
             self._node_label = self._npz_file["label"]
         return self._node_label.astype(np.int32)
+
+    @property
+    def adj_coo(self):
+        """
+        Return the adjacency matrix of COO representation
+
+        Returns:
+            - numpy.ndarray, array of coo matrix.
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> node_label = dataset.adj_coo
+        """
+        return csr_matrix((np.ones(self._csr_col.shape), self._csr_col, self._csr_row)).tocoo(copy=False)
+
+    @property
+    def adj_csr(self):
+        """
+        Return the adjacency matrix of CSR representation.
+
+        Returns:
+            - numpy.ndarray, array of csr matrix.
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> node_label = dataset.adj_csr
+        """
+        return csr_matrix((np.ones(self._csr_col.shape), self._csr_col, self._csr_row))
 
     def __getitem__(self, idx):
         assert idx == 0, "reddit only has one graph"

@@ -78,7 +78,7 @@ def main():
 
     # model
     net = GatNet(num_layers=num_layers,
-                 data_feat_size=ds.num_features,
+                 data_feat_size=ds.node_feat_size,
                  hidden_dim_size=num_hidden,
                  n_classes=ds.num_classes,
                  heads=[num_heads for _ in range(num_layers)] + [num_out_heads],

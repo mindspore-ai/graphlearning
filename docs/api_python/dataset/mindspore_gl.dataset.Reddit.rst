@@ -73,7 +73,7 @@ mindspore_gl.dataset.Reddit
         返回：
             int，类的数量。
 
-    .. py:method:: mindspore_gl.dataset.Reddit.num_features
+    .. py:method:: mindspore_gl.dataset.Reddit.node_feat_size
         :property:
 
         每个节点的特征数量。

@@ -31,9 +31,9 @@ class MultiHomoGraphDataset(Dataset):
         edge_size *= batch_size
         if mode == PadMode.CONST:
             self.node_feat_pad_op = PadArray2d(dtype=np.float32, mode=PadMode.CONST, direction=PadDirection.COL,
-                                               size=(node_size, dataset.num_features), fill_value=0)
+                                               size=(node_size, dataset.node_feat_size), fill_value=0)
             self.edge_feat_pad_op = PadArray2d(dtype=np.float32, mode=PadMode.CONST, direction=PadDirection.COL,
-                                               size=(edge_size, dataset.num_edge_features), fill_value=0)
+                                               size=(edge_size, dataset.edge_feat_size), fill_value=0)
             self.graph_pad_op = PadHomoGraph(n_edge=edge_size, n_node=node_size, mode=PadMode.CONST)
         else:
             self.node_feat_pad_op = PadArray2d(dtype=np.float32, mode=PadMode.AUTO, direction=PadDirection.COL,
@@ -51,7 +51,7 @@ class MultiHomoGraphDataset(Dataset):
         feature_list = []
         for idx in range(batch_graph_idx.shape[0]):
             graph_list.append(self._dataset[batch_graph_idx[idx]])
-            feature_list.append(self._dataset.graph_feat(batch_graph_idx[idx]))
+            feature_list.append(self._dataset.graph_node_feat(batch_graph_idx[idx]))
 
         # Batch Graph
         batch_graph = self.batch_fn(graph_list)

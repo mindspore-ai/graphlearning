@@ -90,7 +90,7 @@ def main(arguments):
                                                                'edge_map_idx', 'graph_mask'],
                                           sampler=test_batch_sampler, python_multiprocessing=True)
     net = DiffPool(
-        input_dim=dataset.num_features,
+        input_dim=dataset.node_feat_size,
         hidden_dim=hidden_dim,
         embedding_dim=embedding_dim,
         label_dim=dataset.label_dim,

@@ -15,8 +15,11 @@
 """METR LA"""
 import os
 import numpy as np
+from .base_dataset import BaseDataSet
 
-class MetrLa:
+
+#pylint: disable=W0223
+class MetrLa(BaseDataSet):
     """
     METR-LA  Dataset, a source dataset for reading and parsing METR-LA dataset.
 
@@ -114,7 +117,7 @@ class MetrLa:
         return self.features, self.labels
 
     @property
-    def node_num(self):
+    def node_count(self):
         """
         Number of nodes.
 
@@ -123,6 +126,6 @@ class MetrLa:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> node_count = dataset.node_num
+            >>> node_count = dataset.node_count
         """
         return self.features.shape[1]

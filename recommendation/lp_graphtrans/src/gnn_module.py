@@ -62,7 +62,7 @@ class GNNVirtualNodeMS(GNNCell):
                 ValueError("Undefined GNN type called {}".format(gnn_type))
             self.batch_normalize_list.append(
                 ms.nn.SequentialCell(
-                    [ms.nn.BatchNorm1d(num_features=emb_dim, momentum=0.9)]))
+                    [ms.nn.BatchNorm1d(node_feat_size=emb_dim, momentum=0.9)]))
 
         for layer in range(num_layer):
             if layer == num_layer - 1:

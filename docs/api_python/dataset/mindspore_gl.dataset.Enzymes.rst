@@ -53,7 +53,7 @@ mindspore_gl.dataset.Enzymes
         返回：
             numpy.ndarray，累积边数组。
 
-    .. py:method:: mindspore_gl.dataset.Enzymes.graph_feat(graph_idx)
+    .. py:method:: mindspore_gl.dataset.Enzymes.graph_node_feat(graph_idx)
 
         图上每个节点的特征。
 
@@ -103,7 +103,7 @@ mindspore_gl.dataset.Enzymes
         返回：
             numpy.ndarray，节点特征数组。
 
-    .. py:method:: mindspore_gl.dataset.Enzymes.num_features
+    .. py:method:: mindspore_gl.dataset.Enzymes.node_feat_size
         :property:
 
         每个节点的特征数量。

@@ -77,7 +77,7 @@ class GCNDataset(Dataset):
                                           fill_value=pad_node_num - 1,
                                           )
         nid_feat_pad_op = PadArray2d(mode=PadMode.CONST,
-                                     size=[pad_node_num, self.graph_dataset.num_features],
+                                     size=[pad_node_num, self.graph_dataset.node_feat_size],
                                      dtype=self.graph_dataset.node_feat.dtype,
                                      direction=PadDirection.COL,
                                      fill_value=0,
@@ -86,7 +86,7 @@ class GCNDataset(Dataset):
                                      )
         sample_edges = sample_edges[:, :pad_edge_num]
         pad_sample_edges = layered_edges_pad_op(sample_edges)
-        feat = nid_feat_pad_op.lazy([num_sample_nodes, self.graph_dataset.num_features])
+        feat = nid_feat_pad_op.lazy([num_sample_nodes, self.graph_dataset.node_feat_size])
         array_kernel.float_2d_gather_with_dst(feat, self.graph_dataset.node_feat, res['all_nodes'])
         return res['seeds_idx'], label, feat, pad_sample_edges
 

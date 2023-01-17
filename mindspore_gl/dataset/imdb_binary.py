@@ -22,9 +22,11 @@ import urllib.request
 import zipfile
 import numpy as np
 from mindspore_gl.graph import MindHomoGraph
+from .base_dataset import BaseDataSet
 
 
-class IMDBBinary:
+#pylint: disable=W0223
+class IMDBBinary(BaseDataSet):
 
     """
     IMDBBinary Dataset, a source dataset for reading and parsing IMDBBinary dataset.
@@ -180,7 +182,7 @@ class IMDBBinary:
         self._graphs = np.array(list(range(len(self._graph_edges))))
 
     @property
-    def num_features(self):
+    def node_feat_size(self):
         """
         Feature size of each node
 
@@ -189,12 +191,12 @@ class IMDBBinary:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> num_features = dataset.num_features
+            >>> node_feat_size = dataset.node_feat_size
         """
         return self.node_feat.shape[-1]
 
     @property
-    def num_edge_features(self):
+    def edge_feat_size(self):
         """
         Feature size of each edge
 
@@ -203,7 +205,7 @@ class IMDBBinary:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> num_edge_features = dataset.num_edge_features
+            >>> edge_feat_size = dataset.edge_feat_size
         """
         return 0
 
@@ -343,7 +345,7 @@ class IMDBBinary:
             self._node_feat = self._npz_file["node_feat"]
         return self._node_feat
 
-    def graph_feat(self, graph_idx):
+    def graph_node_feat(self, graph_idx):
         return self.node_feat[self.graph_nodes[graph_idx]: self.graph_nodes[graph_idx + 1]]
 
     @property
@@ -361,6 +363,7 @@ class IMDBBinary:
         if self._graph_label is None:
             self._graph_label = self._npz_file["graph_label"]
         return self._graph_label.astype(np.int32)
+
 
     def __getitem__(self, idx) -> Union[MindHomoGraph, np.ndarray]:
         assert idx < self.graph_count, "Index out of range"

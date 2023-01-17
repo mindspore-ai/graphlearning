@@ -79,7 +79,7 @@ def main():
                                           sampler=test_sampler, python_multiprocessing=True)
 
     appr_dim = math.ceil(graph_dataset.num_classes/8)*8
-    model = SAGENet(graph_dataset.num_features, args.num_hidden, appr_dim, graph_dataset.num_classes)
+    model = SAGENet(graph_dataset.node_feat_size, args.num_hidden, appr_dim, graph_dataset.num_classes)
     optimizer = nn.optim.Adam(model.trainable_params(), learning_rate=args.lr, weight_decay=args.weight_decay)
     loss = LossNet(model)
     train_net = nn.TrainOneStepCell(loss, optimizer)

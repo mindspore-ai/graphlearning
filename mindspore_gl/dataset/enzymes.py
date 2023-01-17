@@ -19,8 +19,11 @@ from typing import Union
 import pathlib
 import numpy as np
 from mindspore_gl.graph import MindHomoGraph
+from .base_dataset import BaseDataSet
 
-class Enzymes:
+
+#pylint: disable=W0223
+class Enzymes(BaseDataSet):
     """
     Enzymes Dataset, a source dataset for reading and parsing Enzymes dataset.
 
@@ -195,7 +198,7 @@ class Enzymes:
         self._graphs = np.array(list(range(len(self._graph_edges))))
 
     @property
-    def num_features(self):
+    def node_feat_size(self):
         """
         Feature size of each node.
 
@@ -204,7 +207,7 @@ class Enzymes:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> num_features = dataset.num_features
+            >>> node_feat_size = dataset.node_feat_size
         """
         return self.node_feat.shape[-1]
 
@@ -392,7 +395,7 @@ class Enzymes:
             self._node_feat = self._npz_file["node_feat"]
         return self._node_feat
 
-    def graph_feat(self, graph_idx):
+    def graph_node_feat(self, graph_idx):
         """
         graph features.
 
@@ -419,6 +422,7 @@ class Enzymes:
         if self._graph_label is None:
             self._graph_label = self._npz_file["graph_label"]
         return self._graph_label
+
 
     def __getitem__(self, idx) -> Union[MindHomoGraph, np.ndarray]:
         assert idx < self.graph_count, "Index out of range"

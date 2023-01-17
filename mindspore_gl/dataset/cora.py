@@ -20,9 +20,11 @@ import networkx as nx
 import scipy.sparse as sp
 from scipy.sparse import coo_matrix, csr_matrix
 from mindspore_gl.graph import MindHomoGraph, CsrAdj
+from .base_dataset import BaseDataSet
 
 
-class CoraV2:
+#pylint: disable=W0223
+class CoraV2(BaseDataSet):
     r"""
     Cora Dataset, a source dataset for reading and parsing Cora dataset.
 
@@ -195,7 +197,7 @@ class CoraV2:
         self._nodes = np.array(list(range(len(self._csr_row) - 1)))
 
     @property
-    def num_features(self):
+    def node_feat_size(self):
         """
         Feature size of each node
 
@@ -204,7 +206,7 @@ class CoraV2:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> num_features = dataset.num_features
+            >>> node_feat_size = dataset.node_feat_size
         """
         return self.node_feat.shape[1]
 

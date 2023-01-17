@@ -140,7 +140,7 @@ class Texas:
                 self._outdegree[i] += 1
 
     @property
-    def num_features(self):
+    def node_feat_size(self):
         return self.x.shape[-1]
 
     @property

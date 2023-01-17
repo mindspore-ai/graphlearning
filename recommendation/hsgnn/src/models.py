@@ -29,7 +29,7 @@ class HSGNN(ms.nn.Cell):
         self.num_nodes = dataset.num_nodes
         self.num_edges = dataset.num_edges
         hidden = args.hidden
-        module_list = [ms.nn.Dense(dataset.num_features * 2, hidden,
+        module_list = [ms.nn.Dense(dataset.node_feat_size * 2, hidden,
                                    weight_init=XavierUniform())]
         for _ in range(args.nlayer - 1):
             module_list.append(
