@@ -355,7 +355,7 @@ class PPI:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> node_feat = dataset.node_feat
+            >>> graph_count = dataset.graph_count
         """
         return len(self.train_mask)
 
@@ -402,6 +402,10 @@ class PPI:
 
         Returns:
             - numpy.ndarray, node feature of graph.
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> graph_feat = dataset.graph_feat(graph_idx)
         """
         return self.node_feat[self.graph_nodes[graph_idx]: self.graph_nodes[graph_idx + 1]]
 
@@ -414,6 +418,10 @@ class PPI:
 
         Returns:
             - numpy.ndarray, node label of graph.
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> graph_label = dataset.graph_label(graph_idx)
         """
         return self.node_label[self.graph_nodes[graph_idx]: self.graph_nodes[graph_idx + 1]]
 
