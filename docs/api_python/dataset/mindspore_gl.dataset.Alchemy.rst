@@ -66,7 +66,6 @@ mindspore_gl.dataset.Alchemy
             int，图的数量。
 
     .. py:method:: mindspore_gl.dataset.Alchemy.graph_edge_feat(graph_idx)
-        :property:
 
         图上每个边的特征。
 
@@ -85,7 +84,6 @@ mindspore_gl.dataset.Alchemy
             numpy.ndarray，累积边数组。
 
     .. py:method:: mindspore_gl.dataset.Alchemy.graph_feat(graph_idx)
-        :property:
 
         图上每个节点的特征。
 
@@ -166,7 +164,6 @@ mindspore_gl.dataset.Alchemy
 
         返回：
             numpy.ndarray，校验图ID数组。
-
 
     .. py:method:: mindspore_gl.dataset.Alchemy.val_mask
         :property:

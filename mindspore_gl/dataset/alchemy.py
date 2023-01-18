@@ -295,7 +295,7 @@ class Alchemy:
 
        Examples:
            >>> #dataset is an instance object of Dataset
-           >>> num_classes = dataset.num_classes
+           >>> num_edge_features = dataset.num_edge_features
        """
         return self.edge_feat.shape[-1]
 
@@ -309,7 +309,7 @@ class Alchemy:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> node_feat = dataset.graph_label
+            >>> n_tasks = dataset.n_tasks
        """
         return self.graph_label.shape[-1]
 
@@ -415,7 +415,7 @@ class Alchemy:
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> node_feat = dataset.node_feat
+            >>> graph_count = dataset.graph_count
         """
         return len(self._graphs)
 
@@ -462,6 +462,10 @@ class Alchemy:
 
         Returns:
             - numpy.ndarray, node feature of graph.
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> graph_feat = dataset.graph_feat(graph_idx)
         """
         return self.node_feat[self.graph_nodes[graph_idx]: self.graph_nodes[graph_idx + 1]]
 
@@ -474,6 +478,10 @@ class Alchemy:
 
         Returns:
             - numpy.ndarray, edge feature of graph.
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> graph_edge_feat = dataset.graph_edge_feat(graph_idx)
         """
         return self.edge_feat[self.graph_edges[graph_idx]: self.graph_edges[graph_idx + 1]]
 
