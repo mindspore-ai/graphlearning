@@ -14,6 +14,9 @@
 # ============================================================================
 """Module init"""
 from .version import __version__, mindspore_version_check
+mindspore_version_check()
+
+# pylint: disable=C0413
 from .parser import *
 from .nn import *
 from .graph import *
@@ -25,5 +28,3 @@ from .utils import *
 __all__ = parser.__all__
 __all__.extend(nn.__all__)
 __all__.extend(__version__)
-
-mindspore_version_check()

@@ -43,9 +43,9 @@ Due the dependency between MindSpore Graph Learning and MindSpore, please follow
 
 | MindSpore Graph Learning Version |                              Branch                              | MindSpore version |
 |:--------------------------------:|:----------------------------------------------------------------:|:-----------------:|
-|              master              | [master](https://gitee.com/mindspore/graphlearning/tree/master/) |      >=1.7.1      |
+|              master              | [master](https://gitee.com/mindspore/graphlearning/tree/master/) |     >=1.10.0      |
 |              0.1.0               |   [r0.1](https://gitee.com/mindspore/graphlearning/tree/r0.1/)   |      >=1.6.1      |
-|              0.2.0               |   [r0.2](https://gitee.com/mindspore/graphlearning/tree/r0.2/)   |     >=1.10.1      |
+|              0.2.0a0               |   [r0.2.0-alpha](https://gitee.com/mindspore/graphlearning/tree/r0.2.0-alpha/)   |     >=1.10.0      |
 
 ### Installation Methods
 
