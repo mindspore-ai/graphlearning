@@ -1,6 +1,6 @@
 # **MindSpore Graph Learning Release Notes**
 
-## MindSpore Graph Learning 0.2.0
+## MindSpore Graph Learning 0.2.0-alpha
 
 ### Major Features
 
