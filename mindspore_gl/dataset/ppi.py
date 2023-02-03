@@ -240,15 +240,15 @@ class PPI(BaseDataSet):
     @property
     def test_mask(self):
         """
-       Mask of test nodes.
+        Mask of test nodes.
 
-       Returns:
-           - numpy.ndarray, array of mask.
+        Returns:
+            - numpy.ndarray, array of mask.
 
-       Examples:
-           >>> #dataset is an instance object of Dataset
-           >>> test_mask = dataset.test_mask
-       """
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> test_mask = dataset.test_mask
+        """
         if self._test_mask is None:
             self._test_mask = self._npz_file['test_mask']
         return self._test_mask
@@ -358,7 +358,7 @@ class PPI(BaseDataSet):
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> node_feat = dataset.node_feat
+            >>> graph_count = dataset.graph_count
         """
         return len(self.train_mask)
 
@@ -405,6 +405,10 @@ class PPI(BaseDataSet):
 
         Returns:
             - numpy.ndarray, node feature of graph.
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> graph_node_feat = dataset.graph_node_feat(graph_idx)
         """
         return self.node_feat[self.graph_nodes[graph_idx]: self.graph_nodes[graph_idx + 1]]
 
@@ -417,6 +421,10 @@ class PPI(BaseDataSet):
 
         Returns:
             - numpy.ndarray, node label of graph.
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> graph_node_label = dataset.graph_node_label(graph_idx)
         """
         return self.node_label[self.graph_nodes[graph_idx]: self.graph_nodes[graph_idx + 1]]
 

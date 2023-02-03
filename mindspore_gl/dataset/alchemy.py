@@ -291,14 +291,14 @@ class Alchemy(BaseDataSet):
     @property
     def edge_feat_size(self):
         """
-       Number of label classes.
+        Feature size of each edge.
 
-       Returns:
-           - int, the number of classes.
+        Returns:
+            - int, the number of feature size.
 
-       Examples:
-           >>> #dataset is an instance object of Dataset
-           >>> num_classes = dataset.num_classes
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> edge_feat_size = dataset.edge_feat_size
        """
         return self.edge_feat.shape[-1]
 
@@ -312,7 +312,7 @@ class Alchemy(BaseDataSet):
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> node_feat = dataset.graph_label
+            >>> num_classes = dataset.num_classes
        """
         return self.graph_label.shape[-1]
 
@@ -402,7 +402,7 @@ class Alchemy(BaseDataSet):
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> val_mask = dataset.graph_edges
+            >>> graph_edges = dataset.graph_edges
         """
         if self._graph_edges is None:
             self._graph_edges = self._npz_file['graph_edges']
@@ -418,7 +418,7 @@ class Alchemy(BaseDataSet):
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> node_feat = dataset.node_feat
+            >>> graph_count = dataset.graph_count
         """
         return len(self._graphs)
 
@@ -465,6 +465,10 @@ class Alchemy(BaseDataSet):
 
         Returns:
             - numpy.ndarray, node feature of graph.
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> graph_node_feat = dataset.graph_node_feat(graph_idx)
         """
         return self.node_feat[self.graph_nodes[graph_idx]: self.graph_nodes[graph_idx + 1]]
 
@@ -477,6 +481,10 @@ class Alchemy(BaseDataSet):
 
         Returns:
             - numpy.ndarray, edge feature of graph.
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> graph_edge_feat = dataset.graph_edge_feat(graph_idx)
         """
         return self.edge_feat[self.graph_edges[graph_idx]: self.graph_edges[graph_idx + 1]]
 

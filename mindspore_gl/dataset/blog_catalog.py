@@ -90,13 +90,13 @@ class BlogCatalog(BaseDataSet):
 
     def _preprocess(self):
         """Process data"""
-        nodes = pd.read_csv(ops.join(self._root, 'nodes.csv'), header=None)
+        nodes = pd.read_csv(osp.join(self._root, 'nodes.csv'), header=None)
         nodes = list(nodes.values[:, 0])
         node_num = len(nodes)
-        groups = pd.read_csv(ops.join(self._root, 'groups.csv'), header=None)
+        groups = pd.read_csv(osp.join(self._root, 'groups.csv'), header=None)
         groups = list(groups.values[:, 0])
-        edges = pd.read_csv(ops.join(self._root, 'edges.csv'), header=None)
-        group_edges = pd.read_csv(ops.join(self._root, 'group-edges.csv'), header=None)
+        edges = pd.read_csv(osp.join(self._root, 'edges.csv'), header=None)
+        group_edges = pd.read_csv(osp.join(self._root, 'group-edges.csv'), header=None)
         group_edges = group_edges.drop_duplicates(subset=[0])
         vocab = group_edges.values[:, 0] - 1
         label = group_edges.values[:, 1]

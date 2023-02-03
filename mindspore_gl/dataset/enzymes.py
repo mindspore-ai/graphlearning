@@ -375,7 +375,7 @@ class Enzymes(BaseDataSet):
 
         Examples:
             >>> #dataset is an instance object of Dataset
-            >>> node_feat = dataset.node_feat
+            >>> graph_count = dataset.graph_count
         """
         return len(self._graphs)
 
@@ -404,6 +404,10 @@ class Enzymes(BaseDataSet):
 
         Returns:
             - numpy.ndarray, node feature of graph.
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> graph_node_feat = dataset.graph_node_feat(graph_idx)
         """
         return self.node_feat[self.graph_nodes[graph_idx]: self.graph_nodes[graph_idx + 1]]
 

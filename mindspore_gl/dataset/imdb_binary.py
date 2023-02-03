@@ -346,6 +346,19 @@ class IMDBBinary(BaseDataSet):
         return self._node_feat
 
     def graph_node_feat(self, graph_idx):
+        """
+        graph node features.
+
+        Args:
+            graph_idx (int): index of graph.
+
+        Returns:
+            - numpy.ndarray, node feature of graph.
+
+        Examples:
+            >>> #dataset is an instance object of Dataset
+            >>> graph_node_feat = dataset.graph_node_feat(graph_idx)
+        """
         return self.node_feat[self.graph_nodes[graph_idx]: self.graph_nodes[graph_idx + 1]]
 
     @property
