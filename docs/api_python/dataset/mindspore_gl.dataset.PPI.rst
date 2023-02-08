@@ -74,7 +74,7 @@ mindspore_gl.dataset.PPI
         返回：
             numpy.ndarray，图的节点特征。
 
-    .. py:method:: mindspore_gl.dataset.PPI.graph_label(graph_idx)
+    .. py:method:: mindspore_gl.dataset.PPI.graph_node_label(graph_idx)
 
         图上每个节点的真实标签。
 

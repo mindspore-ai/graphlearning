@@ -41,11 +41,10 @@ applications. For more details, please refer to <https://gitee.com/mindspore/gra
 
 Due the dependency between MindSpore Graph Learning and MindSpore, please follow the table below and install the corresponding MindSpore verision from [MindSpore download page](https://www.mindspore.cn/versions/en).
 
-| MindSpore Graph Learning Version |                              Branch                              | MindSpore version |
-|:--------------------------------:|:----------------------------------------------------------------:|:-----------------:|
-|              master              | [master](https://gitee.com/mindspore/graphlearning/tree/master/) |     >=1.10.0      |
-|              0.1.0               |   [r0.1](https://gitee.com/mindspore/graphlearning/tree/r0.1/)   |      >=1.6.1      |
-|              0.2.0a0               |   [r0.2.0-alpha](https://gitee.com/mindspore/graphlearning/tree/r0.2.0-alpha/)   |     >=1.10.0      |
+| MindSpore Graph Learning Version |                              Branch                              | MindSpore Minimum Version Requirements |
+|:--------------------------------:|:----------------------------------------------------------------:|:--------------------------------------:|
+|              master              | [master](https://gitee.com/mindspore/graphlearning/tree/master/) |                >=1.10.0                |
+|              0.2.0a0               |   [r0.2.0-alpha](https://gitee.com/mindspore/graphlearning/tree/r0.2.0-alpha/)   |                >=1.10.0                |
 
 ### Installation Methods
 
@@ -53,12 +52,21 @@ You can install MindSpore Graph Learning either by pip or by source code.
 
 #### Installation by pip
 
-```bash
-pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/1.6.1/GraphLearning/any/mindspore_gl_gpu-{version}-cp37-cp37m-linux_x86_64.whl --trusted-host ms-release.obs.cn-north-4.myhuaweicloud.com -i https://pypi.tuna.tsinghua.edu.cn/simple
-```
+- Ascend/CPU
+
+    ```bash
+    pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.0.0a0/GraphLearning/cpu/{system_structure}/mindspore_gl-0.2.0a0-cp37-cp37m-linux_{system_structure}.whl --trusted-host ms-release.obs.cn-north-4.myhuaweicloud.com -i https://pypi.tuna.tsinghua.edu.cn/simple
+    ```
+
+- GPU
+
+    ```bash
+    pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.0.0a0/GraphLearning/gpu/x86_64/cuda-{cuda_verison}/mindspore_gl-0.2.0a0-cp37-cp37m-linux_x86_64.whl --trusted-host ms-release.obs.cn-north-4.myhuaweicloud.com -i https://pypi.tuna.tsinghua.edu.cn/simple
+    ```
 
 > - When the network is connected, dependency items are automatically downloaded during .whl package installation. For details about other dependency items, see [requirements.txt](https://gitee.com/mindspore/graphlearning/blob/master/requirements.txt). In other cases, you need to manually install dependency items.
-> - `{version}` denotes the version of MindSpore Graph Learning. For example, when you are downloading MindSpore Graph Learning 0.1, `{version}` should be 0.1.
+> - `{system_structure}` denotes the Linux system architecture, and the option is `x86_64` and `arrch64`.
+> - `{cuda_verison}` denotes the CUDA version, and the option is `10.1`, `11.1` and `11.6`。
 
 #### Installation by Source Code
 
