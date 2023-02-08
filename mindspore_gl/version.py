@@ -23,8 +23,8 @@ def mindspore_version_check():
               "the instruction at https://www.mindspore.cn/install")
         raise
 
-    ms_gl_version_match = {'0.1': '1.6.1', '0.2': '1.10.1',
-                           'master': '1.10.1'}
+    ms_gl_version_match = {'0.1': '1.6.1', '0.2.0a0': '1.10.0',
+                           'master': '1.10.0'}
 
     ms_version = ms.__version__
     logger.info("Current MindSpore version is {}".format(ms_version))
