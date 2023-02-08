@@ -13,8 +13,8 @@ def mindspore_version_check():
         ImportError: If the MindSpore can not be imported.
     """
 
-    ms_gl_version_match = {'0.1': '1.6.1', '0.2.0a0': '1.10.1',
-                           'master': '1.10.1'}
+    ms_gl_version_match = {'0.1': '1.6.1', '0.2.0a0': '1.10.0',
+                           'master': '1.10.0'}
     try:
         import mindspore as ms
     except (ImportError, ModuleNotFoundError):
