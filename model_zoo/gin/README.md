@@ -31,4 +31,4 @@ CUDA_VISIBLE_DEVICES=0 python model_zoo/gin/trainval_imdb_binary.py --data_path 
 
 IMDB-BINARY dataset
 
-Test acc: 0.72```
+Test acc: 0.72
