@@ -19,7 +19,8 @@ import numpy as np
 import mindspore as ms
 from mindspore_gl.dataset.imdb_binary import IMDBBinary
 from mindspore_gl.graph import BatchHomoGraph, PadHomoGraph, PadMode, PadArray2d,\
-    MindHomoGraph, get_laplacian, PadDirection, norm, UnBatchHomoGraph, remove_self_loop, add_self_loop
+    MindHomoGraph, get_laplacian, PadDirection, norm, UnBatchHomoGraph, remove_self_loop, add_self_loop,\
+    gcn_norm
 import pytest
 
 dataset = IMDBBinary("/home/workspace/mindspore_dataset/GNN_Dataset/")
@@ -206,7 +207,9 @@ def test_batch_and_pad_auto():
     assert pad_res[1].node_count == graphs[1].node_count
     assert pad_res.adj_coo.shape[1] == pad_res.edge_count
 
-
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
 def test_laplacian():
     """
     Feature: test get_laplacian
@@ -221,6 +224,9 @@ def test_laplacian():
                               -1.4142134, 1., 1., 1., 1., 1., 1., 1.])
     assert np.allclose(edge_weight.asnumpy(), expect_output)
 
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
 def test_norm():
     """
     Feature: test norm
@@ -234,6 +240,9 @@ def test_norm():
                               -1., 1., 1., 1., 1., 1., 1., 1.])
     assert np.allclose(edge_weight.asnumpy(), expect_output)
 
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
 def test_remove_loop():
     """
     Feature: Test that the removal of self-loops is performed correctly.
@@ -250,6 +259,9 @@ def test_remove_loop():
     adj = remove_self_loop(adj, 'coo')
     assert ~adj.diagonal().any()
 
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
 def test_add_loop():
     """
     Feature: Test that adding a self-loop is executed correctly.
@@ -272,3 +284,21 @@ def test_add_loop():
         if edge_index[0, i] == edge_index[1, i]:
             count += 1
     assert count >= node
+
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_gcn_norm():
+    """
+    Feature: test gcn_norm
+    Description: test gcn_norm
+    Expectation: Output result
+    """
+    edge_index = [src_idx, dst_idx]
+    edge_index = ms.Tensor(edge_index, ms.int32)
+    _, edge_weight = gcn_norm(edge_index, num_nodes)
+    expect_output = np.array([[0.40824825], [0.7071067], [0.57735026], [0.4999999], [0.40824825],
+                              [0.40824825], [0.4999999], [0.40824825], [0.4999999], [0.3333333],
+                              [1.], [0.4999999], [0.3333333], [0.4999999], [0.4999999]]
+                             )
+    assert np.allclose(edge_weight.asnumpy(), expect_output)

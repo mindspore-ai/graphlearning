@@ -41,6 +41,7 @@ from mindspore_gl.nn import MeanConv
 from mindspore_gl.nn import GINConv
 from mindspore_gl.nn import GCNConv
 from mindspore_gl.nn import SGConv
+from mindspore_gl.nn import GCNEConv
 
 node_feat = ms.Tensor([
     [1, 2, 3, 4],
@@ -662,4 +663,26 @@ def test_sgconv():
     sgconv = SGConv(in_feat_size=4, out_feat_size=2)
     sgconv.dense.weight.set_data(sg_weight)
     output = sgconv(node_feat, in_degree, out_degree, *graph_field.get_graph())
+    assert np.allclose(output.asnumpy(), expect_output)
+
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_gcneconv():
+    """
+    Features:    GCNEConv
+    Description: Test GCNEConv.
+    Expectation: The output is as expected.
+    """
+    weight_gcn = np.array([-0.21176505, -0.33282989, 0.32413161, 0.44888139])
+    weight_gcn = ms.Tensor(weight_gcn, ms.float32).view((1, 4))
+    bias_gcn = np.array(0.34598231)
+    bias_gcn = ms.Tensor(bias_gcn, ms.float32).view(1)
+    expect_output = np.array([[1.5795164], [2.8130505], [0.3459823], [1.0070503],
+                              [1.1086744], [3.2740257], [2.1382723]])
+    edge_weight = ms.Tensor([[0], [1], [2], [3], [4], [5], [6], [7]], ms.float32)
+    net = GCNEConv(4, 1, True)
+    net.fc1.weight.set_data(weight_gcn)
+    net.bias.set_data(bias_gcn)
+    output = net(node_feat, edge_weight, *graph_field.get_graph())
     assert np.allclose(output.asnumpy(), expect_output)

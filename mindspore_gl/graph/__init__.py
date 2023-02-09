@@ -18,10 +18,12 @@ from .get_laplacian import get_laplacian
 from .norm import norm
 from .graph import MindHomoGraph, CsrAdj, BatchMeta
 from .ops import BatchHomoGraph, PadArray2d, PadHomoGraph, PadMode, PadDirection, UnBatchHomoGraph
+from .gcn_norm import gcn_norm
 
 __all__ = [
     "add_self_loop",
     "remove_self_loop",
+    "gcn_norm",
     "get_laplacian",
     "norm",
     "MindHomoGraph",
