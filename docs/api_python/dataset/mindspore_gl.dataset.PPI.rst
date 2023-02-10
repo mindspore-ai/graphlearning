@@ -100,6 +100,14 @@ mindspore_gl.dataset.PPI
         返回：
             numpy.ndarray，节点特征数组。
 
+    .. py:method:: mindspore_gl.dataset.PPI.node_feat_size
+        :property:
+
+        每个节点的特征大小。
+
+        返回：
+            int，特征大小的数量。
+
     .. py:method:: mindspore_gl.dataset.PPI.node_label
         :property:
 
@@ -115,14 +123,6 @@ mindspore_gl.dataset.PPI
 
         返回：
             int，类的数量。
-
-    .. py:method:: mindspore_gl.dataset.PPI.node_feat_size
-        :property:
-
-        每个节点的特征大小。
-
-        返回：
-            int，特征大小的数量。
 
     .. py:method:: mindspore_gl.dataset.PPI.test_graphs
         :property:

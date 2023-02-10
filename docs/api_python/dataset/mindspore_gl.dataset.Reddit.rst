@@ -33,6 +33,22 @@ mindspore_gl.dataset.Reddit
         - **TypeError** - 如果 `root` 不是str。
         - **RuntimeError** - 如果 `root` 不包含数据文件。
 
+    .. py:method:: mindspore_gl.dataset.Reddit.adj_coo
+        :property:
+
+        返回COO表示的邻接矩阵。
+
+        返回：
+            numpy.ndarray，coo矩阵数组。
+
+    .. py:method:: mindspore_gl.dataset.Reddit.adj_csr
+        :property:
+
+        返回CSR表示的邻接矩阵。
+
+        返回：
+            numpy.ndarray，csr矩阵数组。
+
     .. py:method:: mindspore_gl.dataset.Reddit.edge_count
         :property:
 
@@ -57,6 +73,14 @@ mindspore_gl.dataset.Reddit
         返回：
             numpy.ndarray，节点特征数组。
 
+    .. py:method:: mindspore_gl.dataset.Reddit.node_feat_size
+        :property:
+
+        每个节点的特征数量。
+
+        返回：
+            int，特征的数量。
+
     .. py:method:: mindspore_gl.dataset.Reddit.node_label
         :property:
 
@@ -72,14 +96,6 @@ mindspore_gl.dataset.Reddit
 
         返回：
             int，类的数量。
-
-    .. py:method:: mindspore_gl.dataset.Reddit.node_feat_size
-        :property:
-
-        每个节点的特征数量。
-
-        返回：
-            int，特征的数量。
 
     .. py:method:: mindspore_gl.dataset.Reddit.test_mask
         :property:

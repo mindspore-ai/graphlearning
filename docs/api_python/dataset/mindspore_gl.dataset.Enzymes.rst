@@ -53,6 +53,14 @@ mindspore_gl.dataset.Enzymes
         返回：
             numpy.ndarray，累积边数组。
 
+    .. py:method:: mindspore_gl.dataset.Enzymes.graph_label
+        :property:
+
+        图标签。
+
+        返回：
+            numpy.ndarray，图标签数组。
+
     .. py:method:: mindspore_gl.dataset.Enzymes.graph_node_feat(graph_idx)
 
         图上每个节点的特征。
@@ -62,14 +70,6 @@ mindspore_gl.dataset.Enzymes
 
         返回：
             numpy.ndarray，图的节点特征。
-
-    .. py:method:: mindspore_gl.dataset.Enzymes.graph_label
-        :property:
-
-        图标签。
-
-        返回：
-            numpy.ndarray，图标签数组。
 
     .. py:method:: mindspore_gl.dataset.Enzymes.graph_nodes
         :property:

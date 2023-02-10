@@ -44,7 +44,7 @@ mindspore_gl.dataset.MetrLa
             - **in_timestep** (int) - 输入时序数。
             - **out_timestep** (int) - 输出时序数。
 
-    .. py:method:: mindspore_gl.dataset.MetrLa.node_num
+    .. py:method:: mindspore_gl.dataset.MetrLa.node_count
         :property:
 
         节点数。
