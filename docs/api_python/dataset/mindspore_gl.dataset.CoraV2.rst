@@ -96,6 +96,14 @@ mindspore_gl.dataset.CoraV2
         返回：
             numpy.ndarray，节点特征数组。
 
+    .. py:method:: mindspore_gl.dataset.CoraV2.node_feat_size
+        :property:
+
+        每个节点的特征维度。
+
+        返回：
+            int，特征的维度。
+
     .. py:method:: mindspore_gl.dataset.CoraV2.node_label
         :property:
 
@@ -111,14 +119,6 @@ mindspore_gl.dataset.CoraV2
 
         返回：
             int，类的数量。
-
-    .. py:method:: mindspore_gl.dataset.CoraV2.node_feat_size
-        :property:
-
-        每个节点的特征维度。
-
-        返回：
-            int，特征的维度。
 
     .. py:method:: mindspore_gl.dataset.CoraV2.test_mask
         :property:

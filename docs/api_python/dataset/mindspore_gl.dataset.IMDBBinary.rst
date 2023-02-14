@@ -38,6 +38,14 @@ mindspore_gl.dataset.IMDBBinary
         - **TypeError** - 如果 `root` 不是str。
         - **RuntimeError** - 如果 `root` 不包含数据文件。
 
+    .. py:method:: mindspore_gl.dataset.IMDBBinary.edge_feat_size
+        :property:
+
+        标签类数量。
+
+        返回：
+            int，类的数量。
+
     .. py:method:: mindspore_gl.dataset.IMDBBinary.graph_count
         :property:
 
@@ -62,14 +70,6 @@ mindspore_gl.dataset.IMDBBinary
         返回：
             numpy.ndarray，图标签数组。
 
-    .. py:method:: mindspore_gl.dataset.IMDBBinary.graph_nodes
-        :property:
-
-        累计图节点数。
-
-        返回：
-            numpy.ndarray，累计节点数组。
-
     .. py:method:: mindspore_gl.dataset.IMDBBinary.graph_node_feat(graph_idx)
 
         图上每个节点的特征。
@@ -80,6 +80,14 @@ mindspore_gl.dataset.IMDBBinary
         返回：
             numpy.ndarray，图的节点特征。
 
+    .. py:method:: mindspore_gl.dataset.IMDBBinary.graph_nodes
+        :property:
+
+        累计图节点数。
+
+        返回：
+            numpy.ndarray，累计节点数组。
+
     .. py:method:: mindspore_gl.dataset.IMDBBinary.node_feat
         :property:
 
@@ -88,22 +96,6 @@ mindspore_gl.dataset.IMDBBinary
         返回：
             numpy.ndarray，节点特征数组。
 
-    .. py:method:: mindspore_gl.dataset.IMDBBinary.num_classes
-        :property:
-
-        图标签种类。
-
-        返回：
-            int，图标签的种类。
-
-    .. py:method:: mindspore_gl.dataset.IMDBBinary.edge_feat_size
-        :property:
-
-        标签类数量。
-
-        返回：
-            int，类的数量。
-
     .. py:method:: mindspore_gl.dataset.IMDBBinary.node_feat_size
         :property:
 
@@ -111,6 +103,14 @@ mindspore_gl.dataset.IMDBBinary
 
         返回：
             int，特征的数量。
+
+    .. py:method:: mindspore_gl.dataset.IMDBBinary.num_classes
+        :property:
+
+        图标签种类。
+
+        返回：
+            int，图标签的种类。
 
     .. py:method:: mindspore_gl.dataset.IMDBBinary.train_graphs
         :property:
