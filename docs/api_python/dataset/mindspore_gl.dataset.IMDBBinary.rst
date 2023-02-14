@@ -54,6 +54,16 @@ mindspore_gl.dataset.IMDBBinary
         返回：
             numpy.ndarray，累积边数组。
 
+    .. py:method:: mindspore_gl.dataset.IMDBBinary.graph_feat(graph_idx)
+
+        图上每个节点的特征。
+
+        参数：
+            - **graph_idx** (int) - 图索引。
+
+        返回：
+            numpy.ndarray，图的节点特征。
+
     .. py:method:: mindspore_gl.dataset.IMDBBinary.graph_label
         :property:
 
@@ -69,16 +79,6 @@ mindspore_gl.dataset.IMDBBinary
 
         返回：
             numpy.ndarray，累计节点数组。
-
-    .. py:method:: mindspore_gl.dataset.IMDBBinary.graph_feat(graph_idx)
-
-        图上每个节点的特征。
-
-        参数：
-            - **graph_idx** (int) - 图索引。
-
-        返回：
-            numpy.ndarray，图的节点特征。
 
     .. py:method:: mindspore_gl.dataset.IMDBBinary.node_feat
         :property:

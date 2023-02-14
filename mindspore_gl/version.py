@@ -44,9 +44,9 @@ def mindspore_version_check():
             break
     if not check_res:
         logger.warning("Current version of MindSpore is not compatible with MindSpore Graph Learning. "
-                       "Some functions might not work or even raise error. Please install MindSpore "
-                       "version == {} For more details about dependency setting, please check "
-                       "the instructions at MindSpore official website https://www.mindspore.cn/install "
+                       "Some functions might not work or even raise error. "
+                       "Please install MindSpore version >= {} For more details about dependency setting, "
+                       "please check the instructions at MindSpore official website https://www.mindspore.cn/install "
                        "or check the README.md at https://gitee.com/mindspore/graphlearning"
                        .format(required_verision))
         warning_countdown = 3
