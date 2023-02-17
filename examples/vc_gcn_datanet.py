@@ -75,13 +75,14 @@ class DataNet(ms.nn.Cell):
 
 def main(train_args):
     if train_args.fuse:
-        context.set_context(device_target="GPU", save_graphs=True, save_graphs_path="./computational_graph/",
+        context.set_context(device_target=train_args.device, save_graphs=True,
+                            save_graphs_path="./computational_graph/",
                             mode=context.GRAPH_MODE, enable_graph_kernel=True,
                             graph_kernel_flags="--enable_expand_ops=Gather --enable_cluster_ops=TensorScatterAdd,"
                                                "UnsortedSegmentSum, GatherNd --enable_recompute_fusion=false "
                                                "--enable_parallel_fusion=true ")
     else:
-        context.set_context(device_target="GPU", mode=context.PYNATIVE_MODE)
+        context.set_context(device_target=train_args.device, mode=context.PYNATIVE_MODE)
     # dataloader
     ds = GraphDataset(train_args.data_path)
     feature_size = ds.x.shape[1]
@@ -128,7 +129,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="GAT")
     parser.add_argument("--data-path", type=str, default='/home/workspace/cora_v2_with_mask.npz',
                         help="path to dataloader")
-    parser.add_argument("--gpu", type=int, default=0, help="which gpu to use")
+    parser.add_argument("--device", type=str, default="GPU", help="which device to use")
     parser.add_argument("--dropout", type=float, default=0.5, help="drop out keep rate")
     parser.add_argument("--epochs", type=int, default=200, help="number of training epochs")
     parser.add_argument("--num-layers", type=int, default=1, help="number of hidden layers")

@@ -81,6 +81,7 @@ def main(arguments):
     optimizer = nn.optim.Adam(net.trainable_params(), learning_rate=arguments.lr)
     loss = LossNet(net)
     train_net = nn.TrainOneStepCell(loss, optimizer)
+    best_acc = 0
     for e in range(arguments.epochs):
         beg = time.time()
         train_net.set_train(True)
@@ -93,9 +94,13 @@ def main(arguments):
         train_count = np.sum(np.equal(predict, dataset.node_label) * train_mask)
         val_count = np.sum(np.equal(predict, dataset.node_label) * val_mask)
         test_count = np.sum(np.equal(predict, dataset.node_label) * test_mask)
+        test_acc = test_count / test_node_count
+        if test_acc > best_acc:
+            best_acc = test_acc
         print('Epoch {} time:{:.4f} Train loss {:.5f} Train acc: {:.4f} Val acc: {:.4f} Test acc: {:.4f}'
               .format(e, end - beg, float(train_loss.asnumpy()), train_count / train_node_count,
-                      val_count / val_node_count, test_count / test_node_count))
+                      val_count / val_node_count, test_acc))
+    print('The Best Test acc: {:.4f}'.format(best_acc))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='GeniePath')
