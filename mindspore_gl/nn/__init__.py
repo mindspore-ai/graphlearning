@@ -33,7 +33,8 @@ from .conv import (
     NNConv,
     SAGEConv,
     SGConv,
-    TAGConv
+    TAGConv,
+    GCNEConv
 )
 from .temporal import (
     ASTGCN, STConv
@@ -79,6 +80,7 @@ __all__ = [
     'Set2Set',
     'SortPooling',
     'SumPooling',
-    'WeightAndSum'
+    'WeightAndSum',
+    'GCNEConv'
 ]
 __all__.sort()
