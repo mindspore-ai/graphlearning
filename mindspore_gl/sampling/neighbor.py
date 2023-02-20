@@ -36,10 +36,10 @@ def sage_sampler_on_homo(homo_graph: mindspore_gl.graph.MindHomoGraph, seeds, ne
         neighbor_nums(List): neighbor nums for each hop.
 
     Returns:
-        - **layered_edges_{idx}** (numpy.array) - edge array for hop idx.
-        - **layered_eids_{idx}** (numpy.array) - edge id array for hop idx.
-        - **all_nodes** - all nodes' global ids.
-        - **seeds_idx** - seeds local ids.
+        - **layered_edges_{idx}** (numpy.array) - edge reindex array for hop idx.
+        - **layered_eids_{idx}** (numpy.array) - edge reindex id array for hop idx.
+        - **all_nodes** - sampling all nodes' global ids.
+        - **seeds_idx** - seeds local reindex ids.
 
     Raises:
         TypeError: If 'homo_graph' is not a MindHomoGraph class.
@@ -61,7 +61,7 @@ def sage_sampler_on_homo(homo_graph: mindspore_gl.graph.MindHomoGraph, seeds, ne
         >>> edge_array = np.transpose(np.array(list(graph.edges)))
         >>> row = edge_array[0]
         >>> col = edge_array[1]
-        >>> data = np.zeros(row.shape)
+        >>> data = np.ones(row.shape)
         >>> csr_mat = csr_matrix((data, (row, col)), shape=(node_count, node_count))
         >>> generated_graph = MindHomoGraph()
         >>> node_dict = {idx: idx for idx in range(node_count)}
@@ -73,12 +73,11 @@ def sage_sampler_on_homo(homo_graph: mindspore_gl.graph.MindHomoGraph, seeds, ne
         >>> res = sage_sampler_on_homo(homo_graph=generated_graph, seeds=nodes[:3].astype(np.int32),\
         ... neighbor_nums=[2, 2])
         >>> print(res)
-        {'seeds_idx': array([0, 3, 2], dtype=int32), 'all_nodes': array([0, 1, 2, 1, 4, 5, 6, 5, 6, 7, 8, 9],
-           dtype=int32), 'layered_edges_0': array([[0, 0, 3, 3, 2],
-           [3, 4, 7, 8, 7]], dtype=int32), 'layered_eids_0': array([[0, 0, 3, 3, 2],
-           [3, 4, 7, 8, 7]], dtype=int32), 'layered_edges_1': array([[ 3,  3,  4,  4,  7,  8,  8],
-           [ 7,  8, 10, 11,  9, 10, 11]], dtype=int32), 'layered_eids_1': array([[ 3,  3,  4,  4,  7,  8,  8],
-           [ 7,  8, 10, 11,  9, 10, 11]], dtype=int32)}
+        {'seeds_idx': array([0, 1, 2], dtype=int32), 'all_nodes': array([0, 1, 2, 4, 5, 6, 7, 8, 9], dtype=int32),
+        'layered_edges_0': array([[0, 0, 1, 1, 2], [1, 3, 4, 5, 4]], dtype=int32),
+        'layered_eids_0': array([[0, 0, 1, 1, 2], [1, 3, 4, 5, 4]], dtype=int32),
+        'layered_edges_1': array([[1, 1, 3, 3, 4, 5, 5], [4, 5, 7, 8, 6, 7, 8]], dtype=int32),
+        'layered_eids_1': array([[1, 1, 3, 3, 4, 5, 5], [4, 5, 7, 8, 6, 7, 8]], dtype=int32)}
 
     """
     if not isinstance(homo_graph, MindHomoGraph):
@@ -105,7 +104,8 @@ def sage_sampler_on_homo(homo_graph: mindspore_gl.graph.MindHomoGraph, seeds, ne
         all_nodes.append(seeds)
 
     # get_node_features:
-    all_nodes = np.concatenate(all_nodes, axis=0)
+    all_nodes = np.unique(np.concatenate(all_nodes, axis=0))
+    all_nodes = np.sort(all_nodes)
 
     # reindex sampled result
     reindex_dict = {all_nodes[index]: index for index in range(all_nodes.shape[0])}
