@@ -91,13 +91,13 @@ mindspore_gl.sampling
         - **neighbor_nums** (List) - 每跳的邻居数量。
 
     返回：
-        - layered_edges_{idx}(numpy.ndarray)，第idx跳时采样的边数组。
+        - layered_edges_{idx}(numpy.ndarray)，第idx跳时采样的重编号边数组。
 
-        - layered_eids_{idx}(numpy.ndarray)，第idx跳时采样的边上点的ID。
+        - layered_eids_{idx}(numpy.ndarray)，第idx跳时采样的边上点的重编号ID。
 
-        - all_nodes，所有节点的ID。
+        - all_nodes，采样到的所有节点的ID。
 
-        - seeds_idx，种子的ID。
+        - seeds_idx，重编号的种子的ID。
 
     异常：
         - **TypeError** - 如果 `homo_graph` 不是MindHomoGraph类。

@@ -317,7 +317,7 @@ class MindHomoGraph:
         >>> edge_array = np.transpose(np.array(list(graph.edges)))
         >>> row = edge_array[0]
         >>> col = edge_array[1]
-        >>> data = np.zeros(row.shape)
+        >>> data = np.ones(row.shape)
         >>> csr_mat = csr_matrix((data, (row, col)), shape=(node_count, node_count))
         >>> generated_graph = MindHomoGraph()
         >>> node_dict = {idx: idx for idx in range(node_count)}
