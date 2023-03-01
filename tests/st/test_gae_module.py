@@ -214,7 +214,7 @@ def test_encoder():
     n_nodes = 7
     n_edges = 6
     src_idx = ms.Tensor([0, 1, 2, 3, 4, 5, 6], ms.int32)
-    dst_idx = ms.Tensor([1, 2, 3, 4, 5, 6, 7], ms.int32)
+    dst_idx = ms.Tensor([1, 2, 3, 4, 5, 6, 0], ms.int32)
     in_deg = ms.Tensor([0, 1, 1, 1, 1, 1, 1], ms.int32)
     out_deg = ms.Tensor([1, 1, 1, 1, 1, 1, 0], ms.int32)
     g = GraphField(ms.Tensor(src_idx, dtype=ms.int32), ms.Tensor(dst_idx, dtype=ms.int32),
@@ -265,7 +265,7 @@ def test_decoder():
     n_nodes = 7
     n_edges = 6
     src_idx = ms.Tensor([0, 1, 2, 3, 4, 5, 6], ms.int32)
-    dst_idx = ms.Tensor([1, 2, 3, 4, 5, 6, 7], ms.int32)
+    dst_idx = ms.Tensor([1, 2, 3, 4, 5, 6, 3], ms.int32)
     index = 0
     g = GraphField(ms.Tensor(src_idx, dtype=ms.int32), ms.Tensor(dst_idx, dtype=ms.int32),
                    int(n_nodes), int(n_edges))
@@ -319,7 +319,7 @@ def test_gae_model():
     n_edges = 6
     index = 0
     src_idx = ms.Tensor([0, 1, 2, 3, 4, 5, 6], ms.int32)
-    dst_idx = ms.Tensor([1, 2, 3, 4, 5, 6, 7], ms.int32)
+    dst_idx = ms.Tensor([1, 2, 3, 4, 5, 6, 2], ms.int32)
     in_deg = ms.Tensor([0, 1, 1, 1, 1, 1, 1], ms.int32)
     out_deg = ms.Tensor([1, 1, 1, 1, 1, 1, 0], ms.int32)
     g = GraphField(ms.Tensor(src_idx, dtype=ms.int32), ms.Tensor(dst_idx, dtype=ms.int32),

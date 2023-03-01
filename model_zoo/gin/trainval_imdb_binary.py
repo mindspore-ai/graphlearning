@@ -50,7 +50,7 @@ def main(arguments):
         context.set_context(device_target=arguments.device, save_graphs=True, save_graphs_path="./computational_graph/",
                             mode=context.GRAPH_MODE, enable_graph_kernel=True)
     else:
-        context.set_context(device_target=arguments.device)
+        context.set_context(device_target=arguments.device, mode=context.GRAPH_MODE)
 
     if arguments.profile:
         ms_profiler = Profiler(subgraph="ALL", is_detail=True, is_show_op_path=False, output_path="./prof_result")

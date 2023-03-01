@@ -60,7 +60,7 @@ def main(arguments):
         context.set_context(device_target=arguments.device, save_graphs=True, save_graphs_path="./computational_graph/",
                             mode=context.GRAPH_MODE, enable_graph_kernel=True, device_id=arguments.device_id)
     else:
-        context.set_context(device_target=arguments.device, device_id=arguments.device_id)
+        context.set_context(device_target=arguments.device, device_id=arguments.device_id, mode=context.GRAPH_MODE)
     node_size, edge_size = 1200, 5000
     hidden_dim, embedding_dim = 64, 64
     dataset = Enzymes(arguments.data_path)

@@ -130,7 +130,7 @@ def main(arguments):
     if arguments.fuse:
         context.set_context(device_target="GPU", device_id=7, mode=context.GRAPH_MODE, enable_graph_kernel=True)
     else:
-        context.set_context(device_target="GPU")
+        context.set_context(device_target="GPU", mode=context.GRAPH_MODE)
 
     kg = KnowLedgeGraphDataset(arguments.data_path)
     train_batch_sampler = RandomBatchSampler(kg.train_mask, batch_size=arguments.batch_size)

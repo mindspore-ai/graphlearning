@@ -30,8 +30,9 @@ def test_distributed_graphsage():
 
     Expectation:Output log file for model accuracy
     """
-    if not os.path.exists('./ci_temp/dist'):
+    if not os.path.exists('./ci_temp'):
         os.mkdir('ci_temp')
+    if not os.path.exists('./ci_temp/dist'):
         os.mkdir('ci_temp/dist')
     if os.path.exists('ci_temp/dist/graphsage'):
         shutil.rmtree('ci_temp/dist/graphsage')
