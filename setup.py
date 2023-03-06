@@ -135,7 +135,10 @@ setuptools.setup(
         'scikit-learn>=0.24.2',
         'Cython',
         'networkx>=2.6.3',
-        'rdkit>=2022.9.1'
+        'rdkit>=2022.9.1',
+        'decorator>=5.1.1',
+        'tqdm>=4.64.1',
+        'pandas>=1.3.5',
     ],
     zip_safe=False,
     #################################
