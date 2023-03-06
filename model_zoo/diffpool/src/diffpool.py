@@ -57,7 +57,7 @@ class LinkPredLoss(nn.Cell):
     def construct(self, adj, s_l, ver_subgraph_idx=None, graph_mask=None):
         """construct function"""
         if len(ops.Shape()(adj)) == 3:
-            link_pred_loss = adj - nn.MatMul()(s_l, ops.Transpose()(s_l, (0, 2, 1)))
+            link_pred_loss = adj - ops.matmul(s_l, ops.Transpose()(s_l, (0, 2, 1)))
             link_pred_loss = nn.Norm((1, 2))(link_pred_loss)
             link_pred_loss = link_pred_loss / (ops.Shape()(adj)[1] * ops.Shape()(adj)[2])
             return ops.ReduceMean()(link_pred_loss)
@@ -71,7 +71,7 @@ class LinkPredLoss(nn.Cell):
             node_mask
         ) + 0.0
         node_num = ops.MatMul(True)(num_of_nodes, num_of_nodes)
-        link_pred_loss = adj - nn.MatMul(transpose_x2=True)(s_l, s_l)
+        link_pred_loss = adj - ops.MatMul(transpose_b=True)(s_l, s_l)
         link_pred_loss = nn.Norm((1))(link_pred_loss)
         link_pred_loss = link_pred_loss / node_num
         return ops.ReduceMean()(link_pred_loss)
@@ -119,14 +119,14 @@ class DiffPoolBatchedGraphLayer(GNNCell):
 
         node_mask = ops.Gather()(g.graph_mask, g.ver_subgraph_idx, 0)
         assign_tensor = assign_tensor * ops.Reshape()(node_mask, (node_size, 1))
-        h = nn.MatMul(transpose_x1=True)(assign_tensor, feat)
+        h = ops.MatMul(transpose_a=True)(assign_tensor, feat)
         # adj mm assign_tensor
         adj_new = ops.TensorScatterAdd()(
             ops.Zeros()((node_size, graph_size * assign_size), ms.float32),
             ops.Reshape()(g.dst_idx, (ops.Shape()(g.dst_idx)[0], 1)),
             ops.Gather()(assign_tensor, g.src_idx, 0)
         )
-        adj_new = nn.MatMul(transpose_x1=True)(assign_tensor, adj_new)
+        adj_new = ops.MatMul(transpose_a=True)(assign_tensor, adj_new)
 
         # adj to dense
         node_count = ops.Shape()(assign_tensor)[0]
@@ -168,7 +168,7 @@ class BatchedGraphSAGE(nn.Cell):
         if self.mean:
             adj = adj / ops.ReduceSum(True)(adj, -1)
 
-        h_k_n = nn.MatMul()(adj, x)
+        h_k_n = ops.matmul(adj, x)
         h_k = self.w(h_k_n)
         h_k = ops.L2Normalize(2)(h_k)
         h_k = ops.ReLU()(h_k)
@@ -194,9 +194,9 @@ class BatchedDiffPool(nn.Cell):
         z_l = self.embed(x, adj)
         s_l = self.assign(x, adj)
         s_l = ops.Softmax(1)(s_l)
-        xnext = nn.MatMul()(ops.Transpose()(s_l, (0, 2, 1)), z_l)
-        anext = nn.MatMul()(ops.Transpose()(s_l, (0, 2, 1)), adj)
-        anext = nn.MatMul()(anext, s_l)
+        xnext = ops.matmul(ops.Transpose()(s_l, (0, 2, 1)), z_l)
+        anext = ops.matmul(ops.Transpose()(s_l, (0, 2, 1)), adj)
+        anext = ops.matmul(anext, s_l)
 
         if self.link_pred:
             self.link_pred_loss = LinkPredLoss()(adj, s_l)

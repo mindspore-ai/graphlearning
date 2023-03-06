@@ -46,7 +46,7 @@ def main(arguments):
         context.set_context(device_target=arguments.device, save_graphs=True, save_graphs_path="./computational_graph/",
                             mode=context.GRAPH_MODE, enable_graph_kernel=True, device_id=arguments.device_id)
     else:
-        context.set_context(device_target=arguments.device, device_id=arguments.device_id)
+        context.set_context(device_target=arguments.device, device_id=arguments.device_id, mode=context.GRAPH_MODE)
 
     dataset = CoraV2(arguments.data_path, 'pubmed')
     train_mask = dataset.train_mask
