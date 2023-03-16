@@ -22,11 +22,11 @@ from .ast_base import BaseAstVisitor
 from .api import Graph, BatchedGraph, HeterGraph, Edge, SrcVertex, DstVertex
 from .gnn_exception import SyntaxNotSupported
 from .vectorization import VectorizationType
-from .supported_op import supported_ops, batchedgraph_ops_extend, hetergraph_ops_extend
+from .supported_op import coo_ops, csr_ops, batchedgraph_ops_extend, hetergraph_ops_extend
 from .ast_transformer import ArgReplacer, ArgListReplacer,\
     InitBackend, InlineAttributeSetter, InlineSupportedOpCall, \
     DefaultArgsSetter
-from .constants import BATCHED_GRAPH_FIELD_NAMES, GRAPH_FIELD_NAMES, N_GRAPHS
+from .constants import BATCHED_GRAPH_FIELD_NAMES, GRAPH_FIELD_NAMES, N_GRAPHS, CSR_GRAPH_FIELD_NAMES, BATCHED_CSR_GRAPH_FIELD_NAMES
 
 
 class Symbol:
@@ -135,12 +135,17 @@ class SymBaseGraph(Symbol):
     Abstract class for Graph class which needs translate.
     """
 
+    csr = False
+
     def __init__(self):
         super().__init__()
         self.is_graph = True
         self.is_built_in_ = False
         self.data_attr_type_ = VectorizationType.GRAPH
-        self.fields_ = GRAPH_FIELD_NAMES
+        if self.csr:
+            self.fields_ = CSR_GRAPH_FIELD_NAMES
+        else:
+            self.fields_ = GRAPH_FIELD_NAMES
 
     def init_attr(self):
         """Init attribute."""
@@ -212,7 +217,10 @@ class SymBatchedGraph(SymGraph):
     def __init__(self):
         super().__init__()
         self.class_ = BatchedGraph
-        self.fields_ = BATCHED_GRAPH_FIELD_NAMES
+        if self.csr:
+            self.fields_ = BATCHED_CSR_GRAPH_FIELD_NAMES
+        else:
+            self.fields_ = BATCHED_GRAPH_FIELD_NAMES
         self.init_attr()
         self.set_data_attr(N_GRAPHS)
 
@@ -307,6 +315,7 @@ class AttributeRecursionDepth(Scoped):
 
 class CheckSyntaxPass(BaseAstVisitor):
     """Check Syntax Pass Class."""
+    csr = False
 
     def __init__(self, globals_dict):
         super().__init__()
@@ -342,7 +351,7 @@ class CheckSyntaxPass(BaseAstVisitor):
                 self.add_transformation(
                     node,
                     DefaultArgsSetter(
-                        len(BATCHED_GRAPH_FIELD_NAMES)
+                        len(BATCHED_CSR_GRAPH_FIELD_NAMES)
                         - len(graph_sym.fields_)))
         self.generic_visit(node)
 
@@ -554,12 +563,14 @@ class CheckSyntaxPass(BaseAstVisitor):
         sym = self.find_symbol(func.value.id)
         assert sym, "Cannot resolve symbol " + str(func.value.id)
         method_name = func.attr
-        if self.graph_type_ == TYPE_BATCHEDGRAPH:
-            supported_ops_ = {**supported_ops, **batchedgraph_ops_extend}
-        elif self.graph_type_ == TYPE_HETERGRAPH:
-            supported_ops_ = {**supported_ops, **hetergraph_ops_extend}
+        if self.csr:
+            supported_ops_ = csr_ops
         else:
-            supported_ops_ = supported_ops
+            supported_ops_ = coo_ops
+        if self.graph_type_ == TYPE_BATCHEDGRAPH:
+            supported_ops_ = {**supported_ops_, **batchedgraph_ops_extend}
+        elif self.graph_type_ == TYPE_HETERGRAPH:
+            supported_ops_ = {**supported_ops_, **hetergraph_ops_extend}
         if method_name in supported_ops_:
             # supported Op functions
             self.expr_graph_type_[call_node] = VectorizationType.GRAPH

@@ -19,7 +19,7 @@ from .constants import SCATTER_ADD_OP, SCATTER_MAX_OP, SCATTER_MIN_OP, VER_SUBGR
 
 OpInfos = namedtuple("OpInfos", ["func_name", "args"])
 
-supported_ops = {
+coo_ops = {
     # Graph supported operations.
     "sum": OpInfos("transform_agg_func", (SCATTER_ADD_OP, False)),
     "max": OpInfos("transform_agg_func", (SCATTER_MAX_OP, False)),
@@ -33,6 +33,11 @@ supported_ops = {
     "num_of_nodes": OpInfos("transform_scatter_idx_func", (N_GRAPHS, SCATTER_VER_SUBGRAPH_IDX)),
     "num_of_edges": OpInfos("transform_scatter_idx_func", (N_GRAPHS, SCATTER_EDGE_SUBGRAPH_IDX)),
     "adj_to_dense": OpInfos("transform_adj_to_dense_func", ()),
+}
+
+csr_ops = {
+    # CSR Graph supported operations.
+    "sum": OpInfos("transform_agg_func", (SCATTER_ADD_OP, False))
 }
 
 batchedgraph_ops_extend = {

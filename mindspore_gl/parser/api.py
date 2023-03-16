@@ -1669,7 +1669,6 @@ class HeterGraph:
                 [[1.0], [2.0], [0.0], [0.0], [3.0], [2.0], [1.0], [0.0], [3.0]]
         """
 
-
 class GraphField:
     r"""
     The data container for a graph.
@@ -1683,9 +1682,16 @@ class GraphField:
             represents the destination node index of COO edge matrix.
         n_nodes (int): An integer, represent the nodes count of the graph.
         n_edges (int): An integer, represent the edges count of the graph.
+        indices (Tensor): The indices of csr matrix. Default: None.
+        indptr (Tensor): The indptr of csr matrix. Default: None.
+        indices_backward (Tensor): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
+            represents the indices backward of CSR edge matrix. Default: None.
+        indptr_backward (Tensor): A tensor with shape :math:`(N\_NODES)`, with int dtype,
+            represents the indptr backward of CSR edge matrix. Default: None.
+        csr (bool): Is the matrix scr type. Default: False.
 
     Supported Platforms:
-            ``GPU``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import mindspore as ms
@@ -1695,47 +1701,76 @@ class GraphField:
         >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8], ms.int32)
         >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32)
         >>> graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+        >>> print(graph_field.get_graph())
+        [Tensor(shape=[11], dtype=Int32, value= [0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8]),
+        Tensor(shape=[11], dtype=Int32, value= [1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8]), 9, 11]
     """
 
-    def __init__(self, src_idx, dst_idx, n_nodes, n_edges):
-        self.src_idx = src_idx
-        self.dst_idx = dst_idx
+    def __init__(self, src_idx=None, dst_idx=None, n_nodes=None, n_edges=None, indices=None,
+                 indptr=None, indices_backward=None, indptr_backward=None, csr=False):
+        self.csr = csr
         self.n_nodes = n_nodes
         self.n_edges = n_edges
-        if not isinstance(self.src_idx, ms.Tensor):
-            raise TypeError(f"src_idx should be a tensor, but got {type(self.src_idx)}.")
-        if not isinstance(self.src_idx.dtype, ms.Int):
-            raise TypeError(f"src_idx should be an int datatype, but got {self.src_idx.dtype}.")
-        if not isinstance(self.dst_idx, ms.Tensor):
-            raise TypeError(f"dst_idx should be a tensor, but got {type(self.dst_idx)}.")
-        if not isinstance(self.dst_idx.dtype, ms.Int):
-            raise TypeError(f"dst_idx should be an int datatype, but got {self.dst_idx.dtype}.")
-
         if isinstance(self.n_nodes, ms.Tensor):
             if self.n_nodes.dtype == ms.bool_:
                 raise TypeError(f"n_nodes should be an integer, but got {self.n_nodes.dtype}.")
             self.n_nodes = int(self.n_nodes.asnumpy())
+        if isinstance(self.n_nodes, bool):
+            raise TypeError(f"n_nodes should be an integer, but got {type(self.n_nodes)}.")
+        if not isinstance(self.n_nodes, int):
+            raise TypeError(f"n_nodes should be an integer, but got {type(self.n_nodes)}.")
+
         if isinstance(self.n_edges, ms.Tensor):
             if self.n_edges.dtype == ms.bool_:
                 raise TypeError(f"n_edges should be an integer, but got {self.n_edges.dtype}.")
             self.n_edges = int(self.n_edges.asnumpy())
-        if isinstance(self.n_nodes, bool):
-            raise TypeError(f"n_nodes should be an integer, but got {type(self.n_nodes)}.")
         if isinstance(self.n_edges, bool):
             raise TypeError(f"n_edges should be an integer, but got {type(self.n_edges)}.")
-        if not isinstance(self.n_nodes, int):
-            raise TypeError(f"n_nodes should be an integer, but got {type(self.n_nodes)}.")
         if not isinstance(self.n_edges, int):
             raise TypeError(f"n_edges should be an integer, but got {type(self.n_edges)}.")
+        if not csr:
+            self.src_idx = src_idx
+            self.dst_idx = dst_idx
+            if not isinstance(self.src_idx, ms.Tensor):
+                raise TypeError(f"src_idx should be a tensor, but got {type(self.src_idx)}.")
+            if not isinstance(self.src_idx.dtype, ms.Int):
+                raise TypeError(f"src_idx should be an int datatype, but got {self.src_idx.dtype}.")
+            if not isinstance(self.dst_idx, ms.Tensor):
+                raise TypeError(f"dst_idx should be a tensor, but got {type(self.dst_idx)}.")
+            if not isinstance(self.dst_idx.dtype, ms.Int):
+                raise TypeError(f"dst_idx should be an int datatype, but got {self.dst_idx.dtype}.")
+        else:
+            self.indices = indices
+            self.indptr = indptr
+            self.indices_backward = indices_backward
+            self.indptr_backward = indptr_backward
+            if not isinstance(self.indices, ms.Tensor):
+                raise TypeError(f"indices should be a tensor, but got {type(self.indices)}.")
+            if not isinstance(self.indices.dtype, ms.Int):
+                raise TypeError(f"indices should be an int datatype, but got {self.indices.dtype}.")
+            if not isinstance(self.indptr, ms.Tensor):
+                raise TypeError(f"indptr should be a tensor, but got {type(self.indptr)}.")
+            if not isinstance(self.indptr.dtype, ms.Int):
+                raise TypeError(f"indptr should be an int datatype, but got {self.indptr.dtype}.")
+            if not isinstance(self.indices_backward, ms.Tensor):
+                raise TypeError(f"indices_backward should be a tensor, but got {type(self.indices_backward)}.")
+            if not isinstance(self.indices_backward.dtype, ms.Int):
+                raise TypeError(f"indices_backward should be an int datatype, but got {self.indices_backward.dtype}.")
+            if not isinstance(self.indptr_backward, ms.Tensor):
+                raise TypeError(f"indptr_backward should be a tensor, but got {type(self.indptr_backward)}.")
+            if not isinstance(self.indptr_backward.dtype, ms.Int):
+                raise TypeError(f"indptr_backward should be an int datatype, but got {self.indptr_backward.dtype}.")
 
     def get_graph(self):
         """
         Get the Graph.
 
         Returns:
-            List, A list of tensor, which should be
+            List, a list of tensor, which should be
             used for construct function.
         """
+        if self.csr:
+            return [self.indices, self.indptr, self.n_nodes, self.n_edges, self.indices_backward, self.indptr_backward]
         return [self.src_idx, self.dst_idx, self.n_nodes, self.n_edges]
 
 
@@ -1758,9 +1793,18 @@ class BatchedGraphField(GraphField):
             indicates each edge belonging to which subgraph.
         graph_mask (Tensor): A tensor with shape :math:`(N\_GRAPHS,)`, with int dtype,
             indicates whether the subgraph is exist.
+        indices (Tensor): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
+            represents the indices of CSR edge matrix. Default: None.
+        indptr (Tensor): A tensor with shape :math:`(N\_NODES)`, with int dtype,
+            represents the indptr of CSR edge matrix. Default: None.
+        indices_backward (Tensor): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
+            represents the indices backward of CSR edge matrix. Default: None.
+        indptr_backward (Tensor): A tensor with shape :math:`(N\_NODES)`, with int dtype,
+            represents the indptr backward of CSR edge matrix. Default: None.
+        csr (bool): Is the graph is CSR type. Default: False.
 
     Supported Platforms:
-            ``GPU``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import mindspore as ms
@@ -1774,14 +1818,45 @@ class BatchedGraphField(GraphField):
         >>> graph_mask = ms.Tensor([1, 1, 0], ms.int32)
         >>> batched_graph_field = BatchedGraphField(src_idx, dst_idx, n_nodes, n_edges,
         ...                                         ver_subgraph_idx, edge_subgraph_idx, graph_mask)
+        >>> print(batched_graph_field.get_batched_graph())
+        [Tensor(shape=[11], dtype=Int32, value= [0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8]),
+        Tensor(shape=[11], dtype=Int32, value= [1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8]), 9, 11,
+        Tensor(shape=[9], dtype=Int32, value= [0, 0, 0, 1, 1, 1, 1, 2, 2]),
+        Tensor(shape=[11], dtype=Int32, value= [0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2]),
+        Tensor(shape=[3], dtype=Int32, value= [1, 1, 0])]
     """
 
-    def __init__(self, src_idx, dst_idx, n_nodes, n_edges, ver_subgraph_idx,
-                 edge_subgraph_idx, graph_mask):
-        super().__init__(src_idx, dst_idx, n_nodes, n_edges)
+    def __init__(self, src_idx=None, dst_idx=None, n_nodes=None, n_edges=None, ver_subgraph_idx=None,
+                 edge_subgraph_idx=None, graph_mask=None, indices=None, indptr=None, indices_backward=None,
+                 indptr_backward=None, csr=False):
+        super().__init__(src_idx, dst_idx, n_nodes, n_edges, indices, indptr, indices_backward, indptr_backward, csr)
+        self.n_nodes = n_nodes
+        self.n_edges = n_edges
         self.ver_subgraph_idx = ver_subgraph_idx
         self.edge_subgraph_idx = edge_subgraph_idx
         self.graph_mask = graph_mask
+        self.indices = indices
+        self.indptr = indptr
+        self.indices_backward = indices_backward
+        self.indptr_backward = indptr_backward
+        self.csr = csr
+        if isinstance(self.n_nodes, ms.Tensor):
+            if self.n_nodes.dtype == ms.bool_:
+                raise TypeError(f"n_nodes should be an integer, but got {self.n_nodes.dtype}.")
+            self.n_nodes = int(self.n_nodes.asnumpy())
+        if isinstance(self.n_nodes, bool):
+            raise TypeError(f"n_nodes should be an integer, but got {type(self.n_nodes)}.")
+        if not isinstance(self.n_nodes, int):
+            raise TypeError(f"n_nodes should be an integer, but got {type(self.n_nodes)}.")
+
+        if isinstance(self.n_edges, ms.Tensor):
+            if self.n_edges.dtype == ms.bool_:
+                raise TypeError(f"n_edges should be an integer, but got {self.n_edges.dtype}.")
+            self.n_edges = int(self.n_edges.asnumpy())
+        if isinstance(self.n_edges, bool):
+            raise TypeError(f"n_edges should be an integer, but got {type(self.n_edges)}.")
+        if not isinstance(self.n_edges, int):
+            raise TypeError(f"n_edges should be an integer, but got {type(self.n_edges)}.")
         if not isinstance(self.ver_subgraph_idx, ms.Tensor):
             raise TypeError(f"ver_subgraph_idx should be a tensor, but got {type(self.ver_subgraph_idx)}.")
         if not isinstance(self.ver_subgraph_idx.dtype, ms.Int):
@@ -1794,13 +1869,27 @@ class BatchedGraphField(GraphField):
             raise TypeError(f"graph_mask should be a tensor, but got {type(self.graph_mask)}.")
         if not isinstance(self.graph_mask.dtype, ms.Int):
             raise TypeError(f"graph_mask should be an int datatype, but got {self.graph_mask.dtype}.")
+        if self.csr:
+            if not isinstance(self.indices, ms.Tensor):
+                raise TypeError(f"indices should be a tensor, but got {type(self.indices)}.")
+            if not isinstance(self.indptr, ms.Tensor):
+                raise TypeError(f"indptr should be a tensor, but got {type(self.indptr)}.")
+            if not isinstance(self.indices_backward, ms.Tensor):
+                raise TypeError(f"indices_backward should be a tensor, but got {type(self.indices_backward)}.")
+            if not isinstance(self.indptr_backward, ms.Tensor):
+                raise TypeError(f"indptr_backward should be a tensor, but got {type(self.indptr_backward)}.")
+        else:
+            if not isinstance(self.src_idx, ms.Tensor):
+                raise TypeError(f"src_idx should be a tensor, but got {type(self.src_idx)}.")
+            if not isinstance(self.dst_idx, ms.Tensor):
+                raise TypeError(f"dst_idx should be a tensor, but got {type(self.dst_idx)}.")
 
     def get_batched_graph(self):
         """
         Get the batched Graph.
 
         Returns:
-            List, A list of tensor, which should
+            List, a list of tensor, which should
             be used for construct function.
         """
         batched_graph_field = self.get_graph()
