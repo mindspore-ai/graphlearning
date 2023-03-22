@@ -20,7 +20,7 @@ import mindspore as ms
 from mindspore_gl.dataset.imdb_binary import IMDBBinary
 from mindspore_gl.graph import BatchHomoGraph, PadHomoGraph, PadMode, PadArray2d,\
     MindHomoGraph, get_laplacian, PadDirection, norm, UnBatchHomoGraph, remove_self_loop, add_self_loop,\
-    gcn_norm
+    gcn_norm, graph_csr_data, sampling_csr_data, batch_graph_csr_data, PadCsrEdge
 import pytest
 
 dataset = IMDBBinary("/home/workspace/mindspore_dataset/GNN_Dataset/")
@@ -302,3 +302,124 @@ def test_gcn_norm():
                               [1.], [0.4999999], [0.3333333], [0.4999999], [0.4999999]]
                              )
     assert np.allclose(edge_weight.asnumpy(), expect_output)
+
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_csr_graph():
+    """
+    Feature: test csr whole graph
+    Description: test csr whole graph
+    Expectation: Output result
+    """
+    node_feat = np.array([[1, 2, 3, 4], [2, 4, 1, 3], [1, 3, 2, 4],
+                          [9, 7, 5, 8], [8, 7, 6, 5], [8, 6, 4, 6], [1, 2, 1, 1]], np.float32)
+    n_nodes = 7
+    n_edges = 8
+    src_idx_array = np.array(src_idx, np.int32)
+    dst_idx_array = np.array(dst_idx, np.int32)
+    node_label = np.array([0, 1, 0, 1, 0, 1, 0])
+    train_mask = np.array([True, True, True, True, False, False, False])
+    val_mask = np.array([False, False, False, False, True, True, True])
+    g, _, _, node_feat, node_label,\
+    train_mask, val_mask, _ = graph_csr_data(src_idx_array, dst_idx_array, n_nodes, n_edges, node_feat, node_label,
+                                             train_mask, val_mask, test_mask=None, rerank=True)
+    expect_indices = np.array([2, 3, 5, 6, 3, 4, 0, 6])
+    expect_indptr = np.array([0, 2, 4, 5, 6, 7, 8, 8])
+    expect_node_feat = np.array([[8., 7., 6., 5.],
+                                 [2., 4., 1., 3.],
+                                 [1., 2., 1., 1.],
+                                 [8., 6., 4., 6.],
+                                 [9., 7., 5., 8.],
+                                 [1., 2., 3., 4.],
+                                 [1., 3., 2., 4.]])
+    expect_node_label = np.array([0, 1, 0, 1, 1, 0, 0])
+    assert np.allclose(g[0].asnumpy(), expect_indices)
+    assert np.allclose(g[1].asnumpy(), expect_indptr)
+    assert np.allclose(expect_node_feat, node_feat)
+    assert np.allclose(expect_node_label, node_label)
+
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_csr_sample_graph():
+    """
+    Feature: test csr sampled graph
+    Description: test csr sampled graph
+    Expectation: Output result
+    """
+    node_feat = np.array([[1, 2, 3, 4], [2, 4, 1, 3], [1, 3, 2, 4],
+                          [9, 7, 5, 8], [8, 7, 6, 5], [8, 6, 4, 6], [1, 2, 1, 1]], np.float32)
+    n_nodes = 7
+    n_edges = 8
+    src_idx_array = np.array(src_idx, np.int32)
+    dst_idx_array = np.array(dst_idx, np.int32)
+    seeds_idx = np.array([0, 3, 5])
+    g, seeds_idx, node_feat = sampling_csr_data(src_idx_array, dst_idx_array, n_nodes, n_edges,
+                                                seeds_idx, node_feat, rerank=True)
+    expect_indices = np.array([2, 3, 5, 6, 3, 4, 0, 6])
+    expect_indptr = np.array([0, 2, 4, 5, 6, 7, 8, 8])
+    expect_seeds_idx = np.array([5, 4, 3])
+    expect_node_feat = np.array([[8., 7., 6., 5.],
+                                 [2., 4., 1., 3.],
+                                 [1., 2., 1., 1.],
+                                 [8., 6., 4., 6.],
+                                 [9., 7., 5., 8.],
+                                 [1., 2., 3., 4.],
+                                 [1., 3., 2., 4.]])
+    assert np.allclose(g[0].asnumpy(), expect_indices)
+    assert np.allclose(g[1].asnumpy(), expect_indptr)
+    assert np.allclose(expect_seeds_idx, seeds_idx)
+    assert np.allclose(expect_node_feat, node_feat)
+
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_csr_batched_graph():
+    """
+    Feature: test csr batched graph
+    Description: test csr batched graph
+    Expectation: Output result
+    """
+    node_feat = np.array([[1, 2, 3, 4], [2, 4, 1, 3], [1, 3, 2, 4],
+                          [9, 7, 5, 8], [8, 7, 6, 5], [8, 6, 4, 6], [1, 2, 1, 1]], np.float32)
+    n_nodes = 7
+    n_edges = 8
+    src_idx_array = np.array(src_idx, np.int32)
+    dst_idx_array = np.array(dst_idx, np.int32)
+    node_map_idx = np.array([0, 0, 0, 0, 1, 1, 1])
+    g, node_map_idx, node_feat = batch_graph_csr_data(src_idx_array, dst_idx_array,
+                                                      n_nodes, n_edges, node_map_idx, node_feat, rerank=True)
+    expect_node_map_idx = np.array([1, 0, 1, 1, 0, 0, 0])
+    expect_indices = np.array([2, 3, 5, 6, 3, 4, 0, 6])
+    expect_indptr = np.array([0, 2, 4, 5, 6, 7, 8, 8])
+    expect_node_feat = np.array([[8., 7., 6., 5.],
+                                 [2., 4., 1., 3.],
+                                 [1., 2., 1., 1.],
+                                 [8., 6., 4., 6.],
+                                 [9., 7., 5., 8.],
+                                 [1., 2., 3., 4.],
+                                 [1., 3., 2., 4.]])
+    assert np.allclose(g[0].asnumpy(), expect_indices)
+    assert np.allclose(g[1].asnumpy(), expect_indptr)
+    assert np.allclose(expect_node_map_idx, node_map_idx)
+    assert np.allclose(expect_node_feat, node_feat)
+
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_pad_csr_edges():
+    """
+    Feature: test csr batched graph
+    Description: test csr batched graph
+    Expectation: Output result
+    """
+    node_pad = 10
+    origin_edge_index = np.array([[0, 1, 2, 4],
+                                  [2, 3, 1, 1]])
+    pad_length = 20
+    pad_op = PadCsrEdge(node_pad, length=pad_length, mode=PadMode.CONST)
+    res = pad_op(origin_edge_index)
+    expected_padding = np.array([[0, 1, 2, 4, 5, 6, 7, 8, 5, 6, 7, 8, 5, 6, 7, 8, 5, 6, 7, 8],
+                                 [2, 3, 1, 1, 5, 6, 7, 8, 6, 7, 8, 5, 7, 8, 5, 6, 8, 5, 6, 7]])
+    assert np.allclose(expected_padding, res)

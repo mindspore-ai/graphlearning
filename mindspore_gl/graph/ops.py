@@ -376,6 +376,7 @@ class PadHomoGraph:
             target graph's node_count and edge_count is calculated according to input graph's size by
             :math:`n\_node = 2^{ceil(log2(input\_graph.node\_count))}` ,
             :math:`n\_edge = 2^{ceil(log2(input\_graph.edge\_count))}` . Default: PadMode.AUTO.
+        csr(bool): Is the csr graph. Default: False.
 
     Inputs:
         - **graph** (MindHomoGraph) - input graph.
@@ -410,7 +411,7 @@ class PadHomoGraph:
         7   1
     """
 
-    def __init__(self, n_node=None, mode=PadMode.AUTO, n_edge=None):
+    def __init__(self, n_node=None, mode=PadMode.AUTO, n_edge=None, csr=False):
         if mode == PadMode.CONST:
             assert n_edge is not None and n_node is not None, \
                 "n_node and n_edge should be given when padding with CONST Mode"
@@ -419,6 +420,7 @@ class PadHomoGraph:
         self.mode = mode
         self.n_edge = n_edge
         self.batch_op = BatchHomoGraph()
+        self.csr = csr
 
     def __call__(self, graph: MindHomoGraph, **kwargs) -> MindHomoGraph:
         """
@@ -435,7 +437,10 @@ class PadHomoGraph:
                 if graph.edge_count == self.n_edge:
                     return graph
                 # Determine Padded Graph
-                pad_graph_coo = np.full([2, self.n_edge - graph.edge_count], self.n_node - 1, dtype=np.int32)
+                if self.csr:
+                    pad_graph_coo = generate_fill_array(graph.adj_coo, (2, self.n_edge), self.n_node - 1)
+                else:
+                    pad_graph_coo = np.full([2, self.n_edge - graph.edge_count], self.n_node - 1, dtype=np.int32)
                 pad_graph = MindHomoGraph()
                 pad_graph.adj_coo = pad_graph_coo
                 pad_graph.node_count = self.n_node - graph.node_count
@@ -508,3 +513,122 @@ class UnPadHomoGraph:
 
     def __call__(self, graph: MindHomoGraph, **kwargs) -> MindHomoGraph:
         pass
+
+
+class PadCsrEdge:
+    """
+        PadCsrEdge, specific pad operator for coo edges. After padding, the shape of the coo edge index to the
+        csr indices and indptr becomes unified.
+
+        .. warning::
+            PadArray2d will reuse memory buffer to speedup pad operation.
+
+        Args:
+            pad_nodes(int): nodes numbers of the graph.
+            reset_with_fill_value(bool): PadArray2d will reuse memory buffer,
+                you can set this value to False if you dont care about the padded value. Default: True.
+            length(int): User specific length for padding result. Default: None.
+            mode(PadMode): Pad mode for array, if PadMode.CONST, this op will pad array to user-specific size.
+                If PadMode.AUTO, this will choose padded result length according to input's length.
+                The expected length can be calculated as 2^ceil(log2(input_length)).
+                Default: mindspore_gl.graph.PadMode.AUTO.
+            use_shared_numpy(bool): If we use SharedNDArray for speeding up inter process communication.
+                This is recommended if you do feature collection and feature padding in child process and
+                need inter process communication for graph feature. Default: False.
+
+        Inputs:
+            - **input_array** (numpy.array) - input numpy array for pad.
+
+        Raises:
+            ValueError: pad length should be provided when padding mode is PadMode.CONST.
+
+        Supported Platforms:
+            ``Ascend`` ``GPU``
+
+        Examples:
+            import numpy as np
+            >>> from mindspore_gl.graph import PadCsrEdge, PadMode
+            >>> node_pad = 10
+            >>> origin_edge_index = np.array([[0, 1, 2, 4],
+            ...                               [2, 3, 1, 1]])
+            >>> pad_length = 20
+            >>> pad_op = PadCsrEdge(node_pad, length=pad_length, mode=PadMode.CONST)
+            >>> res = pad_op(origin_edge_index)
+            >>> print(res)
+            [[0 1 2 4 5 6 7 8 5 6 7 8 5 6 7 8 5 6 7 8]
+             [2 3 1 1 5 6 7 8 6 7 8 5 7 8 5 6 8 5 6 7]]
+    """
+
+    def __init__(self, pad_nodes, reset_with_fill_value=True, length=None, mode=PadMode.AUTO,
+                 use_shared_numpy=False):
+        self.pad_nodes = pad_nodes
+        self.pad_mode = mode
+        self.homo_batch = BatchHomoGraph()
+        self.reset_with_fill_value = reset_with_fill_value
+        self.use_shared_numpy = use_shared_numpy
+        self.size = (2, length)
+        if self.use_shared_numpy:
+            self.array_pool = SharedArrayPool()
+        else:
+            self.array_pool = ArrayPool()
+
+        if mode == PadMode.CONST:
+            if self.use_shared_numpy:
+                memory_buffer = shared_numpy.SharedNDArray.from_shape(self.size, dtype=np.int32)
+                self.array_pool.put(self.size, memory_buffer)
+            else:
+                memory_buffer = np.zeros(self.size, dtype=np.int32)
+                self.array_pool.put(self.size, memory_buffer)
+
+    def __call__(self, input_array):
+        """
+        Pad Array
+        """
+        if self.pad_mode == PadMode.CONST:
+            fill_array = generate_fill_array(input_array, self.size, self.pad_nodes)
+            memory_buffer = self.array_pool.pop(self.size)
+            # If Memory Buffer Is None, It's Definitely SharedNDArray
+            if memory_buffer is None:
+                memory_buffer = shared_numpy.SharedNDArray.from_shape(self.size, dtype=np.int32)
+                self.array_pool.put(self.size, memory_buffer)
+
+            memory_buffer[:, :input_array.shape[1]] = input_array
+            if self.reset_with_fill_value:
+                memory_buffer[:, input_array.shape[1]:] = fill_array
+            # Put Back To Memory Buffer
+            self.array_pool.put(self.size, memory_buffer)
+            return memory_buffer
+        bucket_length = math.ceil(math.log2(input_array.shape[1]))
+        target_size = [2, 1 << bucket_length]
+        fill_value = generate_fill_array(input_array, target_size, self.pad_nodes)
+
+        memory_buffer = self.array_pool.pop(target_size)
+        if memory_buffer is None:
+            memory_buffer = shared_numpy.SharedNDArray.from_shape(target_size, np.int32)
+            self.array_pool.put(target_size, memory_buffer)
+
+        memory_buffer[:, :input_array.shape[1]] = input_array
+        if self.reset_with_fill_value:
+            memory_buffer[:, input_array.shape[1]:] = fill_value
+        # Put Back To Memory Buffer
+        self.array_pool.put(target_size, memory_buffer)
+        return memory_buffer
+
+def generate_fill_array(input_array, size, pad_nodes):
+    """generate the fill array"""
+    start = np.max(input_array) + 1
+    end = pad_nodes - 1
+    mini_length = size[1] - input_array.shape[1]
+    fill_array = np.array([np.arange(start, end), np.arange(start, end)])
+    add_bias = 0
+    while fill_array.shape[1] < mini_length:
+        add_array_0 = np.arange(start, end)
+        add_array_1 = np.arange(start, end)
+        add_array_1 = np.append(add_array_1[add_bias + 1:], add_array_1[:add_bias + 1])
+        add_array = np.array([add_array_0, add_array_1])
+        fill_array = np.concatenate((fill_array, add_array), axis=1)
+        add_bias += 1
+        if add_bias == end - start:
+            break
+    fill_array = fill_array[:, :mini_length]
+    return fill_array

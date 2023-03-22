@@ -17,8 +17,9 @@ from .self_loop import add_self_loop, remove_self_loop
 from .get_laplacian import get_laplacian
 from .norm import norm
 from .graph import MindHomoGraph, CsrAdj, BatchMeta
-from .ops import BatchHomoGraph, PadArray2d, PadHomoGraph, PadMode, PadDirection, UnBatchHomoGraph
+from .ops import BatchHomoGraph, PadArray2d, PadHomoGraph, PadMode, PadDirection, UnBatchHomoGraph, PadCsrEdge
 from .gcn_norm import gcn_norm
+from .csr_convert import graph_csr_data, sampling_csr_data, batch_graph_csr_data
 
 __all__ = [
     "add_self_loop",
@@ -34,6 +35,10 @@ __all__ = [
     "PadDirection",
     "CsrAdj",
     "BatchMeta",
-    "UnBatchHomoGraph"
+    "UnBatchHomoGraph",
+    "graph_csr_data",
+    "sampling_csr_data",
+    "batch_graph_csr_data",
+    "PadCsrEdge"
 ]
 __all__.sort()
