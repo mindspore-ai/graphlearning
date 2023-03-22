@@ -45,13 +45,39 @@ def translate(obj, method_name: str, translate_path: None or str = None):
     """
     Translate the vertex central code into MindSpore understandable code.
 
-    After translation, a new function will generate in /.mindspore_gl.
+    After translation, a new function will generate in `/.mindspore_gl` .
     The origin method will be replaced with this function.
 
     Args:
         obj: (Object): The object.
-        translate_path (str): The path for save the construct file.
         method_name (str): The name of the method to be translated.
+        translate_path (str): The path for save the construct file. Default: None.
+
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
+    Examples:
+        >>> import mindspore as ms
+        >>> import mindspore.ops as ops
+        >>> from mindspore_gl.nn import GNNCell
+        >>> from mindspore_gl import BatchedGraph
+        >>> from mindspore_gl.parser.vcg import translate
+        ...
+        >>> class Net(GNNCell):
+        ...     def __init__(self):
+        ...         super().__init__()
+        ...         translate(self, "loss")
+        ...
+        ...     def construct(self, pred, label, g: BatchedGraph):
+        ...         loss = self.loss(pred, label, g)
+        ...         loss = loss * g.graph_mask
+        ...         return loss
+        ...
+        ...     def loss(self, pred, label, g: BatchedGraph):
+        ...         criterion = ms.nn.loss.SoftmaxCrossEntropyWithLogits(sparse=True, reduction='none')
+        ...         loss = criterion(pred, label)
+        ...         loss = ops.ReduceMean()(loss * g.graph_mask)
+        ...         return loss
     """
     global SCREEN_WIDTH, DISPLAY
     fn = getattr(obj, method_name)

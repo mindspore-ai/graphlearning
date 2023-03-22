@@ -15,7 +15,10 @@
 """GNN Cell"""
 from mindspore.nn import Cell
 from ..parser.vcg import translate, set_display_config
-
+from ..parser.backend import Backend
+from ..parser.check_syntax_pass import SymBaseGraph
+from ..parser.check_syntax_pass import CheckSyntaxPass
+from ..backward import GatherNet, CSRReduceSumNet
 
 class GNNCell(Cell):
     """
@@ -23,11 +26,29 @@ class GNNCell(Cell):
 
     Construct function will be translated by default.
 
+    Args:
+        translate_path (str): class variable, enable specify the construct file path. Default: None.
+        csr (bool): class variable, whether user the csr data structure. Default: False.
+        backward (bool): class variable, whether user the custom loss backpropagation. Default: False.
+
+    Supported Platforms:
+        ``Ascend`` ``GPU``
     """
     translate_path = None
+    csr = False
+    backward = False
+
     def __init__(self):
         super().__init__()
+        Backend.csr = self.csr
+        Backend.backward = self.backward
+        SymBaseGraph.csr = self.csr
+        CheckSyntaxPass.csr = self.csr
         translate(self, "construct", self.translate_path)
+        # pylint: disable=C0103
+        if self.csr:
+            self.CSR_BACKWARD_GATHER = GatherNet()
+            self.CSR_BACKWARD_REDUCE_SUM = CSRReduceSumNet()
 
     @staticmethod
     def enable_display(screen_width=200):
@@ -67,3 +88,24 @@ class GNNCell(Cell):
             >>> GNNCell.specify_path('path/to/save')
         """
         cls.translate_path = path
+
+    @classmethod
+    def sparse_compute(cls, csr=False, backward=False):
+        """
+        Whether to use sparse operator to accelerate calculation.
+
+        Args:
+            csr (bool): Is it a csr data structure. Default: False.
+            backward (bool): Whether to use custom back propagation. Default: False.
+
+        Raises:
+            TypeError: If `csr` is False and `backward` is True.
+
+        Examples:
+            >>> from mindspore_gl.nn import GNNCell
+            >>> GNNCell.sparse_compute(csr=True, backward=False)
+        """
+        if csr is False and backward is True:
+            ValueError("Custom back propagation is supported only when the data structure is CSR")
+        cls.csr = csr
+        cls.backward = csr and backward

@@ -836,3 +836,78 @@ def test_topk_edges_with_softby():
     assert np.sum(np.abs((first - second))) == 0
     first, second = np.array(indices), np.array(indices_expected)
     assert np.sum(np.abs((first - second))) == 0
+
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_csr_graph():
+    """
+    Feature:test topk edges with softby
+    Description:test topk edges with softby
+    Expectation:topk_edges_with_softby of edge_feat based on batched_graph_field
+    """
+    n_nodes = 7
+    n_edges = 8
+    indices = ms.Tensor([2, 3, 5, 6, 3, 4, 0, 6], ms.int32)
+    indptr = ms.Tensor([0, 2, 4, 5, 6, 7, 8, 8], ms.int32)
+    indices_backward = ms.Tensor([4, 0, 0, 2, 3, 1, 1, 5], ms.int32)
+    indptr_backward = ms.Tensor([0, 1, 1, 2, 4, 5, 6, 8], ms.int32)
+    graph_field = GraphField(n_nodes=n_nodes, n_edges=n_edges, indices=indices, indptr=indptr,
+                             indices_backward=indices_backward, indptr_backward=indptr_backward, csr=True)
+    GNNCell.sparse_compute(True, True)
+    class TestCsrGraph(GNNCell):
+        def construct(self, g: Graph):
+            return g.indices, g.indptr, g.indices_backward, g.indices_backward, g.n_nodes, g.n_edges
+    res_indices, res_indptr, res_indices_backward, res_indptr_backward, res_n_nodes, res_n_edges =\
+        TestCsrGraph()(*graph_field.get_graph())
+    GNNCell.sparse_compute(False, False)
+    assert np.sum(np.abs((n_nodes - res_n_nodes))) == 0
+    assert np.sum(np.abs((n_edges - res_n_edges))) == 0
+    assert np.sum(np.abs((res_indices.asnumpy() - indices.asnumpy()))) == 0
+    assert np.sum(np.abs((res_indptr.asnumpy() - indptr.asnumpy()))) == 0
+    assert np.sum(np.abs((res_indices_backward.asnumpy() - indices_backward.asnumpy()))) == 0
+    assert np.sum(np.abs((res_indptr_backward.asnumpy() - indices_backward.asnumpy()))) == 0
+
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_csr_batchedgraph():
+    """
+    Feature:test topk edges with softby
+    Description:test topk edges with softby
+    Expectation:topk_edges_with_softby of edge_feat based on batched_graph_field
+    """
+    n_nodes = 7
+    n_edges = 8
+    indices = ms.Tensor([2, 3, 5, 6, 3, 4, 0, 6], ms.int32)
+    indptr = ms.Tensor([0, 2, 4, 5, 6, 7, 8, 8], ms.int32)
+    indices_backward = ms.Tensor([4, 0, 0, 2, 3, 1, 1, 5], ms.int32)
+    indptr_backward = ms.Tensor([0, 1, 1, 2, 4, 5, 6, 8], ms.int32)
+    node_map_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1], ms.int32)
+    edge_map_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 1], ms.int32)
+    graph_mask = ms.Tensor([1, 0], ms.int32)
+    graph_field = BatchedGraphField(indices=indices, indptr=indptr, indices_backward=indices_backward,
+                                    indptr_backward=indptr_backward, csr=True, n_nodes=n_nodes,
+                                    n_edges=n_edges, ver_subgraph_idx=node_map_idx,
+                                    edge_subgraph_idx=edge_map_idx, graph_mask=graph_mask)
+    GNNCell.sparse_compute(True, True)
+    class TestCsrBatchedGraph(GNNCell):
+        def construct(self, g: BatchedGraph):
+            return g.indices, g.indptr, g.indices_backward, g.indices_backward, g.n_nodes, g.n_edges,\
+                   g.ver_subgraph_idx, g.edge_subgraph_idx, g.graph_mask
+    res_indices, res_indptr, res_indices_backward, res_indptr_backward, res_n_nodes, res_n_edges, res_ver_subgraph_idx,\
+    res_edge_subgraph_idx, res_graph_mask = TestCsrBatchedGraph()(*graph_field.get_batched_graph())
+    GNNCell.sparse_compute(False, False)
+    assert np.sum(np.abs((n_nodes - res_n_nodes))) == 0
+    assert np.sum(np.abs((n_edges - res_n_edges))) == 0
+    assert np.sum(np.abs((res_indices.asnumpy() - indices.asnumpy()))) == 0
+    assert np.sum(np.abs((res_indptr.asnumpy() - indptr.asnumpy()))) == 0
+    assert np.sum(np.abs((res_indices_backward.asnumpy() - indices_backward.asnumpy()))) == 0
+    assert np.sum(np.abs((res_indptr_backward.asnumpy() - indices_backward.asnumpy()))) == 0
+    assert np.sum(np.abs((res_indptr.asnumpy() - indptr.asnumpy()))) == 0
+    assert np.sum(np.abs((res_indices_backward.asnumpy() - indices_backward.asnumpy()))) == 0
+    assert np.sum(np.abs((res_indptr_backward.asnumpy() - indices_backward.asnumpy()))) == 0
+    assert np.sum(np.abs((node_map_idx.asnumpy() - res_ver_subgraph_idx.asnumpy()))) == 0
+    assert np.sum(np.abs((edge_map_idx.asnumpy() - res_edge_subgraph_idx.asnumpy()))) == 0
+    assert np.sum(np.abs((graph_mask.asnumpy() - res_graph_mask.asnumpy()))) == 0
+    

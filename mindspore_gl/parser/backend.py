@@ -25,7 +25,8 @@ from .constants import GATHER_OP, ZEROS_OP, RESHAPE_OP, SHAPE_OP, \
                        SCATTER_MIN_OP, SCATTER_MAX_OP, SCATTER_ADD_OP, \
                        SRC_IDX, DST_IDX, VER_SUBGRAPH_IDX, EDGE_SUBGRAPH_IDX, \
                        GRAPH_MASK, N_GRAPHS, N_NODES, GRAPH_FIELD_NAMES, \
-                       BACKEND_NAME, FILL_OP, MASKED_FILL_OP, IS_INF_OP
+                       BACKEND_NAME, FILL_OP, MASKED_FILL_OP, IS_INF_OP, INDICES, INDPTR, CSR_REDUCE_SUM_OP, \
+                       INDICES_BACKWARD, INDPTR_BACKWARD
 
 
 def set_backend(bk_name: str):
@@ -51,6 +52,8 @@ def backend() -> str:
 
 class Backend:
     """Backend parent class."""
+    csr = False
+    backward = False
 
     def __init__(self) -> None:
         pass
@@ -77,12 +80,29 @@ class Backend:
             ast.AST, call after transformation.
         """
         call = ast.Call()
-        call.func = ast.Name(GATHER_OP)
-        call.args = [node,
-                     ast.Name(id=SRC_IDX, ctx=ast.Load())
-                     if old_type == VectorizationType.SRC
-                     else ast.Name(DST_IDX, ctx=ast.Load()),
-                     ast.Constant(0)]
+
+        if not self.csr:
+            call.func = ast.Name(GATHER_OP)
+            call.args = [node,
+                         ast.Name(id=SRC_IDX, ctx=ast.Load())
+                         if old_type == VectorizationType.SRC
+                         else ast.Name(DST_IDX, ctx=ast.Load()),
+                         ast.Constant(0)]
+        else:
+            if self.backward:
+                call.func = ast.Name("self.CSR_BACKWARD_GATHER")
+                call.args = [node,
+                             ast.Name(id=INDICES, ctx=ast.Load()),
+                             ast.Constant(0),
+                             ast.Name(id=INDPTR_BACKWARD, ctx=ast.Load()),
+                             ast.Name(id=INDICES_BACKWARD, ctx=ast.Load())
+                             ]
+            else:
+                call.func = ast.Name(GATHER_OP)
+                call.args = [node,
+                             ast.Name(id=INDICES, ctx=ast.Load()),
+                             ast.Constant(0)
+                             ]
         call.keywords = []
         return call
 
@@ -170,6 +190,9 @@ class MindSporeBackend(Backend):
                    self.init_op(IS_INF_OP, "IsInf"),
                    self.init_op(SHAPE_OP, "Shape"),
                    self.init_op(RESHAPE_OP, "Reshape")]
+        if self.csr:
+            csr_op = [self.init_op(CSR_REDUCE_SUM_OP, "operations._csr_ops.CSRReduceSum")]
+            op_list.extend(csr_op)
         return op_list
 
     def init_intermediates(self, graph_type) -> List[ast.AST]:
@@ -198,20 +221,30 @@ class MindSporeBackend(Backend):
             SyntaxError: be raised if graph type not support.
         """
         if graph_type == "Graph":
+            if self.csr:
+                return []
             return [
                 self.invoke_init_intermediate(SCATTER_SRC_IDX, SRC_IDX),
                 self.invoke_init_intermediate(SCATTER_DST_IDX, DST_IDX),
             ]
         if graph_type == "BatchedGraph":
+            if self.csr:
+                return [
+                        self.invoke_init_intermediate(SCATTER_VER_SUBGRAPH_IDX,
+                                                      VER_SUBGRAPH_IDX),
+                        self.invoke_init_intermediate(SCATTER_EDGE_SUBGRAPH_IDX,
+                                                      EDGE_SUBGRAPH_IDX),
+                        self.invoke_get_shape(N_GRAPHS, GRAPH_MASK),
+                        ]
             return [
-                self.invoke_init_intermediate(SCATTER_SRC_IDX, SRC_IDX),
-                self.invoke_init_intermediate(SCATTER_DST_IDX, DST_IDX),
-                self.invoke_init_intermediate(SCATTER_VER_SUBGRAPH_IDX,
-                                              VER_SUBGRAPH_IDX),
-                self.invoke_init_intermediate(SCATTER_EDGE_SUBGRAPH_IDX,
-                                              EDGE_SUBGRAPH_IDX),
-                self.invoke_get_shape(N_GRAPHS, GRAPH_MASK),
-            ]
+                    self.invoke_init_intermediate(SCATTER_SRC_IDX, SRC_IDX),
+                    self.invoke_init_intermediate(SCATTER_DST_IDX, DST_IDX),
+                    self.invoke_init_intermediate(SCATTER_VER_SUBGRAPH_IDX,
+                                                  VER_SUBGRAPH_IDX),
+                    self.invoke_init_intermediate(SCATTER_EDGE_SUBGRAPH_IDX,
+                                                  EDGE_SUBGRAPH_IDX),
+                    self.invoke_get_shape(N_GRAPHS, GRAPH_MASK),
+                    ]
         raise SyntaxError("Graph type not support.")
 
     def transform_agg_func(self,
@@ -241,13 +274,22 @@ class MindSporeBackend(Backend):
                                 SCATTER_MAX_OP,
                                 SCATTER_MIN_OP):
             raise SyntaxError(f"scatter name {scatter_name} not support yet.")
-        call = self.invoke_scatter_op(node.args[0],
-                                      enclosing_block,
-                                      insert_stmt_cb,
-                                      scatter_name,
-                                      N_NODES,
-                                      SCATTER_DST_IDX,
-                                      is_avg)
+        if self.csr:
+            call = self.invoke_csr_reduce(node.args[0],
+                                        enclosing_block,
+                                        insert_stmt_cb,
+                                        scatter_name,
+                                        N_NODES,
+                                        SCATTER_DST_IDX,
+                                        is_avg)
+        else:
+            call = self.invoke_scatter_op(node.args[0],
+                                        enclosing_block,
+                                        insert_stmt_cb,
+                                        scatter_name,
+                                        N_NODES,
+                                        SCATTER_DST_IDX,
+                                        is_avg)
         return call
 
     def transform_dot_func(self,
@@ -1001,8 +1043,8 @@ class MindSporeBackend(Backend):
         else:
             input_x = self.create_zero_tensor(output_shape_node, scatter_tmp_name)
         call.args = [input_x,
-                     ast.Name(id=dst_idx, ctx=ast.Load()),
-                     ast.Name(id=scatter_tmp_name, ctx=ast.Load())]
+                        ast.Name(id=dst_idx, ctx=ast.Load()),
+                        ast.Name(id=scatter_tmp_name, ctx=ast.Load())]
         call.keywords = []
         if is_avg:
             div_right_node = ast.BinOp(
@@ -1011,12 +1053,89 @@ class MindSporeBackend(Backend):
                 right=ast.Constant(value=1e-15)
             )
             call = ast.BinOp(left=call,
-                             op=ast.Div(),
-                             right=div_right_node)
+                                op=ast.Div(),
+                                right=div_right_node)
         elif scatter_op in [SCATTER_MAX_OP, SCATTER_MIN_OP]:
             call = self.invoke_masked_fill_op(call, 0.0)
         insert_stmt_cb(enclosing_block, tmp, call)
         return call
+
+    def invoke_csr_reduce(self,
+                          feat,
+                          enclosing_block,
+                          insert_stmt_cb,
+                          scatter_op,
+                          shape_name,
+                          dst_idx,
+                          is_avg):
+        """helper function, invoke csr reduce op."""
+        new_func = ast.Name(id="RESHAPE", ctx=ast.Load())
+        call = ast.Call()
+        call.func = new_func
+
+        tmp_res = "SCATTER_INPUT_SNAPSHOT" + \
+                    str(self.get_next_snapshot_id())
+        tmp = ast.Assign()
+        tmp.targets = [ast.Name(id=tmp_res, ctx=ast.Store())]
+        tmp.value = feat
+
+        tmp_param1 = ast.BinOp(
+            left=ast.Tuple(
+                elts=[ast.Name(id=N_NODES, ctx=ast.Load()),
+                        ast.Name(id=N_NODES, ctx=ast.Load())],
+                ctx=ast.Load()),
+            op=ast.Add(),
+            right=ast.Subscript(
+                value=self.invoke_op(
+                    SHAPE_OP,
+                    args=[ast.Name(id=tmp_res, ctx=ast.Load())]),
+                slice=ast.Slice(lower=ast.Constant(value=1), upper=None,
+                                step=None), ctx=ast.Load()))
+
+        tmp2_res = "SCATTER_INPUT_SNAPSHOT" + \
+                    str(self.get_next_snapshot_id())
+        tmp2 = ast.Assign()
+        tmp2.targets = [ast.Name(id=tmp2_res, ctx=ast.Store())]
+        if self.backward:
+            tmp2_op_name = 'self.CSR_BACKWARD_REDUCE_SUM'
+            tmp2.value = ast.Call(func=ast.Name(id=tmp2_op_name),
+                                    args=[ast.Name(INDPTR),
+                                        ast.Name(INDICES),
+                                        ast.Name(tmp_res),
+                                        tmp_param1,
+                                        ast.Constant(1),
+                                        ast.Name(INDICES_BACKWARD)
+                                        ],
+                                    keywords=[])
+        else:
+            tmp2_op_name = 'CSR_REDUCE_SUM'
+            tmp2.value = ast.Call(func=ast.Name(id=tmp2_op_name),
+                                    args=[ast.Name(INDPTR),
+                                        ast.Name(INDICES),
+                                        ast.Name(tmp_res),
+                                        tmp_param1,
+                                        ast.Constant(1)
+                                        ],
+                                    keywords=[])
+
+        insert_stmt_cb(enclosing_block, tmp2, call)
+        insert_stmt_cb(enclosing_block, tmp, call)
+
+        tmp_param2 = ast.BinOp(
+            left=ast.Tuple(
+                elts=[ast.Name(id=N_NODES, ctx=ast.Load())],
+                ctx=ast.Load()),
+            op=ast.Add(),
+            right=ast.Subscript(
+                value=self.invoke_op(
+                    SHAPE_OP,
+                    args=[ast.Name(id=tmp2_res)]),
+                slice=ast.Slice(lower=ast.Constant(value=2), upper=None,
+                                step=None), ctx=ast.Load()))
+        call.args = [ast.Name(tmp2_res), tmp_param2]
+        call.keywords = []
+        return call
+
 
     def invoke_subscript_index(self, node, index):
         """helper function, invoke subscript index."""
