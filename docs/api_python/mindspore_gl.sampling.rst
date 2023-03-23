@@ -5,7 +5,7 @@ mindspore_gl.sampling
 
 .. py:function:: mindspore_gl.sampling.k_hop_subgraph(node_idx, num_hops, adj_coo, node_count, relabel_nodes=False, flow='source_to_target')
 
-    MindHomoGraph上的K跳采样。
+    HomoGraph上的K跳采样。
 
     参数：
         - **node_idx** (int, list, tuple or numpy.ndarray) - 围绕 `node_idx` 采样子图。
@@ -13,11 +13,11 @@ mindspore_gl.sampling
         - **adj_coo** (numpy.ndarray) - 输入图的邻接矩阵。
         - **node_count** (int) - 节点数。
         - **relabel_nodes** (bool) - 节点索引是否需要重新标签。默认值：False。
-        - **flow** (str) - 访问方向。默认值：source_to_target。
+        - **flow** (str, 可选) - 访问方向。默认值：'source_to_target'。
 
-          - source_to_target: 从源节点到目标节点。
+          - 'source_to_target': 从源节点到目标节点。
 
-          - target_to_source: 从目标节点到源节点。
+          - 'target_to_source': 从目标节点到源节点。
 
     返回：
         res(dict)，有4个键“subset”、“ad_coo”、“inv”、“edge_mask”，其中，
@@ -34,15 +34,15 @@ mindspore_gl.sampling
 
 .. py:function:: mindspore_gl.sampling.negative_sample(positive, node, num_neg_samples, mode='undirected', re='more')
 
-    输入所有正样本边缘集，并指定负样本长度。
-    然后返回相同长度的负样本边缘集，并且不会重复正样本。
+    输入所有正样本边集，并指定负样本长度。
+    然后返回相同长度的负样本边集，并且不会重复正样本。
     可以选择考虑自循环、有向图或无向图操作。
 
     参数：
         - **positive** (list or numpy.ndarray) - 所有正样本边。
         - **node** (int) - 节点数。
         - **num_neg_samples** (int) - 负样本长度。
-        - **mode** (str) - 运算矩阵的类型。默认值：undirected。
+        - **mode** (str, 可选) - 运算矩阵的类型。默认值：'undirected'。
 
           - undirected: 无向图。
 
@@ -50,7 +50,7 @@ mindspore_gl.sampling
 
           - other: 其他类型图。
 
-        - **re** (str) - 输入数据类型。默认值：more。
+        - **re** (str, 可选) - 输入数据类型。默认值：'more'。
 
           - more: `positive` 数组shape为 :math:`(data\_length, 2)` 。
 

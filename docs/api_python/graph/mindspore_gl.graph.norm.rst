@@ -11,6 +11,8 @@ mindspore_gl.graph.norm
         - **edge_weight** (Tensor) - 边权重。Shape为 :math:`(N\_e)` 其中 :math:`N\_e` 是边的数量。默认值：None。
         - **normalization** (str) - 归一化方法。默认值： 'sym'。
 
+          :math:`(L)` 为归一化的矩阵， :math:`(D)` 为度矩阵， :math:`(A)` 为邻接矩阵， :math:`(I)` 为单元矩阵。
+
           1. `None`：无
              :math:`\mathbf{L}=\mathbf{D}-\mathbf{A}`
 

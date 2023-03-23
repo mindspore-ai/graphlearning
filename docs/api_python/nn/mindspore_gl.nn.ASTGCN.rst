@@ -1,7 +1,7 @@
 mindspore_gl.nn.ASTGCN
 ======================
 
-.. py:class:: mindspore_gl.nn.ASTGCN(n_blocks: int, in_channels: int, k: int, n_chev_filters: int, n_time_filters: int, time_conv_strides: int, num_for_predict: int, len_input: int, n_vertices: int, normalization: Optional[str] = None, bias: bool = True)
+.. py:class:: mindspore_gl.nn.ASTGCN(n_blocks: int, in_channels: int, k: int, n_chev_filters: int, n_time_filters: int, time_conv_strides: int, num_for_predict: int, len_input: int, n_vertices: int, normalization: 可选[str] = None, bias: bool = True)
 
     基于Attention的时空图卷积网络。来自于论文 `Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic
     Flow Forecasting <https://ojs.aaai.org/index.php/AAAI/article/view/3881>`_ 。
@@ -16,8 +16,13 @@ mindspore_gl.nn.ASTGCN
         - **num_for_predict** (int) - 未来要进行的预测数。
         - **len_input** (int) - 输入序列的长度。
         - **n_vertices** (int) - 图中的顶点数。
-        - **normalization** (str, 可选) - 图Laplacian的归一化方案。默认值：None。
-        - **bias** (bool, 可选) - layer是否学习加性偏差。默认值：True。
+        - **normalization** (str, 可选) - 图Laplacian的归一化方案。默认值：'sym'。
+
+          :math:`(L)` 为归一化的矩阵， :math:`(D)` 为度矩阵， :math:`(A)` 为邻接矩阵， :math:`(I)` 为单元矩阵。
+
+          :math:`\mathbf{L} = \mathbf{I} - \mathbf{D}^{-1/2} \mathbf{A} \mathbf{D}^{-1/2}`
+
+        - **bias** (bool, 可选) - layer是否学习加性偏置。默认值：True。
 
     输入：
         - **x** (Tensor) - 输入节点T个时间段的特征。Shape为 :math:`(B,N,F_{in},T_{in})`

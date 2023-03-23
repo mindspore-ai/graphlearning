@@ -15,11 +15,11 @@ mindspore_gl.nn.APPNPConv
     参数：
         - **k** (int) - 迭代次数。
         - **alpha** (float) - 传输概率。
-        - **edge_drop** (float) - 每个节点接收到的边消息的保持率。默认值：1.0。
+        - **edge_drop** (float, 可选) - 每个节点接收到的边消息的keep rate。默认值：1.0。
 
     输入：
         - **x** (Tensor) - 输入节点功能。Shape为 :math:`(N,*)`
-          其中 :math:`N` 是节点数， :math:`*` 可以是任何形状。
+          其中 :math:`N` 是节点数， :math:`*` 可以是任何shape。
         - **in_deg** (Tensor) - 节点的入度。Shape为 :math:`(N,)`
           其中 :math:`N` 是节点数。
         - **out_deg** (Tensor) - 节点的出度。Shape为 :math:`(N, )`
@@ -27,10 +27,10 @@ mindspore_gl.nn.APPNPConv
         - **g** (Graph) - 输入图表。
 
     输出：
-        - Tensor，输出特征Shape为 :math:`(N,*)` ，其中 :math:`*` 应与输入形状相同。
+        - Tensor，输出特征Shape为 :math:`(N,*)` ，其中 :math:`*` 应与输入shape相同。
 
     异常：
         - **TypeError** - 如果 `k` 不是int。
-        - **TypeError** - 如果 `α` 或 `edge_drop` 不是float。
-        - **ValueError** - 如果 `α` 不在范围[0.0, 1.0]内。
+        - **TypeError** - 如果 `alpha` 或 `edge_drop` 不是float。
+        - **ValueError** - 如果 `alpha` 不在范围[0.0, 1.0]内。
         - **ValueError** - 如果 `edge_drop` 不在范围(0.0, 1.0]内。

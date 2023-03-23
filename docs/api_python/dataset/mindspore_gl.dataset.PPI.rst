@@ -7,14 +7,14 @@ mindspore_gl.dataset.PPI
 
     有关PPI数据集：
 
-    蛋白质在各种蛋白质-蛋白质相互作用（PPI）图中的作用——就其细胞功能而言——在各种蛋白质-蛋白质相互作用（PPI）图中，每个图对应于不同的人类组织。使用位置基因集，基序基因集和免疫学特征作为特征，基因本体集作为标签（总共121个），从分子特征数据库收集。平均图包含2373个节点，平均度为28.8。
+    蛋白质在各种蛋白质-蛋白质相互作用（PPI）图中的作用，每个图对应于不同的人类组织。使用位置基因集，以基序基因集和免疫学特征作为特征，基因本体集作为标签（总共121个），从分子特征数据库收集。图平均包含2373个节点，平均度为28.8。
 
     数据：
 
     - 图: 24
     - 节点: ~2245.3
     - Edges: ~61,318.4
-    - 类的数量: 121
+    - 分类数量: 121
     - 标签分类:
 
       - Train examples: 20
@@ -22,7 +22,7 @@ mindspore_gl.dataset.PPI
       - Test examples: 2
 
     下载地址：`PPI <https://data.dgl.ai/dataset/ppi.zip>`_ 。
-    您可以将数据集文件组织到以下目录结构中，并通过 `preprocess` API读取。
+    您可以将数据集文件组织到以下目录结构中进行读取。
 
     .. code-block::
 
@@ -95,7 +95,7 @@ mindspore_gl.dataset.PPI
     .. py:method:: mindspore_gl.dataset.PPI.node_feat
         :property:
 
-        节点特性。
+        节点特征。
 
         返回：
             numpy.ndarray，节点特征数组。

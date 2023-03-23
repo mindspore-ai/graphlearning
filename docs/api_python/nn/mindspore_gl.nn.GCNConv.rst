@@ -1,7 +1,7 @@
 mindspore_gl.nn.GCNConv
 =======================
 
-.. py:class:: mindspore_gl.nn.GCNConv(in_feat_size: int, out_size: int, activation=None, dropout=0.5) -> None
+.. py:class:: mindspore_gl.nn.GCNConv(in_feat_size: int, out_size: int, activation=None, dropout=0.5)
 
     图卷积网络层。来自论文 `Semi-Supervised Classification with Graph Convolutional Networks <https://arxiv.org/abs/1609.02907>`_ 。
 
@@ -17,19 +17,19 @@ mindspore_gl.nn.GCNConv
     参数：
         - **in_feat_size** (int) - 输入节点特征大小。
         - **out_size** (int) - 输出节点特征大小。
-        - **activation** (Cell) - 激活函数。默认值：None。
-        - **dropout** (float) - 保持率，大于0，小于等于1。例如，dropout=0.9，抛弃10%的输入单元。默认值：0.5。
+        - **activation** (Cell, 可选) - 激活函数。默认值：None。
+        - **dropout** (float, 可选) - keep rate，大于0，小于等于1。例如，dropout=0.9，抛弃10%的输入单元。默认值：0.5。
 
     输入：
         - **x** (Tensor) - 输入节点功能。Shape为 :math:`(N,D_{in})`
-          其中 :math:`N` 是节点数， :math:`D_{in}` 应等于 `Args` 中的 `in_feat_size` 。
+          其中 :math:`N` 是节点数， :math:`D_{in}` 应等于参数中的 `in_feat_size` 。
         - **in_deg** (Tensor) - 节点的入度。Shape为 :math:`(N,)` 其中 :math:`N` 是节点数。
         - **out_deg** (Tensor) - 节点的出度。Shape为 :math:`(N,)` 。
           其中 :math:`N` 是节点数。
         - **g** (Graph) - 输入图。
 
     输出：
-        - Tensor，输出节点特征的Shape为 :math:`(N,D_{out})` ，其中 :math:`(D_{out})` 应与 `Args` 中的 `out_size` 。
+        - Tensor，输出节点特征的Shape为 :math:`(N,D_{out})` ，其中 :math:`(D_{out})` 应与参数中的 `out_size` 。
 
     异常：
         - **TypeError** - 如果 `in_feat_size` 或 `out_size` 不是int。

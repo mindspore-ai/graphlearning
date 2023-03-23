@@ -18,15 +18,15 @@ mindspore_gl.nn.SAGPooling
 
     参数：
         - **in_channels** (int) - 每个输入样本的大小。
-        - **GNN** (GNNCell) - 用于计算投影分数的图神经网络层，仅支持GCNConv2。默认值：mindspore_gl.nn.con.GCNConv2。
-        - **activation** (Cell) - 要使用的非线性。默认值：mindspore.nn.Tanh。
-        - **multiplier** (Float) - 用于缩放节点功能的标量。默认值：1.0。
+        - **GNN** (GNNCell, 可选) - 用于计算投影分数的图神经网络层，仅支持GCNConv2。默认值：mindspore_gl.nn.con.GCNConv2。
+        - **activation** (Cell, 可选) - 非线性激活函数。默认值：mindspore.nn.Tanh。
+        - **multiplier** (float, 可选) - 用于缩放节点功能的标量。默认值：1.0。
 
     输入：
         - **x** (Tensor) - 要更新的输入节点特征。Shape为 :math:`(N, D)`
-          其中 :math:`N` 是节点数， :math:`D` 是节点的特征大小，当 `attn==None` 时，`D` 应等于 `Args` 中的 `in_feat_size` 。
+          其中 :math:`N` 是节点数， :math:`D` 是节点的特征大小，当 `attn` 为None时，`D` 应等于参数中的 `in_feat_size` 。
         - **attn** (Tensor) - 用于计算投影分数的输入节点特征。Shape为 :math:`(N,D_{in})`
-          其中 :math:`N` 是节点数， :math:`D_{in}` 应等于 `Args` 中的 `in_feat_size` 。
+          其中 :math:`N` 是节点数， :math:`D_{in}` 应等于参数中的 `in_feat_size` 。
           如果用 `x` 计算投影分数， `attn` 可以为None。
         - **node_num** (Int) - 以图g中的节点总数。
         - **perm_num** (Int) - Topk个节点过滤中k值。

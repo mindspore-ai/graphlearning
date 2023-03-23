@@ -9,7 +9,7 @@ mindspore_gl.dataset.Alchemy
 
     腾讯量子实验室最近推出了一个新的分子数据集，叫做Alchemy，以促进开发对化学和材料科学有用的新机器学习模型。
 
-    该数据集列出了包含多达12个重原子的具有12个量子力学性质的130000+有机分子（C、N、O、S、F和Cl），取自GDBMedChem数据库。这些属性是使用基于Python的化学模拟框架（PySCF）开源计算化学程序。
+    该数据集列出了130000+个有机分子的12个量子力学属性，这些分子由多达12个重原子（C、N、O、S、F和Cl）组成，样本来自GDBMedChem数据库。这些属性是使用基于Python的化学模拟框架（PySCF）开源计算化学程序。
 
     信息统计：
 
@@ -22,7 +22,7 @@ mindspore_gl.dataset.Alchemy
     - `Alchemy dev <https://alchemy.tencent.com/data/dev_v20190730.zip>`_
     - `Alchemy valid <https://alchemy.tencent.com/data/valid_v20190730.zip>`_
 
-    您可以将数据集文件组织到以下目录结构中，并通过 `preprocess` API读取。
+    您可以将数据集文件组织到以下目录结构中进行读取。
 
     .. code-block::
 
@@ -42,7 +42,7 @@ mindspore_gl.dataset.Alchemy
 
     参数：
         - **root** (str) - 包含alchemy_with_mask.npz的根目录的路径。
-        - **datasize** (int) - 训练数据集大小。默认值：10000。
+        - **datasize** (int, 可选) - 训练数据集大小。默认值：10000。
 
     异常：
         - **TypeError** - 如果 `root` 不是str。
@@ -68,7 +68,7 @@ mindspore_gl.dataset.Alchemy
     .. py:method:: mindspore_gl.dataset.Alchemy.graph_count
         :property:
 
-        图的总数。
+        图的数量。
 
         返回：
             int，图的数量。

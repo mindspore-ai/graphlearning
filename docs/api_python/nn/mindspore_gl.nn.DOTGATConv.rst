@@ -9,7 +9,7 @@ mindspore_gl.nn.DOTGATConv
     .. math::
         h_i^{(l+1)} = \sum_{j\in \mathcal{N}(i)} \alpha_{i, j} h_j^{(l)}
 
-    :math:`\alpha_{i,j}` 表示节点 :math:`i` 和节点 :math:`j` 之间的注意力分数。
+    :math:`\alpha_{i,j}` 表示节点 :math:`i` 和节点 :math:`j` 之间的attention分数。
 
     .. math::
         \alpha_{i, j} = \mathrm{softmax_i}(e_{ij}^{l}) \\
@@ -18,12 +18,11 @@ mindspore_gl.nn.DOTGATConv
     参数：
         - **in_feat_size** (int) - 输入节点特征大小。
         - **out_feat_size** (int) - 输出节点特征大小。
-        - **num_heads** (int) - GAT中使用的注意力头数。
-        - **bias** (bool) - 是否使用偏差。默认值：False。
+        - **num_heads** (int) - GAT中使用的attention头数。
+        - **bias** (bool, 可选) - 是否使用偏置。默认值：False。
 
     输入：
-        - **x** (Tensor) - 输入节点特征。Shape为 :math:`(N,*)`
-          其中 :math:`N` 是节点数， :math:`*` 可以是任何形状。
+        - **x** (Tensor) - 输入节点特征。Shape为 :math:`(N,*)` ，其中 :math:`N` 是节点数， :math:`*` 可以是任何shape。
         - ***g** (Graph) - 输入图。
 
     输出：

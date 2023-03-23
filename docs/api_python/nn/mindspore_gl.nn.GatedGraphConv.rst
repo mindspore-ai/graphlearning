@@ -17,11 +17,11 @@ mindspore_gl.nn.GatedGraphConv
         - **out_feat_size** (int) - 输出节点特征大小。
         - **n_steps** (int) - 步骤数。
         - **n_etype** (int) - 边类型的数量。
-        - **bias** (bool) - 是否使用偏差。默认值：True。
+        - **bias** (bool, 可选) - 是否使用偏置。默认值：True。
 
     输入：
         - **x** (Tensor) - 输入节点特征。Shape为 :math:`(N,*)`
-          其中 :math:`N` 是节点数， :math:`*` 可以是任何形状。
+          其中 :math:`N` 是节点数， :math:`*` 可以是任何shape。
         - **src_idx** (List) - 每个边类型的源索引。
         - **dst_idx** (List) - 每个边类型的目标索引。
         - **n_nodes** (int) - 整个图的节点数。

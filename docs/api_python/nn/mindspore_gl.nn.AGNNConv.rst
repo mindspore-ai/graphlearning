@@ -21,7 +21,7 @@ mindspore_gl.nn.AGNNConv
 
     输入：
         - **x** (Tensor) - 输入节点特征。Shape为 :math:`(N,*)` ，其中 :math:`N` 是节点数，
-          :math:`*` 可以是任何形状。
+          :math:`*` 可以是任何shape。
         - **g** (Graph) - 输入图表。
 
     输出：
