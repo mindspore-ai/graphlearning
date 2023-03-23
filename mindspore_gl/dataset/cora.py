@@ -45,7 +45,7 @@ class CoraV2(BaseDataSet):
       - Valid: 500
       - Test: 1000
 
-    Dataset can be download here:
+    Dataset can be downloaded here:
 
     `cora_v2 <https://data.dgl.ai/dataset/cora_v2.zip>`_
 
@@ -53,7 +53,7 @@ class CoraV2(BaseDataSet):
 
     `pubmed <https://data.dgl.ai/dataset/pubmed.zip>`_
 
-    You can organize the dataset files into the following directory structure and read by `process` API.
+    You can organize the dataset files into the following directory structure and read.
 
     .. code-block::
 
@@ -70,7 +70,7 @@ class CoraV2(BaseDataSet):
 
     Args:
         root(str): path to the root directory that contains cora_v2_with_mask.npz.
-        name(str): select dataset type, optional: ["cora_v2", "citeseer", "pubmed"].
+        name(str, optional): select dataset type, optional: ["cora_v2", "citeseer", "pubmed"].
 
           - cora_v2: Machine learning papers.
 
@@ -79,7 +79,7 @@ class CoraV2(BaseDataSet):
           - pubmed: Scientific publications on diabetes.
 
     Raises:
-        RuntimeError: If root does not contain data files.
+        RuntimeError: If `root` does not contain data files.
 
     Examples:
         >>> from mindspore_gl.dataset import CoraV2
@@ -199,10 +199,10 @@ class CoraV2(BaseDataSet):
     @property
     def node_feat_size(self):
         """
-        Feature size of each node
+        Feature size of each node.
 
         Returns:
-            - int, the number of feature size
+            - int, the number of feature size.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -213,10 +213,10 @@ class CoraV2(BaseDataSet):
     @property
     def num_classes(self):
         """
-        Number of label classes
+        Number of label classes.
 
         Returns:
-            - int, the number of classes
+            - int, the number of classes.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -227,10 +227,10 @@ class CoraV2(BaseDataSet):
     @property
     def train_mask(self):
         """
-        Mask of training nodes
+        Mask of training nodes.
 
         Returns:
-            - numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -243,10 +243,10 @@ class CoraV2(BaseDataSet):
     @property
     def test_mask(self):
         """
-        Mask of test nodes
+        Mask of test nodes.
 
         Returns:
-            - numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -259,10 +259,10 @@ class CoraV2(BaseDataSet):
     @property
     def val_mask(self):
         """
-        Mask of validation nodes
+        Mask of validation nodes.
 
         Returns:
-            - numpy.ndarray, array of mask
+            - numpy.ndarray, array of mask.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -275,10 +275,10 @@ class CoraV2(BaseDataSet):
     @property
     def train_nodes(self):
         """
-        training nodes indexes
+        training nodes indexes.
 
         Returns:
-            - numpy.ndarray, array of training nodes
+            - numpy.ndarray, array of training nodes.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -289,10 +289,10 @@ class CoraV2(BaseDataSet):
     @property
     def node_count(self):
         """
-        Number of nodes
+        Number of nodes, length of csr row.
 
         Returns:
-            - int, length of csr row
+            - int, the number of nodes.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -303,10 +303,10 @@ class CoraV2(BaseDataSet):
     @property
     def edge_count(self):
         """
-        Number of edges
+        Number of edges, length of csr col.
 
         Returns:
-            - int, length of csr col
+            - int, the number of edges.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -317,10 +317,10 @@ class CoraV2(BaseDataSet):
     @property
     def node_feat(self):
         """
-        Node features
+        Node features.
 
         Returns:
-            - numpy.ndarray, array of node feature
+            - numpy.ndarray, array of node feature.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -334,10 +334,10 @@ class CoraV2(BaseDataSet):
     @property
     def node_label(self):
         """
-        Ground truth labels of each node
+        Ground truth labels of each node.
 
         Returns:
-            - numpy.ndarray, array of node label
+            - numpy.ndarray, array of node label.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -350,10 +350,10 @@ class CoraV2(BaseDataSet):
     @property
     def adj_coo(self):
         """
-        Return the adjacency matrix of COO representation
+        Return the adjacency matrix of COO representation.
 
         Returns:
-            - numpy.ndarray, array of coo matrix.
+            - numpy.ndarray, array of COO matrix.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -367,7 +367,7 @@ class CoraV2(BaseDataSet):
         Return the adjacency matrix of CSR representation.
 
         Returns:
-            - numpy.ndarray, array of csr matrix.
+            - numpy.ndarray, array of CSR matrix.
 
         Examples:
             >>> #dataset is an instance object of Dataset

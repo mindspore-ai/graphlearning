@@ -29,8 +29,8 @@ class BlogCatalog(BaseDataSet):
 
     About BlogCatalog dataset:
 
-    This is the data set crawled from BlogCatalog. BlogCatalog is a social blog
-    directory website. This contains the friendship network crawled and group memberships. For easier understanding,
+    This is the data from BlogCatalog. BlogCatalog is a social blog
+    directory website. This contains the friendship network and group memberships. For easier understanding,
     all the contents are organized in CSV file format.
 
     Statistics:
@@ -41,7 +41,7 @@ class BlogCatalog(BaseDataSet):
 
     Dataset can be download here: `BlogCatalog <https://figshare.com/articles/dataset/BlogCatalog_dataset/11923611>`_ .
 
-    You can organize the dataset files into the following directory structure and read by `preprocess` API.
+    You can organize the dataset files into the following directory structure and read.
 
     .. code-block::
 
@@ -137,10 +137,10 @@ class BlogCatalog(BaseDataSet):
     @property
     def node_count(self):
         """
-        Number of nodes.
+        Number of nodes， length of csr row.
 
         Returns:
-            - int, length of csr row.
+            - int, the number of nodes.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -151,10 +151,10 @@ class BlogCatalog(BaseDataSet):
     @property
     def edge_count(self):
         """
-        Number of edges.
+        Number of edges, length of csr col.
 
         Returns:
-            - int, length of csr col.
+            - int, the number of edges.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -184,7 +184,7 @@ class BlogCatalog(BaseDataSet):
         ID of each node.
 
         Returns:
-            - numpy.ndarray, array of node id.
+            - numpy.ndarray, array of node ID.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -200,7 +200,7 @@ class BlogCatalog(BaseDataSet):
         Return the adjacency matrix of COO representation.
 
         Returns:
-            - numpy.ndarray, array of coo matrix.
+            - numpy.ndarray, array of COO matrix.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -214,7 +214,7 @@ class BlogCatalog(BaseDataSet):
         Return the adjacency matrix of CSR representation.
 
         Returns:
-            - numpy.ndarray, array of csr matrix.
+            - numpy.ndarray, array of CSR matrix.
 
         Examples:
             >>> #dataset is an instance object of Dataset

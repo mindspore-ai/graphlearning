@@ -95,22 +95,22 @@ class GatedGraphConv(ms.nn.Cell):
         ``Ascend`` ``GPU``
 
     Examples:
-        >>>import mindspore as ms
-        >>>from mindspore_gl.nn import GatedGraphConv
-        >>>from mindspore_gl import GraphField
-        >>>feat_size = 16
-        >>>n_nodes = 4
-        >>>h = ms.ops.Ones()((n_nodes, feat_size), ms.float32)
-        >>>src_idx = [ms.Tensor([0, 1, 2, 3], ms.int32), ms.Tensor([0, 0, 1, 1], ms.int32),
-        ...           ms.Tensor([0, 0, 1, 2, 3], ms.int32), ms.Tensor([2, 3, 3, 0, 1], ms.int32),
-        ...           ms.Tensor([0, 1, 2, 3], ms.int32), ms.Tensor([2, 0, 2, 1], ms.int32)]
-        >>>dst_idx = [ms.Tensor([0, 0, 1, 1], ms.int32), ms.Tensor([0, 1, 2, 3], ms.int32),
-        ...           ms.Tensor([2, 3, 3, 0, 1], ms.int32), ms.Tensor([0, 0, 1, 2, 3], ms.int32),
-        ...           ms.Tensor([2, 0, 2, 1], ms.int32), ms.Tensor([0, 1, 2, 3], ms.int32)]
-        >>>n_edges = [4, 4, 5, 5, 4, 4]
-        >>>conv = GatedGraphConv(feat_size, 16, 2, 6, True)
-        >>>ret = conv(h, src_idx, dst_idx, n_nodes, n_edges)
-        >>>print(ret.shape)
+        >>> import mindspore as ms
+        >>> from mindspore_gl.nn import GatedGraphConv
+        >>> from mindspore_gl import GraphField
+        >>> feat_size = 16
+        >>> n_nodes = 4
+        >>> h = ms.ops.Ones()((n_nodes, feat_size), ms.float32)
+        >>> src_idx = [ms.Tensor([0, 1, 2, 3], ms.int32), ms.Tensor([0, 0, 1, 1], ms.int32),
+        ...            ms.Tensor([0, 0, 1, 2, 3], ms.int32), ms.Tensor([2, 3, 3, 0, 1], ms.int32),
+        ...            ms.Tensor([0, 1, 2, 3], ms.int32), ms.Tensor([2, 0, 2, 1], ms.int32)]
+        >>> dst_idx = [ms.Tensor([0, 0, 1, 1], ms.int32), ms.Tensor([0, 1, 2, 3], ms.int32),
+        ...            ms.Tensor([2, 3, 3, 0, 1], ms.int32), ms.Tensor([0, 0, 1, 2, 3], ms.int32),
+        ...            ms.Tensor([2, 0, 2, 1], ms.int32), ms.Tensor([0, 1, 2, 3], ms.int32)]
+        >>> n_edges = [4, 4, 5, 5, 4, 4]
+        >>> conv = GatedGraphConv(feat_size, 16, 2, 6, True)
+        >>> ret = conv(h, src_idx, dst_idx, n_nodes, n_edges)
+        >>> print(ret.shape)
         (4, 16)
     """
 

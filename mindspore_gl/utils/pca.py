@@ -69,18 +69,18 @@ def pca(matrix: np.ndarray, k: int = None, niter: int = 2, norm: bool = False):
 
     Args:
         matrix(ndarray): Input features, shape is :math:`(B, F)`.
-        k(int): target dimension for dimensionality reduction. Default: None.
-        niter(int): the number of subspace iterations to conduct
+        k(int, optional): target dimension for dimensionality reduction. Default: None.
+        niter(int, optional): the number of subspace iterations to conduct
             and it must be a nonnegative integer. Default: 2.
-        norm(bool): Whether the output is normalized. Default: False.
+        norm(bool, optional): Whether the output is normalized. Default: False.
 
     Return:
         ndarray, Features after dimensionality reduction
 
     Raises:
-        TypeError: If 'k' or 'niter' is not a positive int.
-        TypeError: If 'matrix' is not a ndarry.
-        TypeError: If 'norm' is not a bool.
+        TypeError: If `k` or `niter` is not a positive int.
+        TypeError: If `matrix` is not a ndarry.
+        TypeError: If `norm` is not a bool.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

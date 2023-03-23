@@ -38,7 +38,7 @@ class Set2Set(GNNCell):
 
     Args:
         input_size (int): dim for input node features.
-        num_iters (int): number of iters.
+        num_iters (int): number of iterations.
         num_layers (int): number of layers.
 
     Inputs:
@@ -47,7 +47,7 @@ class Set2Set(GNNCell):
         - **g** (BatchedGraph) - The input graph.
 
     Outputs:
-        - **x** (Tensor) - The output representation for graphs. The shape is :math:`2, D_{out}`
+        - **x** (Tensor) - The output representation for graphs. The shape is :math:`(2, D_{out})`
           where :math:`D_{out}` is the double feature size of nodes
 
     Raises:

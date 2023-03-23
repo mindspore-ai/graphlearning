@@ -29,7 +29,7 @@ class BatchHomoGraph:
     BatchHomoGraph, batch list of MindHomoGraph into a single MindHomoGraph with some batch_meta information.
 
     Inputs:
-        - **graph_list** (List[MindHomoGraph]) - To list of MindHomoGraph.
+        - **graph_list** (List[MindHomoGraph]) - A list of MindHomoGraph.
 
     Supported Platforms:
         ``Ascend`` ``GPU``
@@ -127,7 +127,7 @@ class UnBatchHomoGraph:
 
 class PadMode(Enum):
     """
-    Padding Mode, for graph and 2d array.
+    Padding Mode, for graph and 2D array.
 
     - PadMode.CONST: padding the array into user specified shape.
     - PadMode.AUTO: auto generate the padding shape.
@@ -174,8 +174,8 @@ class PadDirection(Enum):
 
 
 class PadArray2d:
-    """
-    PadArray2d, specific pad operator for 2d array.
+    r"""
+    PadArray2d, specific pad operator for 2D array.
 
     .. warning::
         PadArray2d will reuse memory buffer to speedup pad operation.
@@ -184,15 +184,17 @@ class PadArray2d:
         dtype(numpy.dtype): To determine result's data type.
         direction(PadDirection): Pad direction for array, PadDirection.
             ROW means we will pad along axis=1, PadDirection.COl means we will pad along axis=0.
-        fill_value(Union[float, int, None]): Fill value for padded region. Default: None.
-        reset_with_fill_value(bool): PadArray2d will reuse memory buffer,
+        fill_value(Union[float, int, optional]): Fill value for padded region. Default: None.
+        reset_with_fill_value(bool, optional): PadArray2d will reuse memory buffer,
             you can set this value to False if you dont care about the padded value. Default: True.
-        mode(PadMode): Pad mode for array, if PadMode.CONST, this op will pad array to user-specific size.
-            If PadMode.AUTO, this will choose padded result length according to input's length.
-            The expected length can be calculated as 2^ceil(log2(input_length)).
+        mode(PadMode, optional): Pad mode for array, if PadMode.CONST, this op will pad array to user-specific
+            size. If PadMode.AUTO, this will choose padded result length according to input's length.
+            The expected length can be calculated as
+            .. math::
+                length=2^{ceil\left ( \log_{2}{input\_length}  \right ) }
             Default: mindspore_gl.graph.PadMode.AUTO.
-        size(Union[List, Tuple]): User specific size for padding result. Default: None.
-        use_shared_numpy(bool): If we use SharedNDArray for speeding up inter process communication.
+        size(Union[List, Tuple, optional]): User specific size for padding result. Default: None.
+        use_shared_numpy(bool, optional): If we use SharedNDArray for speeding up inter process communication.
             This is recommended if you do feature collection and feature padding in child process and
             need inter process communication for graph feature. Default: False.
 
@@ -309,10 +311,12 @@ class PadArray2d:
         Lazy Array Pad, this will just determine padded result shape and return an empty array with target shape.
 
         Args:
-            shape( Union[List, Tuple]): input array's shape for pad.
+            shape(Union[List, Tuple]): input array's shape for pad.
+            kwargs(dict): config dict
+                fill_value(Union[int, float]): fill the padding array with value
 
         Returns:
-            - **memory_buffer** (numpy.ndarray) - an empty numpy array with target padded shape.
+            memory_buffer(numpy.ndarray), an empty numpy array with target padded shape.
 
         """
         fill_value = kwargs.get("fill_value", None)
@@ -513,7 +517,6 @@ class UnPadHomoGraph:
 
     def __call__(self, graph: MindHomoGraph, **kwargs) -> MindHomoGraph:
         pass
-
 
 class PadCsrEdge:
     """

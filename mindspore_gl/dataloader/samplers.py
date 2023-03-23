@@ -22,8 +22,8 @@ class RandomBatchSampler(ds.Sampler):
     Random Batched Node Sampler, random sample nodes form graph. The remained sample will be dropped.
 
     Args:
-        data_source(Union[List, Tuple, Iterable]): data source sample from
-        batch_size(int): number of sampling subgraphs per batch
+        data_source(Union[List, Tuple, Iterable]): data source sample from.
+        batch_size(int): number of sampling subgraphs per batch.
 
     Raises:
         TypeError: If `batch_size` is not a positive integer.

@@ -239,7 +239,7 @@ class DataLoader(Generic[Tco]):
 class _BaseDataLoaderIter:
     """Base class for DataLoaderIter"""
 
-    def __init__(self, loader: DataLoader) -> None:
+    def __init__(self, loader: DataLoader):
         self._dataset = loader.dataset
         self._index_sampler = loader.index_sampler
         self._num_workers = loader.num_workers

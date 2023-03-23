@@ -24,7 +24,7 @@ def random_walk_unbias_on_homo(homo_graph: mindspore_gl.graph.MindHomoGraph,
                                seeds: numpy.ndarray,
                                walk_length: int):
     r"""
-    random walks sampling on homo graph.
+    Random walks sampling on homo graph.
 
     Args:
         homo_graph(mindspore_gl.graph.MindHomoGraph): the source graph which is sampled from.
@@ -36,7 +36,7 @@ def random_walk_unbias_on_homo(homo_graph: mindspore_gl.graph.MindHomoGraph,
 
     Raises:
         TypeError: If `walk_length` is not a positive integer.
-        TypeError: If `seeds` is not numpy.ndarray int 32.
+        TypeError: If `seeds` is not numpy.ndarray int32.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

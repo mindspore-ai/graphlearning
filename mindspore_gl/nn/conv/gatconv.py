@@ -40,10 +40,10 @@ class GATConv(GNNCell):
         in_feat_size (int): Input node feature size.
         out_size (int): Output node feature size.
         num_attn_head (int): Number of attention head used in GAT.
-        input_drop_out_rate (float): Keep rate of input drop out. Default: 1.0.
-        attn_drop_out_rate (float): Keep rate of attention drop out. Default: 1.0.
-        leaky_relu_slope (float): Slope for leaky relu. Default: 0.2.
-        activation (Cell): Activation function. Default: None.
+        input_drop_out_rate (float, optional): Keep rate of input drop out. Default: 1.0.
+        attn_drop_out_rate (float, optional): Keep rate of attention drop out. Default: 1.0.
+        leaky_relu_slope (float, optional): Slope for leaky relu. Default: 0.2.
+        activation (Cell, optional): Activation function. Default: None.
         add_norm: Whether the edge information needs normalization or not. Default: False.
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N,D_{in})`
@@ -89,7 +89,7 @@ class GATConv(GNNCell):
                  attn_drop_out_rate: float = 1.0,
                  leaky_relu_slope: float = 0.2,
                  activation=None,
-                 add_norm=False) -> None:
+                 add_norm=False):
         super().__init__()
         self.in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
         self.out_size = Validator.check_positive_int(out_size, "out_size", self.cls_name)

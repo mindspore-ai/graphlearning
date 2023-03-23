@@ -19,7 +19,7 @@ import numpy as np
 
 def k_hop_subgraph(node_idx, num_hops, adj_coo, node_count, relabel_nodes=False, flow='source_to_target'):
     """
-    K-hop sampling on MindHomoGraph
+    K-hop sampling on HomoGraph
 
     Args:
         node_idx(int, list, tuple or numpy.ndarray): sampling subgraph around 'node_idx'.
@@ -27,17 +27,21 @@ def k_hop_subgraph(node_idx, num_hops, adj_coo, node_count, relabel_nodes=False,
         adj_coo(numpy.ndarray): input adj of graph.
         node_count(int): the number of nodes.
         relabel_nodes(bool): node indexes need relabel or not. Default: False.
-        flow (str): the visit direction. Default: 'source_to_target'.
+        flow (str, optional): the visit direction. Default: 'source_to_target'.
 
-          - source_to_target: from source node to target node.
+          - 'source_to_target': from source node to target node.
 
-          - target_to_source: from target node to source node.
+          - 'target_to_source': from target node to source node.
 
     Returns:
         res(dict), has 4 keys 'subset', 'adj_coo', 'inv', 'edge_mask', where,
+
         - **subset** (numpy.ndarray) - nodes' idx of sampled K-hop subgraph.
+
         - **adj_coo** (numpy.ndarray) - adj of sampled K-hop subgraph.
+
         - **inv** (list) - the mapping from node indices in `node_idx` to their new location.
+
         - **edge_mask** (numpy.ndarray) - the edge mask indicating which edges were preserved.
 
     Raises:

@@ -23,9 +23,10 @@ def split_data(x, val_ratio=0.05, test_ratio=0.1, graph_type='undirected'):
 
     Args:
         x (mindspore_gl.dataloader.Dataset): Graph Structured Dataset
-        val_ratio(float): Validation set proportion. Default: 0.05.
-        test_ratio(float): Test set proportion. Default: 0.1.
-        graph_type(str):The type of graph. Default: 'undirected'.
+        val_ratio(float, optional): Validation set proportion. Default: 0.05.
+        test_ratio(float, optional): Test set proportion. Default: 0.1.
+        graph_type(str, optional): The type of graph.'undirected': undirected graph, 'directed': directed graph.
+            Default: 'undirected'.
 
     Returns:
         - **train** (numpy.ndarray) - Train set positive examples, shape :math:`(train\_len, 2)` .

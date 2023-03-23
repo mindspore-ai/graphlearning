@@ -23,11 +23,11 @@ CsrAdjNameTuple = namedtuple("csr_adj", ['indptr', 'indices'])
 
 class CsrAdj(CsrAdjNameTuple):
     """
-    Build the csr matrix nametuple.
+    Build the CSR matrix nametuple.
 
     Args:
-        indptr (numpy.ndarry): indptr of scr matrix.
-        indices (numpy.ndarry): indices of scr matrix.
+        indptr (numpy.ndarry): indptr of CSR matrix.
+        indices (numpy.ndarry): indices of CSR matrix.
 
     Raises:
         TypeError: If `indptr` or `indices` is not a numpy.ndarray.
@@ -102,12 +102,12 @@ class MindRelationGraph:
 
     def set_topo(self, adj_csr: CsrAdj, node_dict=None, edge_ids: np.ndarray = None):
         """
-        set topology for relation graph by either csr_adj.
+        Set topology for relation graph by either csr_adj.
 
         Args:
-            adj_csr(csr_adj): csr format description of adjacent matrix.
-            edge_ids(numpy.ndarray): edge ids for each edge.
-            node_dict(Dict): global->local node id.
+            adj_csr(CsrAdj): csr format description of adjacent matrix.
+            node_dict(dict, optional): edge ids for each edge.
+            edge_ids(Unumpy.ndarray, optional): global->local node id.
         """
         self._adj_csr = adj_csr
         self._node_dict = node_dict
@@ -201,8 +201,8 @@ class BatchMeta:
     BatchMeta, meta information for a batched graph.
 
     Args:
-        graph_nodes(numpy.array): accumulated node sum for graphs in batched graph(first element is 0).
-        graph_edges(numpy.array): accumulated edge sum for graphs in batched graph(first element is 0).
+        graph_nodes(numpy.array): array of accumulated node sum for graphs in batched graph (first element is 0).
+        graph_edges(numpy.array): array of accumulated edge sum for graphs in batched graph (first element is 0).
 
     Supported Platforms:
         ``Ascend`` ``GPU``
@@ -226,7 +226,7 @@ class BatchMeta:
     @property
     def graph_nodes(self):
         """
-        nodes of graph.
+        Nodes array of graph.
 
         Returns:
             - numpy.array, accumulated node sum for graphs in batched graph(first element is 0)
@@ -237,7 +237,7 @@ class BatchMeta:
     @property
     def graph_edges(self):
         """
-        edges of graph.
+        Edges array of graph.
 
         Returns:
             - numpy.array, accumulated edge sum for graphs in batched graph(first element is 0)
@@ -247,7 +247,7 @@ class BatchMeta:
     @property
     def graph_count(self):
         """
-        graph nums.
+        Graph numbers.
 
         Returns:
             - int, total graph count in this batched graph
@@ -258,7 +258,7 @@ class BatchMeta:
     @property
     def node_map_idx(self):
         """
-        index of node list.
+        Index of node list.
 
         Returns:
             - numpy.array, array indicate graph index for each node
@@ -273,7 +273,7 @@ class BatchMeta:
     @property
     def edge_map_idx(self):
         """
-        index of edge list.
+        Index of edge list.
 
         Returns:
             - numpy.array, array indicate graph index for each edge
@@ -286,7 +286,7 @@ class BatchMeta:
 
     def __getitem__(self, graph_idx):
         """
-        return node count and edge count for idx graph
+        Return node count and edge count for idx graph
 
         Args:
             graph_idx(int): graph idx for query
@@ -301,7 +301,7 @@ class BatchMeta:
 
 class MindHomoGraph:
     """
-    Build in-memory homo graph.
+    Build homo graph.
 
     Supported Platforms:
         ``Ascend`` ``GPU``
@@ -345,14 +345,14 @@ class MindHomoGraph:
         "Batch Meta Info"
         self._batch_meta = None
 
-    def set_topo(self, adj_csr: np.ndarray, node_dict, edge_ids: np.ndarray):
+    def set_topo(self, adj_csr: CsrAdj, node_dict, edge_ids: np.ndarray):
         """
-        initialize CSR Graph
+        Initialize CSR Graph.
 
         Args:
-            adj_csr(mindspore_gl.graph.csr_adj): adj of graph, csr type
-            node_dict(dict): node id dict
-            edge_ids(numpy.ndarray): array of edges
+            adj_csr(mindspore_gl.graph.CsrAdj): adjacency matrix of graph, CSR type.
+            node_dict(dict): node ID dict.
+            edge_ids(numpy.ndarray): array of edges.
         """
         self._adj_csr = adj_csr
         self._node_dict = node_dict
@@ -361,12 +361,12 @@ class MindHomoGraph:
 
     def set_topo_coo(self, adj_coo, node_dict=None, edge_ids: np.ndarray = None):
         """
-        initialize COO Graph
+        Initialize COO Graph.
 
         Args:
-            adj_coo(numpy.ndarray): adj of graph, coo type
-            node_dict(dict): node id dict
-            edge_ids(numpy.ndarray): array of edges
+            adj_coo(numpy.ndarray): adjacency matrix of graph, COO type.
+            node_dict(dict): node ID dict. Default: None.
+            edge_ids(numpy.ndarray): array of edges. Default: None.
         """
         self._adj_coo = adj_coo
         self._node_dict = node_dict
@@ -375,13 +375,13 @@ class MindHomoGraph:
 
     def neighbors(self, node):
         """
-        Query With Lazy Computation
+        Query neighbors nodes.
 
         Args:
-            node(int): node idx
+            node(int): node index.
 
         Returns:
-            - numpy.ndarray, sampled node
+            - numpy.ndarray, sampled node.
         """
         self._check_csr()
         mapped_idx = self._node_dict.get(node, None)
@@ -394,13 +394,13 @@ class MindHomoGraph:
 
     def degree(self, node):
         """
-        Query With Lazy Computation node degree.
+        Query With node degree.
 
         Args:
-            node(int): node idx
+            node(int): node index.
 
         Returns:
-            - int, degree of node
+            - int, degree of node.
         """
         self._check_csr()
         mapped_idx = self._node_dict.get(node, None)
@@ -412,10 +412,10 @@ class MindHomoGraph:
     @property
     def adj_csr(self):
         """
-        csr adj matrix
+        CSR adj matrix.
 
         Returns:
-            - mindspore_gl.graph.csr_adj, csr graph
+            - mindspore_gl.graph.csr_adj, CSR graph.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -427,10 +427,10 @@ class MindHomoGraph:
     @property
     def adj_coo(self):
         """
-        coo adj matrix
+        COO adj matrix.
 
         Returns:
-            - numpy.ndarray, coo graph
+            - numpy.ndarray, coo graph.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -447,10 +447,10 @@ class MindHomoGraph:
 
     @property
     def edge_count(self):
-        """Edge count of graph
+        """Edge count of graph.
 
         Returns:
-            - int, edge numbers
+            - int, edge numbers.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -470,10 +470,10 @@ class MindHomoGraph:
 
     @property
     def node_count(self):
-        """Node count of graph
+        """Node count of graph.
 
         Returns:
-            - int, nodes numbers
+            - int, nodes numbers.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -493,10 +493,10 @@ class MindHomoGraph:
 
     @property
     def is_batched(self) -> bool:
-        """If the graph be batched
+        """If the graph be batched.
 
         Returns:
-            - bool, the graph be batched
+            - bool, the graph be batched return True, else return False.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -506,10 +506,10 @@ class MindHomoGraph:
 
     @property
     def batch_meta(self) -> BatchMeta:
-        """If the graph be batched
+        """Batched graph meta info.
 
         Returns:
-            - mindspore_gl.graph.BatchMeta, bathc meta info
+            - mindspore_gl.graph.BatchMeta, batched graph meta info.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -560,7 +560,7 @@ class MindHomoGraph:
 
 class MindHeteroGraph:
     """
-    HeteroGeneous Graph
+    HeteroGeneous Graph.
     """
 
     def __init__(self):

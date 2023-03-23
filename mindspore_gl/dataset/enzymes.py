@@ -43,7 +43,7 @@ class Enzymes(BaseDataSet):
     Dataset can be download here:
     `ENZYMES <https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets/ENZYMES.zip>`_ .
 
-    You can organize the dataset files into the following directory structure and read by `preprocess` API.
+    You can organize the dataset files into the following directory structure and read.
 
     .. code-block::
 
@@ -326,7 +326,7 @@ class Enzymes(BaseDataSet):
     @property
     def train_graphs(self):
         """
-        Train graph id.
+        Train graph ID.
 
         Returns:
             - numpy.ndarray, array of train graph id.
@@ -340,7 +340,7 @@ class Enzymes(BaseDataSet):
     @property
     def val_graphs(self):
         """
-        Valid graph id.
+        Valid graph ID.
 
         Returns:
             - numpy.ndarray, array of valid graph id.
@@ -354,7 +354,7 @@ class Enzymes(BaseDataSet):
     @property
     def test_graphs(self):
         """
-        Test graph id.
+        Test graph ID.
 
         Returns:
             - numpy.ndarray, array of test graph id.
@@ -397,7 +397,7 @@ class Enzymes(BaseDataSet):
 
     def graph_node_feat(self, graph_idx):
         """
-        graph features.
+        Graph features.
 
         Args:
             graph_idx (int): index of graph.
