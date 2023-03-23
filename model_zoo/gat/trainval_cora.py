@@ -26,6 +26,7 @@ from mindspore.train.callback import TimeMonitor, LossMonitor
 from mindspore_gl import Graph, GraphField
 from mindspore_gl.dataset import CoraV2
 from mindspore_gl.nn import GNNCell
+from mindspore_gl.graph import graph_csr_data
 
 from src.gat import GatNet
 
@@ -49,8 +50,22 @@ class LossNet(GNNCell):
 
 def main():
     """train gat"""
-    context.set_context(device_target=args.device, mode=context.GRAPH_MODE, enable_graph_kernel=True,
-                        device_id=args.device_id)
+    if args.device == "GPU" and args.fuse:
+        if args.csr:
+            context.set_context(device_target="GPU", save_graphs=False, save_graphs_path="./computational_graph/",
+                                mode=context.GRAPH_MODE, enable_graph_kernel=True, device_id=args.device_id,
+                                graph_kernel_flags="--enable_expand_ops=Gather "
+                                                   "--enable_cluster_ops=CSRReduceSum,CSRDiv "
+                                                   "--enable_recompute_fusion=false "
+                                                   "--enable_parallel_fusion=false "
+                                                   "--recompute_increment_threshold=40000000 "
+                                                   "--recompute_peak_threshold=3000000000 "
+                                                   "--enable_csr_fusion=true ")
+        else:
+            context.set_context(device_target=args.device, save_graphs=False, save_graphs_path="./computational_graph/",
+                                mode=context.GRAPH_MODE, enable_graph_kernel=True)
+    else:
+        context.set_context(device_target=args.device, mode=context.GRAPH_MODE, device_id=args.device_id)
     num_layers = args.num_layers
     num_hidden = args.num_hidden
     num_heads = args.num_heads
@@ -67,11 +82,28 @@ def main():
 
     n_nodes = ds.node_feat.shape[0]
     n_edges = ds.adj_coo.row.shape[0]
+
+    in_deg = np.zeros(shape=n_nodes, dtype=np.int)
+    out_deg = np.zeros(shape=n_nodes, dtype=np.int)
+    for r in ds.adj_coo.row:
+        out_deg[r] += 1
+    for r in ds.adj_coo.col:
+        in_deg[r] += 1
     g = GraphField(ms.Tensor(ds.adj_coo.row, dtype=ms.int32), ms.Tensor(ds.adj_coo.col, dtype=ms.int32),
                    int(n_nodes), int(n_edges))
     node_feat = ms.Tensor(ds.node_feat)
     train_mask = ms.Tensor(ds.train_mask, ms.float32)
     node_label = ms.Tensor(ds.node_label)
+    test_mask = ds.test_mask
+
+    if args.csr:
+        GNNCell.sparse_compute(csr=args.csr, backward=args.backward)
+        csr_g, in_deg, out_deg, node_feat, node_label,\
+        train_mask, _, test_mask = graph_csr_data(*g.get_graph(),
+                                                  node_feat=node_feat, node_label=node_label,
+                                                  train_mask=train_mask, test_mask=test_mask, rerank=True)
+        g = GraphField(indices=csr_g[0], indptr=csr_g[1], n_nodes=csr_g[2], n_edges=csr_g[3],
+                       indices_backward=csr_g[4], indptr_backward=csr_g[5], csr=True)
 
     TimeMonitor()
     LossMonitor()
@@ -104,10 +136,8 @@ def main():
 
         net.set_train(False)
         out = net(node_feat, *g.get_graph()).asnumpy()
-        test_mask = ds.test_mask
-        labels = ds.node_label
         predict = np.argmax(out[test_mask], axis=1)
-        label = labels[test_mask]
+        label = node_label.asnumpy()[test_mask]
         count = np.equal(predict, label)
         epoch_acc = np.sum(count) / label.shape[0]
         if test_acc < epoch_acc:
@@ -131,6 +161,10 @@ if __name__ == "__main__":
     parser.add_argument('--in_drop', type=float, default=0.6, help='in_drop')
     parser.add_argument('--attn_drop', type=float, default=0.6, help='attn_drop')
     parser.add_argument('--negative_slope', type=float, default=0.2, help='negative_slope')
+    parser.add_argument("--fuse", type=bool, default=False, help="enable fusion")
+    parser.add_argument("--csr", type=bool, default=False, help="whether use the csr operator")
+    parser.add_argument("--backward", default=True, action='store_false', help="whether use the customization back"
+                                                                               "propagation when use the csr operator")
     args = parser.parse_args()
     print(args)
     main()

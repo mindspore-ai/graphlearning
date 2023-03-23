@@ -18,22 +18,24 @@ import mindspore as ms
 from mindspore_gl import BatchedGraphField
 from mindspore_gl.graph import BatchHomoGraph, PadArray2d, PadHomoGraph, PadMode, PadDirection
 from mindspore_gl.dataloader import Dataset
+from mindspore_gl.graph import batch_graph_csr_data
 
 
 class MultiHomoGraphDataset(Dataset):
     """MultiHomo Graph Dataset"""
-    def __init__(self, dataset, batch_size, mode=PadMode.CONST, node_size=40, edge_size=1000, length=None):
+    def __init__(self, dataset, batch_size, mode=PadMode.CONST, node_size=40, edge_size=1000, length=None, csr=False):
         self._dataset = dataset
         self._batch_size = batch_size
         self.batch_fn = BatchHomoGraph()
         self.batched_edge_feat = None
         self.length = length
+        self.csr = csr
         if mode == PadMode.CONST:
             self.node_feat_pad_op = PadArray2d(dtype=np.float32, mode=PadMode.CONST, direction=PadDirection.COL,
                                                size=(node_size, dataset.node_feat_size), fill_value=0)
             self.edge_feat_pad_op = PadArray2d(dtype=np.float32, mode=PadMode.CONST, direction=PadDirection.COL,
                                                size=(edge_size, dataset.edge_feat_size), fill_value=0)
-            self.graph_pad_op = PadHomoGraph(n_edge=edge_size, n_node=node_size, mode=PadMode.CONST)
+            self.graph_pad_op = PadHomoGraph(n_edge=edge_size, n_node=node_size, mode=PadMode.CONST, csr=csr)
         else:
             self.node_feat_pad_op = PadArray2d(dtype=np.float32, mode=PadMode.AUTO, direction=PadDirection.COL,
                                                fill_value=0)
@@ -52,6 +54,7 @@ class MultiHomoGraphDataset(Dataset):
             graph_list.append(self._dataset[batch_graph_idx[idx]])
             feature_list.append(self._dataset.graph_node_feat(batch_graph_idx[idx]))
             edge_feat_list.append(self._dataset.graph_edge_feat(batch_graph_idx[idx]))
+
         # Batch Graph
         batch_graph = self.batch_fn(graph_list)
         # Pad Graph
@@ -65,15 +68,21 @@ class MultiHomoGraphDataset(Dataset):
         batched_label = np.append(batched_label, [batched_label[-1] * 0], axis=0)
         # Get Edge Feat
         batched_edge_feat = np.concatenate(edge_feat_list)
+
         batched_edge_feat = self.edge_feat_pad_op(batched_edge_feat)
 
         np_graph_mask = [1] * (self._batch_size + 1)
         np_graph_mask[-1] = 0
-        constant_graph_mask = ms.Tensor(np_graph_mask, dtype=ms.int32)
-        batchedgraphfiled = self.get_batched_graph_field(batch_graph, constant_graph_mask)
-        row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask = batchedgraphfiled.get_batched_graph()
+        constant_graph_mask = np.array(np_graph_mask, dtype=np.int32)
         batched_label = batched_label.astype('float32')
         batched_node_feat = batched_node_feat.astype('float32')
+        batchedgraphfiled = self.get_batched_graph_field(batch_graph, constant_graph_mask)
+        row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask = batchedgraphfiled.get_batched_graph()
+        if self.csr:
+            g, node_map_idx, batched_node_feat = batch_graph_csr_data(row, col, node_count,
+                                                                      edge_count, node_map_idx, batched_node_feat, True)
+            return batched_label, batched_node_feat, batched_edge_feat, g[0], g[1], g[2], g[3], g[4], g[5],\
+                   node_map_idx, edge_map_idx, graph_mask
         return batched_label, batched_node_feat, batched_edge_feat, row, col, node_count, edge_count, node_map_idx,\
                edge_map_idx, graph_mask
 
@@ -81,11 +90,12 @@ class MultiHomoGraphDataset(Dataset):
         return BatchedGraphField(
             ms.Tensor.from_numpy(batch_graph.adj_coo[0]),
             ms.Tensor.from_numpy(batch_graph.adj_coo[1]),
-            ms.Tensor(batch_graph.node_count, ms.int32),
-            ms.Tensor(batch_graph.edge_count, ms.int32),
+            int(batch_graph.node_count),
+            int(batch_graph.edge_count),
             ms.Tensor.from_numpy(batch_graph.batch_meta.node_map_idx),
             ms.Tensor.from_numpy(batch_graph.batch_meta.edge_map_idx),
-            constant_graph_mask
+            ms.Tensor.from_numpy(constant_graph_mask),
+            csr=False
         )
 
     def __len__(self):
