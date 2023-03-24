@@ -22,7 +22,7 @@ from .. import GNNCell
 class ShiftedSoftplus(ms.nn.Cell):
     """Shifted soft plus."""
 
-    def __init__(self, shift=2.) -> None:
+    def __init__(self, shift=2.):
         super().__init__()
         self.shift = ms.Tensor([shift], ms.float32)
         self.softplus = ms.ops.Softplus()

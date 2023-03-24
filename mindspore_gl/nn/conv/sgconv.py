@@ -31,13 +31,16 @@ class SGConv(GNNCell):
 
     Where :math:`\tilde{A}=A+I`.
 
+    ..Note:
+        PYNATIVE mode only now.
+
     Args:
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
-        num_hops (int): Number of hops. Default: 1.
-        cached (bool): Whether use cached. Default: True.
-        bias (bool): Whether use bias. Default: True.
-        norm (mindspore.nn.Cell): Normalization function Cell. Default: None.
+        num_hops (int, optional): Number of hops. Default: 1.
+        cached (bool, optional): Whether use cached. Default: True.
+        bias (bool, optional): Whether use bias. Default: True.
+        norm (Cell, optional): Normalization function Cell. Default: None.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N, D_{in})`
@@ -58,7 +61,7 @@ class SGConv(GNNCell):
         TypeError: If `norm` is not a Cell.
 
     Supported Platforms:
-        ``Ascend`` ``GPU`` (PYNATIVE MODE ONLY)
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import mindspore as ms

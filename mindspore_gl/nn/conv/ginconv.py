@@ -39,9 +39,10 @@ class GINConv(GNNCell):
 
     Args:
         activation (mindspore.nn.Cell): Activation function.
-        init_eps (float): Init value of eps. Default: 0.
-        learn_eps (bool): Whether eps is learnable. Default: False.
-        aggregation_type (str): Type of aggregation, should in `'sum'`, `'max'` and `'avg'`. Default: 'sum'.
+        init_eps (float, optional): Init value of eps. Default: 0.
+        learn_eps (bool, optional): Whether eps is learnable. Default: False.
+        aggregation_type (str, optional): Type of aggregation, should in `'sum'`, `'max'` and `'avg'`.
+            Default: 'sum'.
 
     Inputs:
         - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,
@@ -56,7 +57,7 @@ class GINConv(GNNCell):
         TypeError: If `activation` is not a mindspore.nn.Cell.
         TypeError: If `init_eps` is not a float.
         TypeError: If `learn_eps` is not a bool.
-        SyntaxError: raised when the `aggregation_type` not in `'sum'`, `'max'` and `'avg'`.
+        SyntaxError: Raised when the `aggregation_type` not in `'sum'`, `'max'` and `'avg'`.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

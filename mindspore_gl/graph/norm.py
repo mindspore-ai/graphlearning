@@ -29,7 +29,8 @@ def norm(edge_index, num_nodes, edge_weight=None, normalization='sym',
         edge_weight (Tensor): Edge weights. The shape is :math:`(N\_e)`
             where :math:`N\_e` is the number of edges. Default: dense.
         normalization (str): Normalization method. Default: 'sym'.
-
+            :math:`(L)` is normalized matrix, :math:`(D)` is degree matrix, :math:`(A)` is adjaceny matrix,
+            :math:`(I)` is unit matrix.
             1. `None`: No normalization
                :math:`\mathbf{L} = \mathbf{D} - \mathbf{A}`
             2. `'sym'`: Symmetric normalization

@@ -233,7 +233,7 @@ class ASTGCNBlock(GNNCell):
                  num_of_timestamps: int,
                  normalization: Optional[str] = None,
                  bias: bool = True,
-                 ) -> None:
+                 ):
         super(ASTGCNBlock, self).__init__()
 
         self.temporal_attention = TemporalAttention(in_channels, n_vertices, num_of_timestamps)
@@ -328,7 +328,11 @@ class ASTGCN(GNNCell):
         num_for_predict (int): Number of predictions to make in the future.
         len_input (int): Length of the input sequence.
         n_vertices (int): Number of vertices in the graph.
-        normalization (str, optional): The normalization scheme for the graph Laplacian. Default: None.
+        normalization (str, optional): The normalization scheme for the graph Laplacian. Default: 'sym'.
+            :math:`(L)` is normalized matrix, :math:`(D)` is degree matrix, :math:`(A)` is adjaceny matrix,
+            :math:`(I)` is unit matrix.
+            :math:`\mathbf{L} = \mathbf{I} - \mathbf{D}^{-1/2} \mathbf{A}
+            \mathbf{D}^{-1/2}`
         bias (bool, optional): Whether the layer will learn an additive bias. Default: True.
 
     Inputs:
@@ -385,7 +389,7 @@ class ASTGCN(GNNCell):
                  num_for_predict: int,
                  len_input: int,
                  n_vertices: int,
-                 normalization: Optional[str] = None,
+                 normalization: Optional[str] = 'sym',
                  bias: bool = True,
                  ):
         super().__init__()

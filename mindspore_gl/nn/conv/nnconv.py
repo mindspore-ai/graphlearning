@@ -37,9 +37,9 @@ class NNConv(GNNCell):
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
         edge_embed (mindspore.nn.Cell): Edge embedding function Cell.
-        aggregator_type (str): Type of aggregator, should be 'sum'. Default: 'sum'.
-        residual (bool): Whether use residual. Default: False.
-        bias (bool): Whether use bias. Default: True.
+        aggregator_type (str, optional): Type of aggregator, should be 'sum'. Default: 'sum'.
+        residual (bool, optional): Whether use residual. Default: False.
+        bias (bool, optional): Whether use bias. Default: True.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N,D\_in)`

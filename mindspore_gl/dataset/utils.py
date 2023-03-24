@@ -15,7 +15,7 @@
 """utils"""
 
 def get_indptr_from_coo_src(src_index: numpy.ndarray, result_array):
-    """get indptr from coo"""
+    """get indptr from COO"""
     cum_sum = 0
     index_ptr = 1
     cur_val = src_index[0]

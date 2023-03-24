@@ -50,7 +50,7 @@ class IMDBBinary(BaseDataSet):
       - Valid: 200
 
     Dataset can be download here: <https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets/IMDB-BINARY.zip>
-    You can organize the dataset files into the following directory structure and read by `process` API.
+    You can organize the dataset files into the following directory structure and read.
 
     .. code-block::
 

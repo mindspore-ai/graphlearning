@@ -42,13 +42,14 @@ class SAGPooling(GNNCell):
         in_channels (int): Size of each input sample.
         GNN (GNNCell): A graph neural network layer for calculating projection scores. only GCNConv2 is supported.
              Default: mindspore_gl.nn.conv.GCNConv2.
-        activation (Cell): The nonlinearity to use. Default: mindspore.nn.Tanh.
+        activation (Cell): The nonlinearity activation function Cell to use. Default: mindspore.nn.Tanh.
         multiplier (Float): A scalar for scaling node feature. Default: 1.
 
     Inputs:
         - **x** (Tensor) - The input node features to be updated. The shape is :math:`(N, D)`
           where :math:`N` is the number of nodes,
-          and :math:`D` is the feature size of nodes, when attn=None, `D` should be equal to `in_feat_size` in `Args`.
+          and :math:`D` is the feature size of nodes, when `attn` is None, `D` should be equal to `in_feat_size` in
+          `Args`.
         - **attn** (Tensor) - The input node features for calculating projection score. The shape is :math:`(N, D_{in})`
           where :math:`N` is the number of nodes,
           and :math:`D_{in}` should be equal to `in_feat_size` in `Args`.
@@ -61,8 +62,8 @@ class SAGPooling(GNNCell):
         - **x** (Tensor) - The updated node features. The shape is :math:`(2, M, D_{out})`,
           where :math:`M` equals to `perm_num` in `Inputs`,
           and :math:`D_{out}` equals to `D` in `Inputs`.
-        - **src_perm** (Tensor) - The updated src nodes.
-        - **dst_perm** (Tensor) - The updated dst nodes.
+        - **src_perm** (Tensor) - The updated source nodes.
+        - **dst_perm** (Tensor) - The updated destination nodes.
         - **perm** (Tensor) - The node index for topk nodes before updating node index. The shape is :math:`M`,
           where :math:`M` equals to `perm_num` in `Inputs`.
         - **perm_score** (Tensor) - The projection score for updated nodes.

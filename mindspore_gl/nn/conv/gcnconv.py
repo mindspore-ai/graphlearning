@@ -26,7 +26,7 @@ from .. import GNNCell
 class GCNConv(GNNCell):
     r"""
     Graph Convolution Network Layer.
-    from the paper `Semi-Supervised Classification with Graph Convolutional Networks
+    From the paper `Semi-Supervised Classification with Graph Convolutional Networks
     <https://arxiv.org/abs/1609.02907>`_ .
 
     .. math::
@@ -41,8 +41,8 @@ class GCNConv(GNNCell):
     Args:
         in_feat_size (int): Input node feature size.
         out_size (int): Output node feature size.
-        activation (Cell): Activation function. Default: None.
-        dropout (float): The keep rate, greater than 0 and less equal than 1. E.g. dropout=0.9,
+        activation (Cell, optional): Activation function. Default: None.
+        dropout (float, optional): The keep rate, greater than 0 and less equal than 1. E.g. dropout=0.9,
             dropping out 10% of input units. Default: 0.5.
 
     Inputs:
@@ -90,7 +90,7 @@ class GCNConv(GNNCell):
                  in_feat_size: int,
                  out_size: int,
                  activation=None,
-                 dropout=0.5) -> None:
+                 dropout=0.5):
         super().__init__()
         self.in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
         self.out_size = Validator.check_positive_int(out_size, "out_size", self.cls_name)

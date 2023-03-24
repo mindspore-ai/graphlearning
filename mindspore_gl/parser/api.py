@@ -69,8 +69,29 @@ class Graph:
     """
     Graph class.
 
-    This is the class which should be annotated in \
-        construct function for GNNCell class.
+    This is the class which should be annotated in the construct function for `GNNCell` class.
+    The last argument in the 'construct' function will be resolved into the 'mindspore_gl.Graph' whole graph class.
+
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
+    Examples:
+        >>> import mindspore as ms
+        >>> from mindspore_gl import Graph, GraphField
+        >>> from mindspore_gl.nn import GNNCell
+        >>> n_nodes = 9
+        >>> n_edges = 11
+        >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8], ms.int32)
+        >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32)
+        >>> graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+        >>> node_feat = ms.Tensor([[1], [2], [1], [2], [0], [1], [2], [3], [1]], ms.float32)
+        >>> class SrcVertex(GNNCell):
+        ...     def construct(self, x, g: Graph):
+        ...         g.set_vertex_attr({"h": x})
+        ...         return [v.h for v in g.src_vertex]
+        >>> ret = SrcVertex()(node_feat, *graph_field.get_graph()).asnumpy().tolist()
+        >>> print(ret)
+        [[1.0], [2.0], [1.0], [2.0], [0.0], [1.0], [2.0], [3.0], [1.0]]
     """
 
     def __init__(self):
@@ -82,50 +103,161 @@ class Graph:
     @property
     def dst_vertex(self):
         """
-        Return a list of destination vertex that only supports\
-             iterate its innbs.
+        Return a list of destination vertex that only supports iterate its `innbs` .
+
+        Returns:
+            - mindspore.Tensor, a list of destination vertex.
 
         Examples:
-            >>> for v in g.dst_vertex:
-            ...     pass
+            >>> import mindspore as ms
+            >>> from mindspore_gl import Graph, GraphField
+            >>> from mindspore_gl.nn import GNNCell
+            >>> n_nodes = 9
+            >>> n_edges = 11
+            >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8], ms.int32)
+            >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32)
+            >>> graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+            >>> node_feat = ms.Tensor([[1], [2], [1], [2], [0], [1], [2], [3], [1]], ms.float32)
+            >>> class DstVertex(GNNCell):
+            >>>     def construct(self, x, g: Graph):
+            >>>         g.set_vertex_attr({"h": x})
+            >>>         return [v.h for v in g.dst_vertex]
+            >>> ret = DstVertex()(node_feat, *graph_field.get_graph()).asnumpy().tolist()
+            >>> print(ret)
+            [[1.0], [2.0], [1.0], [2.0], [0.0], [1.0], [2.0], [3.0], [1.0]]
         """
         return self._dst_vertex
 
     @property
     def src_vertex(self):
         """
-        Return a list of vertex that only supports iterate with its outnbs
+        Return a list of source vertex that only supports iterate with its `outnbs` .
+
+        Returns:
+            - mindspore.Tensor, a list of source vertex.
 
         Examples:
-            >>> for u in g.src_vertex:
-            ...     pass
+            >>> import mindspore as ms
+            >>> from mindspore_gl import Graph, GraphField
+            >>> from mindspore_gl.nn import GNNCell
+            >>> n_nodes = 9
+            >>> n_edges = 11
+            >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8], ms.int32)
+            >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32)
+            >>> graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+            >>> node_feat = ms.Tensor([[1], [2], [1], [2], [0], [1], [2], [3], [1]], ms.float32)
+            >>> class SrcVertex(GNNCell):
+            ...     def construct(self, x, g: Graph):
+            ...         g.set_vertex_attr({"h": x})
+            ...         return [v.h for v in g.src_vertex]
+            >>> ret = SrcVertex()(node_feat, *graph_field.get_graph()).asnumpy().tolist()
+            >>> print(ret)
+            [[1.0], [2.0], [1.0], [2.0], [0.0], [1.0], [2.0], [3.0], [1.0]]
         """
         return self._src_vertex
 
     @property
     def src_idx(self):
         r"""
-        A tensor with shape :math:`(N\_EDGES)`, represents the source node \
-            index of COO edge matrix.
+        A tensor with shape :math:`(N\_EDGES)`, represents the source node index of COO edge matrix.
+
+        Returns:
+            - mindspore.Tensor, a list of source vertex.
+
+        Examples:
+            >>> import mindspore as ms
+            >>> from mindspore_gl import Graph, GraphField
+            >>> from mindspore_gl.nn import GNNCell
+            >>> n_nodes = 9
+            >>> n_edges = 11
+            >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8], ms.int32)
+            >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32)
+            >>> graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+            >>> node_feat = ms.Tensor([[1], [2], [1], [2], [0], [1], [2], [3], [1]], ms.float32)
+            >>> class SrcIdx(GNNCell):
+            ...     def construct(self, x, g: Graph):
+            ...         return g.src_idx
+            >>> ret = SrcIdx()(node_feat, *graph_field.get_graph()).asnumpy().tolist()
+            >>> print(ret)
+            [0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8]
         """
 
     @property
     def dst_idx(self):
         r"""
-        A tensor with shape :math:`(N\_EDGES)`, represents the destination \
-             node index of COO edge matrix.
+        A tensor with shape :math:`(N\_EDGES)`, represents the destination node index of COO edge matrix.
+
+        Returns:
+            - mindspore.Tensor, a list of destination vertex.
+
+        Examples:
+            >>> import mindspore as ms
+            >>> from mindspore_gl import Graph, GraphField
+            >>> from mindspore_gl.nn import GNNCell
+            >>> n_nodes = 9
+            >>> n_edges = 11
+            >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8], ms.int32)
+            >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32)
+            >>> graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+            >>> node_feat = ms.Tensor([[1], [2], [1], [2], [0], [1], [2], [3], [1]], ms.float32)
+            >>> class DstIdx(GNNCell):
+            ...     def construct(self, x, g: Graph):
+            ...         return g.dst_idx
+            >>> ret = DstIdx()(node_feat, *graph_field.get_graph()).asnumpy().tolist()
+            >>> print(ret)
+            [1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8]
         """
 
     @property
     def n_nodes(self):
         """
         An integer, represent the nodes count of the graph.
+
+        Returns:
+            - int, nodes numbers of the graph.
+
+        Examples:
+            >>> import mindspore as ms
+            >>> from mindspore_gl import Graph, GraphField
+            >>> from mindspore_gl.nn import GNNCell
+            >>> n_nodes = 9
+            >>> n_edges = 11
+            >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8], ms.int32)
+            >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32)
+            >>> graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+            >>> node_feat = ms.Tensor([[1], [2], [1], [2], [0], [1], [2], [3], [1]], ms.float32)
+            >>> class NNode(GNNCell):
+            ...     def construct(self, x, g: Graph):
+            ...         return g.n_nodes
+            >>> ret = NNode()(node_feat, *graph_field.get_graph())
+            >>> print(ret)
+            9
         """
 
     @property
     def n_edges(self):
         """
         An integer, represent the edges count of the graph.
+
+        Returns:
+            - int, edges numbers of the graph.
+
+        Examples:
+            >>> import mindspore as ms
+            >>> from mindspore_gl import Graph, GraphField
+            >>> from mindspore_gl.nn import GNNCell
+            >>> n_nodes = 9
+            >>> n_edges = 11
+            >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8], ms.int32)
+            >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32)
+            >>> graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+            >>> node_feat = ms.Tensor([[1], [2], [1], [2], [0], [1], [2], [3], [1]], ms.float32)
+            >>> class NEdge(GNNCell):
+            ...     def construct(self, x, g: Graph):
+            ...         return g.n_edges
+            >>> ret = NEdge()(node_feat, *graph_field.get_graph())
+            >>> print(ret)
+            11
         """
 
     def set_vertex_attr(self, feat_dict):
@@ -137,14 +269,14 @@ class Graph:
             set_vertex_attr is equals to set_src_attr + set_dst_attr.
 
         Args:
-            feat_dict (Dict): key type: str, value type: recommend tensor of \
-                shape :math:`(N\_NODES, F)`, :math:`F` is the dimension of the node feature.
+            feat_dict (Dict): key type: str, value type: recommend tensor of shape :math:`(N\_NODES, F)`, :math:`F` is
+                the dimension of the node feature.
+
+        Returns:
+            - mindspore.Tensor, the feature of vertex.
 
         Raises:
             TypeError: If `feat_dict` is not a Dict.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -164,7 +296,7 @@ class Graph:
             ...
             >>> ret = TestSetVertexAttr()(node_feat, *graph_field.get_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[1.0], [4.0], [1.0], [4.0], [0.0], [1.0], [4.0], [9.0], [1.0]]
+            [[1.0], [4.0], [1.0], [4.0], [0.0], [1.0], [4.0], [9.0], [1.0]]
         """
 
     def set_src_attr(self, feat_dict):
@@ -176,11 +308,11 @@ class Graph:
             feat_dict (Dict): key type: str, value type: recommend tensor of
                 shape :math:`(N\_NODES, F)`, :math:`F` is the dimension of the node feature.
 
+        Returns:
+            - mindspore.Tensor, the feature of source vertex.
+
         Raises:
             TypeError: If `feat_dict` is not a Dict.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -200,7 +332,7 @@ class Graph:
             ...
             >>> ret = TestSetSrcAttr()(node_feat, *graph_field.get_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[1.0], [2.0], [1.0], [2.0], [0.0], [1.0], [2.0], [3.0], [1.0]]
+            [[1.0], [2.0], [1.0], [2.0], [0.0], [1.0], [2.0], [3.0], [1.0]]
         """
 
     def set_dst_attr(self, feat_dict):
@@ -212,11 +344,11 @@ class Graph:
             feat_dict (Dict): key type: str, value type: recommend tensor of
                 shape :math:`(N\_NODES, F)`, :math:`F` is the dimension of the node feature.
 
+        Returns:
+            - mindspore.Tensor, the feature of destination vertex.
+
         Raises:
             TypeError: If `feat_dict` is not a Dict.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -236,7 +368,7 @@ class Graph:
             ...
             >>> ret = TestSetDstAttr()(node_feat, *graph_field.get_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[1.0], [2.0], [1.0], [2.0], [0.0], [1.0], [2.0], [3.0], [1.0]]
+            [[1.0], [2.0], [1.0], [2.0], [0.0], [1.0], [2.0], [3.0], [1.0]]
         """
 
     def set_edge_attr(self, feat_dict):
@@ -246,14 +378,14 @@ class Graph:
 
         Args:
             feat_dict (Dict): key type: str, value type: recommend feature tensor
-                of shape :math:`(N\_EDGES, *)`, :math:`*` is the shape of the feature per edge.
+                of shape :math:`(N\_EDGES, F)`, :math:`F` is the shape of the feature per edge.
                 Recommend the shape of value is :math:`(N\_EDGES, 1)` when the feature dimension is 1.
+
+        Returns:
+            - mindspore.Tensor, the feature of edges.
 
         Raises:
             TypeError: If `feat_dict` is not a Dict.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -277,7 +409,7 @@ class Graph:
             ...
             >>> ret = TestSetEdgeAttr()(node_feat, edge_feat, *graph_field.get_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[2.0], [2.0], [0.0], [0.0], [14.0], [6.0], [1.0], [0.0], [3.0]]
+            [[2.0], [2.0], [0.0], [0.0], [14.0], [6.0], [1.0], [0.0], [3.0]]
         """
 
     def set_graph_attr(self, feat_dict):
@@ -286,14 +418,13 @@ class Graph:
         Keys will be attribute's name, values will be attributes' data.
 
         Args:
-            feat_dict (Dict): key type: str, value type: recommend feature tensor
-                for the whole graph.
+            feat_dict (Dict): key type: str, value type: recommend feature tensor for the whole graph.
+
+        Returns:
+            - mindspore.Tensor, the feature of graph.
 
         Raises:
             TypeError: If `feat_dict` is not a Dict.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -317,15 +448,15 @@ class Graph:
             ...
             >>> ret = TestSetGraphAttr()(v_attr, g_attr, *graph_field.get_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[0.0, 1.0], [0.0, 2.0], [0.0, 0.0], [0.0, 0.0],
-                 [0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0]]
+            [[0.0, 1.0], [0.0, 2.0], [0.0, 0.0], [0.0, 0.0],
+             [0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0]]
         """
 
     def sum(self, neigh_feat):
         r"""
         Aggregating node features from their neighbour and generates a
         node-level representation by aggregate function 'sum'.
-
+`
         Args:
             neigh_feat (List[`SrcVertex` feature or `Edge` feature]): a list of `SrcVertex` or `Edge` attribute
                 represents the neighbour nodes or edges feature, with shape :math:`(N, F)`,
@@ -333,14 +464,11 @@ class Graph:
                 :math:`F` is the feature dimension of the `SrcVertex` or `Edge` attribute.
 
         Returns:
-            Tensor, a tensor with shape :math:`(N, F)`, :math:`N` is the number of nodes of the graph,
+            - mindspore.Tensor, a tensor with shape :math:`(N, F)`, :math:`N` is the number of nodes of the graph,
             :math:`F` is the feature dimension of the node.
 
         Raises:
             TypeError: If `neigh_feat` is not a list of `Edge` or `SrcVertex`.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -362,7 +490,7 @@ class Graph:
             ...
             >>> ret = TestSum()(node_feat, *graph_field.get_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[1.0], [2.0], [0.0], [0.0], [3.0], [2.0], [1.0], [0.0], [3.0]]
+            [[1.0], [2.0], [0.0], [0.0], [3.0], [2.0], [1.0], [0.0], [3.0]]
         """
 
     def max(self, neigh_feat):
@@ -377,14 +505,11 @@ class Graph:
                 :math:`F` is the feature dimension of the `SrcVertex` or `Edge` attribute.
 
         Returns:
-            Tensor, a tensor with shape :math:`(N, F)`, :math:`N` is the number of nodes of the graph,
+            - mindspore.Tensor, a tensor with shape :math:`(N, F)`, :math:`N` is the number of nodes of the graph,
             :math:`F` is the feature dimension of the node.
 
         Raises:
             TypeError: If `neigh_feat` is not a list of `Edge` or `SrcVertex`.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -406,7 +531,7 @@ class Graph:
             ...
             >>> ret = TestMax()(node_feat, *graph_field.get_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[1.0], [1.0], [0.0], [0.0], [2.0], [2.0], [1.0], [0.0], [1.0]]
+            [[1.0], [1.0], [0.0], [0.0], [2.0], [2.0], [1.0], [0.0], [1.0]]
         """
 
     def min(self, neigh_feat):
@@ -421,14 +546,11 @@ class Graph:
                 :math:`F` is the feature dimension of the `SrcVertex` or `Edge` attribute.
 
         Returns:
-            Tensor, a tensor with shape :math:`(N, F)`, :math:`N` is the number of nodes of the graph,
+            - mindspore.Tensor, a tensor with shape :math:`(N, F)`, :math:`N` is the number of nodes of the graph,
             :math:`F` is the feature dimension of the node.
 
         Raises:
             TypeError: If `neigh_feat` is not a list of `Edge` or `SrcVertex`.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -450,7 +572,7 @@ class Graph:
             ...
             >>> ret = TestMin()(node_feat, *graph_field.get_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[0.0], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0]]
+            [[0.0], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0]]
         """
 
     def avg(self, neigh_feat):
@@ -465,14 +587,11 @@ class Graph:
                 :math:`F` is the feature dimension of the `SrcVertex` or `Edge` attribute.
 
         Returns:
-            Tensor, a tensor with shape :math:`(N, F)`, :math:`N` is the number of nodes of the graph,
+            - mindspore.Tensor, a tensor with shape :math:`(N, F)`, :math:`N` is the number of nodes of the graph,
             :math:`F` is the feature dimension of the node.
 
         Raises:
             TypeError: If `neigh_feat` is not a list of `Edge` or `SrcVertex`.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import math
@@ -499,7 +618,7 @@ class Graph:
             ...     if math.isnan(row[0]):
             ...         row[0] = NAN
             >>> print(ret)
-                [[1.0], [1.0], [1000000000.0], [0.0], [1.5], [2.0], [1.0], [1000000000.0], [1.0]]
+            [[1.0], [1.0], [1000000000.0], [0.0], [1.5], [2.0], [1.0], [1000000000.0], [1.0]]
         """
 
     def dot(self, feat_x, feat_y):
@@ -517,14 +636,11 @@ class Graph:
                 :math:`F` is the feature dimension of the node.
 
         Returns:
-            Tensor, a tensor with shape :math:`(N, 1)`, :math:`N` is the number of nodes of the graph.
+            - mindspore.Tensor, a tensor with shape :math:`(N, 1)`, `N` is the number of nodes of the graph.
 
         Raises:
             TypeError: If `feat_x` is not in the 'mul' operation support types [Tensor,Number,List,Tuple].
             TypeError: If `feat_y` is not in the 'mul' operation support types [Tensor,Number,List,Tuple].
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -546,7 +662,7 @@ class Graph:
             ...
             >>> ret = TestDot()(node_feat, *graph_field.get_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[2.0], [1.0], [2.0], [2.0], [0.0], [0.0], [2.0], [0.0], [1.0], [1.0], [1.0]]
+            [[2.0], [1.0], [2.0], [2.0], [0.0], [0.0], [2.0], [0.0], [1.0], [1.0], [1.0]]
         """
 
     def topk_nodes(self, node_feat, k, sortby=None):
@@ -557,18 +673,18 @@ class Graph:
         If sortby is set to None, the function would perform top-k
         on all dimensions independently.
 
+        Note:
+            The value participated in the sort by axis (all value if `sortby` is
+            None) should be greater than zero.
+            Due to the reason that we create zero value for padding
+            and they may cover the features.
+
         Args:
             node_feat (Tensor): A tensor represent the node feature,
                 with shape :math:`(N\_NODES, F)`. :math:`F` is the dimension of the node feature.
             k (int): Represent how many nodes for top-k.
             sortby (int): Sort according to which feature. If is None,
                 all features are sorted independently.  Default is None.
-
-        Note:
-            The value participated in the sort by axis (all value if sortby is
-            None) should be greater than zero.
-            Due to the reason that we create zero value for padding
-            and they may cover the features.
 
         Returns:
             - **topk_output** (Tensor) - a tensor with shape :math:`(B, K, F)`,
@@ -584,12 +700,9 @@ class Graph:
             TypeError: If `k` is not an int.
             ValueError: If `sortby` is not an int.
 
-        Supported Platforms:
-            ``GPU``
-
         Examples:
             >>> import mindspore as ms
-            >>> from mindspore_gl import BatchedGraph, BatchedGraphField
+            >>> from mindspore_gl import GraphField, Graph
             >>> from mindspore_gl.nn import GNNCell
             >>> node_feat = ms.Tensor([
             ...     [1, 2, 3, 4],
@@ -615,9 +728,9 @@ class Graph:
             >>> output = output.asnumpy().tolist()
             >>> indices = indices.asnumpy().tolist()
             >>> print(output)
-                [[9.0, 7.0, 5.0, 8.0], [8.0, 7.0, 6.0, 5.0]]
+            [[9.0, 7.0, 5.0, 8.0], [8.0, 7.0, 6.0, 5.0]]
             >>> print(indices)
-                [3, 4]
+            [3, 4]
         """
 
     def topk_edges(self, node_feat, k, sortby=None):
@@ -655,12 +768,9 @@ class Graph:
             TypeError: If `k` is not an int.
             ValueError: If `sortby` is not an int.
 
-        Supported Platforms:
-            ``GPU``
-
         Examples:
             >>> import mindspore as ms
-            >>> from mindspore_gl import BatchedGraph, BatchedGraphField
+            >>> from mindspore_gl import GraphField, Graph
             >>> from mindspore_gl.nn import GNNCell
             >>> node_feat = ms.Tensor([
             ...     [1, 2, 3, 4],
@@ -686,9 +796,9 @@ class Graph:
             >>> output = output.asnumpy().tolist()
             >>> indices = indices.asnumpy().tolist()
             >>> print(output)
-                [[9.0, 7.0, 5.0, 8.0], [8.0, 7.0, 6.0, 5.0]]
+            [[9.0, 7.0, 5.0, 8.0], [8.0, 7.0, 6.0, 5.0]]
             >>> print(indices)
-                [3, 4]
+            [3, 4]
         """
 
     def in_degree(self):
@@ -698,9 +808,6 @@ class Graph:
         Returns:
             Tensor, a tensor with shape :math:`(N, 1)`,
             represent the in degree of each node, :math:`N` is the number of nodes of the graph.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -718,7 +825,7 @@ class Graph:
             ...
             >>> ret = TestInDegree()(*graph_field.get_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[1], [2], [0], [1], [2], [1], [1], [0], [3]]
+            [[1], [2], [0], [1], [2], [1], [1], [0], [3]]
         """
 
     def out_degree(self):
@@ -728,9 +835,6 @@ class Graph:
         Returns:
             Tensor, a tensor with shape :math:`(N, 1)`,
             represent the out degree of each node, :math:`N` is the number of nodes of the graph.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -748,7 +852,7 @@ class Graph:
             ...
             >>> ret = TestOutDegree()(*graph_field.get_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[1], [0], [2], [1], [1], [2], [1], [0], [3]]
+            [[1], [0], [2], [1], [1], [2], [1], [0], [3]]
         """
 
     def adj_to_dense(self):
@@ -756,14 +860,11 @@ class Graph:
         Get the dense adjacent matrix of the graph.
 
         Note:
-            You must set vertex attr first due to the current
-            limits of our system.
+            Due to system limitations, only COO format are supported for build graph and dense format
+            adjacency matrix can be generated.
 
         Returns:
             Tensor, a tensor with shape :math:`(N, N)`, :math:`N` is the number of nodes of the graph.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -781,64 +882,228 @@ class Graph:
             ...
             >>> ret = TestAdjToDense()(*graph_field.get_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[0, 1, 0, 0, 0, 0, 0, 0, 0],
-                 [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                 [1, 1, 0, 0, 0, 0, 0, 0, 0],
-                 [0, 0, 0, 0, 0, 1, 0, 0, 0],
-                 [0, 0, 0, 1, 0, 0, 0, 0, 0],
-                 [0, 0, 0, 0, 1, 0, 1, 0, 0],
-                 [0, 0, 0, 0, 1, 0, 0, 0, 0],
-                 [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                 [0, 0, 0, 0, 0, 0, 0, 0, 3]]
+            [[0, 1, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [1, 1, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 1, 0, 0, 0],
+             [0, 0, 0, 1, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 1, 0, 1, 0, 0],
+             [0, 0, 0, 0, 1, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 3]]
         """
-
 
 class BatchedGraph(Graph):
     """
     Batched Graph class.
 
-    This is the class which should be annotated in
-    construct function for GNNCell class.
+    This is the class which should be annotated in the construct function for `GNNCell` class.
+    The last argument in the 'construct' function will be resolved into the 'mindspore_gl.BatchedGraph' batched
+    graph class.
+
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
+    Examples:
+        >>> import mindspore as ms
+        >>> from mindspore_gl import BatchedGraph, BatchedGraphField
+        >>> from mindspore_gl.nn import GNNCell
+        >>> n_nodes = 9
+        >>> n_edges = 11
+        >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8], ms.int32)
+        >>> dst_idx =>>>  ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32)
+        >>> ver_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 2, 2], ms.int32)
+        >>> edge_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2], ms.int32)
+        >>> graph_mask = ms.Tensor([1, 1, 0], ms.int32)
+        >>> batched_graph_field = BatchedGraphField(src_idx, dst_idx, n_nodes, n_edges,
+        ...                                         ver_subgraph_idx, edge_subgraph_idx, graph_mask)
+        >>> class SrcIdx(GNNCell):
+        ...     def construct(self, bg: BatchedGraph):
+        ...         return bg.src_idx
+        >>> ret = SrcIdx()(*batched_graph_field.get_batched_graph()).asnumpy().tolist()
+        >>> print(ret)
+        [0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8]
     """
 
     @property
     def ver_subgraph_idx(self):
         r"""
-        A tensor with shape :math:`(N)`, indicates each node belonging
-        to which subgraph, :math:`N` is the number of the nodes of the graph.
+        Indicates each node belonging to which subgraph.
+
+        Returns:
+            Tensor, A tensor with shape :math:`(N)`, :math:`N` is the number of the nodes of the graph.
+
+        Examples:
+            >>> import mindspore as ms
+            >>> from mindspore_gl import BatchedGraph, BatchedGraphField
+            >>> from mindspore_gl.nn import GNNCell
+            >>> node_feat = ms.Tensor([
+            ...     # graph 1:
+            ...     [1, 2, 3, 4],
+            ...     [2, 4, 1, 3],
+            ...     [1, 3, 2, 4],
+            ...     # graph 2:
+            ...     [9, 7, 5, 8],
+            ...     [8, 7, 6, 5],
+            ...     [8, 6, 4, 6],
+            ...     [1, 2, 1, 1],
+            ... ], ms.float32)
+            >>> n_nodes = 7
+            >>> n_edges = 8
+            >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6], ms.int32)
+            >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4], ms.int32)
+            >>> ver_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1], ms.int32)
+            >>> edge_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 1], ms.int32)
+            >>> graph_mask = ms.Tensor([1, 1], ms.int32)
+            >>> batched_graph_field = BatchedGraphField(src_idx, dst_idx, n_nodes, n_edges,
+            ...                                         ver_subgraph_idx, edge_subgraph_idx, graph_mask)
+            ...
+            >>> class VerSubgraphIdx(GNNCell):
+            ...     def construct(self, x, bg: BatchedGraph):
+            ...         return bg.ver_subgraph_idx
+            ...
+            >>> ret = VerSubgraphIdx()(node_feat, *batched_graph_field.get_batched_graph())
+            >>> print(ret)
+            [0 0 0 1 1 1 1]
         """
 
     @property
     def edge_subgraph_idx(self):
         r"""
-        A tensor with shape :math:`(N\_EDGES,)`, indicates each edge belonging to which subgraph.
+        Indicates each edge belonging to which subgraph.
+
+        Returns:
+            Tensor, A tensor with shape :math:`(N\_EDGES,)`.
+
+        Examples:
+            >>> import mindspore as ms
+            >>> from mindspore_gl import BatchedGraph, BatchedGraphField
+            >>> from mindspore_gl.nn import GNNCell
+            >>> node_feat = ms.Tensor([
+            ...     # graph 1:
+            ...     [1, 2, 3, 4],
+            ...     [2, 4, 1, 3],
+            ...     [1, 3, 2, 4],
+            ...     # graph 2:
+            ...     [9, 7, 5, 8],
+            ...     [8, 7, 6, 5],
+            ...     [8, 6, 4, 6],
+            ...     [1, 2, 1, 1],
+            ... ], ms.float32)
+            >>> n_nodes = 7
+            >>> n_edges = 8
+            >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6], ms.int32)
+            >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4], ms.int32)
+            >>> ver_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1], ms.int32)
+            >>> edge_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 1], ms.int32)
+            >>> graph_mask = ms.Tensor([1, 1], ms.int32)
+            >>> batched_graph_field = BatchedGraphField(src_idx, dst_idx, n_nodes, n_edges,
+            ...                                         ver_subgraph_idx, edge_subgraph_idx, graph_mask)
+            ...
+            >>> class EdgeSubgraphIdx(GNNCell):
+            ...     def construct(self, x, bg: BatchedGraph):
+            ...         return bg.edge_subgraph_idx
+            ...
+            >>> ret = EdgeSubgraphIdx()(node_feat, *batched_graph_field.get_batched_graph())
+            >>> print(ret)
+            # [0 0 0 1 1 1 1 1]
         """
 
     @property
     def graph_mask(self):
         r"""
-        A tensor with shape :math:`(N\_GRAPHS,)`, indicates whether the subgraph is exist.
+        Indicates whether the subgraph is exist.
+
+        Returns:
+            Tensor, A tensor with shape :math:`(N\_GRAPHS,)`.
+
+        Examples:
+            >>> import mindspore as ms
+            >>> from mindspore_gl import BatchedGraph, BatchedGraphField
+            >>> from mindspore_gl.nn import GNNCell
+            >>> node_feat = ms.Tensor([
+            ...     # graph 1:
+            ...     [1, 2, 3, 4],
+            ...     [2, 4, 1, 3],
+            ...     [1, 3, 2, 4],
+            ...     # graph 2:
+            ...     [9, 7, 5, 8],
+            ...     [8, 7, 6, 5],
+            ...     [8, 6, 4, 6],
+            ...     [1, 2, 1, 1],
+            ... ], ms.float32)
+            >>> n_nodes = 7
+            >>> n_edges = 8
+            >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6], ms.int32)
+            >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4], ms.int32)
+            >>> ver_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1], ms.int32)
+            >>> edge_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 1], ms.int32)
+            >>> graph_mask = ms.Tensor([1, 1], ms.int32)
+            >>> batched_graph_field = BatchedGraphField(src_idx, dst_idx, n_nodes, n_edges,
+            ...                                         ver_subgraph_idx, edge_subgraph_idx, graph_mask)
+            ...
+            >>> class GraphMask(GNNCell):
+            ...     def construct(self, x, bg: BatchedGraph):
+            ...         return bg.graph_mask
+            ...
+            >>> ret = GraphMask()(node_feat, *batched_graph_field.get_batched_graph())
+            >>> print(ret)
+            [1 1]
         """
 
     @property
     def n_graphs(self):
         """
-        An integer, represent the graphs count of the batched graph.
+        Represent the graphs count of the batched graph.
+
+        Returns:
+            int, graph numbers.
+
+        Examples:
+            >>> import mindspore as ms
+            >>> from mindspore_gl import BatchedGraph, BatchedGraphField
+            >>> from mindspore_gl.nn import GNNCell
+            >>> node_feat = ms.Tensor([
+            ...     # graph 1:
+            ...     [1, 2, 3, 4],
+            ...     [2, 4, 1, 3],
+            ...     [1, 3, 2, 4],
+            ...     # graph 2:
+            ...     [9, 7, 5, 8],
+            ...     [8, 7, 6, 5],
+            ...     [8, 6, 4, 6],
+            ...     [1, 2, 1, 1],
+            ... ], ms.float32)
+            >>> n_nodes = 7
+            >>> n_edges = 8
+            >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6], ms.int32)
+            >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4], ms.int32)
+            >>> ver_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1], ms.int32)
+            >>> edge_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 1], ms.int32)
+            >>> graph_mask = ms.Tensor([1, 1], ms.int32)
+            >>> batched_graph_field = BatchedGraphField(src_idx, dst_idx, n_nodes, n_edges,
+            ...                                         ver_subgraph_idx, edge_subgraph_idx, graph_mask)
+            ...
+            >>> class NGraphs(GNNCell):
+            ...     def construct(self, x, bg: BatchedGraph):
+            ...         return bg.n_graphs
+            ...
+            >>> ret = NGraphs()(node_feat, *batched_graph_field.get_batched_graph())
+            >>> print(ret)
+            2
         """
 
     def node_mask(self):
         r"""
-        Get the node mask after padding.
+        Get the node mask after padding. In the mask, 1 represent the node exists and 0 represent the node is
+        generated by padding.
 
-        The node mask is calculated according to the graph_mask and
-        ver_subgraph_idx.
+        The node mask is calculated according to the `graph_mask` and
+        `ver_subgraph_idx`.
 
         Returns:
             Tensor, a tensor with shape :math:`(N\_NODES, )`. Inside tensor, 1 represent the node exists and
             0 represent the node is generated by padding.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -860,22 +1125,20 @@ class BatchedGraph(Graph):
             ...
             >>> ret = TestNodeMask()(*batched_graph_field.get_batched_graph()).asnumpy().tolist()
             >>> print(ret)
-                [1, 1, 1, 1, 1, 1, 1, 0, 0]
+            [1, 1, 1, 1, 1, 1, 1, 0, 0]
         """
 
     def edge_mask(self):
         r"""
-        Get the edge mask after padding.
+        Get the edge mask after padding. In the mask, 1 represent the edge exists and 0 represent the edge is
+        generated by padding.
 
-        The edge mask is calculated according to the graph_mask and
-        ver_subgraph_idx.
+        The edge mask is calculated according to the `graph_mask` and
+        `edge_subgraph_idx`.
 
         Returns:
             Tensor, a tensor with shape :math:`(N\_EDGES,)`.
             Inside tensor, 1 represent the edge exists and 0 represent the edge is generated by padding.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -897,24 +1160,21 @@ class BatchedGraph(Graph):
             ...
             >>> ret = TestEdgeMask()(*batched_graph_field.get_batched_graph()).asnumpy().tolist()
             >>> print(ret)
-                [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0]
+            [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0]
         """
 
     def num_of_nodes(self):
         r"""
         Get the number of nodes of each subgraph in a batched graph.
 
-        Returns:
-            Tensor, a tensor with shape :math:`(N\_GRAPHS, 1)` represent each subgraph contains how many nodes.
-
         Note:
             After padding operation, a not existing subgraph is created
             and all not existing nodes created belong to this subgraph.
             If you want to clear it, you need to multiply it
-            with a graph mask manually.
+            with a `graph_mask` manually.
 
-        Supported Platforms:
-            ``GPU``
+        Returns:
+            Tensor, a tensor with shape :math:`(N\_GRAPHS, 1)` represent each subgraph contains how many nodes.
 
         Examples:
             >>> import mindspore as ms
@@ -936,16 +1196,12 @@ class BatchedGraph(Graph):
             ...
             >>> ret = TestNumOfNodes()(*batched_graph_field.get_batched_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[3], [4], [2]]
+            [[3], [4], [2]]
         """
 
     def num_of_edges(self):
         r"""
         Get the number of edges of each subgraph in a batched graph.
-
-        Returns:
-            Tensor, a tensor with shape :math:`(N\_GRAPHS, 1)`,
-            represent each subgraph contains how many edges.
 
         Note:
             After padding operation, a not existing subgraph is created
@@ -953,8 +1209,9 @@ class BatchedGraph(Graph):
             If you want to clear it, you need to multiply it
             with a graph mask manually.
 
-        Supported Platforms:
-            ``GPU``
+        Returns:
+            Tensor, a tensor with shape :math:`(N\_GRAPHS, 1)`,
+            represent each subgraph contains how many edges.
 
         Examples:
             >>> import mindspore as ms
@@ -976,7 +1233,7 @@ class BatchedGraph(Graph):
             ...
             >>> ret = TestNumOfEdges()(*batched_graph_field.get_batched_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[3], [5], [3]]
+            [[3], [5], [3]]
         """
 
     def sum_nodes(self, node_feat):
@@ -985,8 +1242,8 @@ class BatchedGraph(Graph):
         by aggregation type 'sum'.
 
         The node_feat should have shape :math:`(N\_NODES, F)`,
-        Sum_nodes operation will aggregate the nodes
-        feat according to ver_subgraph_idx.
+        `sum_nodes` operation will aggregate the nodes
+        feat according to `ver_subgraph_idx`.
         The output tensor will have a shape :math:`(N\_GRAPHS, F)`.
         :math:`F` is the dimension of the node feature.
 
@@ -999,9 +1256,6 @@ class BatchedGraph(Graph):
 
         Raises:
             TypeError: If `node_feat` is not a Tensor which is the type of operation 'shape'.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -1035,7 +1289,7 @@ class BatchedGraph(Graph):
             ...
             >>> ret = TestSumNodes()(node_feat, *batched_graph_field.get_batched_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[4.0, 9.0, 6.0, 11.0], [26.0, 22.0, 16.0, 20.0]]
+            [[4.0, 9.0, 6.0, 11.0], [26.0, 22.0, 16.0, 20.0]]
         """
 
     def sum_edges(self, edge_feat):
@@ -1044,8 +1298,8 @@ class BatchedGraph(Graph):
         by aggregation type 'sum'.
 
         The edge_feat should have shape :math:`(N\_EDGES, F)`.
-        Sum_edges operation will aggregate the edge_feat.
-        according to edge_subgraph_idx.
+        `sum_edges` operation will aggregate the edge_feat.
+        according to `edge_subgraph_idx`.
         The output tensor will have a shape :math:`(N\_GRAPHS, F)`.
         :math:`F` is the dimension of the edge feature.
 
@@ -1058,9 +1312,6 @@ class BatchedGraph(Graph):
 
         Raises:
             TypeError: If `edge_feat` is not a Tensor which is the type of operation 'shape'.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -1095,7 +1346,7 @@ class BatchedGraph(Graph):
             ...
             >>> ret = TestSumEdges()(edge_feat, *batched_graph_field.get_batched_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[4.0, 9.0, 6.0, 11.0], [29.0, 24.0, 19.0, 23.0]]
+            [[4.0, 9.0, 6.0, 11.0], [29.0, 24.0, 19.0, 23.0]]
         """
 
     def max_nodes(self, node_feat):
@@ -1104,7 +1355,7 @@ class BatchedGraph(Graph):
         representation by aggregation type 'max'.
 
         The node_feat should have shape :math:`(N\_NODES, F)`.
-        Max_nodes operation will aggregate the node_feat
+        `max_nodes` operation will aggregate the node_feat
         according to ver_subgraph_idx.
         The output tensor will have a shape :math:`(N\_GRAPHS, F)`.
         :math:`F` is the dimension of the node feature.
@@ -1118,9 +1369,6 @@ class BatchedGraph(Graph):
 
         Raises:
             TypeError: If `node_feat` is not a Tensor which is the type of operation 'shape'.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -1154,7 +1402,7 @@ class BatchedGraph(Graph):
             ...
             >>> ret = TestMaxNodes()(node_feat, *batched_graph_field.get_batched_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[2.0, 4.0, 3.0, 4.0], [9.0, 7.0, 6.0, 8.0]]
+            [[2.0, 4.0, 3.0, 4.0], [9.0, 7.0, 6.0, 8.0]]
         """
 
     def max_edges(self, edge_feat):
@@ -1177,9 +1425,6 @@ class BatchedGraph(Graph):
 
         Raises:
             TypeError: If `edge_feat` is not a Tensor which is the type of operation 'shape'.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -1214,7 +1459,7 @@ class BatchedGraph(Graph):
             ...
             >>> ret = TestMaxEdges()(edge_feat, *batched_graph_field.get_batched_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[2.0, 4.0, 3.0, 4.0], [9.0, 7.0, 6.0, 8.0]]
+            [[2.0, 4.0, 3.0, 4.0], [9.0, 7.0, 6.0, 8.0]]
         """
 
     def avg_nodes(self, node_feat):
@@ -1238,9 +1483,6 @@ class BatchedGraph(Graph):
 
         Raises:
             TypeError: If `node_feat` is not a Tensor which is the type of operation.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -1274,7 +1516,7 @@ class BatchedGraph(Graph):
             ...
             >>> ret = TestAvgNodes()(node_feat, *batched_graph_field.get_batched_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[1.3333333730697632, 3.0, 2.0, 3.6666667461395264], [6.5, 5.5, 4.0, 5.0]]
+            [[1.3333333730697632, 3.0, 2.0, 3.6666667461395264], [6.5, 5.5, 4.0, 5.0]]
         """
 
     def avg_edges(self, edge_feat):
@@ -1298,9 +1540,6 @@ class BatchedGraph(Graph):
 
         Raises:
             TypeError: If `edge_feat` is not a Tensor which is the type of operation 'shape'.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -1335,8 +1574,8 @@ class BatchedGraph(Graph):
             ...
             >>> ret = TestAvgEdges()(edge_feat, *batched_graph_field.get_batched_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[1.3333333730697632, 3.0, 2.0, 3.6666667461395264],
-                 [5.800000190734863, 4.800000190734863, 3.799999952316284, 4.599999904632568]]
+            [[1.3333333730697632, 3.0, 2.0, 3.6666667461395264],
+             [5.800000190734863, 4.800000190734863, 3.799999952316284, 4.599999904632568]]
         """
 
     def softmax_nodes(self, node_feat):
@@ -1361,9 +1600,6 @@ class BatchedGraph(Graph):
 
         Raises:
             TypeError: If `node_feat` is not a Tensor.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -1398,13 +1634,13 @@ class BatchedGraph(Graph):
             ...
             >>> ret = TestSoftmaxNodes()(node_feat, *batched_graph_field.get_batched_graph()).asnumpy()
             >>> print(np.array2string(ret, formatter={'float_kind':'{0:.5f}'.format}))
-                [[0.21194, 0.09003, 0.66524, 0.42232],
-                 [0.57612, 0.66524, 0.09003, 0.15536],
-                 [0.21194, 0.24473, 0.24473, 0.42232],
-                 [0.57601, 0.42112, 0.24364, 0.84315],
-                 [0.21190, 0.42112, 0.66227, 0.04198],
-                 [0.21190, 0.15492, 0.08963, 0.11411],
-                 [0.00019, 0.00284, 0.00446, 0.00077]]
+            [[0.21194, 0.09003, 0.66524, 0.42232],
+             [0.57612, 0.66524, 0.09003, 0.15536],
+             [0.21194, 0.24473, 0.24473, 0.42232],
+             [0.57601, 0.42112, 0.24364, 0.84315],
+             [0.21190, 0.42112, 0.66227, 0.04198],
+             [0.21190, 0.15492, 0.08963, 0.11411],
+             [0.00019, 0.00284, 0.00446, 0.00077]]
         """
 
     def softmax_edges(self, edge_feat):
@@ -1429,9 +1665,6 @@ class BatchedGraph(Graph):
 
         Raises:
             TypeError: If `edge_feat` is not a Tensor.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -1467,14 +1700,14 @@ class BatchedGraph(Graph):
             ...
             >>> ret = TestSoftmaxEdges()(edge_feat, *batched_graph_field.get_batched_graph()).asnumpy()
             >>> print(np.array2string(ret, formatter={'float_kind':'{0:.5f}'.format}))
-                [[0.21194, 0.09003, 0.66524, 0.42232],
-                 [0.57612, 0.66524, 0.09003, 0.15536],
-                 [0.21194, 0.24473, 0.24473, 0.42232],
-                 [0.57518, 0.41993, 0.23586, 0.83838],
-                 [0.21160, 0.41993, 0.64113, 0.04174],
-                 [0.21160, 0.15448, 0.08677, 0.11346],
-                 [0.00019, 0.00283, 0.00432, 0.00076],
-                 [0.00143, 0.00283, 0.03192, 0.00565]]
+            [[0.21194, 0.09003, 0.66524, 0.42232],
+             [0.57612, 0.66524, 0.09003, 0.15536],
+             [0.21194, 0.24473, 0.24473, 0.42232],
+             [0.57518, 0.41993, 0.23586, 0.83838],
+             [0.21160, 0.41993, 0.64113, 0.04174],
+             [0.21160, 0.15448, 0.08677, 0.11346],
+             [0.00019, 0.00283, 0.00432, 0.00076],
+             [0.00143, 0.00283, 0.03192, 0.00565]]
         """
 
     def broadcast_nodes(self, graph_feat):
@@ -1490,9 +1723,6 @@ class BatchedGraph(Graph):
 
         Raises:
             TypeError: If `graph_feat` is not a Tensor.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -1527,8 +1757,8 @@ class BatchedGraph(Graph):
             ...
             >>> ret = TestBroadCastNodes()(node_feat, *batched_graph_field.get_batched_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[2.0, 4.0, 3.0, 4.0], [2.0, 4.0, 3.0, 4.0], [2.0, 4.0, 3.0, 4.0],
-                 [9.0, 7.0, 6.0, 8.0], [9.0, 7.0, 6.0, 8.0], [9.0, 7.0, 6.0, 8.0], [9.0, 7.0, 6.0, 8.0]]
+            [[2.0, 4.0, 3.0, 4.0], [2.0, 4.0, 3.0, 4.0], [2.0, 4.0, 3.0, 4.0],
+             [9.0, 7.0, 6.0, 8.0], [9.0, 7.0, 6.0, 8.0], [9.0, 7.0, 6.0, 8.0], [9.0, 7.0, 6.0, 8.0]]
         """
 
     def broadcast_edges(self, graph_feat):
@@ -1536,17 +1766,14 @@ class BatchedGraph(Graph):
         Broadcast graph-level features to edge-level representation.
 
         Args:
-            graph_feat (Tensor): a tensor represent the graph feature,
-                with shape :math:`(N\_GRAPHS, F)`, :math:`F` is the feature size.
+            graph_feat (Tensor): a tensor represent the graph feature, with shape :math:`(N\_GRAPHS, F)`, :math:`F` is
+                the feature size.
 
         Returns:
             Tensor, a tensor with shape :math:`(N\_EDGES, F)`, :math:`F` is the feature size.
 
         Raises:
             TypeError: If `graph_feat` is not a Tensor.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -1582,9 +1809,9 @@ class BatchedGraph(Graph):
             ...
             >>> ret = TestBroadCastEdges()(edge_feat, *batched_graph_field.get_batched_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[2.0, 4.0, 3.0, 4.0], [2.0, 4.0, 3.0, 4.0], [2.0, 4.0, 3.0, 4.0],
-                 [9.0, 7.0, 6.0, 8.0], [9.0, 7.0, 6.0, 8.0], [9.0, 7.0, 6.0, 8.0],
-                 [9.0, 7.0, 6.0, 8.0], [9.0, 7.0, 6.0, 8.0]]
+            [[2.0, 4.0, 3.0, 4.0], [2.0, 4.0, 3.0, 4.0], [2.0, 4.0, 3.0, 4.0],
+             [9.0, 7.0, 6.0, 8.0], [9.0, 7.0, 6.0, 8.0], [9.0, 7.0, 6.0, 8.0],
+             [9.0, 7.0, 6.0, 8.0], [9.0, 7.0, 6.0, 8.0]]
         """
 
 
@@ -1592,34 +1819,140 @@ class HeterGraph:
     """
     The heterogeneous Graph.
 
-    This is the class which should be annotated in construct function
-    for GNNCell class.
+    This is the class which should be annotated in the construct function for `GNNCell` class.
+    The last argument in the 'construct' function will be resolved into the 'mindspore_gl.HeterGraph' heterogeneous
+    class.
+
+    Supported Platforms:
+        ``Ascend`` ``GPU``
+
+    Examples:
+        >>> import mindspore as ms
+        >>> from mindspore_gl import Graph, HeterGraph, HeterGraphField
+        >>> from mindspore_gl.nn import GNNCell
+        >>> n_nodes = [9, 2]
+        >>> n_edges = [11, 1]
+        >>> src_idx = [ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8], ms.int32), ms.Tensor([0], ms.int32)]
+        >>> dst_idx = [ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32), ms.Tensor([1], ms.int32)]
+        >>> heter_graph_field = HeterGraphField(src_idx, dst_idx, n_nodes, n_edges)
+        >>> node_feat = ms.Tensor([[1], [2], [1], [2], [0], [1], [2], [3], [1]], ms.float32)
+        >>> class SrcIdx(GNNCell):
+        ...     def construct(self, bg: HeterGraph):
+        ...         return bg.src_idx
+        >>> ret = SrcIdx()(*heter_graph_field.get_heter_graph())
+        >>> print(ret)
+        [Tensor(shape=[11], dtype=Int32, value= [0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8]),
+        Tensor(shape=[1], dtype=Int32, value= [0])]
     """
 
     @property
     def src_idx(self):
         r"""
-        A list of tensor with shape :math:`(N\_EDGES)`, represents the source
-        node index of COO edge matrix.
+        A tensor with shape :math:`(N\_EDGES)`, represents the source node index of COO edge matrix.
+
+        Returns:
+            - List[Tensor], a list of source vertex.
+
+        Examples:
+            >>> import mindspore as ms
+            >>> from mindspore_gl import Graph, HeterGraph, HeterGraphField
+            >>> from mindspore_gl.nn import GNNCell
+            >>> n_nodes = [9, 2]
+            >>> n_edges = [11, 1]
+            >>> src_idx = [ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8], ms.int32), ms.Tensor([0], ms.int32)]
+            >>> dst_idx = [ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32), ms.Tensor([1], ms.int32)]
+            >>> heter_graph_field = HeterGraphField(src_idx, dst_idx, n_nodes, n_edges)
+            >>> node_feat = ms.Tensor([[1], [2], [1], [2], [0], [1], [2], [3], [1]], ms.float32)
+            ...
+            >>> class SrcIdx(GNNCell):
+            ...     def construct(self, x, bg: HeterGraph):
+            ...         return bg.src_idx
+            >>> ret = SrcIdx()(node_feat, *heter_graph_field.get_heter_graph())
+            >>> print(ret)
+            [Tensor(shape=[11], dtype=Int32, value= [0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8]),
+            Tensor(shape=[1], dtype=Int32, value= [0])]
         """
 
     @property
     def dst_idx(self):
         r"""
-        A list of tensor with shape :math:`(N\_EDGES)`, represents the
-        destination node index of COO edge matrix.
+        A tensor with shape :math:`(N\_EDGES)`, represents the destination node index of COO edge matrix.
+
+        Returns:
+            - List[Tensor], a list of destination vertex.
+
+        Examples:
+            >>> import mindspore as ms
+            >>> from mindspore_gl import Graph, HeterGraph, HeterGraphField
+            >>> from mindspore_gl.nn import GNNCell
+            >>> n_nodes = [9, 2]
+            >>> n_edges = [11, 1]
+            >>> src_idx = [ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8], ms.int32), ms.Tensor([0], ms.int32)]
+            >>> dst_idx = [ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32), ms.Tensor([1], ms.int32)]
+            >>> heter_graph_field = HeterGraphField(src_idx, dst_idx, n_nodes, n_edges)
+            >>> node_feat = ms.Tensor([[1], [2], [1], [2], [0], [1], [2], [3], [1]], ms.float32)
+            ...
+            >>> class DstIdx(GNNCell):
+            ...     def construct(self, x, bg: HeterGraph):
+            ...         return bg.dst_idx
+            >>> ret = DstIdx()(node_feat, *heter_graph_field.get_heter_graph())
+            >>> print(ret)
+            [Tensor(shape=[11], dtype=Int32, value= [1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8]),
+            Tensor(shape=[1], dtype=Int32, value= [1])]
         """
 
     @property
     def n_nodes(self):
         """
         A list of integer, represent the nodes count of the graph.
+
+        Returns:
+            - List, a list of nodes numbers of the graph.
+
+        Examples:
+            >>> import mindspore as ms
+            >>> from mindspore_gl import Graph, HeterGraph, HeterGraphField
+            >>> from mindspore_gl.nn import GNNCell
+            >>> n_nodes = [9, 2]
+            >>> n_edges = [11, 1]
+            >>> src_idx = [ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8], ms.int32), ms.Tensor([0], ms.int32)]
+            >>> dst_idx = [ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32), ms.Tensor([1], ms.int32)]
+            >>> heter_graph_field = HeterGraphField(src_idx, dst_idx, n_nodes, n_edges)
+            >>> node_feat = ms.Tensor([[1], [2], [1], [2], [0], [1], [2], [3], [1]], ms.float32)
+            ...
+            >>> class NNodes(GNNCell):
+            ...     def construct(self, x, bg: HeterGraph):
+            ...         return bg.n_nodes
+            >>> ret = NNodes()(node_feat, *heter_graph_field.get_heter_graph())
+            >>> print(ret)
+            [9, 2]
         """
 
     @property
     def n_edges(self):
         """
         A list of integer, represent the edges count of the graph.
+
+        Returns:
+            - List[int], a list edges numbers of the graph.
+
+        Examples:
+            >>> import mindspore as ms
+            >>> from mindspore_gl import Graph, HeterGraph, HeterGraphField
+            >>> from mindspore_gl.nn import GNNCell
+            >>> n_nodes = [9, 2]
+            >>> n_edges = [11, 1]
+            >>> src_idx = [ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8], ms.int32), ms.Tensor([0], ms.int32)]
+            >>> dst_idx = [ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32), ms.Tensor([1], ms.int32)]
+            >>> heter_graph_field = HeterGraphField(src_idx, dst_idx, n_nodes, n_edges)
+            >>> node_feat = ms.Tensor([[1], [2], [1], [2], [0], [1], [2], [3], [1]], ms.float32)
+            ...
+            >>> class NEdges(GNNCell):
+            ...     def construct(self, x, bg: HeterGraph):
+            ...         return bg.n_edges
+            >>> ret = NEdges()(node_feat, *heter_graph_field.get_heter_graph())
+            >>> print(ret)
+            [11, 1]
         """
 
     def __init__(self):
@@ -1634,9 +1967,6 @@ class HeterGraph:
 
         Returns:
             List[Tensor], a homo graph.
-
-        Supported Platforms:
-            ``GPU``
 
         Examples:
             >>> import mindspore as ms
@@ -1666,8 +1996,9 @@ class HeterGraph:
             ...
             >>> ret = TestHeterGraph()(node_feat, *heter_graph_field.get_heter_graph()).asnumpy().tolist()
             >>> print(ret)
-                [[1.0], [2.0], [0.0], [0.0], [3.0], [2.0], [1.0], [0.0], [3.0]]
+            [[1.0], [2.0], [0.0], [0.0], [3.0], [2.0], [1.0], [0.0], [3.0]]
         """
+
 
 class GraphField:
     r"""
@@ -1676,19 +2007,21 @@ class GraphField:
     The edge information are stored in COO format.
 
     Args:
-        src_idx (Tensor): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
+        src_idx (Tensor, optional): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
             represents the source node index of COO edge matrix.
-        dst_idx (Tensor): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
+        dst_idx (Tensor, optional): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
             represents the destination node index of COO edge matrix.
-        n_nodes (int): An integer, represent the nodes count of the graph.
-        n_edges (int): An integer, represent the edges count of the graph.
-        indices (Tensor): The indices of csr matrix. Default: None.
-        indptr (Tensor): The indptr of csr matrix. Default: None.
-        indices_backward (Tensor): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
+        n_nodes (int, optional): An integer, represent the nodes count of the graph.
+        n_edges (int, optional): An integer, represent the edges count of the graph.
+        indices (Tensor, optional): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
+            represents the indices of CSR edge matrix. Default: None.
+        indptr (Tensor, optional): A tensor with shape :math:`(N\_NODES)`, with int dtype,
+            represents the indptr of CSR edge matrix. Default: None.
+        indices_backward (Tensor, optional): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
             represents the indices backward of CSR edge matrix. Default: None.
-        indptr_backward (Tensor): A tensor with shape :math:`(N\_NODES)`, with int dtype,
+        indptr_backward (Tensor, optional): A tensor with shape :math:`(N\_NODES)`, with int dtype,
             represents the indptr backward of CSR edge matrix. Default: None.
-        csr (bool): Is the matrix scr type. Default: False.
+        csr (bool, optional): Is the matrix CSR type. Default: False.
 
     Supported Platforms:
         ``Ascend`` ``GPU``
@@ -1781,27 +2114,27 @@ class BatchedGraphField(GraphField):
     The edge information are stored in COO format.
 
     Args:
-        src_idx (Tensor): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
+        src_idx (Tensor, optional): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
             represents the source node index of COO edge matrix.
-        dst_idx (Tensor): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
+        dst_idx (Tensor, optional): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
             represents the destination node index of COO edge matrix.
-        n_nodes (int): An integer, represent the nodes count of the graph.
-        n_edges (int): An integer, represent the edges count of the graph.
-        ver_subgraph_idx (Tensor): A tensor with shape :math:`(N\_NODES)`, with int dtype,
+        n_nodes (int, optional): An integer, represent the nodes count of the graph.
+        n_edges (int, optional): An integer, represent the edges count of the graph.
+        ver_subgraph_idx (Tensor, optional): A tensor with shape :math:`(N\_NODES)`, with int dtype,
             indicates each node belonging to which subgraph.
-        edge_subgraph_idx (Tensor): A tensor with shape :math:`(N\_EDGES,)`, with int dtype,
+        edge_subgraph_idx (Tensor, optional): A tensor with shape :math:`(N\_EDGES,)`, with int dtype,
             indicates each edge belonging to which subgraph.
-        graph_mask (Tensor): A tensor with shape :math:`(N\_GRAPHS,)`, with int dtype,
+        graph_mask (Tensor, optional): A tensor with shape :math:`(N\_GRAPHS,)`, with int dtype,
             indicates whether the subgraph is exist.
-        indices (Tensor): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
+        indices (Tensor, optional): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
             represents the indices of CSR edge matrix. Default: None.
-        indptr (Tensor): A tensor with shape :math:`(N\_NODES)`, with int dtype,
+        indptr (Tensor, optional): A tensor with shape :math:`(N\_NODES)`, with int dtype,
             represents the indptr of CSR edge matrix. Default: None.
-        indices_backward (Tensor): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
+        indices_backward (Tensor, optional): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
             represents the indices backward of CSR edge matrix. Default: None.
-        indptr_backward (Tensor): A tensor with shape :math:`(N\_NODES)`, with int dtype,
+        indptr_backward (Tensor, optional): A tensor with shape :math:`(N\_NODES)`, with int dtype,
             represents the indptr backward of CSR edge matrix. Default: None.
-        csr (bool): Is the graph is CSR type. Default: False.
+        csr (bool, optional): Is the graph is CSR type. Default: False.
 
     Supported Platforms:
         ``Ascend`` ``GPU``
@@ -1914,7 +2247,7 @@ class HeterGraphField:
         n_edges (List[int]): A list of integer, represent the edges count of the graph.
 
     Supported Platforms:
-            ``GPU``
+        ``Ascend`` ``GPU``
 
     Examples:
         >>> import mindspore as ms
@@ -1924,6 +2257,11 @@ class HeterGraphField:
         >>> src_idx = [ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8], ms.int32), ms.Tensor([0], ms.int32)]
         >>> dst_idx = [ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32), ms.Tensor([1], ms.int32)]
         >>> heter_graph_field = HeterGraphField(src_idx, dst_idx, n_nodes, n_edges)
+        >>> print(heter_graph_field.get_heter_graph())
+        [[Tensor(shape=[11], dtype=Int32, value= [0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8]),
+        Tensor(shape=[1], dtype=Int32, value= [0])],
+        [Tensor(shape=[11], dtype=Int32, value= [1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8]),
+        Tensor(shape=[1], dtype=Int32, value= [1])], [9, 2], [11, 1]]
     """
 
     def __init__(self, src_idx, dst_idx, n_nodes, n_edges):
@@ -1955,7 +2293,7 @@ class HeterGraphField:
         Get the hetergenous Graph.
 
         Returns:
-            List, A list of tensor list, which should be used for construct
+            List, a list of tensor list, which should be used for construct
             function.
         """
         return [self.src_idx, self.dst_idx, self.n_nodes, self.n_edges]

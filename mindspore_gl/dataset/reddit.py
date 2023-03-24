@@ -29,7 +29,7 @@ class Reddit(BaseDataSet):
 
     About Reddit dataset:
 
-    The node label in this case is the community, or “subreddit”, that a post belongs to.
+    The node label is the community, or “subreddit”, that a post belongs to.
     The authors sampled 50 large communities and built a post-to-post graph, connecting
     posts if the same user comments on both. In total this dataset contains 232,965
     posts with an average degree of 492. We use the first 20 days for training and the
@@ -43,7 +43,7 @@ class Reddit(BaseDataSet):
 
     Dataset can be download here: `Reddit <https://data.dgl.ai/dataset/reddit.zip>`_ .
 
-    You can organize the dataset files into the following directory structure and read by `preprocess` API.
+    You can organize the dataset files into the following directory structure and read.
 
     .. code-block::
 
@@ -194,7 +194,7 @@ class Reddit(BaseDataSet):
     @property
     def train_nodes(self):
         """
-        training nodes indexes.
+        Training nodes indexes.
 
         Returns:
             - numpy.ndarray, array of training nodes.
@@ -236,10 +236,10 @@ class Reddit(BaseDataSet):
     @property
     def node_count(self):
         """
-        Number of nodes.
+        Number of nodes, length of CSR row.
 
         Returns:
-            - int, length of csr row.
+            - int, the number of nodes.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -250,10 +250,10 @@ class Reddit(BaseDataSet):
     @property
     def edge_count(self):
         """
-        Number of edges.
+        Number of edges, length of CSR col.
 
         Returns:
-            - int, length of csr col.
+            - int, the number of edges.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -300,7 +300,7 @@ class Reddit(BaseDataSet):
         Return the adjacency matrix of COO representation
 
         Returns:
-            - numpy.ndarray, array of coo matrix.
+            - numpy.ndarray, array of COO matrix.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -314,7 +314,7 @@ class Reddit(BaseDataSet):
         Return the adjacency matrix of CSR representation.
 
         Returns:
-            - numpy.ndarray, array of csr matrix.
+            - numpy.ndarray, array of CSR matrix.
 
         Examples:
             >>> #dataset is an instance object of Dataset

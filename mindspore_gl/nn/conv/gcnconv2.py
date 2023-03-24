@@ -73,7 +73,7 @@ class GCNConv2(GNNCell):
 
     def __init__(self,
                  in_feat_size: int,
-                 out_size: int) -> None:
+                 out_size: int):
         super().__init__()
         self.in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
         self.out_size = Validator.check_positive_int(out_size, "out_size", self.cls_name)

@@ -44,11 +44,11 @@ class MeanConv(GNNCell):
     Args:
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
-        feat_drop (float): The keep rate, greater than 0 and less equal than 1. E.g. dropout=0.9,
+        feat_drop (float, optional): The keep rate, greater than 0 and less equal than 1. E.g. dropout=0.9,
             dropping out 10% of input units. Default: 0.6.
-        bias (bool): Whether use bias. Default: False.
-        norm (mindspore.nn.Cell): Normalization function Cell. Default: None.
-        activation (mindspore.nn.Cell): Activation function Cell. Default: None.
+        bias (bool, optional): Whether use bias. Default: False.
+        norm (Cell, optional): Normalization function Cell. Default: None.
+        activation (Cell, optional): Activation function Cell. Default: None.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N,D\_in)`

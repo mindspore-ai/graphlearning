@@ -35,8 +35,8 @@ class AGNNConv(GNNCell):
     :math:`\beta` is a single scalar parameter.
 
     Args:
-        init_beta (float): Init :math:`\beta`, a single scalar parameter. Default: 1.0.
-        learn_beta (bool): Whether :math:`\beta` is learnable. Default: True.
+        init_beta (float, optional): Init :math:`\beta`, a single scalar parameter. Default: 1.0.
+        learn_beta (bool, optional): Whether :math:`\beta` is learnable. Default: True.
 
     Inputs:
         - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,

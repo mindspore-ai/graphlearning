@@ -32,7 +32,7 @@ class PPI(BaseDataSet):
 
     About PPI dataset:
 
-    protein roles—in terms of their cellular functions from gene ontology—in various protein-protein interaction (PPI)
+    protein roles in various protein-protein interaction (PPI)
     graphs, with each graph corresponding to a different human tissue. positional gene sets are used, motif gene sets
     and immunological signatures as features and gene ontology sets as labels (121 in total), collected from the
     Molecular Signatures Database. The average graph contains 2373 nodes, with an average degree of 28.8.
@@ -49,9 +49,9 @@ class PPI(BaseDataSet):
       - Valid examples: 2
       - Test examples: 2
 
-    Dataset can be download here: <https://data.dgl.ai/dataset/ppi.zip>
+    Dataset can be download here: `PPI <https://data.dgl.ai/dataset/ppi.zip>`_.
 
-    You can organize the dataset files into the following directory structure and read by `preprocess` API.
+    You can organize the dataset files into the following directory structure and read.
 
     .. code-block::
 
@@ -309,10 +309,10 @@ class PPI(BaseDataSet):
     @property
     def train_graphs(self):
         """
-        Train graph id.
+        Train graph ID.
 
         Returns:
-            - numpy.ndarray, array of train graph id.
+            - numpy.ndarray, array of train graph ID.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -323,10 +323,10 @@ class PPI(BaseDataSet):
     @property
     def val_graphs(self):
         """
-        Valid graph id.
+        Valid graph ID.
 
         Returns:
-            - numpy.ndarray, array of valid graph id.
+            - numpy.ndarray, array of valid graph ID.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -337,10 +337,10 @@ class PPI(BaseDataSet):
     @property
     def test_graphs(self):
         """
-        Test graph id.
+        Test graph ID.
 
         Returns:
-            - numpy.ndarray, array of test graph id.
+            - numpy.ndarray, array of test graph ID.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -398,7 +398,7 @@ class PPI(BaseDataSet):
 
     def graph_node_feat(self, graph_idx):
         """
-        graph features.
+        Graph features.
 
         Args:
             graph_idx (int): index of graph.
@@ -414,7 +414,7 @@ class PPI(BaseDataSet):
 
     def graph_node_label(self, graph_idx):
         """
-        node on graph label.
+        Graph Node label.
 
         Args:
             graph_idx (int): index of graph.

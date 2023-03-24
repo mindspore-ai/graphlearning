@@ -50,7 +50,7 @@ class Alchemy(BaseDataSet):
     and
     `Alchemy valid <https://alchemy.tencent.com/data/valid_v20190730.zip>`_ .
 
-    You can organize the dataset files into the following directory structure and read by `preprocess` API.
+    You can organize the dataset files into the following directory structure and read.
 
     .. code-block::
 
@@ -70,7 +70,7 @@ class Alchemy(BaseDataSet):
 
     Args:
         root(str): path to the root directory that contains alchemy_with_mask.npz.
-        datasize(int): train data size
+        datasize(int, optional): train data size.
 
     Raises:
         TypeError: if `root` is not a str.
@@ -351,10 +351,10 @@ class Alchemy(BaseDataSet):
     @property
     def train_graphs(self):
         """
-        Train graph id
+        Train graph ID.
 
         Returns:
-            - numpy.ndarray, array of train graph id.
+            - numpy.ndarray, array of train graph ID.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -365,10 +365,10 @@ class Alchemy(BaseDataSet):
     @property
     def val_graphs(self):
         """
-        Valid graph id
+        Valid graph ID.
 
         Returns:
-            - numpy.ndarray, array of valid graph id.
+            - numpy.ndarray, array of valid graph ID.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -379,7 +379,7 @@ class Alchemy(BaseDataSet):
     @property
     def graph_nodes(self):
         """
-        Accumulative graph nodes count
+        Accumulative graph nodes count.
 
         Returns:
             - numpy.ndarray, array of accumulative nodes.
@@ -414,7 +414,7 @@ class Alchemy(BaseDataSet):
         Total graph numbers.
 
         Returns:
-            - int, numbers of graph.
+            - int, numbers of graphs.
 
         Examples:
             >>> #dataset is an instance object of Dataset
@@ -458,7 +458,7 @@ class Alchemy(BaseDataSet):
 
     def graph_node_feat(self, graph_idx):
         """
-        graph node features.
+        Graph node features.
 
         Args:
             graph_idx (int): index of graph.
@@ -474,7 +474,7 @@ class Alchemy(BaseDataSet):
 
     def graph_edge_feat(self, graph_idx):
         """
-        graph edge features.
+        Graph edge features.
 
         Args:
             graph_idx (int): index of graph.

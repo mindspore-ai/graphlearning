@@ -24,11 +24,11 @@ from mindspore import COOTensor
 def remove_self_loop(adj, mode='dense'):
     """
     Remove the diagonal matrix from the input matrix object,
-    you can choose to operate on a dense matrix or a matrix in coo format.
+    you can choose to operate on a dense matrix or a matrix in COO format.
 
     Args:
         adj(scipy.sparse.coo): Target matrix.
-        mode(str): type of operation matrix. Default: dense.
+        mode(str, optional): type of operation matrix. Support type is 'dense' and ‘coo’. Default: 'dense'.
 
     Returns:
         - **adj** (scipy.sparse.coo) - The object after removing the diagonal matrix.
@@ -63,7 +63,7 @@ def remove_self_loop(adj, mode='dense'):
 def add_self_loop(edge_index, edge_weight, node, fill_value, mode='dense'):
     r"""
     ADD the self loop from the input coo matrix.
-    you can choose to operate on a dense matrix or a matrix in coo format.
+    you can choose to operate on a dense matrix or a matrix in COO format.
 
     Args:
         edge_index (Tensor): Edge index. The shape is :math:`(2, N\_e)`
@@ -72,7 +72,7 @@ def add_self_loop(edge_index, edge_weight, node, fill_value, mode='dense'):
             where :math:`N\_e` is the number of edges.
         node(int): Number of nodes.
         fill_value(Tensor): self-loop value.
-        mode(str): type of operation matrix. Default: dense.
+        mode(str, optional): type of operation matrix. Support type is 'dense' and ‘coo’. Default: 'dense'.
 
     Returns:
         if `mode` is 'dense',
@@ -85,7 +85,7 @@ def add_self_loop(edge_index, edge_weight, node, fill_value, mode='dense'):
         - **edge_weight** (Tensor) - new edge_weight
 
     Raises:
-        ValueError: if `mode` not is coo or dense.
+        ValueError: if `mode` not is 'coo' or 'dense'.
         ValueError: if `fill_value` length not equal to `node`.
         TypeError: If `node` is not a positive int.
 

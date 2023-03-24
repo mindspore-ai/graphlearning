@@ -24,9 +24,10 @@ class MetrLa(BaseDataSet):
     METR-LA  Dataset, a source dataset for reading and parsing METR-LA dataset.
 
     About METR-LA dataset:
-        METR-LA is a large-scale dataset collected from 1500 traffic loop detectors in
-        Los Angeles country road network. This dataset includes speed, volume and occupancy
-        data, covering approximately 3,420 miles.
+
+    METR-LA is a large-scale dataset collected from 1500 traffic loop detectors in
+    Los Angeles country road network. This dataset includes speed, volume and occupancy
+    data, covering approximately 3,420 miles.
 
     Statistics:
 
@@ -36,7 +37,8 @@ class MetrLa(BaseDataSet):
 
     Dataset can be download here: `METR-LA <https://graphmining.ai/temporal_datasets/METR-LA.zip>`_ .
 
-    You can organize the dataset files into the following directory structure and read by `preprocess` API.
+    You can organize the dataset files into the following directory structure and read by
+    `mindspore_gl.dataset.MetrLa.get_data` API.
 
     .. code-block::
 
@@ -92,7 +94,7 @@ class MetrLa(BaseDataSet):
 
     def get_data(self, in_timestep, out_timestep):
         """
-        get sequence time feature and label.
+        Get sequence time feature and label.
 
         Args:
             in_timestep(int): numbers of input time sequence.

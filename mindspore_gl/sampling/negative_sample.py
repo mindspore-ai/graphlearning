@@ -25,10 +25,10 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more
     Can choose to consider self-loop, directed graph or undirected graph operation
 
     Args:
-        positive(list or numpy.ndarray): All positive sample edges.
-        node(int): number of node.
-        num_neg_samples(int): Negative sample length.
-        mode(str): type of operation matrix. Default: 'undirected'.
+        positive (list or numpy.ndarray): All positive sample edges.
+        node (int): number of node.
+        num_neg_samples (int): Negative sample length.
+        mode (str, optional): type of operation matrix. Default: 'undirected'.
 
           - undirected: undirected graph.
 
@@ -36,7 +36,7 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more
 
           - other: other type graph.
 
-        re(str): type of input data. Default: 'more'.
+        re(str, optional): type of input data. Default: 'more'.
 
           - more: positive array shape :math:`(data\_length, 2)`.
 

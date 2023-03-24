@@ -42,9 +42,9 @@ def sage_sampler_on_homo(homo_graph: mindspore_gl.graph.MindHomoGraph, seeds, ne
         - **seeds_idx** - seeds local reindex ids.
 
     Raises:
-        TypeError: If 'homo_graph' is not a MindHomoGraph class.
-        TypeError: If 'seeds' is not a numpy.ndarray.
-        TypeError: If 'neighbor_nums' is not a list.
+        TypeError: If `homo_graph` is not a MindHomoGraph class.
+        TypeError: If `seeds` is not a numpy.ndarray.
+        TypeError: If `neighbor_nums` is not a list.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

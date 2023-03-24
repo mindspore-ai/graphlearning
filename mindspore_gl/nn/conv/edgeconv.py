@@ -34,7 +34,7 @@ class EDGEConv(GNNCell):
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
         batch_norm (bool): Whether use batch norm.
-        bias (bool): Whether use bias. Default: True.
+        bias (bool, optional): Whether use bias. Default: True.
 
     Inputs:
         - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,
