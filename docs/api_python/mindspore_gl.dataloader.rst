@@ -4,8 +4,8 @@ mindspore_gl.dataloader
 .. py:class:: mindspore_gl.dataloader.Dataset()
 
     可映射数据集定义，用抽象类表示数据集。
-    所有数据集都都应该对它进行继承，它代表从key到样本的映射关系。
-    所有子类都应该具备 `__getitem__`，它实现了通过给定key来获取实例。
+    所有数据集都应该是它的子类，它代表一个从key到样本的映射关系。
+    所有子类都应该重写 `__getitem__`，实现根据key来获取样本。
 
 .. py:class:: mindspore_gl.dataloader.RandomBatchSampler(data_source, batch_size)
 
@@ -24,9 +24,9 @@ mindspore_gl.dataloader
 
     参数：
         - **x** (mindspore_gl.dataloader.Dataset) - 图结构数据集。
-        - **val_ratio** (float) - 验证集比例。默认值：0.05。
-        - **test_ratio** (float) - 测试集比例。默认值：0.1。
-        - **graph_type** (str) - 图的类型。默认值：undirected。
+        - **val_ratio** (float, 可选) - 验证集比例。默认值：0.05。
+        - **test_ratio** (float, 可选) - 测试集比例。默认值：0.1。
+        - **graph_type** (str, 可选) - 图的类型。'undirected'：无向图，'directed'：有向图。默认值：'undirected'。
 
     返回：
         - **train** (numpy.ndarray) - 训练集，shape :math:`(train\_len, 2)` 。

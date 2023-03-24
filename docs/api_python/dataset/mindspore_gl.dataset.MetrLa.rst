@@ -5,9 +5,9 @@ mindspore_gl.dataset.MetrLa
 
     METR-LA，用于读取和解析METR-LA数据集的源数据集。
 
-    有关METR-LA数据集：
+    关于METR-LA数据集：
 
-    METR-LA是一个大规模数据集，从洛杉矶乡村公路网的1500个交通环路探测器中收集。此数据集包括速度、体积和占用数据，覆盖约3,420英里。
+    METR-LA是一个大规模数据集，由1500个交通环路探测器在洛杉矶乡村道路网络中收集而来。该数据集包括速度、流量和占用率数据，涵盖了大约3420英里的道路。
 
     数据：
 
@@ -15,8 +15,7 @@ mindspore_gl.dataset.MetrLa
     - 节点: 207
     - 边: 1515
 
-    下载地址：`METR-LA <https://graphmining.ai/temporal_datasets/METR-LA.zip>`_ 。
-    您可以将数据集文件组织到以下目录结构中，并通过 `preprocess` API读取。
+    下载地址：`METR-LA <https://graphmining.ai/temporal_datasets/METR-LA.zip>`_ 。您可以将数据集文件组织到以下目录结构中，并通过 `mindspore_gl.dataset.MetrLa.get_data` API读取。
 
     .. code-block::
 

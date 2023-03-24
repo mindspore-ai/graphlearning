@@ -23,21 +23,21 @@ mindspore_gl.nn.MeanConv
     参数：
         - **in_feat_size** (int) - 输入节点特征大小。
         - **out_feat_size** (int) - 输出节点特征大小。
-        - **feat_drop** (float) - 保持率，大于0，小于1。例如，dropout=0.9，抛弃10%的输入单元。默认值：0.6。
-        - **bias** (bool) - 是否使用偏置。默认值：False。
-        - **norm** (mindspore.nn.Cell) - 归一化函数单元。默认值：None。
-        - **activation** (mindspore.nn.Cell) - 激活函数Cell。默认值：None。
+        - **feat_drop** (float, 可选) - keep rate，大于0，小于1。例如，dropout=0.9，抛弃10%的输入单元。默认值：0.6。
+        - **bias** (bool, 可选) - 是否使用偏置。默认值：False。
+        - **norm** (Cell, 可选) - 归一化函数单元。默认值：None。
+        - **activation** (Cell, 可选) - 激活函数Cell。默认值：None。
 
     输入：
         - **x** (Tensor) - 输入节点特征。Shape为 :math:`(N,D\_in)`
-          其中 :math:`N` 是节点数， :math:`D\_in` 可以是任何形状。
+          其中 :math:`N` 是节点数， :math:`D\_in` 可以是任何shape。
         - **self_idx** (Tensor) - 节点id。Shape为 :math:`(N\_v,)`
           其中 :math:`N\_v` 是自节点的数量。
         - **g** (Graph) - 输入图。
 
     输出：
         - Tensor，输出特征shape为 :math:`(N\_v,D\_out)` 。
-          其中 :math:`N\_v` 是自节点的数量， :math:`D\_out` 可以是任何形状。
+          其中 :math:`N\_v` 是自节点的数量， :math:`D\_out` 可以是任何shape。
 
     异常：
         - **TypeError** - 如果 `in_feat_size` 或 `out_feat_size` 不是int。

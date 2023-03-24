@@ -14,7 +14,7 @@ mindspore_gl.nn.WeightAndSum
         - **g** (BatchedGraph) - 输入图。
 
     输出：
-        - **x** (Tensor) - 图形的输出表示。shape是 :math:`2,D_{out}`
+        - **x** (Tensor) - 图形的输出表示。shape是 :math:`(2,D_{out})`
           其中 :math:`D_{out}` 是节点的特征大小
 
     异常：

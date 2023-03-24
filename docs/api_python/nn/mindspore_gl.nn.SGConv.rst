@@ -11,24 +11,26 @@ mindspore_gl.nn.SGConv
 
     其中 :math:`\tilde{A}=A+I` 。
 
+    ..note:
+        目前只支持PYNATIVE模式。
+
     参数：
         - **in_feat_size** (int) - 输入节点特征大小。
         - **out_feat_size** (int) - 输出节点特征大小。
-        - **num_hops** (int) - hop的数量。默认值：1。
-        - **cached** (bool) - 是否使用缓存。默认值：True。
-        - **bias** (bool) - 是否使用偏差。默认值：True。
-        - **norm** (mindspore.nn.Cell) - 归一化函数Cell。默认值为None。
+        - **num_hops** (int, 可选) - hop的数量。默认值：1。
+        - **cached** (bool, 可选) - 是否使用缓存。默认值：True。
+        - **bias** (bool, 可选) - 是否使用偏置。默认值：True。
+        - **norm** (Cell, 可选) - 归一化函数Cell。默认值为None。
 
     输入：
-        - **x** (Tensor) - 输入节点功能。Shape为 :math:`(N,D_{in})`
-          其中 :math:`N` 是节点数， :math:`D_{in}` 应等于 `Args` 中的 `in_feat_size` 。
-        - **in_deg** (Tensor) - 节点的入度。Shape为 :math:`(N,)`其中 :math:`N` 是节点数。
+        - **x** (Tensor) - 输入节点功能。Shape为 :math:`(N,D_{in})` ，其中 :math:`N` 是节点数， :math:`D_{in}` 应等于参数中的 `in_feat_size` 。
+        - **in_deg** (Tensor) - 节点的入度。Shape为 :math:`(N,)` ，其中 :math:`N` 是节点数。
         - **out_deg** (Tensor) - 节点的出度。Shape为 :math:`(N, )`
           其中 :math:`N` 是节点数。
         - **g** (Graph) - 输入图。
 
     输出：
-        - Tensor，Shape为 :math:`(N,D_{out})` 的输出节点特征，其中 :math:`(D_{out})` 应与 `Args` 中的 `out_feat_size` 。
+        - Tensor，Shape为 :math:`(N,D_{out})` 的输出节点特征，其中 :math:`(D_{out})` 应与参数中的 `out_feat_size` 。
 
     异常：
         - **TypeError** - 如果 `in_feat_size` 或 `out_feat_size` 或 `num_hops` 不是int。

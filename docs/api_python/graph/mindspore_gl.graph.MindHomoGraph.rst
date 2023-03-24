@@ -8,15 +8,15 @@ mindspore_gl.graph.MindHomoGraph
     .. py:method:: mindspore_gl.graph.MindHomoGraph.adj_coo
         :property:
 
-        coo调整矩阵。
+        COO调整矩阵。
 
         返回：
-            numpy.ndarray，coo图。
+            numpy.ndarray，COO图。
 
     .. py:method:: mindspore_gl.graph.MindHomoGraph.adj_csr
         :property:
 
-        csr调整矩阵。
+        CSR调整矩阵。
 
         返回：
             mindspore_gl.graph.csr_adj，csr图。
@@ -31,7 +31,7 @@ mindspore_gl.graph.MindHomoGraph
 
     .. py:method:: mindspore_gl.graph.MindHomoGraph.degree(node)
 
-        Lazy计算查询节点的度。
+        查询节点的度。
 
         参数：
             - **node** (int) - 节点ID。
@@ -50,14 +50,14 @@ mindspore_gl.graph.MindHomoGraph
     .. py:method:: mindspore_gl.graph.MindHomoGraph.is_batched
         :property:
 
-        如果图被批处理。
+        图是否被批处理。
 
         返回：
-            bool，图被批处理。
+            bool，图被批处理了返回True，否则返回False。
 
     .. py:method:: mindspore_gl.graph.MindHomoGraph.neighbors(node)
 
-        Lazy计算查询。
+        查询邻居节点。
 
         参数：
             - **node** (int) - 节点ID。
@@ -71,14 +71,14 @@ mindspore_gl.graph.MindHomoGraph
         图的节点数。
 
         返回：
-            int，节点号。
+            int，节点数。
 
-    .. py:method:: mindspore_gl.graph.MindHomoGraph.set_topo(adj_csr: np.ndarray, node_dict, edge_ids: np.ndarray)
+    .. py:method:: mindspore_gl.graph.MindHomoGraph.set_topo(adj_csr: CsrAdj, node_dict, edge_ids: np.ndarray)
 
         初始化CSR图。
 
         参数：
-            - **adj_csr** (mindspore_gl.graph.csr_adj) - 图的邻接矩阵，csr格式。
+            - **adj_csr** (CsrAdj) - 图的邻接矩阵，CSR格式。
             - **node_dict** (dict) - 节点id字典。
             - **edge_ids** (numpy.ndarray) - 边数组。
 
@@ -87,6 +87,6 @@ mindspore_gl.graph.MindHomoGraph
         初始化COO图。
 
         参数：
-            - **adj_coo** (numpy.ndarray) - 图的邻接矩阵，coo格式。
-            - **node_dict** (dict) - 节点id字典。默认值：None。
-            - **edge_ids** (numpy.ndarray) - 边数组。默认值：None。
+            - **adj_coo** (numpy.ndarray) - 图的邻接矩阵，COO格式。
+            - **node_dict** (dict, 可选) - 节点id字典。默认值：None。
+            - **edge_ids** (numpy.ndarray, 可选) - 边数组。默认值：None。

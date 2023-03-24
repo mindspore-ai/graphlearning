@@ -13,12 +13,12 @@ mindspore_gl.dataset.Enzymes
 
     - 图: 600
     - 节点: 32.63
-    - Edges: 62.14
-    - 类的数量: 6
+    - 边: 62.14
+    - 分类数量: 6
 
     下载地址： `ENZYMES <https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets/ENZYMES.zip>`_ 。
 
-    您可以将数据集文件组织到以下目录结构中，并通过 `preprocess` API读取。
+    您可以将数据集文件组织到以下目录结构中进行读取。
 
     .. code-block::
 

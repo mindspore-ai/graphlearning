@@ -20,13 +20,13 @@ mindspore_gl.nn.GINConv
 
     参数：
         - **activation** (mindspore.nn.Cell) - 激活函数。
-        - **init_eps** (float) - eps的初始化值。默认值：0.0。
-        - **learn_eps** (bool) - eps是否可学习。默认值：False。
-        - **aggregation_type** (str) - 聚合类型，应在'sum'、'max'和'avg'中。默认值：sum。
+        - **init_eps** (float, 可选) - eps的初始化值。默认值：0.0。
+        - **learn_eps** (bool, 可选) - eps是否可学习。默认值：False。
+        - **aggregation_type** (str, 可选) - 聚合类型，应在'sum'、'max'和'avg'中。默认值：sum。
 
     输入：
-        - **x** (Tensor) - 输入节点特征。Shape为 :math:`(N,*)` 其中 :math:`N` 是节点数， :math:`*` 可以是任何形状。
-        - **edge_weight** (Tensor) - 输入边权重。Shape为 :math:`(M,*)` ，其中 :math:`M` 是数字节点，和 :math:`*` 可以是任何形状。
+        - **x** (Tensor) - 输入节点特征。Shape为 :math:`(N,*)` 其中 :math:`N` 是节点数， :math:`*` 可以是任何shape。
+        - **edge_weight** (Tensor) - 输入边权重。Shape为 :math:`(M,*)` ，其中 :math:`M` 是数字节点， :math:`*` 可以是任何shape。
         - **g** (Graph) - 输入图。
 
     输出：

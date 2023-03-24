@@ -8,21 +8,21 @@ mindspore_gl.dataset.IMDBBinary
     关于IMDBBinary数据集：
 
     IMDBBinary数据集，用于读取和解析IMDBBinaary数据集的源数据集。IMDB-BINARY是一个电影协作数据集，由1000名在IMDB电影中扮演角色的演员组成的角色扮演网络组成。
-    在每个图中，节点表示演员/女演员，如果他们出现在同一部电影中，则它们之间有一条边。这些图来源于动作片和浪漫片。
+    在每个图中，节点表示演员，如果他们出现在同一部电影中，则它们之间有一条边。这些图来源于动作片和浪漫片。
 
     信息统计：
 
     - 节点: 19773
     - 边: 193062
     - 图： 1000
-    - 分类数: 2
+    - 分类数量: 2
     - 数据集切分:
 
       - Train: 800
       - Valid: 200
 
     下载地址：`<https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets/IMDB-BINARY.zip>`_ 。
-    您可以将数据集文件组织到以下目录结构中，并通过 `preprocess` API读取。
+    您可以将数据集文件组织到以下目录结构中进行读取。
 
     .. code-block::
 

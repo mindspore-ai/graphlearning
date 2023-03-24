@@ -13,7 +13,7 @@ mindspore_gl.dataset.CoraV2
 
     - 节点: 2708
     - 边: 10556
-    - 类的数量: 7
+    - 分类数量: 7
     - 标签分类:
 
       - Train: 140
@@ -28,7 +28,7 @@ mindspore_gl.dataset.CoraV2
 
     `pubmed <https://data.dgl.ai/dataset/pubmed.zip>`_
 
-    您可以将数据集文件组织到以下目录结构中，并通过 `process` API读取。
+    您可以将数据集文件组织到以下目录结构中进行读取。
 
     .. code-block::
 
@@ -44,8 +44,8 @@ mindspore_gl.dataset.CoraV2
             └── ind.cora_v2.y
 
     参数：
-        - **root** (str) - 包含cora_v2_与_mask.npz的根目录的路径。
-        - **name** (str) - 选择数据集类型，可选：["cora_v2", "citeseer", "pubmed"]。默认值：cora_v2。
+        - **root** (str) - 包含cora_v2_with_mask.npz的根目录的路径。
+        - **name** (str, 可选) - 选择数据集类型，可选：["cora_v2", "citeseer", "pubmed"]。默认值："cora_v2"。
 
           - cora_v2: 机器学习论文。
 
@@ -62,7 +62,7 @@ mindspore_gl.dataset.CoraV2
         返回COO表示的邻接矩阵。
 
         返回：
-            numpy.ndarray，coo矩阵数组。
+            numpy.ndarray，COO矩阵数组。
 
     .. py:method:: mindspore_gl.dataset.CoraV2.adj_csr
         :property:
@@ -70,23 +70,23 @@ mindspore_gl.dataset.CoraV2
         返回CSR表示的邻接矩阵。
 
         返回：
-            numpy.ndarray，csr矩阵的数组。
+            numpy.ndarray，CSR矩阵的数组。
 
     .. py:method:: mindspore_gl.dataset.CoraV2.edge_count
         :property:
 
-        边数。
+        边数，CSR列的长度。
 
         返回：
-            int，csr列的长度。
+            int，边的数量。
 
     .. py:method:: mindspore_gl.dataset.CoraV2.node_count
         :property:
 
-        节点数。
+        节点数，CSR行的长度。
 
         返回：
-            int，csr行的长度。
+            int，节点的数量。
 
     .. py:method:: mindspore_gl.dataset.CoraV2.node_feat
         :property:
@@ -107,7 +107,7 @@ mindspore_gl.dataset.CoraV2
     .. py:method:: mindspore_gl.dataset.CoraV2.node_label
         :property:
 
-        基于每个节点的真实标签。
+        每个节点的真实标签。
 
         返回：
             numpy.ndarray，节点标签数组。
