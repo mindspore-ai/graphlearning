@@ -30,7 +30,7 @@ mindspore_gl.nn.SGConv
         - **g** (Graph) - 输入图。
 
     输出：
-        - Tensor，Shape为 :math:`(N,D_{out})` 的输出节点特征，其中 :math:`(D_{out})` 应与参数中的 `out_feat_size` 。
+        - Tensor，Shape为 :math:`(N,D_{out})` 的输出节点特征，其中 :math:`(D_{out})` 应与参数中的 `out_feat_size` 相等。
 
     异常：
         - **TypeError** - 如果 `in_feat_size` 或 `out_feat_size` 或 `num_hops` 不是int。

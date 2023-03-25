@@ -28,7 +28,7 @@ mindspore_gl.nn.STConv
 
     输出：
         - Tensor，输出节点特征，shape为 :math:`(B,D_{out},N,T)`，
-          其中 :math:`B` 是批处理的大小， :math:`(D_{out})` 应与参数中的 `out_channels` ， :math:`N` 是节点数，
+          其中 :math:`B` 是批处理的大小， :math:`(D_{out})` 应与参数中的 `out_channels` 相等， :math:`N` 是节点数，
           :math:`T` 是输入时间步数。
 
     异常：
