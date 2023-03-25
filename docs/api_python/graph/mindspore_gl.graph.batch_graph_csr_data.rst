@@ -1,7 +1,7 @@
 mindspore_gl.graph.batch_graph_csr_data
 =======================================
 
-.. py:function:: batch_graph_csr_data(src_idx, dst_idx, n_nodes, n_edges, node_map_idx, node_feat=None, rerank=False):
+.. py:function:: batch_graph_csr_data(src_idx, dst_idx, n_nodes, n_edges, node_map_idx, node_feat=None, rerank=False)
 
     将COO类型的批次图转为CSR类型。
 

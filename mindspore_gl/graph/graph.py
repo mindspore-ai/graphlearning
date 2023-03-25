@@ -350,7 +350,7 @@ class MindHomoGraph:
         Initialize CSR Graph.
 
         Args:
-            adj_csr(mindspore_gl.graph.CsrAdj): adjacency matrix of graph, CSR type.
+            adj_csr(CsrAdj): adjacency matrix of graph, CSR type.
             node_dict(dict): node ID dict.
             edge_ids(numpy.ndarray): array of edges.
         """

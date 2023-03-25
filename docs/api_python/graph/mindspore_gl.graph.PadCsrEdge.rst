@@ -1,7 +1,7 @@
 mindspore_gl.graph.PadCsrEdge
 ================================
 
-.. py:function:: mindspore_gl.graph.PadCsrEdge(pad_nodes, reset_with_fill_value=True, length=None, mode=PadMode.AUTO, use_shared_numpy=False)
+.. py:class:: mindspore_gl.graph.PadCsrEdge(pad_nodes, reset_with_fill_value=True, length=None, mode=PadMode.AUTO, use_shared_numpy=False)
 
     特定的COO边填充算子。填充后COO索引转换到到csr时，indices和indptr的shape变得统一。
 

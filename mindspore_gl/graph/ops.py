@@ -313,7 +313,8 @@ class PadArray2d:
         Args:
             shape(Union[List, Tuple]): input array's shape for pad.
             kwargs(dict): config dict
-                fill_value(Union[int, float]): fill the padding array with value
+
+                - **fill_value** (Union[int, float]): fill the padding array with value.
 
         Returns:
             memory_buffer(numpy.ndarray), an empty numpy array with target padded shape.

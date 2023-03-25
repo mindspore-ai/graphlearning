@@ -691,7 +691,7 @@ class Graph:
               where :math:`B` is the batch size of the input graph.
               :math:`K` is the input 'k', :math:`F` is the feature size.
             - **topk_indices** (Tensor), - a tensor with shape
-              :math:`(B, K)`(:math:`(B, K, F)` if sortby is set to None),
+              :math:`(B, K)` ( :math:`(B, K, F)` if sortby is set to None),
               where :math:`B` is the batch size of the input graph,
               :math:`F` is the feature size.
 
@@ -759,7 +759,7 @@ class Graph:
               where :math:`B` is the batch size of the input graph.
               :math:`K` is the input 'k', :math:`F` is the feature size.
             - **topk_indices** (Tensor), - a tensor with shape
-              :math:`(B, K)`(:math:`(B, K, F)` if sortby is set to None),
+              :math:`(B, K)` ( :math:`(B, K, F)` if sortby is set to None),
               where :math:`B` is the batch size of the input graph,
               :math:`F` is the feature size.
 
