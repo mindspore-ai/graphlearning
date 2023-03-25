@@ -1,7 +1,7 @@
-mindspore_gl.graph.batch_graph_csr_data
+mindspore_gl.graph.sampling_csr_data
 ============================================
 
-.. py:function:: batch_graph_csr_data(src_idx, dst_idx, n_nodes, n_edges, seeds_idx=None, node_feat=None, rerank=False)
+.. py:function:: sampling_csr_data(src_idx, dst_idx, n_nodes, n_edges, seeds_idx=None, node_feat=None, rerank=False)
 
     将COO类型的采样图转为CSR类型。
 

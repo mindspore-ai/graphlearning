@@ -13,7 +13,7 @@ mindspore_gl.nn.SortPooling
         - **k** (int) - 每个图保留的节点数。
 
     输入：
-        - **x** (Tensor) - 要更新的输入节点特征。Shape为 :math:`(N,D)`
+        - **x** (Tensor) - 要更新的输入节点特征。Shape为 :math:`(N,D)`，
           其中 :math:`N` 是节点数， :math:`D` 是节点的特征大小。
         - **g** (BatchedGraph) - 输入图。
 

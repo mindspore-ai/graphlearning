@@ -30,7 +30,7 @@ mindspore_gl.graph.PadArray2d
         参数：
             - **shape** (Union[List, Tuple]) - 需要填充的输入数组的shape。
             - **kwargs** (dict) - 配置选项字典。
-                - **fill_value** (Union[int, float]) - 配置选项字典。
+              - **fill_value** (Union[int, float]) - 配置选项字典关键字参数。
 
         返回：
             memory_buffer(numpy.array)，一个空的numpy数组，具有目标填充shape。
