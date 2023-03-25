@@ -78,7 +78,7 @@ mindspore_gl.graph.MindHomoGraph
         初始化CSR图。
 
         参数：
-            - **adj_csr** (CsrAdj) - 图的邻接矩阵，CSR格式。
+            - **adj_csr** (:class:`~.graph.CsrAdj`) - 图的邻接矩阵，CSR格式。
             - **node_dict** (dict) - 节点id字典。
             - **edge_ids** (numpy.ndarray) - 边数组。
 

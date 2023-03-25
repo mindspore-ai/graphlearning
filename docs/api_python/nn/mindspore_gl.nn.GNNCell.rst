@@ -24,7 +24,7 @@ mindspore_gl.nn.GNNCell
         参数：
             - **path** (str) - 保存构造文件的路径。
 
-    .. py:method:: sparse_compute(csr=False, backward=False):
+    .. py:method:: sparse_compute(csr=False, backward=False)
 
         是否采样稀疏算子加速。
 

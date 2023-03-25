@@ -9,7 +9,7 @@ mindspore_gl.nn.GATv2Conv
     .. math::
         h_i^{(l+1)} = \sum_{j\in \mathcal{N}(i)} \alpha_{i,j} W^{(l)} h_j^{(l)}
 
-     :math:`\alpha_{i, j}` 表示节点 :math:`i` 和节点 :math:`j` 之间的attention score。
+    :math:`\alpha_{i, j}` 表示节点 :math:`i` 和节点 :math:`j` 之间的attention score。
 
     .. math::
         \alpha_{ij}^{l} = \mathrm{softmax_i} (e_{ij}^{l}) \\
