@@ -29,7 +29,7 @@ mindspore_gl.nn.EGConv
 
     输出：
         - Tensor，输出节点特征的Shape为 :math:`(N,D_{out})`
-          其中 :math:`(D_{out})` 应与参数中的 `out_feat_size` 。
+          其中 :math:`(D_{out})` 应与参数中的 `out_feat_size` 相等。
 
     异常：
         - **TypeError** - 如果 `in_feat_size` 或 `out_feat_size` 或 `num_heads` 不是正整数。

@@ -1,7 +1,7 @@
 mindspore_gl.nn.NNConv
 ======================
 
-.. py:class:: mindspore_gl.nn.NNConv(in_feat_size: int, out_feat_size: int, edge_embed, aggregator_type: str = 'sum', residual=False, bias=True)
+.. py:class:: mindspore_gl.nn.NNConv(in_feat_size: int, out_feat_size: int, edge_embed, aggregator_type: str = "sum", residual=False, bias=True)
 
     图卷积层。
     来自论文 `Neural Message Passing for Quantum Chemistry <https://arxiv.org/pdf/1704.01212.pdf>`_ 。
