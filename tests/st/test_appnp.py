@@ -22,22 +22,59 @@ import pytest
 @pytest.mark.platform_x86_gpu_training
 @pytest.mark.env_onecard
 def test_appnp():
-    """test appnp"""
+    """
+    Features: appnp cora
+    Description: Test appnp with cora
+    Expectation: The output is as expected.
+    """
     if not os.path.exists('./ci_temp'):
         os.mkdir('ci_temp')
-    if os.path.exists('ci_temp/appnp'):
-        shutil.rmtree('ci_temp/appnp')
+    if not os.path.exists('./ci_temp/coo'):
+        os.mkdir('ci_temp/coo')
+    if os.path.exists('ci_temp/coo/appnp'):
+        shutil.rmtree('ci_temp/coo/appnp')
 
-    cmd_copy = "cp -r ../../model_zoo/appnp/ ./ci_temp/"
+    cmd_copy = "cp -r ../../model_zoo/appnp/ ./ci_temp/coo"
     os.system(cmd_copy)
 
-    cmd_train = "python ./ci_temp/appnp/trainval_cora.py " \
-                "--data_path=\"/home/workspace/mindspore_dataset/GNN_Dataset/\" >> ./ci_temp/appnp/trainval_cora.log"
+    cmd_train = "python ./ci_temp/coo/appnp/trainval_cora.py " \
+                "--data_path=\"/home/workspace/mindspore_dataset/GNN_Dataset/\" >> " \
+                " ./ci_temp/coo/appnp/trainval_cora.log"
     os.system(cmd_train)
 
-    file = open("./ci_temp/appnp/trainval_cora.log", "r")
+    file = open("./ci_temp/coo/appnp/trainval_cora.log", "r")
+    log_info = file.readlines()
+    file.close()
+    last_info = log_info[-1]
+    test_acc = float(last_info[last_info.find('test_acc:'):].replace('test_acc:', '').replace('\n', ''))
+    assert test_acc > 0.77
+
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_appnp_csr():
+    """
+    Features: appnp cora csr
+    Description: Test csr appnp with cora
+    Expectation: The output is as expected.
+    """
+    if not os.path.exists('./ci_temp'):
+        os.mkdir('ci_temp')
+    if not os.path.exists('./ci_temp/csr'):
+        os.mkdir('ci_temp/csr')
+    if not os.path.exists('ci_temp/csr/appnp'):
+        cmd_copy = "cp -r ../../model_zoo/appnp/ ./ci_temp/csr/"
+        os.system(cmd_copy)
+
+    cmd_train = "python ./ci_temp/csr/appnp/trainval_cora.py  --fuse True --csr True " \
+                "--data_path=\"/home/workspace/mindspore_dataset/GNN_Dataset/\" >>" \
+                " ./ci_temp/csr/appnp/trainval_cora_csr.log"
+    os.system(cmd_train)
+
+    file = open("./ci_temp/csr/appnp/trainval_cora_csr.log", "r")
     log_info = file.readlines()
     file.close()
     last_info = log_info[-1]
     test_acc = float(last_info[last_info.find('test_acc:'):].replace('test_acc:', '').replace('\n', ''))
     assert test_acc > 0.78
+    

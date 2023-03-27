@@ -47,16 +47,50 @@ class LossNet(GNNCell):
         loss = loss * ops.Reshape()(bg.graph_mask, (-1, 1))
         return ms.ops.ReduceMean()(loss)
 
+def build_graph(csr, data):
+    """ Build the csr or coo graph """
+    if csr:
+        label, node_feat, edge_feat, indices, indptr, node_count, edge_count, indices_backward,\
+        indptr_backward, node_map_idx, edge_map_idx, graph_mask = data
+        # Create ms.Tensor
+        batch_homo = BatchedGraphField(indices=indices, indptr=indptr, indices_backward=indices_backward,
+                                       indptr_backward=indptr_backward, csr=True, n_nodes=int(node_count),
+                                       n_edges=int(edge_count), ver_subgraph_idx=node_map_idx,
+                                       edge_subgraph_idx=edge_map_idx, graph_mask=graph_mask)
+    else:
+        label, node_feat, edge_feat, row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask = data
+        batch_homo = BatchedGraphField(src_idx=row, dst_idx=col, n_nodes=int(node_count), n_edges=int(edge_count),
+                                       ver_subgraph_idx=node_map_idx,
+                                       edge_subgraph_idx=edge_map_idx, graph_mask=graph_mask)
+    return label, node_feat, edge_feat, batch_homo
 
 def main(arguments):
-    if arguments.fuse and arguments.device == "GPU":
-        context.set_context(device_target=arguments.device, save_graphs=True, save_graphs_path="./computational_graph/",
-                            mode=context.GRAPH_MODE, enable_graph_kernel=True, device_id=arguments.device_id)
+    if arguments.device == "GPU" and arguments.fuse:
+        if arguments.csr:
+            context.set_context(device_target="GPU", save_graphs=False, save_graphs_path="./computational_graph/",
+                                mode=context.GRAPH_MODE, enable_graph_kernel=True, device_id=arguments.device_id,
+                                graph_kernel_flags="--enable_expand_ops=Gather "
+                                                   "--enable_cluster_ops=CSRReduceSum,CSRDiv "
+                                                   "--enable_recompute_fusion=false "
+                                                   "--enable_parallel_fusion=false "
+                                                   "--recompute_increment_threshold=40000000 "
+                                                   "--recompute_peak_threshold=3000000000 "
+                                                   "--enable_csr_fusion=true ")
+        else:
+            context.set_context(device_target=arguments.device, save_graphs=False,
+                                save_graphs_path="./computational_graph/",
+                                mode=context.GRAPH_MODE, enable_graph_kernel=True)
     else:
-        context.set_context(device_target=arguments.device, device_id=arguments.device_id, mode=context.GRAPH_MODE)
+        context.set_context(device_target=arguments.device, mode=context.GRAPH_MODE, device_id=arguments.device_id)
+        if arguments.csr:
+            raise ValueError("When the csr operator is used, the fusion function must be enabled.")
 
     if arguments.profile:
         ms_profiler = Profiler(subgraph="ALL", is_detail=True, is_show_op_path=False, output_path="./prof_result")
+
+    csr = arguments.csr
+    backward = arguments.backward
+    GNNCell.sparse_compute(csr, backward)
 
     dataset = Alchemy(arguments.data_path, arguments.data_size)
     train_batch_sampler = RandomBatchSampler(dataset.train_graphs, batch_size=arguments.batch_size)
@@ -66,18 +100,19 @@ def main(arguments):
     node_size = arguments.batch_size * 40
     edge_size = arguments.batch_size * 1000
     train_graph_dataset = MultiHomoGraphDataset(dataset, arguments.batch_size, node_size=node_size,
-                                                edge_size=edge_size, length=train_length)
+                                                edge_size=edge_size, length=train_length, csr=csr)
     test_graph_dataset = MultiHomoGraphDataset(dataset, arguments.batch_size, node_size=node_size,
-                                               edge_size=edge_size, length=test_length)
-    train_dataloader = ds.GeneratorDataset(train_graph_dataset, ['batched_label', 'batched_node_feat',
-                                                                 'batched_edge_feat', 'row', 'col',
-                                                                 'node_count', 'edge_count', 'node_map_idx',
-                                                                 'edge_map_idx', 'graph_mask'],
+                                               edge_size=edge_size, length=test_length, csr=csr)
+    if csr:
+        columns = ['batched_label', 'batched_node_feat', 'batched_edge_feat', 'indices', 'indptr', 'node_count',
+                   'edge_count', 'indices_backward', 'indptr_backward', 'node_map_idx', 'edge_map_idx', 'graph_mask']
+    else:
+        columns = ['batched_label', 'batched_node_feat', 'batched_edge_feat', 'row', 'col', 'node_count', 'edge_count',
+                   'node_map_idx', 'edge_map_idx', 'graph_mask']
+
+    train_dataloader = ds.GeneratorDataset(train_graph_dataset, columns,
                                            sampler=train_batch_sampler, python_multiprocessing=True)
-    test_dataloader = ds.GeneratorDataset(test_graph_dataset, ['batched_label', 'batched_node_feat',
-                                                               'batched_edge_feat', 'row', 'col',
-                                                               'node_count', 'edge_count', 'node_map_idx',
-                                                               'edge_map_idx', 'graph_mask'],
+    test_dataloader = ds.GeneratorDataset(test_graph_dataset, columns,
                                           sampler=test_batch_sampler, python_multiprocessing=True)
 
     # Graph Mask
@@ -102,10 +137,7 @@ def main(arguments):
         train_loss = 0
         total_iter = 0
         for data in train_dataloader:
-            label, node_feat, edge_feat, row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask = data
-            # Create ms.Tensor
-            batch_homo = BatchedGraphField(row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask)
-            # Train One Step
+            label, node_feat, edge_feat, batch_homo = build_graph(csr, data)
             train_loss += train_net(node_feat, edge_feat, label, *batch_homo.get_batched_graph()).asnumpy()
             total_iter += 1
         train_loss /= total_iter
@@ -115,9 +147,7 @@ def main(arguments):
         test_iter = 0
         test_mae = 0
         for data in test_dataloader:
-            label, node_feat, edge_feat, row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask = data
-            # Create ms.Tensor
-            batch_homo = BatchedGraphField(row, col, node_count, edge_count, node_map_idx, edge_map_idx, graph_mask)
+            label, node_feat, edge_feat, batch_homo = build_graph(csr, data)
             output = net(node_feat, edge_feat, *batch_homo.get_batched_graph()).asnumpy()
             test_mae += np.sum(np.abs(output - label.asnumpy()) * np_graph_mask) / arguments.batch_size / \
                         arguments.n_tasks
@@ -156,6 +186,9 @@ if __name__ == '__main__':
     parser.add_argument("--patience", type=int, default=50, help="number of patience to early stop")
     parser.add_argument("--weight-decay", type=float, default=0, help="weight decay")
     parser.add_argument("--data_size", type=int, default=35000, help="select the size of dataset to use")
+    parser.add_argument("--csr", type=bool, default=False, help="whether use the csr operator")
+    parser.add_argument("--backward", default=True, action='store_false', help="whether use the customization back"
+                                                                               "propagation when use the csr operator")
     args = parser.parse_args()
     print(args)
     main(args)

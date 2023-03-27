@@ -25,6 +25,7 @@ import mindspore.context as context
 from mindspore_gl import Graph, GraphField
 from mindspore_gl.dataset import CoraV2
 from mindspore_gl.nn import GNNCell
+from mindspore_gl.graph import graph_csr_data
 
 from src.gcn import GCNNet
 
@@ -54,14 +55,29 @@ def main():
     num_hidden = args.num_hidden
     lr = args.lr
     weight_decay = args.weight_decay
+    if args.device == "GPU" and args.fuse:
+        if args.csr:
+            context.set_context(device_target="GPU", save_graphs=False, save_graphs_path="./computational_graph/",
+                                mode=context.GRAPH_MODE, enable_graph_kernel=True, device_id=args.device_id,
+                                graph_kernel_flags="--enable_expand_ops=Gather "
+                                                   "--enable_cluster_ops=CSRReduceSum,CSRDiv "
+                                                   "--enable_recompute_fusion=false "
+                                                   "--enable_parallel_fusion=false "
+                                                   "--recompute_increment_threshold=40000000 "
+                                                   "--recompute_peak_threshold=3000000000 "
+                                                   "--enable_csr_fusion=true ")
+        else:
+            context.set_context(device_target=args.device, save_graphs=False, save_graphs_path="./computational_graph/",
+                                mode=context.GRAPH_MODE, enable_graph_kernel=True)
+    else:
+        context.set_context(device_target=args.device, mode=context.GRAPH_MODE, device_id=args.device_id)
 
-    context.set_context(device_target=args.device, mode=context.GRAPH_MODE, enable_graph_kernel=True,
-                        device_id=args.device_id)
     # dataloader
     ds = CoraV2(args.data_path)
 
     n_nodes = ds.node_feat.shape[0]
     n_edges = ds.adj_coo.row.shape[0]
+
     in_deg = np.zeros(shape=n_nodes, dtype=np.int)
     out_deg = np.zeros(shape=n_nodes, dtype=np.int)
     for r in ds.adj_coo.row:
@@ -75,7 +91,15 @@ def main():
     node_feat = ms.Tensor(ds.node_feat)
     train_mask = ms.Tensor(ds.train_mask, ms.float32)
     node_label = ms.Tensor(ds.node_label)
-
+    test_mask = ds.test_mask
+    if args.csr:
+        GNNCell.sparse_compute(csr=args.csr, backward=args.backward)
+        csr_g, in_deg, out_deg, node_feat, node_label,\
+        train_mask, _, test_mask = graph_csr_data(*g.get_graph(),
+                                                  node_feat=node_feat, node_label=node_label,
+                                                  train_mask=train_mask, test_mask=test_mask, rerank=True)
+        g = GraphField(indices=csr_g[0], indptr=csr_g[1], n_nodes=csr_g[2], n_edges=csr_g[3],
+                       indices_backward=csr_g[4], indptr_backward=csr_g[5], csr=True)
     # model
     net = GCNNet(data_feat_size=ds.node_feat_size,
                  hidden_dim_size=num_hidden,
@@ -88,7 +112,6 @@ def main():
     total = 0.
     warm_up = 3
     best_acc = 0.
-
     for e in range(epochs):
         beg = time.time()
         train_net.set_train()
@@ -97,13 +120,10 @@ def main():
         dur = end - beg
         if e >= warm_up:
             total = total + dur
-
         net.set_train(False)
         out = net(node_feat, in_deg, out_deg, *g.get_graph()).asnumpy()
-        test_mask = ds.test_mask
-        labels = ds.node_label
         predict = np.argmax(out[test_mask], axis=1)
-        label = labels[test_mask]
+        label = node_label.asnumpy()[test_mask]
         count = np.equal(predict, label)
         test_acc = np.sum(count) / label.shape[0]
         best_acc = test_acc if test_acc > best_acc else best_acc
@@ -121,6 +141,10 @@ if __name__ == "__main__":
     parser.add_argument("--weight_decay", type=float, default=5e-4, help="weight decay")
     parser.add_argument("--dropout", type=float, default=0.5, help="dropout")
     parser.add_argument("--num_hidden", type=int, default=16, help="num_hidden")
+    parser.add_argument("--fuse", type=bool, default=False, help="enable fusion")
+    parser.add_argument("--csr", type=bool, default=False, help="whether use the csr operator")
+    parser.add_argument("--backward", default=True, action='store_false', help="whether use the customization back"
+                                                                               "propagation when use the csr operator")
     args = parser.parse_args()
     print(args)
     main()

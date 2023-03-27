@@ -245,7 +245,7 @@ class Reddit(BaseDataSet):
             >>> #dataset is an instance object of Dataset
             >>> node_count = dataset.node_count
         """
-        return len(self._csr_row)
+        return len(self._csr_row) - 1
 
     @property
     def edge_count(self):

@@ -48,3 +48,36 @@ def test_mpnn():
         last_info = log_info[-2]
     test_mae = float(last_info[last_info.find('Test mae '):].replace('Test mae ', '').replace('\n', ''))
     assert test_mae < 2.0
+
+@pytest.mark.level0
+@pytest.mark.platform_x86_gpu_training
+@pytest.mark.env_onecard
+def test_mpnn_csr():
+    """
+    Features: mpnn csr
+    Description: Test csr mpnn with alchemy
+    Expectation: The output is as expected.
+    """
+    if not os.path.exists('./ci_temp'):
+        os.mkdir('ci_temp')
+    if os.path.exists('ci_temp/mpnn_csr'):
+        shutil.rmtree('ci_temp/mpnn_csr')
+
+    cmd_copy = "cp -r ../../model_zoo/mpnn/ ./ci_temp/mpnn_csr/"
+    os.system(cmd_copy)
+
+    cmd_train = "python ./ci_temp/mpnn_csr/trainval_alchemy.py --data_size 400 --epochs 2" \
+                " --batch_size 16 --fuse True --csr True " \
+                "--data_path=\"/home/workspace/mindspore_dataset/GNN_Dataset/\" >>" \
+                " ./ci_temp/mpnn_csr/trainval_alchemy_csr.log"
+    os.system(cmd_train)
+
+    file = open("./ci_temp/mpnn_csr/trainval_alchemy_csr.log", "r")
+    log_info = file.readlines()
+    file.close()
+    if 'Test mae' in log_info[-1]:
+        last_info = log_info[-1]
+    else:
+        last_info = log_info[-2]
+    test_mae = float(last_info[last_info.find('Test mae '):].replace('Test mae ', '').replace('\n', ''))
+    assert test_mae < 2.0
