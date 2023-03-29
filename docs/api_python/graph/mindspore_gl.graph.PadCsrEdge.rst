@@ -5,6 +5,9 @@ mindspore_gl.graph.PadCsrEdge
 
     特定的COO边填充算子。填充后COO索引转换到到csr时，indices和indptr的shape变得统一。
 
+    .. warning::
+        PadArray2d将会重新使用内存缓存来加速填充操作。
+
     参数：
         - **pad_nodes** (int) - 需要填充的图的节点数。
         - **reset_with_fill_value** (bool, 可选) - PadArray2d将重用内存缓冲区，如果对填充值没有要求，可以将此值设置为False。默认值：True。

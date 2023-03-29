@@ -71,7 +71,7 @@ class GatedGraphConv(ms.nn.Cell):
         out_feat_size (int): Output node feature size.
         n_steps (int): Number of steps.
         n_etype (int): Number of edge types.
-        bias (bool): Whether use bias. Default: True.
+        bias (bool, optional): Whether use bias. Default: True.
 
     Inputs:
         - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,

@@ -190,8 +190,7 @@ class PadArray2d:
         mode(PadMode, optional): Pad mode for array, if PadMode.CONST, this op will pad array to user-specific
             size. If PadMode.AUTO, this will choose padded result length according to input's length.
             The expected length can be calculated as
-            .. math::
-                length=2^{ceil\left ( \log_{2}{input\_length}  \right ) }
+            :math:`length=2^{ceil\left ( \log_{2}{input\_length}  \right ) }`
             Default: mindspore_gl.graph.PadMode.AUTO.
         size(Union[List, Tuple, optional]): User specific size for padding result. Default: None.
         use_shared_numpy(bool, optional): If we use SharedNDArray for speeding up inter process communication.
@@ -375,13 +374,14 @@ class PadHomoGraph:
     node count and edge count in fake_graph is determined by user-specific parameters.
 
     Args:
-        n_node(Union(int, None)): target graph's node count. Default: None.
-        n_edge(Union(int, None)): target graph's edge count. Default: None.
-        mode(PadMode): Pad mode, if PadMode.CONST, target graph will have n_node nodes and n_edge edges. If PadMode.AUTO
+        n_node(int, optional): target graph's node count. Default: None.
+        n_edge(int, optional): target graph's edge count. Default: None.
+        mode(PadMode, optional): Pad mode, if PadMode.CONST, target graph will have n_node nodes and n_edge edges.
+            If PadMode.AUTO
             target graph's node_count and edge_count is calculated according to input graph's size by
             :math:`n\_node = 2^{ceil(log2(input\_graph.node\_count))}` ,
             :math:`n\_edge = 2^{ceil(log2(input\_graph.edge\_count))}` . Default: PadMode.AUTO.
-        csr(bool): Is the csr graph. Default: False.
+        csr(bool, optional): Is the csr graph. Default: False.
 
     Inputs:
         - **graph** (MindHomoGraph) - input graph.
@@ -520,47 +520,47 @@ class UnPadHomoGraph:
         pass
 
 class PadCsrEdge:
-    """
-        PadCsrEdge, specific pad operator for coo edges. After padding, the shape of the coo edge index to the
-        csr indices and indptr becomes unified.
+    r"""
+    PadCsrEdge, specific pad operator for coo edges. After padding, the shape of the coo edge index to the
+    csr indices and indptr becomes unified.
 
-        .. warning::
-            PadArray2d will reuse memory buffer to speedup pad operation.
+    .. warning::
+        PadArray2d will reuse memory buffer to speedup pad operation.
 
-        Args:
-            pad_nodes(int): nodes numbers of the graph.
-            reset_with_fill_value(bool): PadArray2d will reuse memory buffer,
-                you can set this value to False if you dont care about the padded value. Default: True.
-            length(int): User specific length for padding result. Default: None.
-            mode(PadMode): Pad mode for array, if PadMode.CONST, this op will pad array to user-specific size.
-                If PadMode.AUTO, this will choose padded result length according to input's length.
-                The expected length can be calculated as 2^ceil(log2(input_length)).
-                Default: mindspore_gl.graph.PadMode.AUTO.
-            use_shared_numpy(bool): If we use SharedNDArray for speeding up inter process communication.
-                This is recommended if you do feature collection and feature padding in child process and
-                need inter process communication for graph feature. Default: False.
+    Args:
+        pad_nodes(int): nodes numbers of the graph.
+        reset_with_fill_value(bool, optional): PadArray2d will reuse memory buffer,
+            you can set this value to False if you dont care about the padded value. Default: True.
+        length(int, optional): User specific length for padding result. Default: None.
+        mode(PadMode, optional): Pad mode for array, if PadMode.CONST, this op will pad array to user-specific size.
+            If PadMode.AUTO, this will choose padded result length according to input's length.
+            The expected length can be calculated as :math:`length=2^{ceil\left ( \log_{2}{input\_length}  \right ) }`
+            Default: mindspore_gl.graph.PadMode.AUTO.
+        use_shared_numpy(bool, optional): If we use SharedNDArray for speeding up inter process communication.
+            This is recommended if you do feature collection and feature padding in child process and
+            need inter process communication for graph feature. Default: False.
 
-        Inputs:
-            - **input_array** (numpy.array) - input numpy array for pad.
+    Inputs:
+        - **input_array** (numpy.array) - input numpy array for pad.
 
-        Raises:
-            ValueError: pad length should be provided when padding mode is PadMode.CONST.
+    Raises:
+        ValueError: pad length should be provided when padding mode is PadMode.CONST.
 
-        Supported Platforms:
-            ``Ascend`` ``GPU``
+    Supported Platforms:
+        ``Ascend`` ``GPU``
 
-        Examples:
-            import numpy as np
-            >>> from mindspore_gl.graph import PadCsrEdge, PadMode
-            >>> node_pad = 10
-            >>> origin_edge_index = np.array([[0, 1, 2, 4],
-            ...                               [2, 3, 1, 1]])
-            >>> pad_length = 20
-            >>> pad_op = PadCsrEdge(node_pad, length=pad_length, mode=PadMode.CONST)
-            >>> res = pad_op(origin_edge_index)
-            >>> print(res)
-            [[0 1 2 4 5 6 7 8 5 6 7 8 5 6 7 8 5 6 7 8]
-             [2 3 1 1 5 6 7 8 6 7 8 5 7 8 5 6 8 5 6 7]]
+    Examples:
+        import numpy as np
+        >>> from mindspore_gl.graph import PadCsrEdge, PadMode
+        >>> node_pad = 10
+        >>> origin_edge_index = np.array([[0, 1, 2, 4],
+        ...                               [2, 3, 1, 1]])
+        >>> pad_length = 20
+        >>> pad_op = PadCsrEdge(node_pad, length=pad_length, mode=PadMode.CONST)
+        >>> res = pad_op(origin_edge_index)
+        >>> print(res)
+        [[0 1 2 4 5 6 7 8 5 6 7 8 5 6 7 8 5 6 7 8]
+         [2 3 1 1 5 6 7 8 6 7 8 5 7 8 5 6 8 5 6 7]]
     """
 
     def __init__(self, pad_nodes, reset_with_fill_value=True, length=None, mode=PadMode.AUTO,

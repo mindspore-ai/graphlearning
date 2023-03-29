@@ -365,8 +365,8 @@ class MindHomoGraph:
 
         Args:
             adj_coo(numpy.ndarray): adjacency matrix of graph, COO type.
-            node_dict(dict): node ID dict. Default: None.
-            edge_ids(numpy.ndarray): array of edges. Default: None.
+            node_dict(dict, optional): node ID dict. Default: None.
+            edge_ids(numpy.ndarray, optional): array of edges. Default: None.
         """
         self._adj_coo = adj_coo
         self._node_dict = node_dict

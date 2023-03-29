@@ -17,13 +17,6 @@ mindspore_gl.nn.GNNCell
         参数：
             - **screen_width** (int, 可选) - 显示代码的屏幕宽度。默认值：200。
 
-    .. py:method:: mindspore_gl.nn.GNNCell.specify_path(path)
-
-        指定构造文件路径。
-
-        参数：
-            - **path** (str) - 保存构造文件的路径。
-
     .. py:method:: sparse_compute(csr=False, backward=False)
 
         是否采样稀疏算子加速。
@@ -34,3 +27,10 @@ mindspore_gl.nn.GNNCell
 
         异常：
             - **ValueError** - 如果不是csr算子但是采样自定义反向。
+
+    .. py:method:: mindspore_gl.nn.GNNCell.specify_path(path)
+
+        指定构造文件路径。
+
+        参数：
+            - **path** (str) - 保存构造文件的路径。
