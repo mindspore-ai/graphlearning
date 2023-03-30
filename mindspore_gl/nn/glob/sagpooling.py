@@ -40,10 +40,10 @@ class SAGPooling(GNNCell):
 
     Args:
         in_channels (int): Size of each input sample.
-        GNN (GNNCell): A graph neural network layer for calculating projection scores. only GCNConv2 is supported.
-             Default: mindspore_gl.nn.conv.GCNConv2.
-        activation (Cell): The nonlinearity activation function Cell to use. Default: mindspore.nn.Tanh.
-        multiplier (Float): A scalar for scaling node feature. Default: 1.
+        GNN (GNNCell, optional): A graph neural network layer for calculating projection scores. only GCNConv2
+            is supported. Default: mindspore_gl.nn.conv.GCNConv2.
+        activation (Cell, optional): The nonlinearity activation function Cell to use. Default: mindspore.nn.Tanh.
+        multiplier (Float, optional): A scalar for scaling node feature. Default: 1.
 
     Inputs:
         - **x** (Tensor) - The input node features to be updated. The shape is :math:`(N, D)`

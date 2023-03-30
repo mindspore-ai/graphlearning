@@ -456,7 +456,7 @@ class Graph:
         r"""
         Aggregating node features from their neighbour and generates a
         node-level representation by aggregate function 'sum'.
-`
+
         Args:
             neigh_feat (List[`SrcVertex` feature or `Edge` feature]): a list of `SrcVertex` or `Edge` attribute
                 represents the neighbour nodes or edges feature, with shape :math:`(N, F)`,
@@ -465,7 +465,7 @@ class Graph:
 
         Returns:
             - mindspore.Tensor, a tensor with shape :math:`(N, F)`, :math:`N` is the number of nodes of the graph,
-            :math:`F` is the feature dimension of the node.
+              :math:`F` is the feature dimension of the node.
 
         Raises:
             TypeError: If `neigh_feat` is not a list of `Edge` or `SrcVertex`.
@@ -506,7 +506,7 @@ class Graph:
 
         Returns:
             - mindspore.Tensor, a tensor with shape :math:`(N, F)`, :math:`N` is the number of nodes of the graph,
-            :math:`F` is the feature dimension of the node.
+              :math:`F` is the feature dimension of the node.
 
         Raises:
             TypeError: If `neigh_feat` is not a list of `Edge` or `SrcVertex`.
@@ -547,7 +547,7 @@ class Graph:
 
         Returns:
             - mindspore.Tensor, a tensor with shape :math:`(N, F)`, :math:`N` is the number of nodes of the graph,
-            :math:`F` is the feature dimension of the node.
+              :math:`F` is the feature dimension of the node.
 
         Raises:
             TypeError: If `neigh_feat` is not a list of `Edge` or `SrcVertex`.
@@ -588,7 +588,7 @@ class Graph:
 
         Returns:
             - mindspore.Tensor, a tensor with shape :math:`(N, F)`, :math:`N` is the number of nodes of the graph,
-            :math:`F` is the feature dimension of the node.
+              :math:`F` is the feature dimension of the node.
 
         Raises:
             TypeError: If `neigh_feat` is not a list of `Edge` or `SrcVertex`.

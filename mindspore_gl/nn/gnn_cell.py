@@ -26,11 +26,6 @@ class GNNCell(Cell):
 
     Construct function will be translated by default.
 
-    Args:
-        translate_path (str): class variable, enable specify the construct file path. Default: None.
-        csr (bool): class variable, whether user the csr data structure. Default: False.
-        backward (bool): class variable, whether user the custom loss backpropagation. Default: False.
-
     Supported Platforms:
         ``Ascend`` ``GPU``
     """
@@ -56,7 +51,7 @@ class GNNCell(Cell):
         Enable display code comparison.
 
         Args:
-            screen_width (int): Determines the screen width on which the code is displayed. Default: 200.
+            screen_width (int, optional): Determines the screen width on which the code is displayed. Default: 200.
 
         Examples:
             >>> from mindspore_gl.nn import GNNCell
@@ -95,11 +90,11 @@ class GNNCell(Cell):
         Whether to use sparse operator to accelerate calculation.
 
         Args:
-            csr (bool): Is it a csr data structure. Default: False.
-            backward (bool): Whether to use custom back propagation. Default: False.
+            csr (bool, optional): Is it a csr data structure. Default: False.
+            backward (bool, optional): Whether to use custom back propagation. Default: False.
 
         Raises:
-            TypeError: If `csr` is False and `backward` is True.
+            ValueError: If `csr` is False and `backward` is True.
 
         Examples:
             >>> from mindspore_gl.nn import GNNCell

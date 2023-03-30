@@ -31,7 +31,7 @@ class GlobalAttentionPooling(GNNCell):
 
     Args:
         gate_nn (Cell): The neural network for computing attention score for each feature.
-        feat_nn (Cell): The neural network applied to each feature
+        feat_nn (Cell, optional): The neural network applied to each feature
             before combining each feature with an attention score. Default: None.
 
     Inputs:

@@ -1,7 +1,7 @@
 mindspore_gl.graph.graph_csr_data
 ======================================
 
-.. py:function:: graph_csr_data(src_idx, dst_idx, n_nodes, n_edges, node_feat=None, node_label=None, train_mask=None, val_mask=None, test_mask=None, rerank=False)
+.. py:function:: mindspore_gl.graph.graph_csr_data(src_idx, dst_idx, n_nodes, n_edges, node_feat=None, node_label=None, train_mask=None, val_mask=None, test_mask=None, rerank=False)
 
     将COO类型的整图转为CSR类型。
 

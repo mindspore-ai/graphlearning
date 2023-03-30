@@ -31,6 +31,7 @@ def norm(edge_index, num_nodes, edge_weight=None, normalization='sym',
         normalization (str): Normalization method. Default: 'sym'.
             :math:`(L)` is normalized matrix, :math:`(D)` is degree matrix, :math:`(A)` is adjaceny matrix,
             :math:`(I)` is unit matrix.
+
             1. `None`: No normalization
                :math:`\mathbf{L} = \mathbf{D} - \mathbf{A}`
             2. `'sym'`: Symmetric normalization
@@ -38,6 +39,7 @@ def norm(edge_index, num_nodes, edge_weight=None, normalization='sym',
                \mathbf{D}^{-1/2}`
             3. `'rw'`: Random-walk normalization
                :math:`\mathbf{L} = \mathbf{I} - \mathbf{D}^{-1} \mathbf{A}`
+
         lambda_max (int, float): Lambda value of graph. Default: dense.
         batch (Tensor): Batch vector. Default: dense.
 

@@ -100,9 +100,9 @@ class STConv(GNNCell):
         in_channels (int): Input node feature size.
         hidden_channels (int): hidden feature size.
         out_channels (int): Output node feature size.
-        kernel_size (int): Convolutional kernel size. Default: 3.
-        k (int): Chebyshev filter size. Default: 3.
-        bias (bool): Whether use bias. Default: True.
+        kernel_size (int, optional): Convolutional kernel size. Default: 3.
+        k (int, optional): Chebyshev filter size. Default: 3.
+        bias (bool, optional): Whether use bias. Default: True.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(B, T, N, (D_{in}))`
