@@ -16,7 +16,6 @@
 import mindspore as ms
 import mindspore.nn as nn
 from mindspore import ops
-from mindspore._checkparam import Validator
 from mindspore_gl.nn.conv.chebconv import ChebConv
 from mindspore_gl.nn import GNNCell
 from mindspore_gl import Graph
@@ -63,10 +62,13 @@ class TemporalConv(ms.nn.Cell):
     """
     def __init__(self, in_channels: int, out_channels: int, kernel_size: int = 3):
         super(TemporalConv, self).__init__()
+        assert isinstance(in_channels, int) and in_channels > 0, "in_channels must be positive int"
+        assert isinstance(out_channels, int) and out_channels > 0, "out_channels must be positive int"
+        assert isinstance(kernel_size, int) and kernel_size > 0, "kernel_size must be positive int"
 
-        self.in_channels = Validator.check_positive_int(in_channels, "in_channels", self.cls_name)
-        self.out_channels = Validator.check_positive_int(out_channels, "out_channels", self.cls_name)
-        self.kernel_size = Validator.check_positive_int(kernel_size, "kernel_size", self.cls_name)
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.kernel_size = kernel_size
 
         self.conv_1 = ms.nn.Conv2d(in_channels, out_channels, (1, kernel_size), pad_mode='valid', has_bias=True)
         self.conv_2 = ms.nn.Conv2d(in_channels, out_channels, (1, kernel_size), pad_mode='valid', has_bias=True)
@@ -161,13 +163,20 @@ class STConv(GNNCell):
                  k: int = 3,
                  bias: bool = True):
         super().__init__()
-        self.num_nodes = Validator.check_positive_int(num_nodes, "num_nodes", self.cls_name)
-        self.in_channels = Validator.check_positive_int(in_channels, "in_channels", self.cls_name)
-        self.hidden_channels = Validator.check_positive_int(hidden_channels, "hidden_channels", self.cls_name)
-        self.out_channels = Validator.check_positive_int(out_channels, "out_channels", self.cls_name)
-        self.kernel_size = Validator.check_positive_int(kernel_size, "kernel_size", self.cls_name)
-        self.k = Validator.check_positive_int(k, "k", self.cls_name)
-        bias = Validator.check_bool(bias, "bias", self.cls_name)
+        assert isinstance(num_nodes, int) and num_nodes > 0, "num_nodes must be positive int"
+        assert isinstance(in_channels, int) and in_channels > 0, "in_channels must be positive int"
+        assert isinstance(hidden_channels, int) and hidden_channels > 0, "hidden_channels must be positive int"
+        assert isinstance(out_channels, int) and out_channels > 0, "out_channels must be positive int"
+        assert isinstance(kernel_size, int) and kernel_size > 0, "kernel_size must be positive int"
+        assert isinstance(k, int) and k > 0, "k must be positive int"
+        assert isinstance(bias, bool), "bias must be bool"
+
+        self.num_nodes = num_nodes
+        self.in_channels = in_channels
+        self.hidden_channels = hidden_channels
+        self.out_channels = out_channels
+        self.kernel_size = kernel_size
+        self.k = k
 
         self.num_nodes = num_nodes
         self.in_channels = in_channels

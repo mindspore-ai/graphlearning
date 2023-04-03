@@ -14,7 +14,6 @@
 # ============================================================================
 """CFConv Layer"""
 import mindspore as ms
-from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 from .. import GNNCell
 
@@ -104,10 +103,10 @@ class CFConv(GNNCell):
                  out_size: int
                  ):
         super().__init__()
-        node_feat_size = Validator.check_positive_int(node_feat_size, "node_feat_size", self.cls_name)
-        edge_feat_size = Validator.check_positive_int(edge_feat_size, "edge_feat_size", self.cls_name)
-        hidden_size = Validator.check_positive_int(hidden_size, "hidden_size", self.cls_name)
-        out_size = Validator.check_positive_int(out_size, "out_size", self.cls_name)
+        assert isinstance(node_feat_size, int) and node_feat_size > 0, "node_feat_size must be positive int"
+        assert isinstance(edge_feat_size, int) and edge_feat_size > 0, "edge_feat_size must be positive int"
+        assert isinstance(hidden_size, int) and hidden_size > 0, "hidden_size must be positive int"
+        assert isinstance(out_size, int) and out_size > 0, "out_size must be positive int"
 
         self.edge_embedding_layer = ms.nn.SequentialCell(
             ms.nn.Dense(edge_feat_size, hidden_size),

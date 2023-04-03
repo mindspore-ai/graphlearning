@@ -16,7 +16,6 @@
 import mindspore as ms
 from mindspore.common.initializer import initializer
 from mindspore.common.initializer import XavierUniform
-from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 from .. import GNNCell
 
@@ -74,8 +73,10 @@ class GCNEConv(GNNCell):
                  out_size: int,
                  bias: bool = False):
         super().__init__()
-        self.in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
-        self.out_size = Validator.check_positive_int(out_size, "out_size", self.cls_name)
+        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
+        assert isinstance(out_size, int) and out_size > 0, "out_size must be positive int"
+        self.in_feat_size = in_feat_size
+        self.out_size = out_size
         self.fc1 = ms.nn.Dense(in_feat_size, out_size, weight_init=XavierUniform(), has_bias=False)
         if bias:
             self.bias = ms.Parameter(initializer('zero', (out_size), ms.float32), name="bias")

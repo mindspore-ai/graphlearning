@@ -17,7 +17,6 @@ import math
 import mindspore as ms
 from mindspore.common.initializer import XavierUniform
 from mindspore import nn
-from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 from .. import GNNCell
 
@@ -87,10 +86,11 @@ class TAGConv(GNNCell):
                  bias: bool = True,
                  activation=None):
         super().__init__()
-        in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
-        out_feat_size = Validator.check_positive_int(out_feat_size, "out_feat_size", self.cls_name)
-        num_hops = Validator.check_positive_int(num_hops, "num_hops", self.cls_name)
-        bias = Validator.check_bool(bias, "bias", self.cls_name)
+        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
+        assert isinstance(out_feat_size, int) and out_feat_size > 0, "out_feat_size must be positive int"
+        assert isinstance(num_hops, int) and num_hops > 0, "num_hops must be positive int"
+        assert isinstance(bias, bool), "bias must be bool"
+
         if activation is not None and not isinstance(activation, nn.Cell):
             raise TypeError(f"For '{self.cls_name}', the 'activation' must a mindspore.nn.Cell, but got "
                             f"{type(activation).__name__}.")

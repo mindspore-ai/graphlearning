@@ -14,7 +14,6 @@
 # ============================================================================
 """AGNNConv Layer."""
 import mindspore as ms
-from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 from .. import GNNCell
 
@@ -75,8 +74,8 @@ class AGNNConv(GNNCell):
                  init_beta: float = 1.0,
                  learn_beta: bool = True):
         super().__init__()
-        init_beta = Validator.check_is_float(init_beta, "init_beta", self.cls_name)
-        learn_beta = Validator.check_bool(learn_beta, 'learn_beta', self.cls_name)
+        assert isinstance(init_beta, float), "init_beta must be float"
+        assert isinstance(learn_beta, bool), "learn_beta must be bool"
         if learn_beta:
             self.beta = ms.Parameter(ms.Tensor([init_beta], ms.float32))
         else:

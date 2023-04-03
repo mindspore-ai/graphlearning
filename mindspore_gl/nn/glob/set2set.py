@@ -15,7 +15,6 @@
 """Set2Set Layer."""
 import mindspore as ms
 import mindspore.ops as ops
-from mindspore._checkparam import Validator
 from mindspore_gl import BatchedGraph
 from .. import GNNCell
 
@@ -80,9 +79,12 @@ class Set2Set(GNNCell):
 
     def __init__(self, input_size, num_iters, num_layers):
         super().__init__()
-        self.input_size = Validator.check_positive_int(input_size, "input_size", self.cls_name)
-        self.num_iters = Validator.check_positive_int(num_iters, "num_iters", self.cls_name)
-        self.num_layers = Validator.check_positive_int(num_layers, "num_layers", self.cls_name)
+        assert isinstance(input_size, int) and input_size > 0, "input_size must be positive int"
+        assert isinstance(num_iters, int) and num_iters > 0, "num_iters must be positive int"
+        assert isinstance(num_layers, int) and num_layers > 0, "num_layers must be positive int"
+        self.input_size = input_size
+        self.num_iters = num_iters
+        self.num_layers = num_layers
         self.output_size = input_size * 2
         self.lstm = ms.nn.LSTM(self.output_size, self.input_size, self.num_layers)
 

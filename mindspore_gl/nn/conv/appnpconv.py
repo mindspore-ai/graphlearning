@@ -15,7 +15,6 @@
 """APPNPConv Layer."""
 import mindspore as ms
 from mindspore import Tensor
-from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 
 from .. import GNNCell
@@ -84,13 +83,15 @@ class APPNPConv(GNNCell):
                  alpha: float,
                  edge_drop=1.0):
         super().__init__()
-        self.k_ = Validator.check_positive_int(k, "k", self.cls_name)
-        self.alpha_ = Validator.check_is_float(alpha, "alpha", self.cls_name)
+        assert isinstance(k, int) and k > 0, "k must be positive int"
+        assert isinstance(alpha, float), "alpha must be float"
+        assert isinstance(edge_drop, float), "edge_drop must be float"
+        self.k_ = k
+        self.alpha_ = alpha
 
         if self.alpha_ < 0.0 or self.alpha_ > 1.0:
             raise ValueError(f"For '{self.cls_name}', the 'alpha' should be a number in range [0.0, 1.0], "
                              f"but got {self.alpha_}.")
-        edge_drop = Validator.check_is_float(edge_drop, "edge_drop", self.cls_name)
         if edge_drop <= 0.0 or edge_drop > 1.0:
             raise ValueError(f"For '{self.cls_name}', the 'edge_drop' should be a number in range (0.0, 1.0], "
                              f"but got {edge_drop}.")

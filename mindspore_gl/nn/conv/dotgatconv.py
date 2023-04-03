@@ -14,7 +14,6 @@
 # ============================================================================
 """DOTGATConv Layer"""
 import mindspore as ms
-from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 from .. import GNNCell
 
@@ -81,10 +80,10 @@ class DOTGATConv(GNNCell):
                  num_heads: int,
                  bias=False):
         super().__init__()
-        in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
-        out_feat_size = Validator.check_positive_int(out_feat_size, "out_feat_size", self.cls_name)
-        num_heads = Validator.check_positive_int(num_heads, "num_heads", self.cls_name)
-        bias = Validator.check_bool(bias, 'bias', self.cls_name)
+        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
+        assert isinstance(out_feat_size, int) and out_feat_size > 0, "out_feat_size must be positive int"
+        assert isinstance(num_heads, int) and num_heads > 0, "num_heads must be positive int"
+        assert isinstance(bias, bool), "bias must be bool"
 
         self.dense = ms.nn.Dense(in_feat_size, out_feat_size * num_heads, has_bias=bias)
         self.num_heads = num_heads

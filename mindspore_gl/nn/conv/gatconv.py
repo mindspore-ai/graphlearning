@@ -16,7 +16,6 @@
 import math
 import mindspore as ms
 from mindspore import nn
-from mindspore._checkparam import Validator
 from mindspore.common.initializer import initializer
 from mindspore.common.initializer import XavierUniform
 from mindspore_gl import Graph
@@ -92,13 +91,18 @@ class GATConv(GNNCell):
                  activation=None,
                  add_norm=False):
         super().__init__()
-        self.in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
-        self.out_size = Validator.check_positive_int(out_size, "out_size", self.cls_name)
-        self.num_attn_head = Validator.check_positive_int(num_attn_head, "num_attn_head", self.cls_name)
-        input_drop_out_rate = Validator.check_is_float(input_drop_out_rate, "input_drop_out_rate", self.cls_name)
-        attn_drop_out_rate = Validator.check_is_float(attn_drop_out_rate, "attn_drop_out_rate", self.cls_name)
-        leaky_relu_slope = Validator.check_is_float(leaky_relu_slope, "leaky_relu_slope", self.cls_name)
-        add_norm = Validator.check_bool(add_norm, "add_norm", self.cls_name)
+        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
+        assert isinstance(out_size, int) and out_size > 0, "out_size must be positive int"
+        assert isinstance(num_attn_head, int) and num_attn_head > 0, "num_attn_head must be positive int"
+        assert isinstance(input_drop_out_rate, float), "input_drop_out_rate must be float"
+        assert isinstance(attn_drop_out_rate, float), "attn_drop_out_rate must be float"
+        assert isinstance(leaky_relu_slope, float), "leaky_relu_slope must be float"
+        assert isinstance(add_norm, bool), "add_norm must be bool"
+
+        self.in_feat_size = in_feat_size
+        self.out_size = out_size
+        self.num_attn_head = num_attn_head
+
         if input_drop_out_rate <= 0.0 or input_drop_out_rate > 1.0:
             raise ValueError(f"For '{self.cls_name}', the 'input_drop_out_rate' should be a number in range (0.0, 1.0],"
                              f"but got {input_drop_out_rate}.")

@@ -15,7 +15,6 @@
 """GatedGraphConv Layer"""
 import math
 import mindspore as ms
-from mindspore._checkparam import Validator
 from mindspore.common.initializer import XavierUniform
 from mindspore_gl import Graph
 from .. import GNNCell
@@ -122,12 +121,13 @@ class GatedGraphConv(ms.nn.Cell):
                  bias=True):
 
         super().__init__()
+        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
+        assert isinstance(out_feat_size, int) and out_feat_size > 0, "out_feat_size must be positive int"
+
         if in_feat_size > out_feat_size:
             raise TypeError("GatedGraphConv requires input feature size <= out_feature_size")
         self.in_feat_size = in_feat_size
         self.out_feat_size = out_feat_size
-        self.in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
-        self.out_feat_size = Validator.check_positive_int(out_feat_size, "out_feat_size", self.cls_name)
         cl = []
         for _ in range(n_etype):
             cl.append(HomoGraphConv(out_feat_size, bias))

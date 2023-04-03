@@ -15,7 +15,6 @@
 """Chebconv layer"""
 import mindspore as ms
 import mindspore.nn as nn
-from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 from mindspore_gl.nn import GNNCell
 
@@ -89,10 +88,10 @@ class ChebConv(GNNCell):
         """
     def __init__(self, in_channels: int, out_channels: int, k: int = 3, bias: bool = True):
         super(ChebConv, self).__init__()
-        self.in_channels = Validator.check_positive_int(in_channels, "in_channels", self.cls_name)
-        self.out_channels = Validator.check_positive_int(out_channels, "out_channels", self.cls_name)
-        self.k = Validator.check_positive_int(k, "k", self.cls_name)
-        bias = Validator.check_bool(bias, "bias", self.cls_name)
+        assert isinstance(in_channels, int) and in_channels > 0, "in_channels must be positive int"
+        assert isinstance(out_channels, int) and out_channels > 0, "out_channels must be positive int"
+        assert isinstance(k, int) and k > 0, "k must be positive int"
+        assert isinstance(bias, bool), "bias must be bool"
 
         self.k = k
         self.in_channels = in_channels

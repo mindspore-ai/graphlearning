@@ -14,7 +14,6 @@
 # ============================================================================
 """Sort Pooling Layer."""
 import mindspore as ms
-from mindspore._checkparam import Validator
 from mindspore_gl import BatchedGraph
 from .. import GNNCell
 
@@ -69,7 +68,8 @@ class SortPooling(GNNCell):
 
     def __init__(self, k):
         super().__init__()
-        self.k = Validator.check_positive_int(k, "k", self.cls_name)
+        assert isinstance(k, int) and k > 0, "k must be positive int"
+        self.k = k
 
     # pylint: disable=arguments-differ
     def construct(self, x, g: BatchedGraph):

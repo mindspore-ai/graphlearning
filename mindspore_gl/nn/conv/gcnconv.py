@@ -18,7 +18,6 @@ from mindspore import Tensor
 from mindspore.common.initializer import initializer
 from mindspore.common.initializer import XavierUniform
 from mindspore.nn.cell import Cell
-from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 from .. import GNNCell
 
@@ -92,9 +91,12 @@ class GCNConv(GNNCell):
                  activation=None,
                  dropout=0.5):
         super().__init__()
-        self.in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
-        self.out_size = Validator.check_positive_int(out_size, "out_size", self.cls_name)
-        dropout = Validator.check_is_float(dropout, "dropout", self.cls_name)
+        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
+        assert isinstance(out_size, int) and out_size > 0, "out_size must be positive int"
+        assert isinstance(dropout, float), "dropout must be float"
+        self.in_feat_size = in_feat_size
+        self.out_size = out_size
+
         if dropout <= 0.0 or dropout > 1.0:
             raise ValueError(f"For '{self.cls_name}', the 'keep_prob' should be a number in range (0.0, 1.0], "
                              f"but got {dropout}.")
