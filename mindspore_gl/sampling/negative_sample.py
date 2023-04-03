@@ -124,12 +124,12 @@ def edge_index_to_vector(edge_index, size, mode='undirected'):
     the processing method of the directed graph or the processing method of the undirected graph
 
     Args:
-        edge_index(list):set of two edges，shape is (row_len or col_len, 2)
-        size(tuple):number of graph nodes, shape is (node, node)
+        edge_index(list):set of two edges, shape is :math:`(row_len or col_len, 2)`
+        size(tuple):number of graph nodes, shape is :math:`(node, node)`
         mode(str):type of operation matrix
 
     Returns:
-        idx(array): Transformed vector,shape is (1, row_len or col_len)
+        idx(array): Transformed vector, shape is :math:`(1, row_len or col_len)`
         population(int): number of edges to sample
 
     Examples:
@@ -184,12 +184,12 @@ def vector_to_edge_index(idx, size, mode='undirected'):
     the processing method of the directed graph or the processing method of the undirected graph
 
     Args:
-        idx(ndarray):collection of edges，shape:(1, row_len or col_len)
-        size(tuple):number of graph nodes, shape:(node, node)
+        idx(ndarray):collection of edges, shape :math:`(1, row_len or col_len)`
+        size(tuple):number of graph nodes, shape :math:`(node, node)`
         mode(str):type of operation matrix
 
     Returns:
-        array, transformed edge, shape:(row_len or col_len, 2)
+        array, transformed edge, shape :math:`(row_len or col_len, 2)`
 
     Examples:
         >>> from mindspore_gl.sampling import vector_to_edge_index

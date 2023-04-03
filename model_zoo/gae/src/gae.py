@@ -27,10 +27,10 @@ class GCNEncoder(GNNCell):
 
     Args:
         data_feat_size: Data input feature dimension.
-        hidden_dim: The output dimension of the convolution at each layer, shape:(x, 2)
-        conv：Set convolution type.
-        activate：The activation function of each layer of convolution, shape:(x, 1)
-        name：Model name.
+        hidden_dim: The output dimension of the convolution at each layer, shape :math:`(x, 2)`
+        conv: Set convolution type.
+        activate: The activation function of each layer of convolution, shape :math:`(x, 1)`
+        name: Model name.
 
     Return:
         GNNCell: VGAE and GAE encoder models
@@ -77,18 +77,19 @@ class GCNEncoder(GNNCell):
         """
         Construct function for GCNEncoder.
 
-        Args：
-            x(Tensor): The input node features.,shape:(node, feature_size)
-            in_deg(Tensor): In degree, shape:(node)
-            out_deg(Tensor): Out degree, shape:(node)
+        Args:
+            x(Tensor): The input node features, shape :math:`(node, feature_size)`
+            in_deg(Tensor): In degree, shape :math:`(node)`
+            out_deg(Tensor): Out degree, shape :math:`(node)`
             g(Graph): The input graph.
 
-        Returns：
+        Returns:
             "GAE":
-                x: encoded features, shape:(node, hidden_dim[-1])
+                x: encoded features, shape :math:`(node, hidden_dim[-1])`
             "VGAE":
-                x: encoded features，shape:(node, hidden_dim[-1])
-                hidden_out：The result of the parallel execution of the last two layers, shape:(2, node, hidden_dim[-1])
+                x: encoded features, shape :math:`(node, hidden_dim[-1])`
+                hidden_out: The result of the parallel execution of the last two layers,
+                shape :math:`(2, node, hidden_dim[-1])`
         """
         hidden_out = []
         if self.name == 'GAE':
@@ -144,11 +145,11 @@ class InnerProductDecoder(GNNCell):
 
 
         Args:
-            x(Tensor): x that needs an inner product operation, shape:(node, feature_size)
+            x(Tensor): x that needs an inner product operation, shape :math:`(node, feature_size)`
             g (Graph): The input graph.
 
         Returns:
-            adj_rec(Tensor): object after inner product operation,shape:(node, node)
+            adj_rec(Tensor): object after inner product operation,shape :math:`(node, node)`
         """
         if self.type == 'all':
             adj_rec = self.decoder_all(x, g.src_idx)
@@ -202,14 +203,14 @@ class GAENet(GNNCell):
         """
         Construct function for GAE.
 
-        Args：
-            x(Tensor): The input node features.,shape:(node, feature_size)
-            in_deg(Tensor): In degree, shape:(node)
-            out_deg(Tensor): Out degree, shape:(node)
+        Args:
+            x(Tensor): The input node features, shape :math:`(node, feature_size)`
+            in_deg(Tensor): In degree, shape :math:`(node)`
+            out_deg(Tensor): Out degree, shape :math:`(node)`
             g(Graph): The input graph.
 
         Returns:
-            x(Tensor): Link prediction matrix, shape:(node, node)
+            x(Tensor): Link prediction matrix, shape :math:`(node, node)`
         """
         if not isinstance(x, ms.Tensor):
             raise TypeError("The x data type is {},\

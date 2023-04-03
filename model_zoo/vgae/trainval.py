@@ -46,9 +46,9 @@ def kl_loss(shape, mean, std):
         KLLoss = KL[q(Z | X, A) || p(Z)]
 
     Args:
-        shape(int): number of nodes, shape: (node)
-        mean(Tensor): the mean of the distribution, shape: (node, feature_size)
-        std(Tensor): the variance of the distribution, shape: (node, feature_size)
+        shape(int): number of nodes, shape: :math:`(node)`
+        mean(Tensor): the mean of the distribution, shape: :math:`(node, feature_size)`
+        std(Tensor): the variance of the distribution, shape: :math:`(node, feature_size)`
 
     Returns:
         Tensor, output loss value.
@@ -82,11 +82,11 @@ class LossNet(GNNCell):
         """
         Construct function for loss.
 
-        Args：
-            x(Tensor): The input node features.,shape: (node, feature_size)
-            in_deg(Tensor): In degree, shape: (node)
-            out_deg(Tensor): Out degree, shape: (node)
-            target(Tensor): Adjacency Matrix Labels, shape: (node, node)
+        Args:
+            x(Tensor): The input node features,shape: :math:`(node, feature_size)`
+            in_deg(Tensor): In degree, shape: :math:`(node)`
+            out_deg(Tensor): Out degree, shape: :math:`(node)`
+            target(Tensor): Adjacency Matrix Labels, shape: :math:`(node, node)`
             g (Graph): The input graph.
 
         Returns:

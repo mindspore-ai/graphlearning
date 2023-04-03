@@ -23,9 +23,9 @@ def get_auc_score(adj_rec, edges_pos, edges_neg):
     return AUC and AP scores
 
     Args:
-        adj_rec(array),Link prediction matrix，shape:(node, node)
-        edges_pos(array):positive edge，shape:(pos_len, 2)
-        edges_neg(array):negative edge, shape:(neg_len, 2)
+        adj_rec(array),Link prediction matrix, shape: :math:`(node, node)`
+        edges_pos(array):positive edge, shape: :math:`(pos_len, 2)`
+        edges_neg(array):negative edge, shape: :math:`(neg_len, 2)`
 
     Returns:
         auc_score(float):AUC score
