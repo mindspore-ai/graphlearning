@@ -11,7 +11,7 @@ mindspore_gl.graph.sampling_csr_data
         - **n_nodes** (int) - 图中节点数量。
         - **n_edges** (int) - 图中边数量。
         - **seeds_idx** (numpy.ndarray) - 初始邻居采样节点。
-        - **node_feat** (Union[Tensor, numpy.ndarray, 可选]) - 节点特征。
+        - **node_feat** (Union[Tensor, numpy.ndarray], 可选) - 节点特征。
         - **rerank** (bool, 可选) - 是否对节点特征、标签、掩码进行重排序。默认值：False。
 
     返回：

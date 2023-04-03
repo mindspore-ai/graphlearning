@@ -1,9 +1,7 @@
 mindspore_gl.BatchedGraphField
 ===============================
 
-.. py:class:: mindspore_gl.BatchedGraphField(src_idx=None, dst_idx=None, n_nodes=None, n_edges=None, ver_subgraph_idx=None,
-                 edge_subgraph_idx=None, graph_mask=None, indices=None, indptr=None, indices_backward=None,
-                 indptr_backward=None, CSR=False)
+.. py:class:: mindspore_gl.BatchedGraphField(src_idx=None, dst_idx=None, n_nodes=None, n_edges=None, ver_subgraph_idx=None, edge_subgraph_idx=None, graph_mask=None, indices=None, indptr=None, indices_backward=None, indptr_backward=None, CSR=False)
 
     批次图的数据容器。
 
