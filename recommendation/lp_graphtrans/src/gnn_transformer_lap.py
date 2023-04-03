@@ -148,7 +148,7 @@ class PositionalEncodingMS(ms.nn.Cell):
     def construct(self, input_data):
         """
         Args:
-            input_data: Tensor, shape [seq_len, batch_size, embedding_dim]
+            input_data: Tensor, shape :math:`[seq_len, batch_size, embedding_dim]`
         """
         input_data = input_data + self.pe[:input_data.size(0)]
         return self.dropout(input_data)
