@@ -60,7 +60,7 @@ def graph_csr_data(src_idx, dst_idx, n_nodes, n_edges, node_feat=None, node_labe
         train_mask (Union[Tensor, numpy.ndarray, optional]): mask of train index.
         val_mask (Union[Tensor, numpy.ndarray, optional]): msk of train index.
         test_mask (Union[Tensor, numpy.ndarray, optional]): mask of train index.
-        rerank (Union[bool, optional]): whether to reorder node features, node labels, and masks.
+        rerank (bool, optional): whether to reorder node features, node labels, and masks.
 
     Returns:
         - **csr_g** (tuple) - info of csr graph, it contains indices of csr graph, indptr of csr graph,
@@ -148,8 +148,8 @@ def sampling_csr_data(src_idx, dst_idx, n_nodes, n_edges, seeds_idx=None, node_f
         n_nodes (int): integer, represent the nodes count of the graph.
         n_edges (int): integer, represent the edges count of the graph.
         seeds_idx (numpy.ndarray): start nodes for neighbor sampling.
-        node_feat (numpy.ndarray): node feature.
-        rerank (Union[bool, optional]): whether to reorder node features, node labels, and masks.
+        node_feat (Union[Tensor, numpy.ndarray], optional): node feature.
+        rerank (bool, optional): whether to reorder node features, node labels, and masks.
 
     Returns:
         - **csr_g** (tuple) - info of csr graph, it contains indices of csr graph, indptr of csr graph,
@@ -220,7 +220,7 @@ def batch_graph_csr_data(src_idx, dst_idx, n_nodes, n_edges, node_map_idx, node_
         n_edges (int): integer, represent the edges count of the graph.
         node_map_idx (numpy.ndarray): ID of the subgraph to each node belongs to.
         node_feat (Union[Tensor, numpy.ndarray, optional]): node feature.
-        rerank (Union[bool, optional]): whether to reorder node features, node labels, and masks.
+        rerank (bool, optional): whether to reorder node features, node labels, and masks.
 
     Returns:
         - **csr_g** (tuple) - info of csr graph, it contains indices of csr graph, indptr of csr graph,

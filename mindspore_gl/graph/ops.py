@@ -550,7 +550,7 @@ class PadCsrEdge:
         ``Ascend`` ``GPU``
 
     Examples:
-        import numpy as np
+        >>> import numpy as np
         >>> from mindspore_gl.graph import PadCsrEdge, PadMode
         >>> node_pad = 10
         >>> origin_edge_index = np.array([[0, 1, 2, 4],
