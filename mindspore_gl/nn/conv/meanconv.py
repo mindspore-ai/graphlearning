@@ -16,7 +16,6 @@
 import mindspore as ms
 from mindspore.ops import operations as P
 from mindspore.common.initializer import XavierUniform
-from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 from .. import GNNCell
 
@@ -98,9 +97,11 @@ class MeanConv(GNNCell):
                  norm=None,
                  activation=None):
         super().__init__()
-        self.in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
-        self.out_feat_size = Validator.check_positive_int(out_feat_size, "in_feat_size", self.cls_name)
-        bias = Validator.check_bool(bias, "bias", self.cls_name)
+        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
+        assert isinstance(out_feat_size, int) and out_feat_size > 0, "out_feat_size must be positive int"
+        assert isinstance(bias, bool), "bias must be bool"
+        self.in_feat_size = in_feat_size
+        self.out_feat_size = out_feat_size
         self.norm = norm
         if activation == "tanh":
             self.activation = P.Tanh()

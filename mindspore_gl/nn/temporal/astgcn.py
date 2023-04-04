@@ -18,7 +18,6 @@ from typing import Optional
 import mindspore as ms
 import mindspore.nn as nn
 from mindspore.common.initializer import initializer
-from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 from .. import GNNCell
 
@@ -393,15 +392,25 @@ class ASTGCN(GNNCell):
                  bias: bool = True,
                  ):
         super().__init__()
-        self.n_blocks = Validator.check_positive_int(n_blocks, "n_blocks", self.cls_name)
-        self.in_channels = Validator.check_positive_int(in_channels, "in_channels", self.cls_name)
-        self.k = Validator.check_positive_int(k, "k", self.cls_name)
-        self.n_chev_filters = Validator.check_positive_int(n_chev_filters, "n_chev_filters", self.cls_name)
-        self.n_time_filters = Validator.check_positive_int(n_time_filters, "n_time_filters", self.cls_name)
-        self.time_conv_strides = Validator.check_positive_int(time_conv_strides, "time_conv_strides", self.cls_name)
-        self.num_for_predict = Validator.check_positive_int(num_for_predict, "num_for_predict", self.cls_name)
-        self.len_input = Validator.check_positive_int(len_input, "len_input", self.cls_name)
-        self.n_vertices = Validator.check_positive_int(n_vertices, "n_vertices", self.cls_name)
+        assert isinstance(n_blocks, int) and n_blocks > 0, "n_blocks must be positive int"
+        assert isinstance(in_channels, int) and in_channels > 0, "in_channels must be positive int"
+        assert isinstance(k, int) and k > 0, "k must be positive int"
+        assert isinstance(n_chev_filters, int) and n_chev_filters > 0, "n_chev_filters must be positive int"
+        assert isinstance(n_time_filters, int) and n_time_filters > 0, "n_time_filters must be positive int"
+        assert isinstance(time_conv_strides, int) and time_conv_strides > 0, "time_conv_strides must be positive int"
+        assert isinstance(num_for_predict, int) and num_for_predict > 0, "num_for_predict must be positive int"
+        assert isinstance(len_input, int) and len_input > 0, "len_input must be positive int"
+        assert isinstance(n_vertices, int) and n_vertices > 0, "n_vertices must be positive int"
+
+        self.n_blocks = n_blocks
+        self.in_channels = in_channels
+        self.k = k
+        self.n_chev_filters = n_chev_filters
+        self.n_time_filters = n_time_filters
+        self.time_conv_strides = time_conv_strides
+        self.num_for_predict = num_for_predict
+        self.len_input = len_input
+        self.n_vertices = n_vertices
         if normalization not in ['sym']:
             raise ValueError(f"For '{self.cls_name}', the normalization: '{agg}' is unsupported.")
         self.normalization = normalization

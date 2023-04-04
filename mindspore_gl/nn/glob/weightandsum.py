@@ -14,7 +14,6 @@
 # ============================================================================
 """Weight And Sum Layer"""
 import mindspore as ms
-from mindspore._checkparam import Validator
 from mindspore_gl import BatchedGraph
 from .. import GNNCell
 
@@ -65,7 +64,8 @@ class WeightAndSum(GNNCell):
 
     def __init__(self, in_feat_size):
         super().__init__()
-        self.in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
+        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
+        self.in_feat_size = in_feat_size
         self.atom_weighting = ms.nn.SequentialCell(
             ms.nn.Dense(in_feat_size, 1),
             ms.nn.Sigmoid()

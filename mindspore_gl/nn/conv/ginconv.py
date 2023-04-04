@@ -15,7 +15,6 @@
 
 """GINConv Layer"""
 import mindspore as ms
-from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 from .. import GNNCell
 
@@ -87,8 +86,9 @@ class GINConv(GNNCell):
                  learn_eps=False,
                  aggregation_type="sum"):
         super().__init__()
-        init_eps = Validator.check_is_float(init_eps, "init_eps", self.cls_name)
-        learn_eps = Validator.check_bool(learn_eps, "learn_eps", self.cls_name)
+        assert isinstance(init_eps, float), "init_eps must be float"
+        assert isinstance(learn_eps, bool), "learn_eps must be bool"
+
         if activation is not None and not isinstance(activation, ms.nn.Cell):
             raise TypeError(f"For '{self.cls_name}', the 'activation' must a mindspore.nn.Cell, but got "
                             f"{type(activation).__name__}.")

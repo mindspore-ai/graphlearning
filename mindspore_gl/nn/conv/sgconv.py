@@ -16,7 +16,6 @@
 import math
 import mindspore as ms
 from mindspore.common.initializer import XavierUniform
-from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 from .. import GNNCell
 
@@ -96,11 +95,18 @@ class SGConv(GNNCell):
                  bias: bool = True,
                  norm=None):
         super().__init__()
-        self.in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
-        self.out_feat_size = Validator.check_positive_int(out_feat_size, "out_feat_size", self.cls_name)
-        self.num_hops = Validator.check_positive_int(num_hops, "num_hops", self.cls_name)
-        self.bias = Validator.check_bool(bias, "bias", self.cls_name)
-        self.cached = Validator.check_bool(cached, "cached", self.cls_name)
+        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
+        assert isinstance(out_feat_size, int) and out_feat_size > 0, "out_feat_size must be positive int"
+        assert isinstance(num_hops, int) and num_hops > 0, "num_hops must be positive int"
+        assert isinstance(bias, bool), "bias must be bool"
+        assert isinstance(cached, bool), "cached must be bool"
+
+        self.in_feat_size = in_feat_size
+        self.out_feat_size = out_feat_size
+        self.num_hops = num_hops
+        self.bias = bias
+        self.cached = cached
+
         if norm is not None and not isinstance(norm, Cell):
             raise TypeError(f"For '{self.cls_name}', the 'activation' must a mindspore.nn.Cell, but got "
                             f"{type(norm).__name__}.")

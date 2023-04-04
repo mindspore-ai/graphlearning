@@ -17,7 +17,6 @@ import math
 import mindspore as ms
 from mindspore.common.initializer import XavierUniform
 from mindspore import nn
-from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 from .. import GNNCell
 
@@ -89,10 +88,11 @@ class NNConv(GNNCell):
                  residual=False,
                  bias=True):
         super().__init__()
-        in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
-        out_feat_size = Validator.check_positive_int(out_feat_size, "out_feat_size", self.cls_name)
-        residual = Validator.check_bool(residual, "bias", self.cls_name)
-        bias = Validator.check_bool(bias, "bias", self.cls_name)
+        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
+        assert isinstance(out_feat_size, int) and out_feat_size > 0, "out_feat_size must be positive int"
+        assert isinstance(residual, bool), "residual must be bool"
+        assert isinstance(bias, bool), "bias must be bool"
+
         if edge_embed:
             if not isinstance(edge_embed, nn.Cell):
                 raise TypeError("edge_embed type should be mindspore.nn.Cell")

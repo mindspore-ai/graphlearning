@@ -16,7 +16,6 @@
 # pylint: disable=unused-import
 import mindspore as ms
 from mindspore import dtype as mstype
-from mindspore._checkparam import Validator
 from mindspore_gl import BatchedGraph
 from mindspore_gl.nn.conv import GCNConv2
 from .. import GNNCell
@@ -104,12 +103,14 @@ class SAGPooling(GNNCell):
                  activation=ms.nn.Tanh,
                  multiplier=1.0):
         super().__init__()
-        self.in_channels = Validator.check_positive_int(in_channels, "in_channels", self.cls_name)
+        assert isinstance(in_channels, int) and in_channels > 0, "in_channels must be positive int"
+        assert isinstance(multiplier, float), "multiplier must be float"
+
         if GNN is not GCNConv2:
             raise NotImplementedError(f"For '{self.cls_name}', only GCNConv2 as GNN is supported, "
                                       f"but got {GNN}.")
         self.gnn = GNN(in_channels, 1)
-        self.multiplier = Validator.check_is_float(multiplier, "multiplier", self.cls_name)
+        self.multiplier = multiplier
         self.activation = ms.nn.Tanh if activation is None else activation
         self.expand_dims = ms.ops.ExpandDims()
         self.masked_select = ms.ops.MaskedSelect()

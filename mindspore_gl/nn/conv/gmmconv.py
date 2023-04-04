@@ -16,7 +16,6 @@
 import math
 import mindspore as ms
 from mindspore.common.initializer import XavierUniform
-from mindspore._checkparam import Validator
 from mindspore_gl import Graph
 from .. import GNNCell
 
@@ -92,12 +91,13 @@ class GMMConv(GNNCell):
                  bias=False,
                  aggregator_type="sum"):
         super().__init__()
-        in_feat_size = Validator.check_positive_int(in_feat_size, "in_feat_size", self.cls_name)
-        out_feat_size = Validator.check_positive_int(out_feat_size, "out_feat_size", self.cls_name)
-        coord_dim = Validator.check_positive_int(coord_dim, "coord_dim", self.cls_name)
-        n_kernels = Validator.check_positive_int(n_kernels, "n_kernels", self.cls_name)
-        bias = Validator.check_bool(bias, "bias", self.cls_name)
-        residual = Validator.check_bool(residual, "residual", self.cls_name)
+        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
+        assert isinstance(out_feat_size, int) and out_feat_size > 0, "out_feat_size must be positive int"
+        assert isinstance(coord_dim, int) and coord_dim > 0, "coord_dim must be positive int"
+        assert isinstance(n_kernels, int) and n_kernels > 0, "n_kernels must be positive int"
+        assert isinstance(bias, bool), "bias must be bool"
+        assert isinstance(residual, bool), "residual must be bool"
+
         if aggregator_type != "sum":
             raise TypeError("Don't support aggregator type other than sum.")
         self.mu = ms.Parameter(
