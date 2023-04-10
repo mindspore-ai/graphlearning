@@ -131,9 +131,9 @@ class GNNTransformerMS(GNNCell):
 
 class PositionalEncodingMS(ms.nn.Cell):
     """position encoding"""
-    def __init__(self, model_dim: int, dropout: float = 0.1, max_len: int = 5000):
+    def __init__(self, model_dim: int, dropout: float = 0.9, max_len: int = 5000):
         super().__init__()
-        self.dropout = ms.nn.Dropout(1 - dropout)
+        self.dropout = ms.nn.Dropout(p=dropout)
         position = ms.numpy.arange(max_len)
         position = ops.expand_dims(position, 1)
 

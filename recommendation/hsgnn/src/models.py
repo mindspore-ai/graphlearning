@@ -38,8 +38,8 @@ class HSGNN(ms.nn.Cell):
         self.lins = ms.nn.CellList(module_list)
         self.samconvs = ms.nn.CellList(
             [SampAggConv(dataset, args) for i in range(args.nlayer)])
-        self.dropout = ms.nn.Dropout(args.dropout)
-        self.dprate = ms.nn.Dropout(args.dprate)
+        self.dropout = ms.nn.Dropout(p=args.dropout)
+        self.dprate = ms.nn.Dropout(p=args.dprate)
         self.relu = ms.nn.ReLU()
         self.num_classes = dataset.num_classes
 

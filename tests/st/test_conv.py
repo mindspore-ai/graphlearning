@@ -104,7 +104,7 @@ def test_appnpconv():
     """
     in_deg = ms.Tensor([1, 2, 0, 1, 2, 1, 1], ms.int32)
     out_deg = ms.Tensor([1, 0, 2, 1, 1, 2, 1], ms.int32)
-    net = APPNPConv(k=3, alpha=0.5, edge_drop=1.0)
+    net = APPNPConv(k=3, alpha=0.5, edge_drop=0.0)
 
     output = net(node_feat, in_deg, out_deg, *graph_field.get_graph())
     expect_output = np.array([[0.75, 1.75, 2., 3.],
@@ -598,7 +598,7 @@ def test_meanconv():
                               [5.0125313, 3.5052013], [0.7575699, 2.6947372], [6.490653, 5.5552692],
                               [6.6787524, 2.6124494]])
     self_idx = ms.Tensor([0, 1, 2, 3, 4, 5, 6], ms.int32)
-    meanconv = MeanConv(in_feat_size=4, out_feat_size=2, activation='relu', feat_drop=1.)
+    meanconv = MeanConv(in_feat_size=4, out_feat_size=2, activation='relu', feat_drop=0.0)
     meanconv.dense_self.weight.set_data(mean_weight)
     output = meanconv(node_feat, self_idx, *graph_field.get_graph())
     assert np.allclose(output.asnumpy(), expect_output)
@@ -637,7 +637,7 @@ def test_gcnconv():
     gcn_weight = ms.Tensor([[-0.9653046, 0.502546, 0.17415217, 0.05653964],
                             [0.8662434, -0.10252704, 0.35179812, -0.5644021]],
                            ms.float32)
-    gcnconv = GCNConv(in_feat_size=4, out_size=2, activation=None, dropout=1.0)
+    gcnconv = GCNConv(in_feat_size=4, out_size=2, activation=None, dropout=0.0)
     gcnconv.fc.weight.set_data(gcn_weight)
     output = gcnconv(node_feat, in_degree, out_degree, *graph_field.get_graph())
     assert np.allclose(output.asnumpy(), expect_output)

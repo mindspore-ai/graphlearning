@@ -41,7 +41,7 @@ class GCNConv(GNNCell):
         in_feat_size (int): Input node feature size.
         out_size (int): Output node feature size.
         activation (Cell, optional): Activation function. Default: None.
-        dropout (float, optional): The keep rate, greater than 0 and less equal than 1. E.g. dropout=0.9,
+        dropout (float, optional): The dropout rate, greater than 0 and less equal than 1. E.g. dropout=0.1,
             dropping out 10% of input units. Default: 0.5.
 
     Inputs:
@@ -97,8 +97,8 @@ class GCNConv(GNNCell):
         self.in_feat_size = in_feat_size
         self.out_size = out_size
 
-        if dropout <= 0.0 or dropout > 1.0:
-            raise ValueError(f"For '{self.cls_name}', the 'keep_prob' should be a number in range (0.0, 1.0], "
+        if dropout < 0.0 or dropout >= 1.0:
+            raise ValueError(f"For '{self.cls_name}', the 'dropout_prob' should be a number in range [0.0, 1.0), "
                              f"but got {dropout}.")
         if activation is not None and not isinstance(activation, Cell):
             raise TypeError(f"For '{self.cls_name}', the 'activation' must a mindspore.nn.Cell, but got "
@@ -108,7 +108,7 @@ class GCNConv(GNNCell):
         self.activation = activation
         self.min_clip = Tensor(1, ms.int32)
         self.max_clip = Tensor(100000000, ms.int32)
-        self.drop_out = ms.nn.Dropout(dropout)
+        self.drop_out = ms.nn.Dropout(p=dropout)
 
     # pylint: disable=arguments-differ
     def construct(self, x, in_deg, out_deg, g: Graph):

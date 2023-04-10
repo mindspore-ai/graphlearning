@@ -1,7 +1,7 @@
 mindspore_gl.nn.MeanConv
 ========================
 
-.. py:class:: mindspore_gl.nn.MeanConv(in_feat_size: int, out_feat_size: int, feat_drop=0.6, bias=False, norm=None, activation=None)
+.. py:class:: mindspore_gl.nn.MeanConv(in_feat_size: int, out_feat_size: int, feat_drop=0.4, bias=False, norm=None, activation=None)
 
     GraphSAGE层。来自论文 `Inductive Representation Learning on Large Graphs <https://arxiv.org/pdf/1706.02216.pdf>`_。
 
@@ -23,7 +23,7 @@ mindspore_gl.nn.MeanConv
     参数：
         - **in_feat_size** (int) - 输入节点特征大小。
         - **out_feat_size** (int) - 输出节点特征大小。
-        - **feat_drop** (float, 可选) - keep rate，大于0，小于1。例如，dropout=0.9，抛弃10%的输入单元。默认值：0.6。
+        - **feat_drop** (float, 可选) - dropout rate，大于等于0，小于1。例如，feat_drop=0.1，抛弃10%的输入单元。默认值：0.6。
         - **bias** (bool, 可选) - 是否使用偏置。默认值：False。
         - **norm** (Cell, 可选) - 归一化函数单元。默认值：None。
         - **activation** (Cell, 可选) - 激活函数Cell。默认值：None。
@@ -43,5 +43,5 @@ mindspore_gl.nn.MeanConv
         - **TypeError** - 如果 `in_feat_size` 或 `out_feat_size` 不是int。
         - **TypeError** - 如果 `bias` 不是bool。
         - **TypeError** - 如果 `norm` 不是mindspore.nn.Cell。
-        - **ValueError** - 如果 `dropout` 不在范围(0.0, 1.0]内。
+        - **ValueError** - 如果 `dropout` 不在范围[0.0, 1.0)内。
         - **ValueError** - 如果 `activation` 不是tanh或relu。

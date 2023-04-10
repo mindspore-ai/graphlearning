@@ -40,7 +40,7 @@ class APPNPNet(GNNCell):
         self.fc0 = nn.Dense(in_feats, hidden_dim, weight_init=XavierUniform())
         self.fc1 = nn.Dense(hidden_dim, n_classes, weight_init=XavierUniform())
         self.act = activation()
-        self.feat_drop = nn.Dropout(feat_dropout)
+        self.feat_drop = nn.Dropout(p=feat_dropout)
         self.propagate = APPNPConv(k, alpha, edge_dropout)
 
     def construct(self, x, in_deg, out_deg, g: Graph):

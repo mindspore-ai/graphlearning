@@ -110,7 +110,7 @@ class InnerProductDecoder(GNNCell):
     and returns the object after performing the inner product.
 
     Args:
-        dropout_rate(float): Keep ratio
+        dropout_rate(float): Dropout ratio
 
     Return:
         GNNCell: VGAE and GAE decoder models
@@ -125,7 +125,7 @@ class InnerProductDecoder(GNNCell):
         if not isinstance(decoder_type, str):
             raise TypeError("The decoder_type type is {},\
                             but it should be str.".format(type(decoder_type)))
-        self.dropout = ms.nn.Dropout(dropout_rate)
+        self.dropout = ms.nn.Dropout(p=dropout_rate)
         self.type = decoder_type
 
     def decoder_all(self, x, g: Graph):
