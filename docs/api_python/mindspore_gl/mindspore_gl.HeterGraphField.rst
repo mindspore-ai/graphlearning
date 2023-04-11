@@ -17,5 +17,5 @@ mindspore_gl.HeterGraphField
 
         获取批次图。
 
-        返回:
+        返回：
             List，Tensor的列表，被应用于构造函数。

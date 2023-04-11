@@ -49,7 +49,7 @@ def translate(obj, method_name: str, translate_path: None or str = None):
     The origin method will be replaced with this function.
 
     Args:
-        obj: (Object): The object.
+        obj (Object): The object.
         method_name (str): The name of the method to be translated.
         translate_path (str): The path for save the construct file. Default: None.
 

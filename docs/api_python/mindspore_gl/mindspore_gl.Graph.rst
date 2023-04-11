@@ -21,7 +21,7 @@ mindspore_gl.Graph
 
         聚合邻居的节点特征，通过聚合函数“平均”来生成节点级表示。
 
-        参数:
+        参数：
             - **neigh_feat** (List[`SrcVertex` feature or `Edge` feature]) - `SrcVertex` 或 `Edge` 表示相邻节点或边特征的属性列表，shape为 :math:`(N, F)` 。
               `N` 是 `SrcVertex` 或 `Edge` 的个数， `F` 是 `SrcVertex` 或 `Edge` 的特征维度。
 
@@ -35,7 +35,7 @@ mindspore_gl.Graph
 
         两个节点Tensor的点乘操作。
 
-        参数:
+        参数：
             - **feat_x** ( `SrcVertex` feature or `DstVertex` feature) - `SrcVertex` 或 `DstVertex` 表示的图节点特征，shape为 :math:`(N, F)` 。
               `N` 是图上节点数量， `F` 是节点的特征维度。
             - **feat_y** ( `SrcVertex` feature or `DstVertex` feature) - `SrcVertex` 或 `DstVertex` 表示的图节点特征，shape为 :math:`(N, F)` 。
@@ -75,7 +75,7 @@ mindspore_gl.Graph
 
         聚合邻居的节点特征，通过聚合函数“最大值”来生成节点级表示。
 
-        参数:
+        参数：
             - **neigh_feat** (List[`SrcVertex` feature or `Edge` feature]) - `SrcVertex` 或 `Edge` 表示相邻节点或边特征的属性列表，shape为 :math:`(N, F)` 。
               `N` 是 `SrcVertex` 或 `Edge` 的个数， `F` 是 `SrcVertex` 或 `Edge` 的特征维度。
 
@@ -89,7 +89,7 @@ mindspore_gl.Graph
 
         聚合邻居的节点特征，通过聚合函数“最小值”来生成节点级表示。
 
-        参数:
+        参数：
             - **neigh_feat** (List[`SrcVertex` feature or `Edge` feature]) - `SrcVertex` 或 `Edge` 表示相邻节点或边特征的属性列表，shape为 :math:`(N, F)` 。
               `N` 是 `SrcVertex` 或 `Edge` 的个数， `F` 是 `SrcVertex` 或 `Edge` 的特征维度。
 
@@ -104,7 +104,7 @@ mindspore_gl.Graph
 
         图的边数。
 
-        返回:
+        返回：
             int，图的边数。
 
     .. py:method:: mindspore_gl.Graph.n_nodes
@@ -112,7 +112,7 @@ mindspore_gl.Graph
 
         图的节点数。
 
-        返回:
+        返回：
             int，图的节点数。
 
     .. py:method:: mindspore_gl.Graph.out_degree
@@ -127,13 +127,13 @@ mindspore_gl.Graph
         在以顶点为中心的环境中设置目标顶点的属性。
         参数 `feat_dict` 的key是属性的名称，value是属性的数据。
 
-        参数:
+        参数：
             - **feat_dict** (dict) - key的类型为str，value的类型为Tensor，shape为 :math:`(N\_NODES, F)` ，其中 :math:`F` 是特征维度。
 
         异常:
             - **TypeError** - 如果 `feat_dict` 不是dict。
 
-        返回:
+        返回：
             mindspore.Tensor，目标顶点的特征。
 
     .. py:method:: mindspore_gl.Graph.set_edge_attr(feat_dict)
@@ -141,14 +141,14 @@ mindspore_gl.Graph
         在以顶点为中心的环境中设置边的属性。
         参数 `feat_dict` 的key是属性的名称，value是属性的数据。
 
-        参数:
+        参数：
             - **feat_dict** (Dict) - key的类型为str，value的类型为Tensor，shape为 :math:`(N\_NODES, F)` ，其中 :math:`F` 是特征维度。
               当特征维度为1时，推荐的边特征shape为 :math:`(N\_EDGES, 1)` 。
 
         异常:
             - **TypeError** - 如果 `feat_dict` 不是dict。
 
-        返回:
+        返回：
             mindspore.Tensor，边的特征。
 
     .. py:method:: mindspore_gl.Graph.set_graph_attr(feat_dict)
@@ -156,13 +156,13 @@ mindspore_gl.Graph
         在以顶点为中心的环境中设置整图的属性。
         参数 `feat_dict` 的key是属性的名称，value是属性的数据。
 
-        参数:
+        参数：
             - **feat_dict** (Dict) - key的类型为str，value的为整图的特征。
 
         异常:
             - **TypeError** - 如果 `feat_dict` 不是dict。
 
-        返回:
+        返回：
             mindspore.Tensor，图的特征。
 
     .. py:method:: mindspore_gl.Graph.set_src_attr(feat_dict)
@@ -170,13 +170,13 @@ mindspore_gl.Graph
         在以顶点为中心的环境中设置源顶点的属性。
         参数 `feat_dict` 的key是属性的名称，value是属性的数据。
 
-        参数:
+        参数：
             - **feat_dict** (Dict) - key的类型为str，value的类型为Tensor，shape为 :math:`(N\_NODES, F)` ，其中 :math:`F` 是特征维度。
 
         异常:
             - **TypeError** - 如果 `feat_dict` 不是dict。
 
-        返回:
+        返回：
             mindspore.Tensor，源顶点的特征。
 
     .. py:method:: mindspore_gl.Graph.set_vertex_attr(feat_dict)
@@ -187,13 +187,13 @@ mindspore_gl.Graph
         .. note::
             `set_vertex_attr` 的功能等价于 `set_src_attr` + `set_dst_attr`
 
-        参数:
+        参数：
             - **feat_dict** (Dict) - key的类型为str，value的类型为Tensor，shape为 :math:`(N\_NODES, F)` ，其中 :math:`F` 是特征维度。
 
         异常:
             - **TypeError** - 如果 `feat_dict` 不是dict。
 
-        返回:
+        返回：
             mindspore.Tensor，顶点的特征。
 
     .. py:method:: mindspore_gl.Graph.src_idx
@@ -216,7 +216,7 @@ mindspore_gl.Graph
 
         聚合邻居的节点特征，通过聚合函数“求和”来生成节点级表示。
 
-        参数:
+        参数：
             - **neigh_feat** (List[`SrcVertex` feature or `Edge` feature]) - `SrcVertex` 或 `Edge` 表示相邻节点或边特征的属性列表，shape为 :math:`(N, F)` 。
               `N` 是 `SrcVertex` 或 `Edge` 的个数， `F` 是 `SrcVertex` 或 `Edge` 的特征维度。
 
@@ -237,16 +237,16 @@ mindspore_gl.Graph
 
             由于通过零值来对特征进行填充，其余特征可能会被零覆盖。
 
-        参数:
+        参数：
             - **node_feat** (Tensor) - 节点特征，shape为 :math:`(N\_NODES, F)` ，`F` 是特征维度。
             - **k** (int) - top-k的节点个数。
             - **sortby** (int) - 根据哪个特征维度排序。如果为无，则所有特征都独立排序。默认值：None。
 
         返回：
             - **topk_output** (Tensor) - 特征Tensor的shape为 :math:`(B, K, F)` ，其中 :math:`B` 为输入图的批次大小，
-                :math:`K` 为输入的 'k', :math:`F` 为特征维度。
-            - **topk_indices** (Tensor) - top-k的输出索引，shape为 :math:`(B, K)` （当`sortby` 为None时， :math:`(B, K, F)`），
-                其中 :math:`B` 为输入图的批次大小， :math:`F` 为特征维度。
+              :math:`K` 为输入的 'k', :math:`F` 为特征维度。
+            - **topk_indices** (Tensor) - top-k的输出索引，shape为 :math:`(B, K)` （当 `sortby` 为None时， :math:`(B, K, F)`），
+              其中 :math:`B` 为输入图的批次大小， :math:`F` 为特征维度。
 
         异常：
             - **TypeError** - 如果 `node_feat` 不是Tensor。
@@ -264,7 +264,7 @@ mindspore_gl.Graph
 
             由于通过零值来对特征进行填充，其余特征可能会被零覆盖。
 
-        参数:
+        参数：
             - **node_feat** (Tensor) - 节点特征，shape为 :math:`(N\_NODES, F)` ，`F` 是特征维度。
             - **k** (int) - top-k的节点个数。
             - **sortby** (int) - 根据哪个特征维度排序。如果为无，则所有特征都独立排序。默认值：None。
@@ -272,7 +272,7 @@ mindspore_gl.Graph
         返回：
             - **topk_output** (Tensor) - 特征Tensor的shape为 :math:`(B, K, F)` ，其中 :math:`B` 为输入图的批次大小，
                 :math:`K` 为输入的 'k', :math:`F` 为特征维度。
-            - **topk_indices** (Tensor) - top-k的输出索引，shape为 :math:`(B, K)` （当`sortby` 为None时， :math:`(B, K, F)`），
+            - **topk_indices** (Tensor) - top-k的输出索引，shape为 :math:`(B, K)` （当 `sortby` 为None时， :math:`(B, K, F)`），
                 其中 :math:`B` 为输入图的批次大小， :math:`F` 为特征维度。
 
         异常：

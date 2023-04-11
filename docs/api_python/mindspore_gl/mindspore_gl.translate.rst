@@ -5,9 +5,9 @@ mindspore_gl.translate
 
     将顶点中心代码转换为MindSpore可理解代码。
 
-    翻译后，将在`/.mindspore_gl`中生成一个新函数。原方法将被此函数替换。
+    翻译后，将在 `/.mindspore_gl` 中生成一个新函数。原方法将被此函数替换。
 
     参数：
         - **obj** (Object) - 翻译对象。
-        - **method_name** (int) - 要转换的方法的名称。
-        - **translate_path** (int) - 构造文件的保存路径。
+        - **method_name** (str) - 要转换的方法的名称。
+        - **translate_path** (str) - 构造文件的保存路径。
