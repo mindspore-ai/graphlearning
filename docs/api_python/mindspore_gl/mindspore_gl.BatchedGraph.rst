@@ -14,7 +14,7 @@ mindspore_gl.BatchedGraph
         节点特征为 :math:`(N\_EDGES, F)` ， `max_edges` 将会根据 `edge_subgraph_idx` 进行节点特征聚合操作。
         输出的Tensor维度为 :math:`(N\_GRAPHS, F)` ， :math:`F` 为节点特征维度。
 
-        参数:
+        参数：
             - **edge_feat** (Tensor) - 节点特征，shape为 :math:`(N\_EDGES, F)` ，`F` 是特征维度。
 
         返回：
@@ -30,7 +30,7 @@ mindspore_gl.BatchedGraph
         节点特征为 :math:`(N\_NODES, F)` ， `max_nodes` 将会根据 `ver_subgraph_idx` 进行节点特征聚合操作。
         输出的Tensor维度为 :math:`(N\_GRAPHS, F)` ， :math:`F` 为节点特征维度。
 
-        参数:
+        参数：
             - **node_feat** (Tensor) - 节点特征，shape为 :math:`(N\_NODES, F)` ，`F` 是特征维度。
 
         返回：
@@ -43,7 +43,7 @@ mindspore_gl.BatchedGraph
 
         将图级特征广播到边级特征表示。
 
-        参数:
+        参数：
             - **graph_feat** (Tensor) - 节点特征，shape为 :math:`(N\_NODES, F)` ，`F` 是特征维度。
 
         返回：
@@ -56,7 +56,7 @@ mindspore_gl.BatchedGraph
 
         将图级特征广播到节点级特征表示。
 
-        参数:
+        参数：
             - **node_feat** (Tensor) - 节点特征，shape为 :math:`(N\_NODES, F)` ，`F` 是特征维度。
 
         返回：
@@ -97,7 +97,7 @@ mindspore_gl.BatchedGraph
         节点特征为 :math:`(N\_EDGES, F)` ， `max_edges` 将会根据 `edge_subgraph_idx` 进行节点特征聚合操作。
         输出的Tensor维度为 :math:`(N\_GRAPHS, F)` ， :math:`F` 为节点特征维度。
 
-        参数:
+        参数：
             - **edge_feat** (Tensor) - 节点特征，shape为 :math:`(N\_EDGES, F)` ，`F` 是特征维度。
 
         返回：
@@ -113,7 +113,7 @@ mindspore_gl.BatchedGraph
         节点特征为 :math:`(N\_NODES, F)` ， `max_nodes` 将会根据 `ver_subgraph_idx` 进行节点特征聚合操作。
         输出的Tensor维度为 :math:`(N\_GRAPHS, F)` ， :math:`F` 为节点特征维度。
 
-        参数:
+        参数：
             - **node_feat** (Tensor) - 节点特征，shape为 :math:`(N\_NODES, F)` ，`F` 是特征维度。
 
         返回：
@@ -173,7 +173,7 @@ mindspore_gl.BatchedGraph
         每个子图独立计算softmax。
         结果Tensor具有与原始边特征相同的shape。
 
-        参数:
+        参数：
             - **edge_feat** (Tensor) - 边特征的Tensor，shape为 :math:`(N\_EDGES, F)` ，`F` 是特征维度。
 
         返回：
@@ -194,7 +194,7 @@ mindspore_gl.BatchedGraph
         每个子图独立计算softmax。
         结果Tensor具有与原始节点特征相同的shape。
 
-        参数:
+        参数：
             - **node_feat** (Tensor) - 节点特征，shape为 :math:`(N\_NODES, F)` ，`F` 是特征维度。
 
         返回：
@@ -210,7 +210,7 @@ mindspore_gl.BatchedGraph
         边特征为 :math:`(N\_EDGES, F)` ， `sum_edges` 将会根据 `edge_subgraph_idx` 进行节点特征聚合操作。
         输出的Tensor维度为 :math:`(N\_GRAPHS, F)` ， :math:`F` 为节点特征维度。
 
-        参数:
+        参数：
             - **edge_feat** (Tensor) - 节点特征，shape为 :math:`(N\_EDGES, F)` ，`F` 是特征维度。
 
         返回：
@@ -226,7 +226,7 @@ mindspore_gl.BatchedGraph
         节点特征为 :math:`(N\_NODES, F)` ， `sum_nodes` 将会根据 `ver_subgraph_idx` 进行节点特征聚合操作。
         输出的Tensor维度为 :math:`(N\_GRAPHS, F)` ， :math:`F` 为节点特征维度。
 
-        参数:
+        参数：
             - **node_feat** (Tensor) - 节点特征，shape为 :math:`(N\_NODES, F)` ，`F` 是特征维度。
 
         返回：
