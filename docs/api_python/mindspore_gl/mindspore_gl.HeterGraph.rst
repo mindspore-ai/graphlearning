@@ -15,7 +15,7 @@ mindspore_gl.HeterGraph
         返回：
             List[Tensor]，目标顶点列表。
 
-    .. py:method:: mindspore_gl.Graph.get_homo_graph(etype)
+    .. py:method:: mindspore_gl.HeterGraph.get_homo_graph(etype)
 
         获取特定的etype的节点、边。
 
@@ -25,7 +25,7 @@ mindspore_gl.HeterGraph
         返回:
             List[Tensor]，同构图。
 
-    .. py:method:: mindspore_gl.Graph.n_edges
+    .. py:method:: mindspore_gl.HeterGraph.n_edges
         :property:
 
         图的边数。
@@ -33,7 +33,7 @@ mindspore_gl.HeterGraph
         返回:
             List[int]，图的边数的列表。
 
-    .. py:method:: mindspore_gl.Graph.n_nodes
+    .. py:method:: mindspore_gl.HeterGraph.n_nodes
         :property:
 
         图的节点数。
@@ -41,7 +41,7 @@ mindspore_gl.HeterGraph
         返回:
             List[int]，图的节点数的列表。
 
-    .. py:method:: mindspore_gl.Graph.src_idx
+    .. py:method:: mindspore_gl.HeterGraph.src_idx
         :property:
 
         一个具有shape为 :math:`(N\_EDGES)` 的Tensor，表示COO边矩阵的源节点索引。
