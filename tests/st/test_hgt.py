@@ -81,7 +81,7 @@ class HeteroHGTLayer(ms.nn.Cell):
                  canonical_etypes: List[Tuple],
                  hidden_size: int,
                  output_size: int,
-                 dropout: float = 0.2,
+                 dropout: float = 0.8,
                  n_heads: int = 4,
                  use_norm=True) -> None:
         super().__init__()
@@ -111,7 +111,7 @@ class HeteroHGTLayer(ms.nn.Cell):
         if use_norm:
             self.cl_norm = ms.nn.CellList(cl_norm_tmp)
         d_k = output_size // n_heads
-        self.drop = ms.nn.Dropout(dropout)
+        self.drop = ms.nn.Dropout(p=dropout)
         layer = []
         for stype, _, dtype in canonical_etypes:
             layer.append(HomoHGTLayer(n_heads, d_k, cl_k[stype], cl_q[dtype], cl_v[stype]))
@@ -155,7 +155,7 @@ class HGT(ms.nn.Cell):
                  input_size: int,
                  hidden_size: int,
                  output_size: int,
-                 dropout: float = 0.2,
+                 dropout: float = 0.8,
                  n_layers: int = 2,
                  n_heads: int = 4,
                  use_norm=True) -> None:

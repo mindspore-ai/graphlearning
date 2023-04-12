@@ -15,7 +15,7 @@ mindspore_gl.nn.APPNPConv
     参数：
         - **k** (int) - 迭代次数。
         - **alpha** (float) - 传输概率。
-        - **edge_drop** (float, 可选) - 每个节点接收到的边消息的keep rate。默认值：1.0。
+        - **edge_drop** (float, 可选) - 每个节点接收到的边消息的dropout rate。默认值：0.0。
 
     输入：
         - **x** (Tensor) - 输入节点功能。Shape为 :math:`(N,*)`
@@ -33,4 +33,4 @@ mindspore_gl.nn.APPNPConv
         - **TypeError** - 如果 `k` 不是int。
         - **TypeError** - 如果 `alpha` 或 `edge_drop` 不是float。
         - **ValueError** - 如果 `alpha` 不在范围[0.0, 1.0]内。
-        - **ValueError** - 如果 `edge_drop` 不在范围(0.0, 1.0]内。
+        - **ValueError** - 如果 `edge_drop` 不在范围[0.0, 1.0)内。

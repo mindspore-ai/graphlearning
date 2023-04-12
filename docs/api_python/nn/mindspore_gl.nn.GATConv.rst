@@ -18,8 +18,8 @@ mindspore_gl.nn.GATConv
         - **in_feat_size** (int) - 输入节点特征大小。
         - **out_size** (int) - 输出节点特征大小。
         - **num_attn_head** (int) - GAT中使用的attention头数。
-        - **input_drop_out_rate** (float, 可选) - 输入丢弃的keep rate。默认值：1.0。
-        - **attn_drop_out_rate** (float, 可选) - attention丢弃的keep rate。默认值：1.0。
+        - **input_drop_out_rate** (float, 可选) - 输入丢弃的dropout rate。默认值：0.0。
+        - **attn_drop_out_rate** (float, 可选) - attention丢弃的dropout rate。默认值：0.0。
         - **leaky_relu_slope** (float, 可选) - leaky relu的斜率。默认值：0.2。
         - **activation** (Cell, 可选) - 激活函数，默认值：None。
         - **add_norm** (bool, 可选) - 边信息是否需要归一化。默认值：False。
@@ -36,4 +36,4 @@ mindspore_gl.nn.GATConv
         - **TypeError** - 如果 `in_feat_size` 、 `out_size` 或 `num_attn_head` 不是int。
         - **TypeError** - 如果 `input_drop_out_rate` 、 `attn_drop_out_rate` 或 `leaky_relu_slope` 不是float。
         - **TypeError** - 如果 `activation` 不是mindspore.nn.Cell。
-        - **ValueError** - 如果 `input_drop_out_rate` 或 `attn_drop_out_rate` 不在范围(0.0, 1.0]内。
+        - **ValueError** - 如果 `input_drop_out_rate` 或 `attn_drop_out_rate` 不在范围[0.0, 1.0)内。

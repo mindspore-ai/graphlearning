@@ -39,8 +39,8 @@ class GATConv(GNNCell):
         in_feat_size (int): Input node feature size.
         out_size (int): Output node feature size.
         num_attn_head (int): Number of attention head used in GAT.
-        input_drop_out_rate (float, optional): Keep rate of input drop out. Default: 1.0.
-        attn_drop_out_rate (float, optional): Keep rate of attention drop out. Default: 1.0.
+        input_drop_out_rate (float, optional): Dropout rate of input drop out. Default: 0.0.
+        attn_drop_out_rate (float, optional): Dropout rate of attention drop out. Default: 0.0.
         leaky_relu_slope (float, optional): Slope for leaky relu. Default: 0.2.
         activation (Cell, optional): Activation function. Default: None.
         add_norm(bool, optional): Whether the edge information needs normalization or not. Default: False.
@@ -85,8 +85,8 @@ class GATConv(GNNCell):
                  in_feat_size: int,
                  out_size: int,
                  num_attn_head: int,
-                 input_drop_out_rate: float = 1.0,
-                 attn_drop_out_rate: float = 1.0,
+                 input_drop_out_rate: float = 0.0,
+                 attn_drop_out_rate: float = 0.0,
                  leaky_relu_slope: float = 0.2,
                  activation=None,
                  add_norm=False):
@@ -103,10 +103,10 @@ class GATConv(GNNCell):
         self.out_size = out_size
         self.num_attn_head = num_attn_head
 
-        if input_drop_out_rate <= 0.0 or input_drop_out_rate > 1.0:
+        if input_drop_out_rate < 0.0 or input_drop_out_rate >= 1.0:
             raise ValueError(f"For '{self.cls_name}', the 'input_drop_out_rate' should be a number in range (0.0, 1.0],"
                              f"but got {input_drop_out_rate}.")
-        if attn_drop_out_rate <= 0.0 or attn_drop_out_rate > 1.0:
+        if attn_drop_out_rate < 0.0 or attn_drop_out_rate >= 1.0:
             raise ValueError(f"For '{self.cls_name}', the 'attn_drop_out_rate' should be a number in range (0.0, 1.0],"
                              f"but got {attn_drop_out_rate}.")
         if activation:
@@ -120,8 +120,8 @@ class GATConv(GNNCell):
         self.attn_d = ms.Parameter(initializer(XavierUniform(gain), [num_attn_head, out_size], ms.float32),
                                    name="attn_d")
         self.bias = ms.Parameter(initializer('zero', [num_attn_head, out_size], ms.float32), name='bias')
-        self.feat_drop = ms.nn.Dropout(input_drop_out_rate)
-        self.attn_drop = ms.nn.Dropout(attn_drop_out_rate)
+        self.feat_drop = ms.nn.Dropout(p=input_drop_out_rate)
+        self.attn_drop = ms.nn.Dropout(p=attn_drop_out_rate)
         self.leaky_relu = ms.nn.LeakyReLU(leaky_relu_slope)
         self.exp = ms.ops.Exp()
         if add_norm:

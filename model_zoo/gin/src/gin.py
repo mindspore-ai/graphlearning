@@ -86,7 +86,7 @@ class GinNet(GNNCell):
                  input_dim,
                  hidden_dim,
                  output_dim,
-                 final_dropout=0.1,
+                 final_dropout=0.9,
                  learn_eps=False,
                  graph_pooling_type='sum',
                  neighbor_pooling_type='sum'
@@ -136,7 +136,7 @@ class GinNet(GNNCell):
                 pooled_h = g.sum_nodes(h)
             else:
                 pooled_h = g.avg_nodes(h)
-            score_over_layer = score_over_layer + nn.Dropout(self.final_dropout)(
+            score_over_layer = score_over_layer + nn.Dropout(p=self.final_dropout)(
                 self.linears_prediction[layer](pooled_h))
 
         return score_over_layer

@@ -113,7 +113,7 @@ def main():
     if seed is not None:
         seed(args.seed)
 
-    dropout = args.dropout_keep_prob
+    dropout = args.dropout_prob
     epochs = args.epochs
     hidden1_dim = args.hidden1_dim
     hidden2_dim = args.hidden2_dim
@@ -223,7 +223,7 @@ if __name__ == "__main__":
     parser.add_argument('--epochs', type=int, default=300, help='number of epochs to train(default: 200)')
     parser.add_argument('--lr', type=float, default=1e-2, help='learning rate (default: 0.01)')
     parser.add_argument("--weight_decay", type=float, default=0.0, help="weight decay")
-    parser.add_argument("--dropout_keep_prob", type=float, default=1.0, help="dropout")
+    parser.add_argument("--dropout_prob", type=float, default=0.0, help="dropout rate")
     parser.add_argument("--hidden1_dim", type=int, default=32, help="num_hidden1")
     parser.add_argument("--hidden2_dim", type=int, default=16, help="num_hidden2")
     parser.add_argument("--mode", type=str, default="undirected", help="Sample matrix type")
