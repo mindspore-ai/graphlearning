@@ -119,6 +119,6 @@ def sage_sampler_on_homo(homo_graph: mindspore_gl.graph.MindHomoGraph, seeds, ne
         "all_nodes": all_nodes,
     }
     for layer_idx, layer in enumerate(layered_edges):
-        res[f'layered_edges_{layer_idx}'] = layer
-        res[f'layered_eids_{layer_idx}'] = layer
+        res[f'layered_edges_{layer_idx}'] = np.asarray(layer)
+        res[f'layered_eids_{layer_idx}'] = np.asarray(layer)
     return res
