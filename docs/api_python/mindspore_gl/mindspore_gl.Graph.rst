@@ -36,9 +36,9 @@ mindspore_gl.Graph
         两个节点Tensor的点乘操作。
 
         参数：
-            - **feat_x** ( `SrcVertex` feature or `DstVertex` feature) - `SrcVertex` 或 `DstVertex` 表示的图节点特征，shape为 :math:`(N, F)` 。
+            - **feat_x** (`SrcVertex` feature or `DstVertex` feature) - `SrcVertex` 或 `DstVertex` 表示的图节点特征，shape为 :math:`(N, F)` 。
               `N` 是图上节点数量， `F` 是节点的特征维度。
-            - **feat_y** ( `SrcVertex` feature or `DstVertex` feature) - `SrcVertex` 或 `DstVertex` 表示的图节点特征，shape为 :math:`(N, F)` 。
+            - **feat_y** (`SrcVertex` feature or `DstVertex` feature) - `SrcVertex` 或 `DstVertex` 表示的图节点特征，shape为 :math:`(N, F)` 。
               `N` 是图上节点数量， `F` 是节点的特征维度。
 
         返回：
@@ -130,7 +130,7 @@ mindspore_gl.Graph
         参数：
             - **feat_dict** (dict) - key的类型为str，value的类型为Tensor，shape为 :math:`(N\_NODES, F)` ，其中 :math:`F` 是特征维度。
 
-        异常:
+        异常：
             - **TypeError** - 如果 `feat_dict` 不是dict。
 
         返回：
@@ -145,7 +145,7 @@ mindspore_gl.Graph
             - **feat_dict** (Dict) - key的类型为str，value的类型为Tensor，shape为 :math:`(N\_NODES, F)` ，其中 :math:`F` 是特征维度。
               当特征维度为1时，推荐的边特征shape为 :math:`(N\_EDGES, 1)` 。
 
-        异常:
+        异常：
             - **TypeError** - 如果 `feat_dict` 不是dict。
 
         返回：
@@ -159,7 +159,7 @@ mindspore_gl.Graph
         参数：
             - **feat_dict** (Dict) - key的类型为str，value的为整图的特征。
 
-        异常:
+        异常：
             - **TypeError** - 如果 `feat_dict` 不是dict。
 
         返回：
@@ -173,7 +173,7 @@ mindspore_gl.Graph
         参数：
             - **feat_dict** (Dict) - key的类型为str，value的类型为Tensor，shape为 :math:`(N\_NODES, F)` ，其中 :math:`F` 是特征维度。
 
-        异常:
+        异常：
             - **TypeError** - 如果 `feat_dict` 不是dict。
 
         返回：
@@ -190,7 +190,7 @@ mindspore_gl.Graph
         参数：
             - **feat_dict** (Dict) - key的类型为str，value的类型为Tensor，shape为 :math:`(N\_NODES, F)` ，其中 :math:`F` 是特征维度。
 
-        异常:
+        异常：
             - **TypeError** - 如果 `feat_dict` 不是dict。
 
         返回：
