@@ -57,7 +57,7 @@ mindspore_gl.BatchedGraph
         将图级特征广播到节点级特征表示。
 
         参数：
-            - **node_feat** (Tensor) - 节点特征，shape为 :math:`(N\_NODES, F)` ，`F` 是特征维度。
+            - **graph_feat** (Tensor) - 节点特征，shape为 :math:`(N\_NODES, F)` ，`F` 是特征维度。
 
         返回：
             Tensor，shape为 :math:`(N\_NODES, F)` ， :math:`F` 是特征维度。
