@@ -157,7 +157,7 @@ if __name__ == '__main__':
     parser.add_argument('--weight_decay', type=float, default=0.0005,
                         help='weight decay.')
     parser.add_argument('--hidden', type=int, default=64, help='hidden units.')
-    parser.add_argument('--dropout', type=float, default=0.9,
+    parser.add_argument('--dropout', type=float, default=0.1,
                         help='dropout for neural networks.')
     parser.add_argument('--rws', type=int, default=10,
                         help='random walks per node')

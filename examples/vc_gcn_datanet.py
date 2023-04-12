@@ -130,7 +130,7 @@ if __name__ == "__main__":
     parser.add_argument("--data-path", type=str, default='/home/workspace/cora_v2_with_mask.npz',
                         help="path to dataloader")
     parser.add_argument("--device", type=str, default="GPU", help="which device to use")
-    parser.add_argument("--dropout", type=float, default=0.5, help="drop out keep rate")
+    parser.add_argument("--dropout", type=float, default=0.5, help="drop out rate")
     parser.add_argument("--epochs", type=int, default=200, help="number of training epochs")
     parser.add_argument("--num-layers", type=int, default=1, help="number of hidden layers")
     parser.add_argument("--num-hidden", type=int, default=16, help="number of hidden units")

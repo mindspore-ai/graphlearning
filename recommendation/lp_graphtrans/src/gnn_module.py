@@ -67,13 +67,13 @@ class GNNVirtualNodeMS(GNNCell):
         for layer in range(num_layer):
             if layer == num_layer - 1:
                 self.dropout_list.append(
-                    ms.nn.SequentialCell([ms.nn.Dropout(1 - self.drop_ratio)]))
+                    ms.nn.SequentialCell([ms.nn.Dropout(p=1 - self.drop_ratio)]))
             else:
                 self.dropout_list.append(
                     ms.nn.SequentialCell(
-                        [ms.nn.ReLU(), ms.nn.Dropout(1 - self.drop_ratio)]))
+                        [ms.nn.ReLU(), ms.nn.Dropout(p=1 - self.drop_ratio)]))
                 self.dropout_virtual_list.append(
-                    ms.nn.SequentialCell([ms.nn.Dropout(1 - self.drop_ratio)]))
+                    ms.nn.SequentialCell([ms.nn.Dropout(p=1 - self.drop_ratio)]))
                 self.mlp_virtualnode_list.append(
                     ms.nn.SequentialCell(
                         [ms.nn.Dense(emb_dim, 2 * emb_dim),

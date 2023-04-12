@@ -35,7 +35,7 @@ class APPNPConv(GNNCell):
     Args:
         k (int): Number of iters.
         alpha (float): Transmission probability.
-        edge_drop (float, optional): The keep rate on the edge of messages received by each node. Default: 1.0.
+        edge_drop (float, optional): The dropout rate on the edge of messages received by each node. Default: 0.0.
 
     Inputs:
         - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,
@@ -81,7 +81,7 @@ class APPNPConv(GNNCell):
     def __init__(self,
                  k: int,
                  alpha: float,
-                 edge_drop=1.0):
+                 edge_drop=0.0):
         super().__init__()
         assert isinstance(k, int) and k > 0, "k must be positive int"
         assert isinstance(alpha, float), "alpha must be float"
@@ -92,10 +92,10 @@ class APPNPConv(GNNCell):
         if self.alpha_ < 0.0 or self.alpha_ > 1.0:
             raise ValueError(f"For '{self.cls_name}', the 'alpha' should be a number in range [0.0, 1.0], "
                              f"but got {self.alpha_}.")
-        if edge_drop <= 0.0 or edge_drop > 1.0:
-            raise ValueError(f"For '{self.cls_name}', the 'edge_drop' should be a number in range (0.0, 1.0], "
+        if edge_drop < 0.0 or edge_drop >= 1.0:
+            raise ValueError(f"For '{self.cls_name}', the 'edge_drop' should be a number in range [0.0, 1.0), "
                              f"but got {edge_drop}.")
-        self.edge_drop = ms.nn.Dropout(edge_drop)
+        self.edge_drop = ms.nn.Dropout(p=edge_drop)
         self.min_clip = Tensor(1, ms.int32)
         self.max_clip = Tensor(10000000, ms.int32)
 
