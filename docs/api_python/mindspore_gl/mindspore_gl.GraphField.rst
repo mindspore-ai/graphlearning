@@ -16,7 +16,7 @@ mindspore_gl.GraphField
         - **indptr** (Tensor, 可选) - shape为 :math:`(N\_NODES,)` 的int类型Tensor，CSR矩阵中的indptr。默认值：None。
         - **indices_backward** (Tensor, 可选) - shape为 :math:`(N\_EDGES)` 的int类型Tensor，CSR矩阵中的预存的indices反向。默认值：None。
         - **indptr_backward** (Tensor, 可选) - shape为 :math:`(N\_NODES,)` 的int类型Tensor，CSR矩阵中的预存的indptr反向。默认值：None。
-        - **csr** (Tensor, 可选) - 是否为CSR类型。默认值：False。
+        - **csr** (bool, 可选) - 是否为CSR类型。默认值：False。
 
     .. py:method:: mindspore_gl.GraphField.get_graph
 
