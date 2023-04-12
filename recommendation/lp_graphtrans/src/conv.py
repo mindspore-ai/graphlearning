@@ -41,8 +41,8 @@ class GCNConv(GNNCell):
         assert isinstance(dropout, float), "dropout must be float"
         self.in_feat_size = in_feat_size
         self.out_size = out_size
-        if dropout <= 0.0 or dropout > 1.0:
-            raise ValueError(f"For '{self.cls_name}', the 'keep_prob' should be a number in range (0.0, 1.0], "
+        if dropout < 0.0 or dropout >= 1.0:
+            raise ValueError(f"For '{self.cls_name}', the 'dropout prob' should be a number in range [0.0, 1.0), "
                              f"but got {dropout}.")
         if activation is not None and not isinstance(activation, Cell):
             raise TypeError(f"For '{self.cls_name}', the 'activation' must a Cell, but got "
@@ -52,7 +52,7 @@ class GCNConv(GNNCell):
         self.activation = activation
         self.min_clip = Tensor(1, ms.int32)
         self.max_clip = Tensor(100000000, ms.int32)
-        self.drop_out = ms.nn.Dropout(dropout)
+        self.drop_out = ms.nn.Dropout(p=dropout)
 
     # pylint: disable=arguments-differ
     def construct(self, x, in_deg, out_deg, g: BatchedGraph):

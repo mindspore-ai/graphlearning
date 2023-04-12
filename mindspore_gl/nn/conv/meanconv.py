@@ -43,7 +43,7 @@ class MeanConv(GNNCell):
     Args:
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
-        feat_drop (float, optional): The keep rate, greater than 0 and less equal than 1. E.g. dropout=0.9,
+        feat_drop (float, optional): The dropout rate, greater equal than 0 and less than 1. E.g. dropout=0.1,
             dropping out 10% of input units. Default: 0.6.
         bias (bool, optional): Whether use bias. Default: False.
         norm (Cell, optional): Normalization function Cell. Default: None.
@@ -92,7 +92,7 @@ class MeanConv(GNNCell):
     def __init__(self,
                  in_feat_size: int,
                  out_feat_size: int,
-                 feat_drop=0.6,
+                 feat_drop=0.4,
                  bias=False,
                  norm=None,
                  activation=None):
@@ -109,13 +109,13 @@ class MeanConv(GNNCell):
             self.activation = P.ReLU()
         else:
             raise ValueError("activation should be tanh or relu")
-        if feat_drop <= 0.0 or feat_drop > 1.0:
-            raise ValueError(f"For '{self.cls_name}', the 'keep_prob' should be a number in range (0.0, 1.0], "
-                             f"but got {dropout}.")
+        if feat_drop < 0.0 or feat_drop >= 1.0:
+            raise ValueError(f"For '{self.cls_name}', the 'dropout_prob' should be a number in range [0.0, 1.0), "
+                             f"but got {feat_drop}.")
         if norm is not None and not isinstance(norm, Cell):
             raise TypeError(f"For '{self.cls_name}', the 'activation' must a mindspore.nn.Cell, but got "
                             f"{type(norm).__name__}.")
-        self.feat_drop = ms.nn.Dropout(feat_drop)
+        self.feat_drop = ms.nn.Dropout(p=feat_drop)
         self.concat = P.Concat(axis=1)
         if bias:
             self.bias = ms.Parameter(ms.ops.Zeros()(self.out_feat_size, ms.float32))

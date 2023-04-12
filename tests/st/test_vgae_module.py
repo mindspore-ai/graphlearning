@@ -97,13 +97,13 @@ class InnerProductDecoder(GNNCell):
     and returns the object after performing the inner product.
 
     Args:
-        dropout_rate(float):Keep ratio
+        dropout_rate(float):Dropout ratio
     """
     def __init__(self,
-                 dropout_rate=1.0,
+                 dropout_rate=0.0,
                  decoder_type='all'):
         super().__init__()
-        self.dropout = ms.nn.Dropout(dropout_rate)
+        self.dropout = ms.nn.Dropout(p=dropout_rate)
         self.type = decoder_type
 
     def decoder_all(self, x, g: Graph):
