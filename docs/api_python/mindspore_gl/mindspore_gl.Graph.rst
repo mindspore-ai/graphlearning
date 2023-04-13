@@ -128,7 +128,7 @@ mindspore_gl.Graph
         参数 `feat_dict` 的key是属性的名称，value是属性的数据。
 
         参数：
-            - **feat_dict** (dict) - key的类型为str，value的类型为Tensor，shape为 :math:`(N\_NODES, F)` ，其中 :math:`F` 是特征维度。
+            - **feat_dict** (Dict) - key的类型为str，value的类型为Tensor，shape为 :math:`(N\_NODES, F)` ，其中 :math:`F` 是特征维度。
 
         异常：
             - **TypeError** - 如果 `feat_dict` 不是dict。
