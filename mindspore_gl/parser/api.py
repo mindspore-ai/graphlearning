@@ -269,7 +269,7 @@ class Graph:
             set_vertex_attr is equals to set_src_attr + set_dst_attr.
 
         Args:
-            feat_dict (dict): key type: str, value type: recommend tensor of shape :math:`(N\_NODES, F)`, :math:`F` is
+            feat_dict (Dict): key type: str, value type: recommend tensor of shape :math:`(N\_NODES, F)`, :math:`F` is
                 the dimension of the node feature.
 
         Returns:
