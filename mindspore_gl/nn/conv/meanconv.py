@@ -44,7 +44,7 @@ class MeanConv(GNNCell):
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
         feat_drop (float, optional): The dropout rate, greater equal than 0 and less than 1. E.g. dropout=0.1,
-            dropping out 10% of input units. Default: 0.6.
+            dropping out 10% of input units. Default: 0.4.
         bias (bool, optional): Whether use bias. Default: False.
         norm (Cell, optional): Normalization function Cell. Default: None.
         activation (Cell, optional): Activation function Cell. Default: None.
