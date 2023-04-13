@@ -23,7 +23,7 @@ mindspore_gl.nn.MeanConv
     参数：
         - **in_feat_size** (int) - 输入节点特征大小。
         - **out_feat_size** (int) - 输出节点特征大小。
-        - **feat_drop** (float, 可选) - dropout rate，大于等于0，小于1。例如，feat_drop=0.1，抛弃10%的输入单元。默认值：0.6。
+        - **feat_drop** (float, 可选) - dropout rate，大于等于0，小于1。例如，feat_drop=0.1，抛弃10%的输入单元。默认值：0.4。
         - **bias** (bool, 可选) - 是否使用偏置。默认值：False。
         - **norm** (Cell, 可选) - 归一化函数单元。默认值：None。
         - **activation** (Cell, 可选) - 激活函数Cell。默认值：None。
