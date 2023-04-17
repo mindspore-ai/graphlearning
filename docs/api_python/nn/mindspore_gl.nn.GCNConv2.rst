@@ -18,11 +18,11 @@ mindspore_gl.nn.GCNConv2
         - **out_size** (int) - 输出节点特征大小。
 
     输入：
-        - **x** (Tensor) - 输入节点特征。Shape为 :math:`(N,D_{in})` ，其中 :math:`N` 是节点数， :math:`D_{in}` 应等于参数中的 `in_feat_size` 。
+        - **x** (Tensor) - 输入节点特征。Shape为 :math:`(N, D_{in})` ，其中 :math:`N` 是节点数， :math:`D_{in}` 应等于参数中的 `in_feat_size` 。
         - **g** (Graph) - 输入图。
 
     输出：
-        - Tensor，Shape为 :math:`(N,D_{out})` 的输出节点特征，其中 :math:`(D_{out})` 应等于参数中的 `out_size` 。
+        - Tensor，Shape为 :math:`(N, D_{out})` 的输出节点特征，其中 :math:`(D_{out})` 应等于参数中的 `out_size` 。
 
     异常：
         - **TypeError** - 如果 `in_feat_size` 或 `out_size` 不是int。

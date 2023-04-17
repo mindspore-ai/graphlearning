@@ -20,7 +20,7 @@ mindspore_gl.nn.APPNPConv
     输入：
         - **x** (Tensor) - 输入节点功能。Shape为 :math:`(N,*)`
           其中 :math:`N` 是节点数， :math:`*` 可以是任何shape。
-        - **in_deg** (Tensor) - 节点的入度。Shape为 :math:`(N,)`
+        - **in_deg** (Tensor) - 节点的入度。Shape为 :math:`(N, )`
           其中 :math:`N` 是节点数。
         - **out_deg** (Tensor) - 节点的出度。Shape为 :math:`(N, )`
           其中 :math:`N` 是节点数。

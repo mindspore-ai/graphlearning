@@ -25,7 +25,7 @@ mindspore_gl.nn.SAGPooling
     输入：
         - **x** (Tensor) - 要更新的输入节点特征。Shape为 :math:`(N, D)`
           其中 :math:`N` 是节点数， :math:`D` 是节点的特征大小，当 `attn` 为None时，`D` 应等于参数中的 `in_feat_size` 。
-        - **attn** (Tensor) - 用于计算投影分数的输入节点特征。Shape为 :math:`(N,D_{in})`
+        - **attn** (Tensor) - 用于计算投影分数的输入节点特征。Shape为 :math:`(N, D_{in})`
           其中 :math:`N` 是节点数， :math:`D_{in}` 应等于参数中的 `in_feat_size` 。
           如果用 `x` 计算投影分数， `attn` 可以为None。
         - **node_num** (Int) - 以图g中的节点总数。
@@ -33,7 +33,7 @@ mindspore_gl.nn.SAGPooling
         - **g** (BatchedGraph) - 输入图。
 
     输出：
-        - **x** (Tensor) - 更新的节点特征。Shape为 :math:`2, M, D_{out}`
+        - **x** (Tensor) - 更新的节点特征。Shape为 :math:`(2, M, D_{out})`
           其中 :math:`M` 等于 `Inputs` 中的 `perm_num` 和 :math:`D_{out}` 等于 `Inputs` 中的 `D` 。
         - **src_perm** (Tensor) - 更新的src节点。
         - **dst_perm** (Tensor) - 更新的dst节点。

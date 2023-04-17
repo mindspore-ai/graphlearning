@@ -30,7 +30,7 @@ mindspore_gl.nn.GINConv
         - **g** (Graph) - 输入图。
 
     输出：
-        - Tensor，输出节点特征。Shape为 :math:`(N,out\_feat\_size)` 。
+        - Tensor，输出节点特征。Shape为 :math:`(N, out\_feat\_size)` 。
 
     异常：
         - **TypeError** - 如果 `activation` 不是mindspore.nn.Cell。
