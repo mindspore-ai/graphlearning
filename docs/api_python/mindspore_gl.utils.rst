@@ -8,7 +8,7 @@ utils初始化
     对矩阵执行线性主成分分析（PCA），并将返回前k个降维特征。
 
     参数：
-        - **matrix** (ndarray) - 输入特征，shape为 :math:`(B,F)` 。
+        - **matrix** (ndarray) - 输入特征，shape为 :math:`(B, F)` 。
         - **k** (int, 可选) - 降维的目标维度。默认值：None。
         - **niter** (int, 可选) - 要进行的子空间迭代次数并且必须是非负整数。默认值：2。
         - **norm** (bool, 可选) - 输出是否归一化。默认值：False。

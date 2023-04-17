@@ -25,12 +25,12 @@ mindspore_gl.nn.GMMConv
         - **aggregator_type** (str, 可选) - 聚合器的类型。默认值：'sum'。
 
     输入：
-        - **x** (Tensor) - 输入节点特征。Shape为 :math:`(N,D_{in})` ，其中 :math:`N` 是节点数， :math:`D_{in}` 应等于参数中的 `in_feat_size` 。
+        - **x** (Tensor) - 输入节点特征。Shape为 :math:`(N, D_{in})` ，其中 :math:`N` 是节点数， :math:`D_{in}` 应等于参数中的 `in_feat_size` 。
         - **pseudo** (Tensor) - 伪坐标张量。
         - **g** (Graph) - 输入图。
 
     输出：
-        - Tensor，Shape为 :math:`(N,D_{out})`的输出节点特征，其中 :math:`(D_{out})` 应等于参数中的 `out_size`。
+        - Tensor，Shape为 :math:`(N, D_{out})`的输出节点特征，其中 :math:`(D_{out})` 应等于参数中的 `out_size`。
 
     异常：
         - **SyntaxError** - 当 `aggregation_type` 不等于sum时。

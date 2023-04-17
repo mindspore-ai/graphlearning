@@ -32,7 +32,7 @@ mindspore_gl.nn.GATv2Conv
 
     输出：
         - Tensor，输出特征Shape为 :math:`(N,D_{out})` 其中 :math:`D_{out}` 应等于
-          :math:`D_{in}*num\_attn\_head` 。
+          :math:`D_{in} * num\_attn\_head` 。
 
     异常：
         - **TypeError** - 如果 `in_feat_size` 、 `out_size` 或 `num_attn_head` 不是int。

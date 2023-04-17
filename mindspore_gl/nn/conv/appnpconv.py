@@ -52,8 +52,8 @@ class APPNPConv(GNNCell):
     Raises:
         TypeError: If `k` is not an int.
         TypeError: If `alpha` or `edge_drop` is not a float.
-        ValueError: If `alpha` is not in range [0.0, 1.0]
-        ValueError: If `edge_drop` is not in range (0.0, 1.0]
+        ValueError: If `alpha` is not in range [0.0, 1.0].
+        ValueError: If `edge_drop` is not in range [0.0, 1.0).
 
     Supported Platforms:
         ``Ascend`` ``GPU``

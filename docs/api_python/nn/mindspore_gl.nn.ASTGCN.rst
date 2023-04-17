@@ -25,7 +25,7 @@ mindspore_gl.nn.ASTGCN
         - **bias** (bool, 可选) - layer是否学习加性偏置。默认值：True。
 
     输入：
-        - **x** (Tensor) - 输入节点T个时间段的特征。Shape为 :math:`(B,N,F_{in},T_{in})`
+        - **x** (Tensor) - 输入节点T个时间段的特征。Shape为 :math:`(B, N, F_{in}, T_{in})`
           其中 :math:`N` 是节点数。
         - **g** (Graph) - 输入图。
 

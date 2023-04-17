@@ -58,7 +58,7 @@ class GATv2Conv(GNNCell):
         TypeError: If `in_feat_size`, `out_size`, or `num_attn_head` is not an int.
         TypeError: If `input_drop_out_rate`, `attn_drop_out_rate`, or `leaky_relu_slope` is not a float.
         TypeError: If `activation` is not a Cell.
-        ValueError: If `input_drop_out_rate` or `attn_drop_out_rate` is not in range (0.0, 1.0]
+        ValueError: If `input_drop_out_rate` or `attn_drop_out_rate` is not in range [0.0, 1.0).
 
     Supported Platforms:
         ``Ascend`` ``GPU``
