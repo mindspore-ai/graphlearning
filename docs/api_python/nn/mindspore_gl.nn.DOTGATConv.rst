@@ -9,7 +9,7 @@ mindspore_gl.nn.DOTGATConv
     .. math::
         h_i^{(l+1)} = \sum_{j\in \mathcal{N}(i)} \alpha_{i, j} h_j^{(l)}
 
-    :math:`\alpha_{i,j}` 表示节点 :math:`i` 和节点 :math:`j` 之间的attention分数。
+    :math:`\alpha_{i, j}` 表示节点 :math:`i` 和节点 :math:`j` 之间的attention分数。
 
     .. math::
         \alpha_{i, j} = \mathrm{softmax_i}(e_{ij}^{l}) \\

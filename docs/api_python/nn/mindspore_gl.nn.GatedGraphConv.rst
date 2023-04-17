@@ -28,7 +28,7 @@ mindspore_gl.nn.GatedGraphConv
         - **n_edges** (List) - 每个边类型的边数。
 
     输出：
-        - Tensor，输出节点特征。Shape为 :math:`(N,out\_feat\_size)` 。
+        - Tensor，输出节点特征。Shape为 :math:`(N, out\_feat\_size)` 。
 
     异常：
         - **TypeError** - 如果 `in_feat_size` 不是正整数。

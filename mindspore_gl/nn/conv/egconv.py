@@ -42,7 +42,7 @@ class EGConv(GNNCell):
         aggregators (str, optional): aggregators to be used. Supported aggregators are
             `sum`, `mean`, `max`, `min`, `std`, `var`, `symnorm`. Default: 'symnorm'.
         num_heads (int, optional): Number of heads :math:`H`. Default: 8.
-            Must have `out_feat_size % num_heads == 0`.
+            Must have :math:`out_feat_size % num_heads == 0`.
         num_bases (int, optional): Number of basis weight :math:`B`. Default: 4.
         bias (bool, optional): Whether the layer will learn an additive bias. Default: True.
 

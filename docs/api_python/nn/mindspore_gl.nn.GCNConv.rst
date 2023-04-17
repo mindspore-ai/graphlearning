@@ -21,15 +21,15 @@ mindspore_gl.nn.GCNConv
         - **dropout** (float, 可选) - dropout rate，大于等于0，小于1。例如，dropout=0.1，抛弃10%的输入单元。默认值：0.5。
 
     输入：
-        - **x** (Tensor) - 输入节点功能。Shape为 :math:`(N,D_{in})`
+        - **x** (Tensor) - 输入节点功能。Shape为 :math:`(N, D_{in})`
           其中 :math:`N` 是节点数， :math:`D_{in}` 应等于参数中的 `in_feat_size` 。
-        - **in_deg** (Tensor) - 节点的入度。Shape为 :math:`(N,)` 其中 :math:`N` 是节点数。
+        - **in_deg** (Tensor) - 节点的入度。Shape为 :math:`(N, )` 其中 :math:`N` 是节点数。
         - **out_deg** (Tensor) - 节点的出度。Shape为 :math:`(N,)` 。
           其中 :math:`N` 是节点数。
         - **g** (Graph) - 输入图。
 
     输出：
-        - Tensor，输出节点特征的Shape为 :math:`(N,D_{out})` ，其中 :math:`(D_{out})` 应与参数中的 `out_size` 相等。
+        - Tensor，输出节点特征的Shape为 :math:`(N, D_{out})` ，其中 :math:`(D_{out})` 应与参数中的 `out_size` 相等。
 
     异常：
         - **TypeError** - 如果 `in_feat_size` 或 `out_size` 不是int。

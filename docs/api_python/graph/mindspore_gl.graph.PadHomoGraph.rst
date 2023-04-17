@@ -3,7 +3,7 @@ mindspore_gl.graph.PadHomoGraph
 
 .. py:class:: mindspore_gl.graph.PadHomoGraph(n_node=None, mode=PadMode.AUTO, n_edge=None, csr=False)
 
-    填充 `mindspore_gl.graph.MindHomoGraph` ，通过在这些节点之间添加额外的节点和边来填充图形。简言之，PadHomoGraph(graph1) = BatchHomoGraph(graph1, fake_graph)
+    填充 `mindspore_gl.graph.MindHomoGraph` ，通过在这些节点之间添加额外的节点和边来填充图形。简言之， :math:`PadHomoGraph(graph1) = BatchHomoGraph(graph1, fake\_graph)`
     虚构图中的节点计数和边计数由用户特定的参数决定。
 
     参数：
