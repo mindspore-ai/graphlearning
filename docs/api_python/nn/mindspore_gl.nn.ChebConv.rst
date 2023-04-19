@@ -27,8 +27,8 @@ mindspore_gl.nn.ChebConv
     参数：
         - **in_channels** (int) - 输入节点特征大小。
         - **out_channels** (int) - 输出节点特征大小。
-        - **k** (int, 可选) - Chebyshev过滤器大小。默认值：3。
-        - **bias** (bool, 可选) - 是否使用偏置。默认值：True。
+        - **k** (int, 可选) - Chebyshev过滤器大小。默认值：``3``。
+        - **bias** (bool, 可选) - 是否使用偏置。默认值：``True``。
 
     输入：
         - **x** (Tensor) - 输入节点功能。Shape为 :math:`(N, D_{in})`

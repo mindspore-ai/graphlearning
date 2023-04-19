@@ -13,9 +13,9 @@ mindspore_gl.nn.STConv
         - **in_channels** (int) - 输入节点特征大小。
         - **hidden_channels** (int) - 隐藏特征大小。
         - **out_channels** (int) - 输出节点特征大小。
-        - **kernel_size** (int, 可选) - 卷积内核大小。默认值：3。
-        - **k** (int, 可选) - Chebyshev过滤器大小。默认值：3。
-        - **bias** (bool, 可选) - 是否使用偏置。默认值：True。
+        - **kernel_size** (int, 可选) - 卷积内核大小。默认值：``3``。
+        - **k** (int, 可选) - Chebyshev过滤器大小。默认值：``3``。
+        - **bias** (bool, 可选) - 是否使用偏置。默认值：``True``。
 
     输入：
         - **x** (Tensor) - 输入节点特征。Shape为 :math:`(B, T, N, (D_{in}))`

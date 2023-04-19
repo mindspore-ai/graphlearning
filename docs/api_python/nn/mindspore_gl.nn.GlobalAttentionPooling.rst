@@ -12,7 +12,7 @@ mindspore_gl.nn.GlobalAttentionPooling
 
     参数：
         - **gate_nn** (Cell) - 用于计算每个特征的attention分数的神经网络。
-        - **feat_nn** (Cell, 可选) - 在将每个特征与attention分数结合起来之前，应用于每个特征的神经网络。默认值：None。
+        - **feat_nn** (Cell, 可选) - 在将每个特征与attention分数结合起来之前，应用于每个特征的神经网络。默认值：``None``。
 
     输入：
         - **x** (Tensor) - 要更新的输入节点特征。Shape为 :math:`(N, D)`
@@ -24,4 +24,4 @@ mindspore_gl.nn.GlobalAttentionPooling
           其中 :math:`D_{out}` 是节点的特征大小。
 
     异常：
-        - **TypeError** - 如果 `gate_nn` 类型或 `feat_nn` 类型不是mindspore.nn.Cell。
+        - **TypeError** - 如果 `gate_nn` 类型或 `feat_nn` 类型不是 `mindspore.nn.Cell`。

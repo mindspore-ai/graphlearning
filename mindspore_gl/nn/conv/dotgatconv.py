@@ -36,7 +36,7 @@ class DOTGATConv(GNNCell):
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
         num_heads (int): Number of attention head used in GAT.
-        bias (bool, optional): Whether use bias. Default: False.
+        bias (bool, optional): Whether to use bias. Default: ``False``.
 
     Inputs:
         - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,
@@ -47,10 +47,10 @@ class DOTGATConv(GNNCell):
         - Tensor, output node features. The shape is :math:`(N, num\_heads, out\_feat\_size)`.
 
     Raises:
-        TypeError: If 'in_feat_size' is not a positive int.
-        TypeError: If 'out_feat_size' is not a positive int.
-        TypeError: If 'num_heads' is not a positive int.
-        TypeError: If 'bias' is not a bool.
+        TypeError: If `in_feat_size` is not a positive int.
+        TypeError: If `out_feat_size` is not a positive int.
+        TypeError: If `num_heads` is not a positive int.
+        TypeError: If `bias` is not a bool.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

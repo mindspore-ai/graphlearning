@@ -20,35 +20,35 @@ from mindspore_gl.graph import get_laplacian
 def norm(edge_index, num_nodes, edge_weight=None, normalization='sym',
          lambda_max=None, batch=None):
     r"""
-    graph laplacian normalization
+    graph laplacian normalization.
 
     Args:
         edge_index (Tensor): Edge index. The shape is :math:`(2, N\_e)`
             where :math:`N\_e` is the number of edges.
         num_nodes (int): Number of nodes.
         edge_weight (Tensor): Edge weights. The shape is :math:`(N\_e)`
-            where :math:`N\_e` is the number of edges. Default: dense.
-        normalization (str): Normalization method. Default: 'sym'.
+            where :math:`N\_e` is the number of edges. Default: ``None``.
+        normalization (str): Normalization method. Default: ``'sym'``.
             :math:`(L)` is normalized matrix, :math:`(D)` is degree matrix, :math:`(A)` is adjaceny matrix,
             :math:`(I)` is unit matrix.
 
-            1. `None`: No normalization
+            1. ``None``: No normalization
                :math:`\mathbf{L} = \mathbf{D} - \mathbf{A}`
-            2. `'sym'`: Symmetric normalization
+            2. ``'sym'``: Symmetric normalization
                :math:`\mathbf{L} = \mathbf{I} - \mathbf{D}^{-1/2} \mathbf{A}
                \mathbf{D}^{-1/2}`
-            3. `'rw'`: Random-walk normalization
+            3. ``'rw'``: Random-walk normalization
                :math:`\mathbf{L} = \mathbf{I} - \mathbf{D}^{-1} \mathbf{A}`
 
-        lambda_max (int, float): Lambda value of graph. Default: dense.
-        batch (Tensor): Batch vector. Default: dense.
+        lambda_max (int, float): Lambda value of graph. Default: ``None``.
+        batch (Tensor): Batch vector. Default: ``None``.
 
     Returns:
         - **edge_index** (Tensor) - normalized edge_index.
         - **edge_weight** (Tensor) - normalized edge_weight
 
     Raises:
-        ValueError: if `normalization` not is None or 'sym' or 'rw'.
+        ValueError: if `normalization` not is ``None`` or ``'sym'`` or ``'rw'``.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

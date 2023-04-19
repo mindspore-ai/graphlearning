@@ -16,7 +16,7 @@ mindspore_gl.nn.EDGEConv
         - **in_feat_size** (int) - 输入节点特征大小。
         - **out_feat_size** (int) - 输出节点特征大小。
         - **batch_norm** (bool) - 是否使用批处理归一化。
-        - **bias** (bool, 可选) - 是否使用偏置。默认值：True。
+        - **bias** (bool, 可选) - 是否使用偏置。默认值：``True``。
 
     输入：
         - **x** (Tensor) - 输入节点特征。Shape为 :math:`(N,*)`

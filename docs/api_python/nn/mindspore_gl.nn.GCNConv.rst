@@ -17,8 +17,8 @@ mindspore_gl.nn.GCNConv
     参数：
         - **in_feat_size** (int) - 输入节点特征大小。
         - **out_size** (int) - 输出节点特征大小。
-        - **activation** (Cell, 可选) - 激活函数。默认值：None。
-        - **dropout** (float, 可选) - dropout rate，大于等于0，小于1。例如，dropout=0.1，抛弃10%的输入单元。默认值：0.5。
+        - **activation** (Cell, 可选) - 激活函数。默认值：``None``。
+        - **dropout** (float, 可选) - dropout rate，大于等于0，小于1。例如，dropout=0.1，抛弃10%的输入单元。默认值：``0.5``。
 
     输入：
         - **x** (Tensor) - 输入节点功能。Shape为 :math:`(N, D_{in})`
@@ -34,5 +34,5 @@ mindspore_gl.nn.GCNConv
     异常：
         - **TypeError** - 如果 `in_feat_size` 或 `out_size` 不是int。
         - **TypeError** - 如果 `dropout` 不是float。
-        - **TypeError** - 如果 `activation` 不是mindspore.nn.Cell。
+        - **TypeError** - 如果 `activation` 不是 `mindspore.nn.Cell`。
         - **ValueError** - 如果 `dropout` 不在(0.0, 1.0]范围。

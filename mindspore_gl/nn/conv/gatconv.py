@@ -39,11 +39,11 @@ class GATConv(GNNCell):
         in_feat_size (int): Input node feature size.
         out_size (int): Output node feature size.
         num_attn_head (int): Number of attention head used in GAT.
-        input_drop_out_rate (float, optional): Dropout rate of input drop out. Default: 0.0.
-        attn_drop_out_rate (float, optional): Dropout rate of attention drop out. Default: 0.0.
-        leaky_relu_slope (float, optional): Slope for leaky relu. Default: 0.2.
-        activation (Cell, optional): Activation function. Default: None.
-        add_norm(bool, optional): Whether the edge information needs normalization or not. Default: False.
+        input_drop_out_rate (float, optional): Dropout rate of input drop out. Default: ``0.0``.
+        attn_drop_out_rate (float, optional): Dropout rate of attention drop out. Default: ``0.0``.
+        leaky_relu_slope (float, optional): Slope for leaky relu. Default: ``0.2``.
+        activation (Cell, optional): Activation function. Default: ``None``.
+        add_norm(bool, optional): Whether the edge information needs normalization or not. Default: ``False``.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N,D_{in})`
@@ -57,7 +57,7 @@ class GATConv(GNNCell):
     Raises:
         TypeError: If `in_feat_size`, `out_size`, or `num_attn_head` is not an int.
         TypeError: If `input_drop_out_rate`, `attn_drop_out_rate`, or `leaky_relu_slope` is not a float.
-        TypeError: If `activation` is not a mindspore.nn.Cell.
+        TypeError: If `activation` is not a `mindspore.nn.Cell`.
         ValueError: If `input_drop_out_rate` or `attn_drop_out_rate` is not in range (0.0, 1.0]
 
     Supported Platforms:

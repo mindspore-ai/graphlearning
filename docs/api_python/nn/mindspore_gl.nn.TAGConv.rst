@@ -31,4 +31,4 @@ mindspore_gl.nn.TAGConv
     异常：
         - **TypeError** - 如果 `in_feat_size` 或 `out_feat_size` 或 `num_hops` 不是int。
         - **TypeError** - 如果 `bias` 不是bool。
-        - **TypeError** - 如果 `activation` 不是mindspore.nn.Cell。
+        - **TypeError** - 如果 `activation` 不是 `mindspore.nn.Cell`。

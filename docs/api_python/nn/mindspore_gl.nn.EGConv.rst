@@ -17,10 +17,10 @@ mindspore_gl.nn.EGConv
     参数：
         - **in_feat_size** (int) - 输入节点特征大小。
         - **out_feat_size** (int) - 输出节点特征大小。
-        - **aggregators** (str, 可选) - 要使用的聚合器。支持的聚合器为 'sum'、'mean'、'max'、'min'、'std'、'var'、'symnorm'。默认值：symnorm。
-        - **num_heads** (int, 可选) - 头数 :math:`H` 。必须具有 :math:`out\_feat\_size % num\_heads == 0` 。默认值：8。
-        - **num_bases** (int, 可选) - 基础权重数 :math:`B` 。默认值：4。
-        - **bias** (bool, 可选) - 是否加入可学习偏置。默认值：True。
+        - **aggregators** (str, 可选) - 要使用的聚合器。支持的聚合器为 ``'sum'``、 ``'mean'``、 ``'max'``、 ``'min'``、 ``'std'``、 ``'var'``、 ``'symnorm'``。
+        - **num_heads** (int, 可选) - 头数 :math:`H` 。必须具有 :math:`out\_feat\_size % num\_heads == 0` 。默认值：``8``。
+        - **num_bases** (int, 可选) - 基础权重数 :math:`B` 。默认值：``4``。
+        - **bias** (bool, 可选) - 是否加入可学习偏置。默认值：``True``。
 
     输入：
         - **x** (Tensor) - 输入节点功能。Shape为 :math:`(N, D_{in})`
@@ -34,4 +34,4 @@ mindspore_gl.nn.EGConv
     异常：
         - **TypeError** - 如果 `in_feat_size` 或 `out_feat_size` 或 `num_heads` 不是正整数。
         - **ValueError** - 如果 `out_feat_size` 不能被 `num_heads` 整除。
-        - **ValueError** - 如果 `aggregators`- 不在['sum', 'mean', 'max', 'min', 'symnorm', 'var', 'std']中。
+        - **ValueError** - 如果 `aggregators`- 不为 ``'sum'``、 ``'mean'``、 ``'max'``、 ``'min'``、 ``'symnorm'``、 ``'var'`` 或 ``'std'``。

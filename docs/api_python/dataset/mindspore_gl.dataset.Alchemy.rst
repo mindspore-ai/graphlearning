@@ -42,7 +42,7 @@ mindspore_gl.dataset.Alchemy
 
     参数：
         - **root** (str) - 包含alchemy_with_mask.npz的根目录的路径。
-        - **datasize** (int, 可选) - 训练数据集大小。默认值：10000。
+        - **datasize** (int, 可选) - 训练数据集大小。默认值：``10000``。
 
     异常：
         - **TypeError** - 如果 `root` 不是str。

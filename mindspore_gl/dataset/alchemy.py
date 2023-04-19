@@ -70,7 +70,7 @@ class Alchemy(BaseDataSet):
 
     Args:
         root(str): path to the root directory that contains alchemy_with_mask.npz.
-        datasize(int, optional): train data size.
+        datasize(int, optional): train data size. Default: ``10000``.
 
     Raises:
         TypeError: if `root` is not a str.

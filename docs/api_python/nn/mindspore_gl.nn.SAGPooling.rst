@@ -18,9 +18,9 @@ mindspore_gl.nn.SAGPooling
 
     参数：
         - **in_channels** (int) - 每个输入样本的大小。
-        - **GNN** (GNNCell, 可选) - 用于计算投影分数的图神经网络层，仅支持GCNConv2。默认值：mindspore_gl.nn.con.GCNConv2。
-        - **activation** (Cell, 可选) - 非线性激活函数。默认值：mindspore.nn.Tanh。
-        - **multiplier** (float, 可选) - 用于缩放节点功能的标量。默认值：1.0。
+        - **GNN** (GNNCell, 可选) - 用于计算投影分数的图神经网络层，仅支持GCNConv2。默认值：``mindspore_gl.nn.con.GCNConv2``。
+        - **activation** (Cell, 可选) - 非线性激活函数。默认值：``mindspore.nn.Tanh``。
+        - **multiplier** (float, 可选) - 用于缩放节点功能的标量。默认值：``1.0``。
 
     输入：
         - **x** (Tensor) - 要更新的输入节点特征。Shape为 :math:`(N, D)`

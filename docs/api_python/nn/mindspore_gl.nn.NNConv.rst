@@ -16,9 +16,9 @@ mindspore_gl.nn.NNConv
         - **in_feat_size** (int) - 输入节点特征大小。
         - **out_feat_size** (int) - 输出节点特征大小。
         - **edge_embed** (mindspore.nn.Cell) - 边嵌入函数单元。
-        - **aggregator_type** (str, 可选) - 聚合器的类型。默认值：'sum'。
-        - **residual** (bool, 可选) - 是否使用残差。默认值：False。
-        - **bias** (bool, 可选) - 是否使用偏置。默认值：True。
+        - **aggregator_type** (str, 可选) - 聚合器的类型。默认值：``'sum'``。
+        - **residual** (bool, 可选) - 是否使用残差。默认值：``False``。
+        - **bias** (bool, 可选) - 是否使用偏置。默认值：``True``。
 
     输入：
         - **x** (Tensor) - 输入节点特征。shape是 :math:`(N,D\_in)`
@@ -32,6 +32,6 @@ mindspore_gl.nn.NNConv
           其中 :math:`N` 是节点数， :math:`D\_out` 可以是任何shape。
 
     异常：
-        - **TypeError** - 如果 `edge_embed` 类型不是mindspore.nn.Cell或 `aggregator_type` 不是'sum'。
+        - **TypeError** - 如果 `edge_embed` 类型不是 `mindspore.nn.Cell` 或 `aggregator_type` 不是 ``'sum'``。
         - **TypeError** - 如果 `in_feat_size` 或 `out_feat_size` 不是int。
         - **TypeError** - 如果 `residual` 或 `bias` 不是bool。

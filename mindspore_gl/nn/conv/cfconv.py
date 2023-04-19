@@ -67,10 +67,10 @@ class CFConv(GNNCell):
         - Tensor, output node features. The shape is :math:`(N, out\_size)`.
 
     Raises:
-        TypeError: If 'node_feat_size' is not a positive int.
-        TypeError: If 'edge_feat_size' is not a positive int.
-        TypeError: If 'hidden_size' is not a positive int.
-        TypeError: If 'out_size' is not a positive int.
+        TypeError: If `node_feat_size` is not a positive int.
+        TypeError: If `edge_feat_size` is not a positive int.
+        TypeError: If `hidden_size` is not a positive int.
+        TypeError: If `out_size` is not a positive int.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

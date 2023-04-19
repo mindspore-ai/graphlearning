@@ -36,10 +36,10 @@ class SGConv(GNNCell):
     Args:
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
-        num_hops (int, optional): Number of hops. Default: 1.
-        cached (bool, optional): Whether use cached. Default: True.
-        bias (bool, optional): Whether use bias. Default: True.
-        norm (Cell, optional): Normalization function Cell. Default: None.
+        num_hops (int, optional): Number of hops. Default: ``1``.
+        cached (bool, optional): Whether to use cached. Default: ``True``.
+        bias (bool, optional): Whether to use bias. Default: ``True``.
+        norm (Cell, optional): Normalization function Cell. Default: ``None``.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N, D_{in})`
@@ -57,7 +57,7 @@ class SGConv(GNNCell):
     Raises:
         TypeError: If `in_feat_size` or `out_feat_size` or `num_hops` is not an int.
         TypeError: If `bias` or `cached` is not a bool.
-        TypeError: If `norm` is not a Cell.
+        TypeError: If `norm` is not a `Cell`.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

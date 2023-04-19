@@ -45,13 +45,13 @@ mindspore_gl.dataset.CoraV2
 
     参数：
         - **root** (str) - 包含cora_v2_with_mask.npz的根目录的路径。
-        - **name** (str, 可选) - 选择数据集类型，可选：["cora_v2", "citeseer", "pubmed"]。默认值："cora_v2"。
+        - **name** (str, 可选) - 选择数据集类型，可选值为 ``"cora_v2"``、 ``"citeseer"``、 ``"pubmed"``。默认值：``"cora_v2"``。
 
-          - cora_v2: 机器学习论文。
+          - ``cora_v2``: 机器学习论文。
 
-          - citeseer: Agents、AI、DB、IR、ML和HCI领域的论文。
+          - ``citeseer``: Agents、AI、DB、IR、ML和HCI领域的论文。
 
-          - pubmed: 关于糖尿病的科学出版物。
+          - ``pubmed``: 关于糖尿病的科学出版物。
 
     异常：
         - **RuntimeError** - 如果 `root` 不包含数据文件。

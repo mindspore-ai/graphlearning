@@ -125,8 +125,8 @@ class ChebConvAttention(GNNCell):
     Args:
         in_channels (int): Number of input features.
         out_channels (int): Number of output features.
-        normalization (str, optional): The normalization scheme for the graph Laplacian (default: "sym").
-        bias (bool, optional): Whether the layer will learn an additive bias. (default: `True`)
+        normalization (str, optional): The normalization scheme for the graph Laplacian. Default: ``"sym"``.
+        bias (bool, optional): Whether the layer will learn an additive bias. Default: ``True``.
     """
 
     def __init__(self,
@@ -218,8 +218,8 @@ class ASTGCNBlock(GNNCell):
         time_conv_strides (int): Time strides during temporal convolution.
         n_vertices (int): Number of vertices in the graph.
         num_of_timestamps (int): Number of time lags.
-        normalization (str, optional): The normalization scheme for the graph Laplacian (default: "sym").
-        bias (bool, optional): Whether the layer will learn an additive bias. (default: `True`)
+        normalization (str, optional): The normalization scheme for the graph Laplacian. Default: ``"sym"``.
+        bias (bool, optional): Whether the layer will learn an additive bias. Default: ``True``.
     """
 
     def __init__(self,
@@ -327,12 +327,12 @@ class ASTGCN(GNNCell):
         num_for_predict (int): Number of predictions to make in the future.
         len_input (int): Length of the input sequence.
         n_vertices (int): Number of vertices in the graph.
-        normalization (str, optional): The normalization scheme for the graph Laplacian. Default: 'sym'.
+        normalization (str, optional): The normalization scheme for the graph Laplacian. Default: ``'sym'``.
             :math:`(L)` is normalized matrix, :math:`(D)` is degree matrix, :math:`(A)` is adjaceny matrix,
             :math:`(I)` is unit matrix.
             :math:`\mathbf{L} = \mathbf{I} - \mathbf{D}^{-1/2} \mathbf{A}
             \mathbf{D}^{-1/2}`
-        bias (bool, optional): Whether the layer will learn an additive bias. Default: True.
+        bias (bool, optional): Whether the layer will learn an additive bias. Default: ``True``.
 
     Inputs:
         - **x** (Tensor) - The input node features for T time periods. The shape is :math:`(B, N, F_{in}, T_{in})`
@@ -345,7 +345,7 @@ class ASTGCN(GNNCell):
     Raises:
         TypeError: If `n_blocks`, `in_channels`, `k`, `n_chev_filters`, `n_time_filters`, `time_conv_strides`,
                    `num_for_predict`, `len_input` or `n_vertices` is not a positive int.
-        ValueError: If `normalization` is not 'sym'.
+        ValueError: If `normalization` is not ``'sym'``.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

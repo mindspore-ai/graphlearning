@@ -27,17 +27,17 @@ def get_laplacian(edge_index, num_nodes, edge_weight=None, normalization='sym'):
             where :math:`N\_e` is the number of edges.
         num_nodes (int): Number of nodes.
         edge_weight (Tensor, optional): Edge weights. The shape is :math:`(N\_e)`
-            where :math:`N\_e` is the number of edges. Default: None.
-        normalization (str, optional): Normalization method. Default: 'sym'.
+            where :math:`N\_e` is the number of edges. Default: ``None``.
+        normalization (str, optional): Normalization method. Default: ``'sym'``.
             :math:`(L)` is normalized matrix, :math:`(D)` is degree matrix, :math:`(A)` is adjaceny matrix,
             :math:`(I)` is unit matrix.
 
-            1. `None`: No normalization
+            1. ``None``: No normalization
                :math:`\mathbf{L} = \mathbf{D} - \mathbf{A}`
-            2. `'sym'`: Symmetric normalization
+            2. ``'sym'``: Symmetric normalization
                :math:`\mathbf{L} = \mathbf{I} - \mathbf{D}^{-1/2} \mathbf{A}
                \mathbf{D}^{-1/2}`
-            3. `'rw'`: Random-walk normalization
+            3. ``'rw'``: Random-walk normalization
                :math:`\mathbf{L} = \mathbf{I} - \mathbf{D}^{-1} \mathbf{A}`
 
     Returns:
@@ -45,7 +45,7 @@ def get_laplacian(edge_index, num_nodes, edge_weight=None, normalization='sym'):
         - **edge_weight** (Tensor) - normalized edge_weight.
 
     Raises:
-        ValueError: if `normalization` not is None or 'sym' or 'rw'.
+        ValueError: if `normalization` not is ``None`` or ``'sym'`` or ``'rw'``.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

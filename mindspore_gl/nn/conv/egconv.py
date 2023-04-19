@@ -40,11 +40,11 @@ class EGConv(GNNCell):
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
         aggregators (str, optional): aggregators to be used. Supported aggregators are
-            `sum`, `mean`, `max`, `min`, `std`, `var`, `symnorm`. Default: 'symnorm'.
-        num_heads (int, optional): Number of heads :math:`H`. Default: 8.
+            ``'sum'``, ``'mean'``, ``'max'``, ``'min'``, ``'std'``, ``'var'``, ``'symnorm'``.
+        num_heads (int, optional): Number of heads :math:`H`. Default: ``8``.
             Must have :math:`out_feat_size % num_heads == 0`.
-        num_bases (int, optional): Number of basis weight :math:`B`. Default: 4.
-        bias (bool, optional): Whether the layer will learn an additive bias. Default: True.
+        num_bases (int, optional): Number of basis weight :math:`B`. Default: ``4``.
+        bias (bool, optional): Whether the layer will learn an additive bias. Default: ``True``.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N, D_{in})`
@@ -59,7 +59,8 @@ class EGConv(GNNCell):
     Raises:
         TypeError: If `in_feat_size` or `out_feat_size` or `num_heads` is not a positive int.
         ValueError: If `out_feat_size` is not divisible by 'num_heads'.
-        ValueError: If `aggregators` is not in ['sum', 'mean', 'max', 'min', 'symnorm', 'var', 'std'].
+        ValueError: If `aggregators` is not ``'sum'``, ``'mean'``, ``'max'``, ``'min'``, ``'symnorm'``,
+            ``'var'`` or ``'std'``.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

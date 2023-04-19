@@ -670,12 +670,12 @@ class Graph:
         Return a graph-level representation by a graph-wise top-k
         on node features.
 
-        If sortby is set to None, the function would perform top-k
+        If `sortby` is set to ``None``, the function would perform top-k
         on all dimensions independently.
 
         Note:
             The value participated in the sort by axis (all value if `sortby` is
-            None) should be greater than zero.
+            ``None``) should be greater than zero.
             Due to the reason that we create zero value for padding
             and they may cover the features.
 
@@ -683,15 +683,15 @@ class Graph:
             node_feat (Tensor): A tensor represent the node feature,
                 with shape :math:`(N\_NODES, F)`. :math:`F` is the dimension of the node feature.
             k (int): Represent how many nodes for top-k.
-            sortby (int): Sort according to which feature. If is None,
-                all features are sorted independently.  Default is None.
+            sortby (int): Sort according to which feature. If is ``None``,
+                all features are sorted independently.  Default is ``None``.
 
         Returns:
             - **topk_output** (Tensor) - a tensor with shape :math:`(B, K, F)`,
               where :math:`B` is the batch size of the input graph.
               :math:`K` is the input 'k', :math:`F` is the feature size.
             - **topk_indices** (Tensor), - a tensor with shape
-              :math:`(B, K)` ( :math:`(B, K, F)` if sortby is set to None),
+              :math:`(B, K)` ( :math:`(B, K, F)` if `sortby` is set to ``None``),
               where :math:`B` is the batch size of the input graph,
               :math:`F` is the feature size.
 
@@ -738,19 +738,19 @@ class Graph:
         Return a graph-level representation by a graph-wise top-k
         on node features.
 
-        If sortby is set to None, the function would perform top-k
+        If `sortby` is set to ``None``, the function would perform top-k
         on all dimensions independently.
 
         Args:
             node_feat (Tensor): A tensor represent the node feature,
                 with shape :math:`(N\_NODES, F)`. :math:`F` is the dimension of the node feature.
             k (int): Represent how many nodes for top-k.
-            sortby (int): Sort according to which feature. If is None,
-                all features are sorted independently.  Default is None.
+            sortby (int): Sort according to which feature. If is ``None``,
+                all features are sorted independently.  Default is ``None``.
 
         Note:
-            The value participated in the sort by axis (all value if sortby is
-            None) should be greater than zero.
+            The value participated in the sort by axis (all value if `sortby` is
+            ``None``) should be greater than zero.
             Due to the reason that we create zero value for padding
             and they may cover the features.
 
@@ -2008,20 +2008,20 @@ class GraphField:
 
     Args:
         src_idx (Tensor, optional): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
-            represents the source node index of COO edge matrix.
+            represents the source node index of COO edge matrix. Default: ``None``.
         dst_idx (Tensor, optional): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
-            represents the destination node index of COO edge matrix.
-        n_nodes (int, optional): An integer, represent the nodes count of the graph.
-        n_edges (int, optional): An integer, represent the edges count of the graph.
+            represents the destination node index of COO edge matrix. Default: ``None``.
+        n_nodes (int, optional): An integer, represent the nodes count of the graph. Default: ``None``.
+        n_edges (int, optional): An integer, represent the edges count of the graph. Default: ``None``.
         indices (Tensor, optional): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
-            represents the indices of CSR edge matrix. Default: None.
+            represents the indices of CSR edge matrix. Default: ``None``.
         indptr (Tensor, optional): A tensor with shape :math:`(N\_NODES)`, with int dtype,
-            represents the indptr of CSR edge matrix. Default: None.
+            represents the indptr of CSR edge matrix. Default: ``None``.
         indices_backward (Tensor, optional): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
-            represents the indices backward of CSR edge matrix. Default: None.
+            represents the indices backward of CSR edge matrix. Default: ``None``.
         indptr_backward (Tensor, optional): A tensor with shape :math:`(N\_NODES)`, with int dtype,
-            represents the indptr backward of CSR edge matrix. Default: None.
-        csr (bool, optional): Is the matrix CSR type. Default: False.
+            represents the indptr backward of CSR edge matrix. Default: ``None``.
+        csr (bool, optional): Is the matrix CSR type. Default: ``False``.
 
     Supported Platforms:
         ``Ascend`` ``GPU``
@@ -2115,26 +2115,26 @@ class BatchedGraphField(GraphField):
 
     Args:
         src_idx (Tensor, optional): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
-            represents the source node index of COO edge matrix.
+            represents the source node index of COO edge matrix. Default: ``None``.
         dst_idx (Tensor, optional): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
-            represents the destination node index of COO edge matrix.
-        n_nodes (int, optional): An integer, represent the nodes count of the graph.
-        n_edges (int, optional): An integer, represent the edges count of the graph.
+            represents the destination node index of COO edge matrix. Default: ``None``.
+        n_nodes (int, optional): An integer, represent the nodes count of the graph. Default: ``None``.
+        n_edges (int, optional): An integer, represent the edges count of the graph. Default: ``None``.
         ver_subgraph_idx (Tensor, optional): A tensor with shape :math:`(N\_NODES)`, with int dtype,
-            indicates each node belonging to which subgraph.
+            indicates each node belonging to which subgraph. Default: ``None``.
         edge_subgraph_idx (Tensor, optional): A tensor with shape :math:`(N\_EDGES,)`, with int dtype,
-            indicates each edge belonging to which subgraph.
+            indicates each edge belonging to which subgraph. Default: ``None``.
         graph_mask (Tensor, optional): A tensor with shape :math:`(N\_GRAPHS,)`, with int dtype,
-            indicates whether the subgraph is exist.
+            indicates whether the subgraph is exist. Default: ``None``.
         indices (Tensor, optional): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
-            represents the indices of CSR edge matrix. Default: None.
+            represents the indices of CSR edge matrix. Default: ``None``.
         indptr (Tensor, optional): A tensor with shape :math:`(N\_NODES)`, with int dtype,
-            represents the indptr of CSR edge matrix. Default: None.
+            represents the indptr of CSR edge matrix. Default: ``None``.
         indices_backward (Tensor, optional): A tensor with shape :math:`(N\_EDGES)`, with int dtype,
-            represents the indices backward of CSR edge matrix. Default: None.
+            represents the indices backward of CSR edge matrix. Default: ``None``.
         indptr_backward (Tensor, optional): A tensor with shape :math:`(N\_NODES)`, with int dtype,
-            represents the indptr backward of CSR edge matrix. Default: None.
-        csr (bool, optional): Is the graph is CSR type. Default: False.
+            represents the indptr backward of CSR edge matrix. Default: ``None``.
+        csr (bool, optional): Is the graph is CSR type. Default: ``False``.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

@@ -33,7 +33,7 @@ def gcn_norm(edge_index, n_nodes):
 
     Raises:
         TypeError: if `n_nodes` is not a positive int.
-        TypeError: if `edge_index` type is not the mindspore.Tensor.
+        TypeError: if `edge_index` type is not the `mindspore.Tensor`.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

@@ -40,9 +40,9 @@ class GCNConv(GNNCell):
     Args:
         in_feat_size (int): Input node feature size.
         out_size (int): Output node feature size.
-        activation (Cell, optional): Activation function. Default: None.
+        activation (Cell, optional): Activation function. Default: ``None``.
         dropout (float, optional): The dropout rate, greater than 0 and less equal than 1. E.g. dropout=0.1,
-            dropping out 10% of input units. Default: 0.5.
+            dropping out 10% of input units. Default: ``0.5``.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N, D_{in})`
@@ -60,7 +60,7 @@ class GCNConv(GNNCell):
     Raises:
         TypeError: If `in_feat_size` or `out_size` is not an int.
         TypeError: If `dropout` is not a float.
-        TypeError: If `activation` is not a mindspore.nn.Cell.
+        TypeError: If `activation` is not a `mindspore.nn.Cell`.
         ValueError: If `dropout` is not in range (0.0, 1.0]
 
     Supported Platforms:

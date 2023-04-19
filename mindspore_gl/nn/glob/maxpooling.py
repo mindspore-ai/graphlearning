@@ -33,7 +33,7 @@ class MaxPooling(GNNCell):
 
     Outputs:
         - **x** (Tensor) - The output representation for graphs. The shape is :math:`(2, D_{out})`
-          where :math:`D_{out}` is the feature size of nodes
+          where :math:`D_{out}` is the feature size of nodes.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

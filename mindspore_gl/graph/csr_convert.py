@@ -55,12 +55,13 @@ def graph_csr_data(src_idx, dst_idx, n_nodes, n_edges, node_feat=None, node_labe
             represents the destination node index of COO edge matrix.
         n_nodes (int): integer, represent the nodes count of the graph.
         n_edges (int): integer, represent the edges count of the graph.
-        node_feat (Union[Tensor, numpy.ndarray, optional]): node feature.
-        node_label (Union[Tensor, numpy.ndarray, optional]): node labels.
-        train_mask (Union[Tensor, numpy.ndarray, optional]): mask of train index.
-        val_mask (Union[Tensor, numpy.ndarray, optional]): msk of train index.
-        test_mask (Union[Tensor, numpy.ndarray, optional]): mask of train index.
+        node_feat (Union[Tensor, numpy.ndarray, optional]): node feature. Default: ``None``.
+        node_label (Union[Tensor, numpy.ndarray, optional]): node labels. Default: ``None``.
+        train_mask (Union[Tensor, numpy.ndarray, optional]): mask of train index. Default: ``None``.
+        val_mask (Union[Tensor, numpy.ndarray, optional]): msk of train index. Default: ``None``.
+        test_mask (Union[Tensor, numpy.ndarray, optional]): mask of train index. Default: ``None``.
         rerank (bool, optional): whether to reorder node features, node labels, and masks.
+            Default: ``False``.
 
     Returns:
         - **csr_g** (tuple) - info of csr graph, it contains indices of csr graph, indptr of csr graph,
@@ -147,9 +148,10 @@ def sampling_csr_data(src_idx, dst_idx, n_nodes, n_edges, seeds_idx=None, node_f
             represents the destination node index of COO edge matrix.
         n_nodes (int): integer, represent the nodes count of the graph.
         n_edges (int): integer, represent the edges count of the graph.
-        seeds_idx (numpy.ndarray): start nodes for neighbor sampling.
-        node_feat (Union[Tensor, numpy.ndarray], optional): node feature.
+        seeds_idx (numpy.ndarray): start nodes for neighbor sampling. Default: ``None``.
+        node_feat (Union[Tensor, numpy.ndarray], optional): node feature. Default: ``None``.
         rerank (bool, optional): whether to reorder node features, node labels, and masks.
+            Default: ``False``.
 
     Returns:
         - **csr_g** (tuple) - info of csr graph, it contains indices of csr graph, indptr of csr graph,
@@ -219,13 +221,14 @@ def batch_graph_csr_data(src_idx, dst_idx, n_nodes, n_edges, node_map_idx, node_
         n_nodes (int): integer, represent the nodes count of the graph.
         n_edges (int): integer, represent the edges count of the graph.
         node_map_idx (numpy.ndarray): ID of the subgraph to each node belongs to.
-        node_feat (Union[Tensor, numpy.ndarray, optional]): node feature.
+        node_feat (Union[Tensor, numpy.ndarray, optional]): node feature. Default: ``None``.
         rerank (bool, optional): whether to reorder node features, node labels, and masks.
+            Default: ``False``.
 
     Returns:
         - **csr_g** (tuple) - info of csr graph, it contains indices of csr graph, indptr of csr graph,
-            node numbers of csr graph, edges numbers of csr graph, pre-stored backward indices of csr graph,
-            pre-stored backward indptr of csr graph.
+          node numbers of csr graph, edges numbers of csr graph, pre-stored backward indices of csr graph,
+          pre-stored backward indptr of csr graph.
         - **node_map_idx** (numpy.ndarray) - reordered start map index.
         - **node_feat** (Union[Tensor, numpy.ndarray, optional]) - reorder node features.
 

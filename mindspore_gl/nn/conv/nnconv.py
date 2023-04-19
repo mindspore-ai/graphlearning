@@ -36,9 +36,9 @@ class NNConv(GNNCell):
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
         edge_embed (mindspore.nn.Cell): Edge embedding function Cell.
-        aggregator_type (str, optional): Type of aggregator, should be 'sum'. Default: 'sum'.
-        residual (bool, optional): Whether use residual. Default: False.
-        bias (bool, optional): Whether use bias. Default: True.
+        aggregator_type (str, optional): Type of aggregator, should be ``'sum'``. Default: ``'sum'``.
+        residual (bool, optional): Whether use residual. Default: ``False``.
+        bias (bool, optional): Whether use bias. Default: ``True``.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N,D\_in)`
@@ -52,7 +52,7 @@ class NNConv(GNNCell):
           where :math:`N` is the number of nodes and :math:`D\_out` could be of any shape.
 
     Raises:
-        TypeError: if `edge_embed` type is not mindspore.nn.Cell or `aggregator_type` is not 'sum'.
+        TypeError: if `edge_embed` type is not `mindspore.nn.Cell` or `aggregator_type` is not ``'sum'``.
         TypeError: If `in_feat_size` or `out_feat_size` is not an int.
         TypeError: If `residual` or `bias` is not a bool.
 
