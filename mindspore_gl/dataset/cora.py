@@ -70,13 +70,13 @@ class CoraV2(BaseDataSet):
 
     Args:
         root(str): path to the root directory that contains cora_v2_with_mask.npz.
-        name(str, optional): select dataset type, optional: ["cora_v2", "citeseer", "pubmed"].
+        name(str, optional): select dataset type, support ``"cora_v2"``, ``"citeseer"``, ``"pubmed"``.
 
-          - cora_v2: Machine learning papers.
+          - ``cora_v2``: Machine learning papers.
 
-          - citeseer: Agents, AI, DB, IR, ML and HCI papers.
+          - ``citeseer``: Agents, AI, DB, IR, ML and HCI papers.
 
-          - pubmed: Scientific publications on diabetes.
+          - ``pubmed``: Scientific publications on diabetes.
 
     Raises:
         RuntimeError: If `root` does not contain data files.

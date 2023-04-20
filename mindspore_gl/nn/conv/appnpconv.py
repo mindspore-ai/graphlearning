@@ -35,7 +35,7 @@ class APPNPConv(GNNCell):
     Args:
         k (int): Number of iters.
         alpha (float): Transmission probability.
-        edge_drop (float, optional): The dropout rate on the edge of messages received by each node. Default: 0.0.
+        edge_drop (float, optional): The dropout rate on the edge of messages received by each node. Default: ``0.0``.
 
     Inputs:
         - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,

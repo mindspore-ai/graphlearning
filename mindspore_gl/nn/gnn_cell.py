@@ -51,7 +51,7 @@ class GNNCell(Cell):
         Enable display code comparison.
 
         Args:
-            screen_width (int, optional): Determines the screen width on which the code is displayed. Default: 200.
+            screen_width (int, optional): Determines the screen width on which the code is displayed. Default: ``200``.
 
         Examples:
             >>> from mindspore_gl.nn import GNNCell
@@ -90,11 +90,11 @@ class GNNCell(Cell):
         Whether to use sparse operator to accelerate calculation.
 
         Args:
-            csr (bool, optional): Is it a csr data structure. Default: False.
-            backward (bool, optional): Whether to use custom back propagation. Default: False.
+            csr (bool, optional): Is it a csr data structure. Default: ``False``.
+            backward (bool, optional): Whether to use custom back propagation. Default: ``False``.
 
         Raises:
-            ValueError: If `csr` is False and `backward` is True.
+            ValueError: If `csr` is ``False`` and `backward` is ``True``.
 
         Examples:
             >>> from mindspore_gl.nn import GNNCell

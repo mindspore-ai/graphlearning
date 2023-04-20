@@ -40,9 +40,9 @@ class GMMConv(GNNCell):
         out_feat_size (int): Output node feature size.
         coord_dim (int): Dimension of pseudo-coordinates.
         n_kernels (int): Number of kernels.
-        residual (bool, optional): Whether use residual. Default: False.
-        bias (bool, optional): Whether use bias. Default: False.
-        aggregator_type (str, optional): Type of aggregator, should be 'sum'. Default: 'sum'.
+        residual (bool, optional): Whether use residual. Default: ``False``.
+        bias (bool, optional): Whether use bias. Default: ``False``.
+        aggregator_type (str, optional): Type of aggregator, should be ``'sum'``. Default: ``'sum'``.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N, D_{in})`
@@ -56,7 +56,7 @@ class GMMConv(GNNCell):
           `out_size` in `Args`.
 
     Raises:
-        SyntaxError: when the aggregator type not equals to 'sum'.
+        SyntaxError: when the aggregator type not equals to ``'sum'``.
         TypeError: If `in_feat_size` or `out_feat_size` or `coord_dim` or `n_kernels` is not an int.
         TypeError: If `bias` or `residual` is not a bool.
 

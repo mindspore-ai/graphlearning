@@ -23,10 +23,10 @@ mindspore_gl.nn.SAGEConv
     参数：
         - **in_feat_size** (int) - 输入节点特征大小。
         - **out_feat_size** (int) - 输出节点特征大小。
-        - **aggregator_type** (str, 可选) - 聚合器的类型，应在'pool'、'lstm'和'mean'中。默认值：'pool'。
-        - **bias** (bool, 可选) - 是否使用偏置。默认值：True。
-        - **norm** (Cell, 可选) - 归一化函数单元。默认值：None。
-        - **activation** (Cell, 可选) - 激活函数Cell。默认值：None。
+        - **aggregator_type** (str, 可选) - 聚合器的类型，应在 ``'pool'``、``'lstm'`` 和 ``'mean'`` 中。默认值：``'pool'``。
+        - **bias** (bool, 可选) - 是否使用偏置。默认值：``True``。
+        - **norm** (Cell, 可选) - 归一化函数单元。默认值：``None``。
+        - **activation** (Cell, 可选) - 激活函数Cell。默认值：``None``。
 
     输入：
         - **x** (Tensor) - 输入节点特征。Shape为 :math:`(N,D\_in)`
@@ -40,8 +40,8 @@ mindspore_gl.nn.SAGEConv
           其中 :math:`N` 是节点数， :math:`D\_out` 可以是任何shape。
 
     异常：
-        - **KeyError** - 如果 `aggregator` 类型不是pool、lstm或mean。
+        - **KeyError** - 如果 `aggregator` 类型不是 ``'pool'``、 ``'lstm'`` 或 ``'mean'``。
         - **TypeError** - 如果 `in_feat_size` 或 `out_feat_size` 不是int。
         - **TypeError** - 如果 `bias` 不是bool。
-        - **TypeError** - 如果 `activation` 类型不是mindspore.nn.Cell。
-        - **TypeError** - 如果 `norm` 类型不是mindspore.nn.Cell。
+        - **TypeError** - 如果 `activation` 类型不是 `mindspore.nn.Cell`。
+        - **TypeError** - 如果 `norm` 类型不是 `mindspore.nn.Cell`。

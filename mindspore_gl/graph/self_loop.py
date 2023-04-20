@@ -28,12 +28,13 @@ def remove_self_loop(adj, mode='dense'):
 
     Args:
         adj(scipy.sparse.coo): Target matrix.
-        mode(str, optional): type of operation matrix. Support type is 'dense' and ‘coo’. Default: 'dense'.
+        mode(str, optional): type of operation matrix. Support type is ``'dense'`` and ``'coo'``.
+            Default: ``'dense'``.
 
     Returns:
         - **adj** (scipy.sparse.coo) - The object after removing the diagonal matrix.
-          'dense' returns the Tensor type.
-          'coo' returns the scipy.sparse.coo type.
+          ``'dense'`` returns the Tensor type.
+          ``'coo'`` returns the scipy.sparse.coo type.
 
     Supported Platforms:
         ``Ascend`` ``GPU``
@@ -72,20 +73,21 @@ def add_self_loop(edge_index, edge_weight, node, fill_value, mode='dense'):
             where :math:`N\_e` is the number of edges.
         node(int): Number of nodes.
         fill_value(Tensor): self-loop value.
-        mode(str, optional): type of operation matrix. Support type is 'dense' and ‘coo’. Default: 'dense'.
+        mode(str, optional): type of operation matrix. Support type is ``'dense'`` and ``'coo'``.
+            Default: ``'dense'``.
 
     Returns:
-        if `mode` is 'dense',
+        if `mode` is ``'dense'``,
 
         - **new_adj** (Tensor) - dense matrix.
 
-        if `mode` is 'coo',
+        if `mode` is ``'coo'``,
 
         - **edge_index** (Tensor) - new edge_index.
-        - **edge_weight** (Tensor) - new edge_weight
+        - **edge_weight** (Tensor) - new edge_weight.
 
     Raises:
-        ValueError: if `mode` not is 'coo' or 'dense'.
+        ValueError: if `mode` not is ``'coo'`` or ``'dense'``.
         ValueError: if `fill_value` length not equal to `node`.
         TypeError: If `node` is not a positive int.
 

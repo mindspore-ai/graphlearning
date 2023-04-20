@@ -129,8 +129,8 @@ class PadMode(Enum):
     """
     Padding Mode, for graph and 2D array.
 
-    - PadMode.CONST: padding the array into user specified shape.
-    - PadMode.AUTO: auto generate the padding shape.
+    - ``PadMode.CONST``: padding the array into user specified shape.
+    - ``PadMode.AUTO``: auto generate the padding shape.
 
     Supported Platforms:
         ``Ascend`` ``GPU``
@@ -153,8 +153,8 @@ class PadDirection(Enum):
     """
     Padding Direction for 2d array specifically.
 
-    - PadDirection.ROW: padding in the direction of the row.
-    - PadDirection.COL: padding in the direction of the col.
+    - ``PadDirection.ROW``: padding in the direction of the row.
+    - ``PadDirection.COL``: padding in the direction of the col.
 
     Supported Platforms:
         ``Ascend`` ``GPU``
@@ -184,24 +184,24 @@ class PadArray2d:
         dtype(numpy.dtype): To determine result's data type.
         direction(PadDirection): Pad direction for array, PadDirection.
             ROW means we will pad along axis=1, PadDirection.COl means we will pad along axis=0.
-        fill_value(Union[float, int, optional]): Fill value for padded region. Default: None.
+        fill_value(Union[float, int, optional]): Fill value for padded region. Default: ``None``.
         reset_with_fill_value(bool, optional): PadArray2d will reuse memory buffer,
-            you can set this value to False if you dont care about the padded value. Default: True.
-        mode(PadMode, optional): Pad mode for array, if PadMode.CONST, this op will pad array to user-specific
-            size. If PadMode.AUTO, this will choose padded result length according to input's length.
+            you can set this value to ``False`` if you dont care about the padded value. Default: ``True``.
+        mode(PadMode, optional): Pad mode for array, if ``PadMode.CONST``, this op will pad array to user-specific
+            size. If ``PadMode.AUTO``, this will choose padded result length according to input's length.
             The expected length can be calculated as
-            :math:`length=2^{ceil\left ( \log_{2}{input\_length}  \right ) }`
-            Default: mindspore_gl.graph.PadMode.AUTO.
-        size(Union[List, Tuple, optional]): User specific size for padding result. Default: None.
+            :math:`length=2^{\text{ceil}\left ( \log_{2}{input\_length}  \right ) }`
+            Default: ``mindspore_gl.graph.PadMode.AUTO``.
+        size(Union[List, Tuple, optional]): User specific size for padding result. Default: ``None``.
         use_shared_numpy(bool, optional): If we use SharedNDArray for speeding up inter process communication.
             This is recommended if you do feature collection and feature padding in child process and
-            need inter process communication for graph feature. Default: False.
+            need inter process communication for graph feature. Default: ``False``.
 
     Inputs:
         - **input_array** (numpy.array) - input numpy array for pad.
 
     Raises:
-        ValueError: pad size should be provided when padding mode is PadMode.CONST.
+        ValueError: pad `size` should be provided when padding `mode` is ``PadMode.CONST``.
 
     Supported Platforms:
         ``Ascend`` ``GPU``
@@ -370,18 +370,19 @@ class PadArray2d:
 class PadHomoGraph:
     r"""
     Pad MindHomoGraph, We pad graph by adding additional nodes and edges between these nodes. In short,
-    :math:`PadHomoGraph(graph1) = BatchHomoGraph(graph1, fake\_graph)`
+    :math:`\text{PadHomoGraph}(graph1) = \text{BatchHomoGraph}(graph1, fake\_graph)`
     node count and edge count in fake_graph is determined by user-specific parameters.
 
     Args:
-        n_node(int, optional): target graph's node count. Default: None.
-        n_edge(int, optional): target graph's edge count. Default: None.
-        mode(PadMode, optional): Pad mode, if PadMode.CONST, target graph will have n_node nodes and n_edge edges.
-            If PadMode.AUTO
-            target graph's node_count and edge_count is calculated according to input graph's size by
-            :math:`n\_node = 2^{ceil(log2(input\_graph.node\_count))}` ,
-            :math:`n\_edge = 2^{ceil(log2(input\_graph.edge\_count))}` . Default: PadMode.AUTO.
-        csr(bool, optional): Is the csr graph. Default: False.
+        n_node(int, optional): target graph's node count. Default: ``None``.
+        n_edge(int, optional): target graph's edge count. Default: ``None``.
+        mode(PadMode, optional): Pad mode, if ``PadMode.CONST``, target graph will have n_node nodes
+            and n_edge edges. If ``PadMode.AUTO`` target graph's node_count and edge_count is calculated
+            according to input graph's size by
+            :math:`n\_node = 2^{\text{ceil}(\log_{2}(input\_graph.node\_count))}` ,
+            :math:`n\_edge = 2^{\text{ceil}(\log_{2}(input\_graph.edge\_count))}` .
+            Default: ``mindspore_gl.graph.PadMode.AUTO``.
+        csr(bool, optional): Is the csr graph. Default: ``False``.
 
     Inputs:
         - **graph** (MindHomoGraph) - input graph.
@@ -530,21 +531,22 @@ class PadCsrEdge:
     Args:
         pad_nodes(int): nodes numbers of the graph.
         reset_with_fill_value(bool, optional): PadArray2d will reuse memory buffer,
-            you can set this value to False if you dont care about the padded value. Default: True.
-        length(int, optional): User specific length for padding result. Default: None.
-        mode(PadMode, optional): Pad mode for array, if PadMode.CONST, this op will pad array to user-specific size.
-            If PadMode.AUTO, this will choose padded result length according to input's length.
-            The expected length can be calculated as :math:`length=2^{ceil\left ( \log_{2}{input\_length}  \right ) }`
-            Default: mindspore_gl.graph.PadMode.AUTO.
+            you can set this value to ``False`` if you dont care about the padded value. Default: ``True``.
+        length(int, optional): User specific length for padding result. Default: ``None``.
+        mode(PadMode, optional): Pad mode for array, if ``PadMode.CONST``, this op will pad array to user-specific size.
+            If ``PadMode.AUTO``, this will choose padded result length according to input's length.
+            The expected length can be calculated as
+            :math:`length=2^{\text{ceil}\left ( \log_{2}{input\_length}  \right ) }`
+            Default: ``mindspore_gl.graph.PadMode.AUTO``.
         use_shared_numpy(bool, optional): If we use SharedNDArray for speeding up inter process communication.
             This is recommended if you do feature collection and feature padding in child process and
-            need inter process communication for graph feature. Default: False.
+            need inter process communication for graph feature. Default: ``False``.
 
     Inputs:
         - **input_array** (numpy.array) - input numpy array for pad.
 
     Raises:
-        ValueError: pad length should be provided when padding mode is PadMode.CONST.
+        ValueError: pad `length` should be provided when padding `mode` is ``PadMode.CONST``.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

@@ -32,7 +32,7 @@ class GlobalAttentionPooling(GNNCell):
     Args:
         gate_nn (Cell): The neural network for computing attention score for each feature.
         feat_nn (Cell, optional): The neural network applied to each feature
-            before combining each feature with an attention score. Default: None.
+            before combining each feature with an attention score. Default: ``None``.
 
     Inputs:
         - **x** (Tensor) - The input node features to be updated. The shape is :math:`(N, D)`
@@ -41,10 +41,10 @@ class GlobalAttentionPooling(GNNCell):
 
     Outputs:
         - **x** (Tensor) - The output representation for graphs. The shape is :math:`(2, D_{out})`
-          where :math:`D_{out}` is the feature size of nodes
+          where :math:`D_{out}` is the feature size of nodes.
 
     Raises:
-        TypeError: if `gate_nn` type or `feat_nn` type is not mindspore.nn.Cell
+        TypeError: if `gate_nn` type or `feat_nn` type is not `mindspore.nn.Cell`.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

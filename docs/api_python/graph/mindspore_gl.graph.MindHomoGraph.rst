@@ -88,5 +88,5 @@ mindspore_gl.graph.MindHomoGraph
 
         参数：
             - **adj_coo** (numpy.ndarray) - 图的邻接矩阵，COO格式。
-            - **node_dict** (dict, 可选) - 节点id字典。默认值：None。
-            - **edge_ids** (numpy.ndarray, 可选) - 边数组。默认值：None。
+            - **node_dict** (dict, 可选) - 节点id字典。默认值：``None``。
+            - **edge_ids** (numpy.ndarray, 可选) - 边数组。默认值：``None``。

@@ -19,7 +19,7 @@ mindspore_gl.nn.DOTGATConv
         - **in_feat_size** (int) - 输入节点特征大小。
         - **out_feat_size** (int) - 输出节点特征大小。
         - **num_heads** (int) - GAT中使用的attention头数。
-        - **bias** (bool, 可选) - 是否使用偏置。默认值：False。
+        - **bias** (bool, 可选) - 是否使用偏置。默认值：``False``。
 
     输入：
         - **x** (Tensor) - 输入节点特征。Shape为 :math:`(N,*)` ，其中 :math:`N` 是节点数， :math:`*` 可以是任何shape。

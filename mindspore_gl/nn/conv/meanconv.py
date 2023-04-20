@@ -44,10 +44,10 @@ class MeanConv(GNNCell):
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
         feat_drop (float, optional): The dropout rate, greater equal than 0 and less than 1. E.g. dropout=0.1,
-            dropping out 10% of input units. Default: 0.4.
-        bias (bool, optional): Whether use bias. Default: False.
-        norm (Cell, optional): Normalization function Cell. Default: None.
-        activation (Cell, optional): Activation function Cell. Default: None.
+            dropping out 10% of input units. Default: ``0.4``.
+        bias (bool, optional): Whether to use bias. Default: ``False``.
+        norm (Cell, optional): Normalization function Cell. Default: ``None``.
+        activation (Cell, optional): Activation function Cell. Default: ``None``.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N,D\_in)`
@@ -63,9 +63,9 @@ class MeanConv(GNNCell):
     Raises:
         TypeError: If `in_feat_size` or `out_feat_size` is not an int.
         TypeError: If `bias` is not a bool.
-        TypeError: If `norm` is not a mindspore.nn.Cell.
+        TypeError: If `norm` is not a `mindspore.nn.Cell`.
         ValueError: If `dropout` is not in range (0.0, 1.0]
-        ValueError: If `activation` is not tanh or relu.
+        ValueError: If `activation` is not `tanh` or `relu`.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

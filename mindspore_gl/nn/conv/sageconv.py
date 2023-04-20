@@ -40,11 +40,11 @@ class SAGEConv(GNNCell):
     Args:
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
-        aggregator_type (str, optional): Type of aggregator, should in 'pool', 'lstm' and 'mean'.
-            Default: 'pool'.
-        bias (bool, optional): Whether use bias. Default: True.
-        norm (Cell, optional): Normalization function Cell. Default: None.
-        activation (Cell, optional): Activation function Cell. Default: None.
+        aggregator_type (str, optional): Type of aggregator, should in ``'pool'``, ``'lstm'`` and ``'mean'``.
+            Default: ``'pool'``.
+        bias (bool, optional): Whether use bias. Default: ``True``.
+        norm (Cell, optional): Normalization function Cell. Default: ``None``.
+        activation (Cell, optional): Activation function Cell. Default: ``None``.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N,D\_in)`
@@ -60,9 +60,9 @@ class SAGEConv(GNNCell):
     Raises:
         TypeError: If `in_feat_size` or `out_feat_size` is not an int.
         TypeError: If `bias` is not a bool.
-        KeyError: if `aggregator` type is not 'pool', 'lstm' or 'mean'.
-        TypeError: if `activation` type is not mindspore.nn.Cell
-        TypeError: if `norm` type is not mindspore.nn.Cell
+        KeyError: if `aggregator` type is not ``'pool'``, ``'lstm'`` or ``'mean'``.
+        TypeError: if `activation` type is not `mindspore.nn.Cell`.
+        TypeError: if `norm` type is not `mindspore.nn.Cell`.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

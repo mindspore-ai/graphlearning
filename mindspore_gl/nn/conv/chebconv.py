@@ -46,8 +46,8 @@ class ChebConv(GNNCell):
     Args:
         in_channels (int): Input node feature size.
         out_channels (int): Output node feature size.
-        k (int, optional): Chebyshev filter size. Default: 3.
-        bias (bool, optional): Whether use bias. Default: True.
+        k (int, optional): Chebyshev filter size. Default: ``3``.
+        bias (bool, optional): Whether use bias. Default: ``True``.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N, D_{in})`

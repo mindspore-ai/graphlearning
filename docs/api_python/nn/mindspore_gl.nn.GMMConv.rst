@@ -20,9 +20,9 @@ mindspore_gl.nn.GMMConv
         - **out_feat_size** (int) - 输出节点特征大小。
         - **coord_dim** (int) - 伪坐标的维度。
         - **n_kernels** (int) - 内核数。
-        - **residual** (bool, 可选) - 是否使用残差。默认值：False。
-        - **bias** (bool, 可选) - 是否使用偏置。默认值：False。
-        - **aggregator_type** (str, 可选) - 聚合器的类型。默认值：'sum'。
+        - **residual** (bool, 可选) - 是否使用残差。默认值：``False``。
+        - **bias** (bool, 可选) - 是否使用偏置。默认值：``False``。
+        - **aggregator_type** (str, 可选) - 聚合器的类型。默认值：``'sum'``。
 
     输入：
         - **x** (Tensor) - 输入节点特征。Shape为 :math:`(N, D_{in})` ，其中 :math:`N` 是节点数， :math:`D_{in}` 应等于参数中的 `in_feat_size` 。
@@ -33,6 +33,6 @@ mindspore_gl.nn.GMMConv
         - Tensor，Shape为 :math:`(N, D_{out})`的输出节点特征，其中 :math:`(D_{out})` 应等于参数中的 `out_size`。
 
     异常：
-        - **SyntaxError** - 当 `aggregation_type` 不等于sum时。
+        - **SyntaxError** - 当 `aggregation_type` 不等于 ``'sum'`` 时。
         - **TypeError** - 如果 `in_feat_size` 或 `out_feat_size` 或 `coord_dim` 或 `n_kernels` 不是int。
         - **TypeError** - 如果 `bias` 或 `resual` 不是bool。

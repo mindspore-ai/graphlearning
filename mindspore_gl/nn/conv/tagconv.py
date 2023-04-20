@@ -34,9 +34,9 @@ class TAGConv(GNNCell):
     Args:
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
-        num_hops (int, optional): Number of hops. Default: 2.
-        bias (bool, optional): Whether use bias. Default: True.
-        activation (Cell, optional): Activation function. Default: None.
+        num_hops (int, optional): Number of hops. Default: ``2``.
+        bias (bool, optional): Whether use bias. Default: ``True``.
+        activation (Cell, optional): Activation function. Default: ``None``.
 
     Inputs:
         - **x** (Tensor) - The input node features. The shape is :math:`(N, D_{in})`
@@ -54,7 +54,7 @@ class TAGConv(GNNCell):
     Raises:
         TypeError: If `in_feat_size` or `out_feat_size` or `num_hops` is not an int.
         TypeError: If `bias` is not a bool.
-        TypeError: If `activation` is not a mindspore.nn.Cell.
+        TypeError: If `activation` is not a `mindspore.nn.Cell`.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

@@ -23,10 +23,10 @@ mindspore_gl.nn.MeanConv
     参数：
         - **in_feat_size** (int) - 输入节点特征大小。
         - **out_feat_size** (int) - 输出节点特征大小。
-        - **feat_drop** (float, 可选) - dropout rate，大于等于0，小于1。例如，feat_drop=0.1，抛弃10%的输入单元。默认值：0.4。
-        - **bias** (bool, 可选) - 是否使用偏置。默认值：False。
-        - **norm** (Cell, 可选) - 归一化函数单元。默认值：None。
-        - **activation** (Cell, 可选) - 激活函数Cell。默认值：None。
+        - **feat_drop** (float, 可选) - dropout rate，大于等于0，小于1。例如，feat_drop=0.1，抛弃10%的输入单元。默认值：``0.4``。
+        - **bias** (bool, 可选) - 是否使用偏置。默认值：``False``。
+        - **norm** (Cell, 可选) - 归一化函数单元。默认值：``None``。
+        - **activation** (Cell, 可选) - 激活函数Cell。默认值：``None``。
 
     输入：
         - **x** (Tensor) - 输入节点特征。Shape为 :math:`(N,D\_in)`
@@ -42,6 +42,6 @@ mindspore_gl.nn.MeanConv
     异常：
         - **TypeError** - 如果 `in_feat_size` 或 `out_feat_size` 不是int。
         - **TypeError** - 如果 `bias` 不是bool。
-        - **TypeError** - 如果 `norm` 不是mindspore.nn.Cell。
+        - **TypeError** - 如果 `norm` 不是 `mindspore.nn.Cell`。
         - **ValueError** - 如果 `dropout` 不在范围[0.0, 1.0)内。
-        - **ValueError** - 如果 `activation` 不是tanh或relu。
+        - **ValueError** - 如果 `activation` 不是 ``tanh`` 或 ``relu``。

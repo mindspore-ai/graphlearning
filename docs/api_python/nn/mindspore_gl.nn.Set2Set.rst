@@ -30,7 +30,7 @@ mindspore_gl.nn.Set2Set
 
     输出：
         - **x** (Tensor) - 图形的输出表示。Shape为 :math:`(2, D_{out})`
-          其中 :math:`D_{out}` 是节点特征的双倍大小
+          其中 :math:`D_{out}` 是节点特征的双倍大小。
 
     异常：
         - **TypeError** - 如果 `input_size` 或 `num_iters` 或 `num_layers` 不是int。

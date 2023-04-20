@@ -33,7 +33,7 @@ class EDGEConv(GNNCell):
         in_feat_size (int): Input node feature size.
         out_feat_size (int): Output node feature size.
         batch_norm (bool): Whether use batch norm.
-        bias (bool, optional): Whether use bias. Default: True.
+        bias (bool, optional): Whether use bias. Default: ``True``.
 
     Inputs:
         - **x** (Tensor): The input node features. The shape is :math:`(N,*)` where :math:`N` is the number of nodes,
@@ -44,10 +44,10 @@ class EDGEConv(GNNCell):
         - Tensor, output node features. The shape is :math:`(N, out\_feat\_size)`.
 
     Raises:
-        TypeError: If 'in_feat_size' is not a positive int.
-        TypeError: If 'out_feat_size' is not a positive int.
-        TypeError: If 'batch_norm' is not a bool.
-        TypeError: If 'bias' is not a bool.
+        TypeError: If `in_feat_size` is not a positive int.
+        TypeError: If `out_feat_size` is not a positive int.
+        TypeError: If `batch_norm` is not a bool.
+        TypeError: If `bias` is not a bool.
 
     Supported Platforms:
         ``Ascend`` ``GPU``

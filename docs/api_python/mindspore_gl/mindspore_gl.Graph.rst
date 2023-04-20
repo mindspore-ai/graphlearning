@@ -233,19 +233,19 @@ mindspore_gl.Graph
         如果排序方式设置为无，则函数将独立对所有维度执行top-k。
 
         .. note::
-            将按选定维度排序的值（如果 `sortby` 为None，则为所有维度）大于零。
+            将按选定维度排序的值（如果 `sortby` 为 ``None``，则为所有维度）大于零。
 
             由于通过零值来对特征进行填充，其余特征可能会被零覆盖。
 
         参数：
             - **node_feat** (Tensor) - 节点特征，shape为 :math:`(N\_NODES, F)` ，`F` 是特征维度。
             - **k** (int) - top-k的节点个数。
-            - **sortby** (int) - 根据哪个特征维度排序。如果为无，则所有特征都独立排序。默认值：None。
+            - **sortby** (int) - 根据哪个特征维度排序。如果为 ``None``，则所有特征都独立排序。默认值：``None``。
 
         返回：
             - **topk_output** (Tensor) - 特征Tensor的shape为 :math:`(B, K, F)` ，其中 :math:`B` 为输入图的批次大小，
               :math:`K` 为输入的 'k', :math:`F` 为特征维度。
-            - **topk_indices** (Tensor) - top-k的输出索引，shape为 :math:`(B, K)` （当 `sortby` 为None时， :math:`(B, K, F)`），
+            - **topk_indices** (Tensor) - top-k的输出索引，shape为 :math:`(B, K)` （当 `sortby` 为 ``None`` 时， :math:`(B, K, F)`），
               其中 :math:`B` 为输入图的批次大小， :math:`F` 为特征维度。
 
         异常：
@@ -260,19 +260,19 @@ mindspore_gl.Graph
         如果排序方式设置为无，则函数将独立对所有维度执行top-k。
 
         .. note::
-            将按选定维度排序的值（如果 `sortby` 为None，则为所有维度）大于零。
+            将按选定维度排序的值（如果 `sortby` 为 ``None`` ，则为所有维度）大于零。
 
             由于通过零值来对特征进行填充，其余特征可能会被零覆盖。
 
         参数：
             - **node_feat** (Tensor) - 节点特征，shape为 :math:`(N\_NODES, F)` ，`F` 是特征维度。
             - **k** (int) - top-k的节点个数。
-            - **sortby** (int) - 根据哪个特征维度排序。如果为无，则所有特征都独立排序。默认值：None。
+            - **sortby** (int) - 根据哪个特征维度排序。如果为 ``None``，则所有特征都独立排序。默认值：``None``。
 
         返回：
             - **topk_output** (Tensor) - 特征Tensor的shape为 :math:`(B, K, F)` ，其中 :math:`B` 为输入图的批次大小，
                 :math:`K` 为输入的 'k', :math:`F` 为特征维度。
-            - **topk_indices** (Tensor) - top-k的输出索引，shape为 :math:`(B, K)` （当 `sortby` 为None时， :math:`(B, K, F)`），
+            - **topk_indices** (Tensor) - top-k的输出索引，shape为 :math:`(B, K)` （当 `sortby` 为 ``None`` 时， :math:`(B, K, F)`），
                 其中 :math:`B` 为输入图的批次大小， :math:`F` 为特征维度。
 
         异常：
