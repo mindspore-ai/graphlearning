@@ -24,7 +24,7 @@ mindspore_gl.nn.GCNConv
         - **x** (Tensor) - 输入节点功能。Shape为 :math:`(N, D_{in})`
           其中 :math:`N` 是节点数， :math:`D_{in}` 应等于参数中的 `in_feat_size` 。
         - **in_deg** (Tensor) - 节点的入度。Shape为 :math:`(N, )` 其中 :math:`N` 是节点数。
-        - **out_deg** (Tensor) - 节点的出度。Shape为 :math:`(N,)` 。
+        - **out_deg** (Tensor) - 节点的出度。Shape为 :math:`(N, )` 。
           其中 :math:`N` 是节点数。
         - **g** (Graph) - 输入图。
 
