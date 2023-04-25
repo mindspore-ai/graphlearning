@@ -1,7 +1,7 @@
 """version info and check."""
 # pylint: disable=C0111
 import time
-__version__ = '0.2.0rc1'
+__version__ = '0.2.0'
 
 def mindspore_version_check():
     """
@@ -24,7 +24,7 @@ def mindspore_version_check():
         raise
 
     ms_gl_version_match = {'0.1': '1.6.1', '0.2.0a0': '1.10.0',
-                           'master': '2.0.0', '0.2.0rc1': '2.0.0'}
+                           'master': '2.0.0', '0.2.0': '2.0.0'}
 
     ms_version = ms.__version__
     logger.info("Current MindSpore version is {}".format(ms_version))

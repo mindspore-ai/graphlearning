@@ -2,6 +2,105 @@
 
 [View English](./RELEASE.md)
 
+## MindSpore Graph Learning 0.2.0 Release Notes
+
+### 主要特性及增强
+
+- [STABLE] 新增了基于CSR稀疏算子的加速方案，涵盖了从CSR数据格式转换、CSR图填充到CSR消息聚合等方面。
+- [STABLE] 提供了基于CSR稀疏算子的APPNP、GCN、GAT、GATv2、MPNN的训练示例。
+
+### API变更
+
+#### 新增/增强API
+
+##### Python APIs
+
+- 新增graph接口 `mindspore_gl.graph.batch_graph_csr_data` 。
+- 新增graph接口 `mindspore_gl.graph.graph_csr_data` 。
+- 新增graph接口 `mindspore_gl.graph.PadCsrEdge` 。
+- 新增graph接口 `mindspore_gl.graph.sampling_csr_data` 。
+
+- 新增nn接口 `mindspore_gl.nn.GNNCell.sparse_compute` 。
+
+#### 非兼容性变更
+
+##### Python APIs
+
+- `mindspore_gl.GraphField` 新增参数 `indices` 、 `indptr` 、 `indices_backward` 、 `indptr_backward` 、 `csr` ，设置是否使用稀疏模式。[(!214)](https://gitee.com/mindspore/graphlearning/pulls/214)
+
+  <table>
+  <tr>
+  <td style="text-align:center"> 0.2.0-alpha </td> <td style="text-align:center"> 0.2.0 </td>
+  </tr>
+  <tr>
+  <td><pre style="display: block;"><code class="language-python">
+  >>> n_nodes = 7
+  >>> n_edges = 8
+  >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6], ms.int32)
+  >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4], ms.int32)
+  >>> graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+  </code></pre>
+  </td>
+  <td><pre style="display: block;"><code class="language-python">
+  >>> n_nodes = 7
+  >>> n_edges = 8
+  >>> indices = ms.Tensor([2, 3, 5, 6, 3, 4, 0, 6], ms.int32)
+  >>> indptr = ms.Tensor([0, 2, 4, 5, 6, 7, 8, 8], ms.int32)
+  >>> indices_backward = ms.Tensor([4, 0, 0, 2, 3, 1, 1, 5], ms.int32)
+  >>> indptr_backward = ms.Tensor([0, 1, 1, 2, 4, 5, 6, 8], ms.int32)
+  >>> graph_field = GraphField(n_nodes=n_nodes, n_edges=n_edges, indices=indices, indptr=indptr,
+  ...                          indices_backward=indices_backward, indptr_backward=indptr_backward, csr=True)
+  </code></pre>
+  </td>
+  </tr>
+  </table>
+
+- `mindspore_gl.BatchedGraphField` 新增参数 `indices` 、 `indptr` 、 `indices_backward` 、 `indptr_backward` 、 `csr` ，设置是否使用稀疏模式。[(!214)](https://gitee.com/mindspore/graphlearning/pulls/214)
+
+  <table>
+  <tr>
+  <td style="text-align:center"> 0.2.0-alpha </td> <td style="text-align:center"> 0.2.0 </td>
+  </tr>
+  <tr>
+  <td><pre style="display: block;"><code class="language-python">
+  >>> n_nodes = 9
+  >>> n_edges = 11
+  >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8], ms.int32)
+  >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32)
+  >>> ver_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 2, 2], ms.int32)
+  >>> edge_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2], ms.int32)
+  >>> graph_mask = ms.Tensor([1, 1, 0], ms.int32)
+  >>> graph_field = BatchedGraphField(src_idx, dst_idx, n_nodes, n_edges, ver_subgraph_idx,
+  ...                                 edge_subgraph_idx, graph_mask)
+  </code></pre>
+  </td>
+  <td><pre style="display: block;"><code class="language-python">
+  >>> n_nodes = 9
+  >>> n_edges = 11
+  >>> indices = ms.Tensor([0, 3, 4, 6, 8, 4, 5, 1, 8], ms.int32)
+  >>> indptr = ms.Tensor([0, 1, 3, 5, 6, 7, 8, 9, 9, 9], ms.int32)
+  >>> indices_backward = ms.Tensor([0, 5, 1, 1, 3, 4, 2, 2, 6], ms.int32)
+  >>> indptr_backward = ms.Tensor([0, 1, 2, 2, 3, 5, 6, 7, 7, 9], ms.int32)
+  >>> node_map_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1], ms.int32)
+  >>> edge_map_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 1], ms.int32)
+  >>> graph_mask = ms.Tensor([1, 0], ms.int32)
+  >>> graph_field = BatchedGraphField(indices=indices, indptr=indptr, indices_backward=indices_backward,
+  >>>                                 indptr_backward=indptr_backward, csr=True, n_nodes=n_nodes,
+  ...                                 n_edges=n_edges, ver_subgraph_idx=node_map_idx,
+  ...                                 edge_subgraph_idx=edge_map_idx, graph_mask=graph_mask)
+  </code></pre>
+  </td>
+  </tr>
+  </table>
+
+### 贡献者
+
+感谢以下人员做出的贡献:
+
+James Cheng, yufan, wuyidi, yinpeiqi, liuxiulong, wangqirui, chengbin, luolan, zhengzuohe, lujiale, liyang, huenrui, baocong, zhangqinghua, wangyushan, zhushujing, zhongjicheng, gaoxiang, yushunmin, fengxun, gongyue, wangyixuan, zuochuanyong, yuhan, wangying, chujinjin, xiezuoquan, yeyuhang, xuhn1997.
+
+欢迎以任何形式对项目提供贡献！
+
 ## MindSpore Graph Learning 0.2.0-alpha Release Notes
 
 ### 主要特性及增强
