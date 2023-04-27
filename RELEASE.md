@@ -30,27 +30,27 @@
 
   <table>
   <tr>
-  <td style="text-align:center"> 0.2.0-alpha </td> <td style="text-align:center"> 0.2.0 </td>
+  <td style="text-align:center"> Original Interface </td> <td style="text-align:center"> v0.2.0 </td>
   </tr>
   <tr>
-  <td><pre style="display: block;"><code class="language-python">
-  >>> n_nodes = 7
-  >>> n_edges = 8
-  >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6], ms.int32)
-  >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4], ms.int32)
-  >>> graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
-  </code></pre>
+  <td><pre>
+  n_nodes = 7
+  n_edges = 8
+  src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6], ms.int32)
+  dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4], ms.int32)
+  graph_field = GraphField(src_idx, dst_idx, n_nodes, n_edges)
+  </pre>
   </td>
-  <td><pre style="display: block;"><code class="language-python">
-  >>> n_nodes = 7
-  >>> n_edges = 8
-  >>> indices = ms.Tensor([2, 3, 5, 6, 3, 4, 0, 6], ms.int32)
-  >>> indptr = ms.Tensor([0, 2, 4, 5, 6, 7, 8, 8], ms.int32)
-  >>> indices_backward = ms.Tensor([4, 0, 0, 2, 3, 1, 1, 5], ms.int32)
-  >>> indptr_backward = ms.Tensor([0, 1, 1, 2, 4, 5, 6, 8], ms.int32)
-  >>> graph_field = GraphField(n_nodes=n_nodes, n_edges=n_edges, indices=indices, indptr=indptr,
-  ...                          indices_backward=indices_backward, indptr_backward=indptr_backward, csr=True)
-  </code></pre>
+  <td><pre>
+  n_nodes = 7
+  n_edges = 8
+  indices = ms.Tensor([2, 3, 5, 6, 3, 4, 0, 6], ms.int32)
+  indptr = ms.Tensor([0, 2, 4, 5, 6, 7, 8, 8], ms.int32)
+  indices_backward = ms.Tensor([4, 0, 0, 2, 3, 1, 1, 5], ms.int32)
+  indptr_backward = ms.Tensor([0, 1, 1, 2, 4, 5, 6, 8], ms.int32)
+  graph_field = GraphField(n_nodes=n_nodes, n_edges=n_edges, indices=indices, indptr=indptr,
+  ...                      indices_backward=indices_backward, indptr_backward=indptr_backward, csr=True)
+  </pre>
   </td>
   </tr>
   </table>
@@ -59,36 +59,36 @@
 
   <table>
   <tr>
-  <td style="text-align:center"> 0.2.0-alpha </td> <td style="text-align:center"> 0.2.0 </td>
+  <td style="text-align:center"> Original Interface </td> <td style="text-align:center"> v0.2.0 </td>
   </tr>
   <tr>
-  <td><pre style="display: block;"><code class="language-python">
-  >>> n_nodes = 9
-  >>> n_edges = 11
-  >>> src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8], ms.int32)
-  >>> dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32)
-  >>> ver_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 2, 2], ms.int32)
-  >>> edge_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2], ms.int32)
-  >>> graph_mask = ms.Tensor([1, 1, 0], ms.int32)
-  >>> graph_field = BatchedGraphField(src_idx, dst_idx, n_nodes, n_edges, ver_subgraph_idx,
-  ...                                 edge_subgraph_idx, graph_mask)
-  </code></pre>
+  <td><pre>
+  n_nodes = 9
+  n_edges = 11
+  src_idx = ms.Tensor([0, 2, 2, 3, 4, 5, 5, 6, 8, 8, 8], ms.int32)
+  dst_idx = ms.Tensor([1, 0, 1, 5, 3, 4, 6, 4, 8, 8, 8], ms.int32)
+  ver_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 2, 2], ms.int32)
+  edge_subgraph_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2], ms.int32)
+  graph_mask = ms.Tensor([1, 1, 0], ms.int32)
+  graph_field = BatchedGraphField(src_idx, dst_idx, n_nodes, n_edges, ver_subgraph_idx,
+  ...                             edge_subgraph_idx, graph_mask)
+  </pre>
   </td>
-  <td><pre style="display: block;"><code class="language-python">
-  >>> n_nodes = 9
-  >>> n_edges = 11
-  >>> indices = ms.Tensor([0, 3, 4, 6, 8, 4, 5, 1, 8], ms.int32)
-  >>> indptr = ms.Tensor([0, 1, 3, 5, 6, 7, 8, 9, 9, 9], ms.int32)
-  >>> indices_backward = ms.Tensor([0, 5, 1, 1, 3, 4, 2, 2, 6], ms.int32)
-  >>> indptr_backward = ms.Tensor([0, 1, 2, 2, 3, 5, 6, 7, 7, 9], ms.int32)
-  >>> node_map_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1], ms.int32)
-  >>> edge_map_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 1], ms.int32)
-  >>> graph_mask = ms.Tensor([1, 0], ms.int32)
-  >>> graph_field = BatchedGraphField(indices=indices, indptr=indptr, indices_backward=indices_backward,
-  >>>                                 indptr_backward=indptr_backward, csr=True, n_nodes=n_nodes,
-  ...                                 n_edges=n_edges, ver_subgraph_idx=node_map_idx,
-  ...                                 edge_subgraph_idx=edge_map_idx, graph_mask=graph_mask)
-  </code></pre>
+  <td><pre>
+  n_nodes = 9
+  n_edges = 11
+  indices = ms.Tensor([0, 3, 4, 6, 8, 4, 5, 1, 8], ms.int32)
+  indptr = ms.Tensor([0, 1, 3, 5, 6, 7, 8, 9, 9, 9], ms.int32)
+  indices_backward = ms.Tensor([0, 5, 1, 1, 3, 4, 2, 2, 6], ms.int32)
+  indptr_backward = ms.Tensor([0, 1, 2, 2, 3, 5, 6, 7, 7, 9], ms.int32)
+  node_map_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1], ms.int32)
+  edge_map_idx = ms.Tensor([0, 0, 0, 1, 1, 1, 1, 1], ms.int32)
+  graph_mask = ms.Tensor([1, 0], ms.int32)
+  graph_field = BatchedGraphField(indices=indices, indptr=indptr, indices_backward=indices_backward,
+                                  indptr_backward=indptr_backward, csr=True, n_nodes=n_nodes,
+  ...                             n_edges=n_edges, ver_subgraph_idx=node_map_idx,
+  ...                             edge_subgraph_idx=edge_map_idx, graph_mask=graph_mask)
+  </pre>
   </td>
   </tr>
   </table>
