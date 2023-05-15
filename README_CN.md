@@ -35,8 +35,8 @@ MindSpore Graph Learning 还创新提出了以点为中心编程范式，提供�
 
 | MindSpore Graph Learning 版本 |                                分支                                | MindSpore运行最低版本 |
 |:---------------------------:|:----------------------------------------------------------------:|:---------------:|
-|           master            | [master](https://gitee.com/mindspore/graphlearning/tree/master/) |    >=1.10.0     |
-|            0.2.0a0            |   [r0.2.0-alpha](https://gitee.com/mindspore/graphlearning/tree/r0.2.0-alpha/)   |    >=1.10.0     |
+|              master              |    [master](https://gitee.com/mindspore/graphlearning/tree/master/)     |                >=2.0.0                |
+|              0.2.0               |   [r0.2.0](https://gitee.com/fengxun705612/graphlearning/tree/r0.2.0)   |                >=2.0.0                |
 
 ### 安装方式
 
@@ -47,13 +47,13 @@ MindSpore Graph Learning 还创新提出了以点为中心编程范式，提供�
 - Ascend/CPU
 
     ```bash
-    pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.0.0a0/GraphLearning/cpu/{system_structure}/mindspore_gl-0.2.0a0-cp37-cp37m-linux_{system_structure}.whl --trusted-host ms-release.obs.cn-north-4.myhuaweicloud.com -i https://pypi.tuna.tsinghua.edu.cn/simple
+    pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.0.0rc1/GraphLearning/cpu/{system_structure}/mindspore_gl-0.2-cp37-cp37m-linux_{system_structure}.whl --trusted-host ms-release.obs.cn-north-4.myhuaweicloud.com -i https://pypi.tuna.tsinghua.edu.cn/simple
     ```
 
 - GPU
 
     ```bash
-    pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.0.0a0/GraphLearning/gpu/x86_64/cuda-{cuda_verison}/mindspore_gl-0.2.0a0-cp37-cp37m-linux_x86_64.whl --trusted-host ms-release.obs.cn-north-4.myhuaweicloud.com -i https://pypi.tuna.tsinghua.edu.cn/simple
+    pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.0.0rc1/GraphLearning/gpu/x86_64/cuda-{cuda_verison}/mindspore_gl-0.2-cp37-cp37m-linux_x86_64.whl --trusted-host ms-release.obs.cn-north-4.myhuaweicloud.com -i https://pypi.tuna.tsinghua.edu.cn/simple
     ```
 
 > - 在联网状态下，安装whl包时会自动下载MindSpore Graph Learning安装包的依赖项（依赖项详情参见[requirements.txt](https://gitee.com/mindspore/graphlearning/blob/master/requirements.txt)），其余情况需自行安装。
