@@ -226,6 +226,8 @@ def test_globalattentionpooling():
 
     gate_nn = ms.nn.Dense(5, 1)
     net = GlobalAttentionPooling(gate_nn)
+    bias = ms.Tensor([1])
+    net.gate_nn.bias.set_data(bias)
     ret = net(node_feat, *batched_graph_field.get_batched_graph()).asnumpy().tolist()
     expected = [[0.7427342, 0.6216653, 0.8113234, 0.5849572, 0.4834695],
                 [0.2650575, 0.301947, 0.54436606, 0.69635034, 0.63545763]]
@@ -268,10 +270,14 @@ def test_weightandsum():
         , ms.float32)
 
     net = WeightAndSum(5)
+    weight = np.ones((1, 5), np.float32)
+    weight = ms.Tensor(weight)
+    bias = ms.Tensor([0.])
+    net.atom_weighting[0].weight.set_data(weight)
+    net.atom_weighting[0].bias.set_data(bias)
     ret = net(node_feat, *batched_graph_field.get_batched_graph()).asnumpy().tolist()
-    expected = [[1.1191536, 0.9370661, 1.222404, 0.8810187, 0.7286275],
-                [0.5323895, 0.6062569, 1.0929173, 1.3955828, 1.2749455]]
-
+    expected = [[2.1423986, 1.8021946, 2.3398824, 1.683217, 1.3976912],
+                [0.9844097, 1.1287287, 2.019054, 2.512793, 2.3413732]]
     delta = 0.05
     first, second = np.array(ret), np.array(expected)
     assert np.max(np.abs((first - second))) < delta

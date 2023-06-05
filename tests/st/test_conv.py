@@ -131,11 +131,22 @@ def test_cfconv():
     node_embedding_weight = ms.Tensor(np.ones((8, 4)), ms.float32)
     out_embedding_weight = ms.Tensor(np.ones((4, 8)), ms.float32)
 
+    edge_embedding_bias_1 = ms.Tensor(np.zeros((8,)), ms.float32)
+    edge_embedding_bias_2 = ms.Tensor(np.zeros((8,)), ms.float32)
+    node_embedding_bias = ms.Tensor(np.zeros((8,)), ms.float32)
+    out_embedding_bias = ms.Tensor(np.zeros((4,)), ms.float32)
+
     net = CFConv(4, 4, 8, 4)
     net.edge_embedding_layer[0].weight.set_data(edge_embedding_weight_1)
     net.edge_embedding_layer[2].weight.set_data(edge_embedding_weight_2)
     net.node_embedding_layer.weight.set_data(node_embedding_weight)
     net.out_embedding_layer[0].weight.set_data(out_embedding_weight)
+
+    net.edge_embedding_layer[0].bias.set_data(edge_embedding_bias_1)
+    net.edge_embedding_layer[2].bias.set_data(edge_embedding_bias_2)
+    net.node_embedding_layer.bias.set_data(node_embedding_bias)
+    net.out_embedding_layer[0].bias.set_data(out_embedding_bias)
+
     output = net(node_feat, edge_feat, *graph_field.get_graph())
     expect_output = np.array([[2071.8567, 2071.8567, 2071.8567, 2071.8567],
                               [4144.4062, 4144.4062, 4144.4062, 4144.4062],
@@ -159,11 +170,16 @@ def test_chebconv():
     lins_weight_0 = ms.Tensor(np.ones((4, 4)), ms.float32)
     lins_weight_1 = ms.Tensor(np.ones((4, 4)), ms.float32)
     lins_weight_2 = ms.Tensor(np.ones((4, 4)), ms.float32)
+    lins_bias = ms.Tensor(np.zeros((4,)), ms.float32)
 
     net = ChebConv(in_channels=4, out_channels=4, k=3)
     net.lins[0].weight.set_data(lins_weight_0)
     net.lins[1].weight.set_data(lins_weight_1)
     net.lins[2].weight.set_data(lins_weight_2)
+
+    net.lins[0].bias.set_data(lins_bias)
+    net.lins[1].bias.set_data(lins_bias)
+    net.lins[2].bias.set_data(lins_bias)
     output = net(node_feat, edge_feat, *graph_field.get_graph())
     expect_output = np.array([[10., 10., 10., 10.],
                               [40., 40., 40., 40.],
@@ -211,10 +227,15 @@ def test_edgeconv():
     """
     theta_weight = ms.Tensor(np.ones((4, 4)), ms.float32)
     phi_weight = ms.Tensor(np.ones((4, 4)), ms.float32)
+    lins_bias = ms.Tensor(np.zeros((4,)), ms.float32)
 
     net = EDGEConv(4, 4, batch_norm=True)
     net.theta.weight.set_data(theta_weight)
     net.phi.weight.set_data(phi_weight)
+
+    net.theta.bias.set_data(lins_bias)
+    net.phi.bias.set_data(lins_bias)
+
     output = net(node_feat, *graph_field.get_graph())
     expect_output = np.array([[9.99995, 9.99995, 9.99995, 9.99995],
                               [9.99995, 9.99995, 9.99995, 9.99995],
@@ -237,10 +258,12 @@ def test_egconv():
     """
     basis_fc_weight = ms.Tensor(np.ones((6, 4)), ms.float32)
     combine_fc_weight = ms.Tensor(np.ones((9, 4)), ms.float32)
+    fc_bias = ms.Tensor(np.zeros((9,)), ms.float32)
 
     net = EGConv(in_feat_size=4, out_feat_size=6, aggregators=['sum'], num_heads=3, num_bases=3)
     net.basis_fc.weight.set_data(basis_fc_weight)
     net.combine_fc.weight.set_data(combine_fc_weight)
+    net.combine_fc.bias.set_data(fc_bias)
     output = net(node_feat, *graph_field.get_graph())
     expect_output = np.array([[300., 300., 300., 300., 300., 300.],
                               [600., 600., 600., 600., 600., 600.],
@@ -334,11 +357,15 @@ def test_gatv2conv():
     """
     fc_s_weight = ms.Tensor(np.ones((6, 4)), ms.float32)
     fc_d_weight = ms.Tensor(np.ones((6, 4)), ms.float32)
+    fc_s_bias = ms.Tensor(np.zeros((6,)), ms.float32)
+    fc_d_bias = ms.Tensor(np.zeros((6,)), ms.float32)
     attn_data = ms.Tensor(np.ones((3, 2)), ms.float32)
 
     net = GATv2Conv(in_feat_size=4, out_size=2, num_attn_head=3, add_norm=True)
     net.fc_s.weight.set_data(fc_s_weight)
     net.fc_d.weight.set_data(fc_d_weight)
+    net.fc_s.bias.set_data(fc_s_bias)
+    net.fc_d.bias.set_data(fc_d_bias)
     net.attn.set_data(attn_data)
     output = net(node_feat, *graph_field.get_graph())
     expect_output = np.array([[10., 10., 10., 10., 10., 10.],
@@ -660,10 +687,13 @@ def test_sgconv():
     sg_weight = ms.Tensor([[-0.9653046, 0.502546, 0.17415217, 0.05653964],
                            [0.8662434, -0.10252704, 0.35179812, -0.5644021]],
                           ms.float32)
+    sg_bias = ms.Tensor([0., 0.], ms.float32)
     sgconv = SGConv(in_feat_size=4, out_feat_size=2)
     sgconv.dense.weight.set_data(sg_weight)
+    sgconv.dense.bias.set_data(sg_bias)
     output = sgconv(node_feat, in_degree, out_degree, *graph_field.get_graph())
     assert np.allclose(output.asnumpy(), expect_output)
+
 
 @pytest.mark.level0
 @pytest.mark.platform_x86_gpu_training
