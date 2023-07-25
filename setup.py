@@ -33,9 +33,10 @@ class CustomBuildExt(_build_ext):
         self.include_dirs.append(numpy.get_include())
 
 
-compile_extra_args = ["-std=c++11", "-O3", "-fopenmp"]
+compile_extra_args = ["-std=c++11", "-O3", "-fopenmp", "-fstack-protector-all", "-ftrapv"]
 
-link_extra_args = ["-fopenmp"]
+link_extra_args = ["-fopenmp", "-Wl,-z,relro,-z,now,-z,noexecstack", "-s"]
+
 if sys.platform.startswith("darwin"):
     compile_extra_args = ['-std=c++11', "-mmacosx-version-min=10.9"]
     link_extra_args = ["-stdlib=libc++", "-mmacosx-version-min=10.9"]
@@ -50,7 +51,9 @@ CYTHON_BUCKET_KERNEL = Extension(
     "mindspore_gl.bucket_kernel",
     [
         "mindspore_gl/extensions/buckize.c",
-    ]
+    ],
+    extra_compile_args=compile_extra_args,
+    extra_link_args=link_extra_args,
 )
 
 CYTHON_SAMPLE_KERNEL = Extension(
@@ -102,6 +105,8 @@ SHAERED_NUMPY_DARWIN = Extension(
         ("HAVE_SHM_MMAN_H", 1),
     ],
     sources=["mindspore_gl/dataloader/shared_numpy/posixshmem.c"],
+    extra_compile_args=compile_extra_args,
+    extra_link_args=link_extra_args,
 )
 SHAERED_NUMPY = SHAERED_NUMPY_LINUX
 if sys.platform.startswith("darwin"):
