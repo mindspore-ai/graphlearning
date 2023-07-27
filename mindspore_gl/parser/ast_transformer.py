@@ -91,7 +91,8 @@ class CastGraphType(BaseAstTransformer):
             ast.AST, node after transformation.
         """
         if self.new_type_ == VectorizationType.EDGE and self.old_type_:
-            assert self.old_type_ in {VectorizationType.VERTEX, VectorizationType.SRC, VectorizationType.DST}
+            if self.old_type_ not in {VectorizationType.VERTEX, VectorizationType.SRC, VectorizationType.DST}:
+                raise TypeError("Cannot find node type")
             call = self.backend_.create_gather_node(node, self.old_type_)
             ast.copy_location(call, node)
             ast.fix_missing_locations(call)
@@ -131,11 +132,13 @@ class InlineAttributeSetter(BaseAstTransformer):
         err_str = f"Attribute setting handler only deals " \
                   f"with Expr node but received " \
                   f"{node.__class__} in Line {node.lineno}"
-        assert isinstance(node, ast.Expr), err_str
+        if not isinstance(node, ast.Expr):
+            raise TypeError(err_str)
         call_node = node.value
         err_str = "AttributeSetter's input's attribute \"value\" must " \
                   "be type ast.Call."
-        assert isinstance(call_node, ast.Call), err_str
+        if not isinstance(call_node, ast.Call):
+            raise TypeError(err_str)
         assign_node = self.backend_.inline_attribute_setter(node)
         ast.copy_location(assign_node, node)
         ast.fix_missing_locations(assign_node)
@@ -371,8 +374,8 @@ class ArgReplacer(BaseAstTransformer):
         Returns:
             ast.AST, node after transformation.
         """
-        assert self.pos_ == len(node.args.args) - 1,\
-            "Can only replace the last argument"
+        if self.pos_ != len(node.args.args) - 1:
+            raise TypeError("Can only replace the last argument")
         new_args_node = [ast.arg(arg, annotation=None)
                          for arg in self.new_args_]
         setattr(node.args, 'args', node.args.args[0:self.pos_] +
@@ -410,8 +413,8 @@ class ArgListReplacer(BaseAstTransformer):
         Returns:
             ast.AST, node after transformation.
         """
-        assert self.pos_ == len(node.args) - 1,\
-            "Can only replace the last argument"
+        if self.pos_ != len(node.args) - 1:
+            raise TypeError("Can only replace the last argument")
         new_args_node = [ast.Name(arg) for arg in self.new_args_]
         setattr(node, 'args', node.args[0:self.pos_] + new_args_node +
                 node.args[self.pos_ + 1:])

@@ -286,8 +286,6 @@ class _SingleProcessDataLoaderIter(_BaseDataLoaderIter):
 
     def __init__(self, loader):
         super().__init__(loader)
-        assert self._timeout == 0
-        assert self._num_workers == 0
         self._dataset_fetcher = _DatasetKind.create_fetcher(self._dataset, self._collate_fn)
 
     def _next_data(self):
@@ -305,8 +303,8 @@ class _MultiProcessingDataLoaderIter(_BaseDataLoaderIter):
     def __init__(self, loader):
         super().__init__(loader)
 
-        assert self._num_workers > 0
-        assert self._prefetch_factor > 0
+        if self._num_workers <= 0 or self._prefetch_factor <= 0:
+            raise ValueError(f'{_num_workers} or {_prefetch_factor} must be positive integer.')
 
         self._worker_queue_idx_cycle = itertools.cycle(range(self._num_workers))
         self._worker_result_queue = MultiProcessQueue()  # type: ignore[var-annotated]
@@ -364,7 +362,6 @@ class _MultiProcessingDataLoaderIter(_BaseDataLoaderIter):
 
     def _try_put_index(self):
         """try to assign tasks to workers"""
-        assert self._tasks_outstanding < self._prefetch_factor * self._num_workers
 
         try:
             index = self._next_index()
@@ -406,7 +403,6 @@ class _MultiProcessingDataLoaderIter(_BaseDataLoaderIter):
                 data = self._task_info.pop(self._rcvd_idx)[1]
                 return self._process_data(data)
 
-            assert not self._shutdown and self._tasks_outstanding > 0
             idx, data = self._get_data()
             self._tasks_outstanding -= 1
 
@@ -479,7 +475,8 @@ class _MultiProcessingDataLoaderIter(_BaseDataLoaderIter):
     def _mark_worker_as_unavailable(self, worker_id, shutdown=False):
         """mark workers as unavailable so we wont assign tasks to these workers anymore"""
 
-        assert self._workers_status[worker_id] or (self._persistent_workers and shutdown)
+        if not (self._workers_status[worker_id] or (self._persistent_workers and shutdown)):
+            raise RuntimeError('DataLoader run is unavailable')
 
         # Signal termination to that specific worker.
         q = self._index_queues[worker_id]
@@ -488,7 +485,8 @@ class _MultiProcessingDataLoaderIter(_BaseDataLoaderIter):
 
         self._workers_status[worker_id] = False
 
-        assert self._workers_done_event.is_set() == shutdown
+        if self._workers_done_event.is_set() != shutdown:
+            raise RuntimeError('DataLoader run is shutdown')
 
     def _shutdown_workers(self):
         """shutdown all workers by sending signals to them"""

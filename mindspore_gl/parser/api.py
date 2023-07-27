@@ -51,8 +51,8 @@ class DstVertex:
             >>> for v in g.dst_vertex:
             ...     [u.a + e.b for u,e in v.inedges]
         """
-
-        assert self.in_edges is not None
+        if self.in_edges is None:
+            raise ValueError('in_edges value is None')
         return self.in_edges
 
 

@@ -65,7 +65,8 @@ def _worker_loop(dataset, index_queue, data_queue, done_event, collate_fn, worke
                 continue
             if r is None:
                 # Received the final signal
-                assert done_event.is_set() or iteration_end
+                if not (done_event.is_set() or iteration_end):
+                    raise RuntimeError('DataLoader failed')
                 break
             elif done_event.is_set() or iteration_end:
                 # `done_event` is set. But I haven't received the final signal

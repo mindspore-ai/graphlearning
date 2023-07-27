@@ -118,7 +118,8 @@ class UnBatchHomoGraph:
         pass
 
     def __call__(self, graph: MindHomoGraph, **kwargs) -> List[MindHomoGraph]:
-        assert graph.is_batched, "UnBatchHomoGraph can only be operated on batched_graph"
+        if not graph.is_batched:
+            raise TypeError("UnBatchHomoGraph can only be operated on batched_graph")
         res: List[MindHomoGraph] = []
         for idx in range(graph.batch_meta.graph_count):
             res.append(graph[idx])
@@ -221,8 +222,8 @@ class PadArray2d:
     def __init__(self, dtype, direction, fill_value=None, reset_with_fill_value=True, mode=PadMode.AUTO, size=None,
                  use_shared_numpy=False):
         if mode == PadMode.CONST:
-            assert size is not None and dtype is not None and fill_value is not None, \
-                "pad size should be provided when padding mode is PadMode.CONST"
+            if size is None or dtype is None or fill_value is None:
+                raise TypeError("pad size should be provided when padding mode is PadMode.CONST")
         self.pad_mode = mode
         self.pad_direction = direction
         self.fill_value = fill_value
@@ -419,9 +420,8 @@ class PadHomoGraph:
 
     def __init__(self, n_node=None, mode=PadMode.AUTO, n_edge=None, csr=False):
         if mode == PadMode.CONST:
-            assert n_edge is not None and n_node is not None, \
-                "n_node and n_edge should be given when padding with CONST Mode"
-
+            if n_edge is None or n_node is None:
+                raise TypeError("n_node and n_edge should be given when padding with CONST Mode")
         self.n_node = n_node
         self.mode = mode
         self.n_edge = n_edge
@@ -435,8 +435,8 @@ class PadHomoGraph:
         # Check Input Graph is Valid To Pad
         res_graph = MindHomoGraph()
         if self.mode is PadMode.CONST:
-            assert graph.edge_count < self.n_edge, \
-                "Given graph is too large for the given padding"
+            if graph.edge_count >= self.n_edge:
+                raise ValueError("Given graph is too large for the given padding")
         if graph.is_batched:
             if self.mode == PadMode.CONST:
                 # No Need To Pad

@@ -108,9 +108,9 @@ def negative_sample(positive, node, num_neg_samples, mode='undirected', re='more
         if len(neg_idx) >= num_neg_samples:
             neg_idx = neg_idx[:num_neg_samples]
             break
-    assert num_neg_samples == neg_idx.shape[0]
+    if num_neg_samples != neg_idx.shape[0]:
+        raise ValueError('num_neg_samples should equals to neg_idx shape')
     neg_idx = vector_to_edge_index(neg_idx, (node, node), mode=mode)
-
     if re == 'more':
         idx = np.array([[neg_idx[0][i], neg_idx[1][i]] for i in range(num_neg)])
     else:
@@ -148,7 +148,8 @@ def edge_index_to_vector(edge_index, size, mode='undirected'):
     if not isinstance(mode, str):
         raise TypeError("The mode data type is {},\
                         but it should be str.".format(type(mode)))
-    assert size[0] == size[1]
+    if size[0] != size[1]:
+        raise ValueError('size 0 should equals to size 1')
 
     if mode == 'bipartite':
         row, col = edge_index
@@ -219,7 +220,8 @@ def vector_to_edge_index(idx, size, mode='undirected'):
         res = mindspore_gl.bucket_kernel.bucket(i, v, l, n)
         return res
 
-    assert size[0] == size[1]
+    if size[0] != size[1]:
+        raise ValueError('size 0 should equals to size 1')
 
     if mode == 'bipartite':
         row = np.round(idx / size[1])

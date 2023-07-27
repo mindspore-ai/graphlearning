@@ -25,7 +25,8 @@ from .ast_transformer import ReplaceName, CastGraphType, VectorizeFor,\
 
 def infer_call_vtype(vec_types: List[VectorizationType]) -> VectorizationType:
     """Infer call vertex type."""
-    assert vec_types, "Cannot infer vectorization"
+    if not vec_types:
+        raise TypeInferenceError("Cannot infer vectorization")
     graph_rmvd = [v for v in vec_types
                   if v != VectorizationType.GRAPH
                   and v is not None]

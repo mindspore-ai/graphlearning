@@ -134,7 +134,8 @@ class MindRelationGraph:
 
     def successors(self, src_node):
         mapped_idx = self._node_dict.get(src_node, None)
-        assert mapped_idx is not None
+        if mapped_idx is None:
+            raise ValueError("mapped_idx is None")
         neighbor_start = self._adj_csr.indptr[mapped_idx]
         neighbor_end = self._adj_csr.indptr[mapped_idx + 1]
         neighbors = self._adj_csr.indices[neighbor_start: neighbor_end]
@@ -146,7 +147,8 @@ class MindRelationGraph:
 
     def out_degree(self, src_node):
         mapped_idx = src_node if self._node_dict is None else self._node_dict.get(src_node, None)
-        assert mapped_idx is not None
+        if mapped_idx is None:
+            raise ValueError("mapped_idx is None")
         neighbor_start = self._adj_csr.indptr[mapped_idx]
         neighbor_end = self._adj_csr.indptr[mapped_idx + 1]
         return neighbor_end - neighbor_start
@@ -294,7 +296,8 @@ class BatchMeta:
         Returns:
             - (int, int), (node_count, edge_count)
         """
-        assert graph_idx < self.graph_count, "index out of range"
+        if graph_idx >= self.graph_count:
+            raise ValueError("index out of range")
         return (self.graph_nodes[graph_idx + 1] - self.graph_nodes[graph_idx],
                 self.graph_edges[graph_idx + 1] - self.graph_edges[graph_idx])
 
@@ -385,7 +388,8 @@ class MindHomoGraph:
         """
         self._check_csr()
         mapped_idx = self._node_dict.get(node, None)
-        assert mapped_idx is not None
+        if mapped_idx is None:
+            raise ValueError("mapped_idx is None")
         neighbor_start = self._adj_csr.indptr[mapped_idx]
         neighbor_end = self._adj_csr.indptr[mapped_idx + 1]
         neighbors = self._adj_csr.indices[neighbor_start: neighbor_end]
@@ -404,7 +408,8 @@ class MindHomoGraph:
         """
         self._check_csr()
         mapped_idx = self._node_dict.get(node, None)
-        assert mapped_idx is not None
+        if mapped_idx is None:
+            raise ValueError("mapped_idx is None")
         neighbor_start = self._adj_csr.indptr[mapped_idx]
         neighbor_end = self._adj_csr.indptr[mapped_idx + 1]
         return neighbor_end - neighbor_start
@@ -543,7 +548,8 @@ class MindHomoGraph:
 
     def _check_csr(self):
         """graph type check, is csr"""
-        assert self._adj_csr is not None or self._adj_coo is not None
+        if self._adj_csr is None and self._adj_coo is None:
+            raise ValueError("adj_csr and adj_coo is None")
         if self._adj_csr is not None:
             return
         self._adj_csr = coo_to_csr()
@@ -551,7 +557,8 @@ class MindHomoGraph:
 
     def _check_coo(self):
         """graph type check, is coo"""
-        assert self._adj_csr is not None or self._adj_coo is not None
+        if self._adj_csr is None and self._adj_coo is None:
+            raise ValueError("adj_csr and adj_coo is None")
         if self._adj_coo is not None:
             return
         self._adj_coo = csr_to_coo(self._adj_csr)

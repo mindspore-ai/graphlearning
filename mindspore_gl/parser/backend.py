@@ -1172,8 +1172,8 @@ class MindSporeBackend(Backend):
 
     def create_op_node(self, op_name: str, pack="ops"):
         """helper function, create a op node."""
-        assert backend() is not None, "Backend name is unknown." \
-            " Please set_backend first."
+        if backend() is None:
+            raise TypeError("Backend name is unknown. Please set_backend first.")
         return ast.Attribute(
             value=ast.Attribute(
                 value=ast.Name(
@@ -1184,8 +1184,8 @@ class MindSporeBackend(Backend):
 
     def create_zero_tensor(self, shape_ast: ast.AST, dtype_id: str):
         """helper function, create zero tensor."""
-        assert backend() is not None, "Backend name is unknown."\
-            " Please set_backend first."
+        if backend() is None:
+            raise TypeError("Backend name is unknown. Please set_backend first.")
         if dtype_id is None:
             dtype_id = backend()
             attr_dtype = 'float32'
@@ -1203,8 +1203,8 @@ class MindSporeBackend(Backend):
 
     def create_inf_tensor(self, scatter_op: str, shape_ast: ast.AST, dtype_id: str):
         """helper function, create inf tensor."""
-        assert backend() is not None, "Backend name is unknown." \
-                                      " Please set_backend first."
+        if backend() is None:
+            raise TypeError("Backend name is unknown. Please set_backend first.")
         if dtype_id is None:
             dtype_id = backend()
             attr_dtype = 'float32'

@@ -47,8 +47,8 @@ int64_t* python_Ctypes(PyObject *data_list, int64_t length) {
 
 // bucket function
 static PyObject *method_bucket(PyObject *self, PyObject *args) {
-    PyObject *boundaries;
-    PyObject *input_data;
+    PyObject *boundaries = NULL;
+    PyObject *input_data = NULL;
     int64_t l;
     int64_t N;
     // Parse arguments

@@ -379,7 +379,8 @@ class IMDBBinary(BaseDataSet):
 
 
     def __getitem__(self, idx) -> Union[MindHomoGraph, np.ndarray]:
-        assert idx < self.graph_count, "Index out of range"
+        if idx >= self.graph_count:
+            raise ValueError("Index out of range")
         res = MindHomoGraph()
         # reindex to 0
         coo_array = self._edge_array[:, self.graph_edges[idx]: self.graph_edges[idx + 1]] - self.graph_nodes[idx]
