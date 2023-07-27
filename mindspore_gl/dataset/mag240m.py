@@ -172,7 +172,8 @@ class MAG240MDataset:
         return f'{self.__class__.__name__}()'
 
     def __getitem__(self, graph_idx) -> MindHeteroGraph:
-        assert graph_idx == 0, "MAG240M only has one graph"
+        if graph_idx != 0:
+            raise ValueError("MAG240M only has one graph")
 
         result_graph = MindHeteroGraph()
 

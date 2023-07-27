@@ -89,7 +89,7 @@ class GlobalAttentionPooling(GNNCell):
         Construct function for GlobalAttentionPooling.
         """
         gate = self.gate_nn(x)
-        # assert ms.ops.Shape()(x)[-1] == 1, "The output of gate_nn should have 1 at its last axis."
+        # cannot ms.ops.Shape()(x)[-1] == 1, "The output of gate_nn should have 1 at its last axis."
         x = self.feat_nn(x) if self.feat_nn else x
         gate = g.softmax_nodes(gate)
         x = x * gate

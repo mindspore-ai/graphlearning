@@ -67,7 +67,8 @@ def norm(edge_index, num_nodes, edge_weight=None, normalization='sym',
         [-0.        -0.4999999 -0.        -0.4999999  1.         1.
           1.       ]
     """
-    assert normalization in [None, 'sym', 'rw'], 'Invalid normalization'
+    if normalization not in [None, 'sym', 'rw']:
+        raise ValueError('Invalid normalization')
 
     edge_index, edge_weight = get_laplacian(edge_index, num_nodes, edge_weight,
                                             normalization)
@@ -76,8 +77,8 @@ def norm(edge_index, num_nodes, edge_weight=None, normalization='sym',
         lambda_max = 2.0 * edge_weight.max()
     elif not isinstance(lambda_max, ms.Tensor):
         lambda_max = ms.tensor(lambda_max, ms.float32)
-    assert lambda_max is not None
-
+    if lambda_max is None:
+        raise ValueError("lambda_max is None")
     if batch is not None and lambda_max.size > 1:
         lambda_max = lambda_max[batch[edge_index[0]]]
 

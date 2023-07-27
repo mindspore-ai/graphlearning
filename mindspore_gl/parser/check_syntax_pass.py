@@ -74,9 +74,9 @@ class Symbol:
         if attr_name not in self.data_attr_:
             self.data_attr_[attr_name] = self.data_attr_type_
         else:
-            assert self.data_attr_[attr_name] == self.data_attr_type_, \
-                "Inconsistent vectorization type "\
-                "for \"{}\", previous \"{}\", new \"{}\""
+            if self.data_attr_[attr_name] != self.data_attr_type_:
+                raise TypeError("Inconsistent vectorization type for \"{}\","
+                                "previous \"{}\", new \"{}\"")
 
     def get_all_data_attr(self):
         """Get all data attributes."""
@@ -259,7 +259,8 @@ class SymTable(Scoped):
 
     def __init__(self, globals_dict):
         super().__init__()
-        assert isinstance(globals_dict, dict)
+        if not isinstance(globals_dict, dict):
+            raise TypeError("globals_dict type error")
         self.sym_table_impl_ = [{key: Symbol() for key in globals_dict}]
 
     def add_symbol(self, sym_id, class_name=None):
@@ -395,9 +396,9 @@ class CheckSyntaxPass(BaseAstVisitor):
                     iter_sym = self.find_symbol(iter_node.value.id)
                     if isinstance(target_node, ast.Tuple):
                         symbols = iter_sym.get_attr_value(iter_node.attr)
-                        assert isinstance(symbols, Iterable), \
-                               f"Line {iter_node.lineno}:{iter_node.value.id}." \
-                               f"{iter_node.attr} cannot be unpacked to {[elt.id for elt in target_node.elts]}"
+                        if not isinstance(symbols, Iterable):
+                            raise TypeError(f"Line {iter_node.lineno}:{iter_node.value.id}.{iter_node.attr}"
+                                            f" cannot be unpacked to {[elt.id for elt in target_node.elts]}")
                         if len(symbols) != len(target_node.elts):
                             raise SyntaxError(f"Expected tuple size:{len(symbols)}," \
                                               f" Actual tuple size:{len(target_node.elts)}.")
@@ -561,7 +562,8 @@ class CheckSyntaxPass(BaseAstVisitor):
                 "Built-in function must be accessed"
                 " as attribute of built-in class")
         sym = self.find_symbol(func.value.id)
-        assert sym, "Cannot resolve symbol " + str(func.value.id)
+        if not sym:
+            raise TypeError(f"Cannot resolve symbol {str(func.value.id)}")
         method_name = func.attr
         if self.csr:
             supported_ops_ = csr_ops

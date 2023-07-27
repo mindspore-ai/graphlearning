@@ -223,7 +223,8 @@ class BlogCatalog(BaseDataSet):
         return csr_matrix((np.ones(self._csr_col.shape), self._csr_col, self._csr_row))
 
     def __getitem__(self, idx):
-        assert idx == 0, "Blog Catalog only has one graph"
+        if idx != 0:
+            raise ValueError("Blog Catalog only has one graph")
         graph = MindHomoGraph()
         node_dict = {idx: idx for idx in range(self.node_count)}
         edge_ids = np.array(list(range(self.edge_count))).astype(np.int32)

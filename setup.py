@@ -139,6 +139,7 @@ setuptools.setup(
         'astpretty',
         'scikit-learn>=0.24.2',
         'Cython',
+        'numpy>=1.21.2',
         'networkx>=2.6.3',
         'rdkit>=2022.9.1',
         'decorator>=5.1.1',

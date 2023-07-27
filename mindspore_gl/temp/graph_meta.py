@@ -65,7 +65,8 @@ class MindsporeGlmeta:
 
     def init_with_json(self, json_data: Dict):
         for key in self._keys:
-            assert json_data.get(key, None) is not None, f"{key} missing in meta data"
+            if json_data.get(key, None) is None:
+                raise TypeError(f"{key} missing in meta data")
         self._graph_info = json_data["graph_info"]
         self._node_feat_info = json_data["node_feat_info"]
         self._edge_feat_info = json_data["edge_feat_info"]
