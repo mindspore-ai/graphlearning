@@ -135,7 +135,7 @@ setuptools.setup(
     ],
     python_requires='>=3.7',
     install_requires=[
-        'ast-decompiler>=0.3.2',
+        'ast-decompiler>=0.6.0',
         'astpretty',
         'scikit-learn>=0.24.2',
         'Cython',

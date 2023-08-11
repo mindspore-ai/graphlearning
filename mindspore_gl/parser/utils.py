@@ -13,6 +13,8 @@
 # limitations under the License.
 # ============================================================================
 """Utils function"""
+import os
+import stat
 import importlib.util
 from pathlib import Path
 import random
@@ -42,8 +44,11 @@ def src_to_function(src_code: str, func_name: str, globals_dict: dict, translate
     else:
         translate_path = Path(translate_path) / ".mindspore_gl" / str(hash(random.randint(1, 1e30)))
     Path(translate_path).mkdir(parents=True, exist_ok=True)
-    with open(translate_path / file_name, "w", encoding="UTF-8") as f:
+    flags = os.O_WRONLY | os.O_CREAT
+    modes = stat.S_IWUSR | stat.S_IRUSR
+    with os.fdopen(os.open(translate_path / file_name, flags, modes), 'w') as f:
         f.write(src_code)
+
     new_fn = import_func(module_name, func_name, translate_path)
     return add_import_info(new_fn, globals_dict)
 
