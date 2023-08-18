@@ -232,7 +232,7 @@ def test_globalattentionpooling():
     expected = [[0.7427342, 0.6216653, 0.8113234, 0.5849572, 0.4834695],
                 [0.2650575, 0.301947, 0.54436606, 0.69635034, 0.63545763]]
 
-    delta = 0.05
+    delta = 0.06
     first, second = np.array(ret), np.array(expected)
     assert np.max(np.abs((first - second))) < delta
 

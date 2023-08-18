@@ -18,6 +18,7 @@ import random
 from typing import Union
 import os
 import os.path as osp
+import stat
 import urllib.request
 import zipfile
 import numpy as np
@@ -107,7 +108,9 @@ class IMDBBinary(BaseDataSet):
         if os.path.exists(unzip_path):
             return unzip_path, unzip_name
         data = urllib.request.urlopen(self.url)
-        with open(path, 'wb') as f:
+        flags = os.O_WRONLY | os.O_CREAT
+        modes = stat.S_IWUSR | stat.S_IRUSR
+        with os.fdopen(os.open(path, flags, modes), 'wb') as f:
             while True:
                 chunk = data.read(10*1024*1024)
                 if not chunk:
