@@ -86,10 +86,14 @@ class TAGConv(GNNCell):
                  bias: bool = True,
                  activation=None):
         super().__init__()
-        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
-        assert isinstance(out_feat_size, int) and out_feat_size > 0, "out_feat_size must be positive int"
-        assert isinstance(num_hops, int) and num_hops > 0, "num_hops must be positive int"
-        assert isinstance(bias, bool), "bias must be bool"
+        if (not isinstance(in_feat_size, int)) or in_feat_size <= 0:
+            raise ValueError("in_feat_size must be positive int")
+        if (not isinstance(out_feat_size, int)) or out_feat_size <= 0:
+            raise ValueError("out_feat_size must be positive int")
+        if (not isinstance(num_hops, int)) or num_hops <= 0:
+            raise ValueError("num_hops must be positive int")
+        if not isinstance(bias, bool):
+            raise ValueError("bias must be bool")
 
         if activation is not None and not isinstance(activation, nn.Cell):
             raise TypeError(f"For '{self.cls_name}', the 'activation' must a mindspore.nn.Cell, but got "

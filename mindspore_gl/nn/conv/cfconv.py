@@ -103,10 +103,15 @@ class CFConv(GNNCell):
                  out_size: int
                  ):
         super().__init__()
-        assert isinstance(node_feat_size, int) and node_feat_size > 0, "node_feat_size must be positive int"
-        assert isinstance(edge_feat_size, int) and edge_feat_size > 0, "edge_feat_size must be positive int"
-        assert isinstance(hidden_size, int) and hidden_size > 0, "hidden_size must be positive int"
-        assert isinstance(out_size, int) and out_size > 0, "out_size must be positive int"
+
+        if node_feat_size <= 0 or not isinstance(node_feat_size, int):
+            raise ValueError("node_feat_size must be positive int")
+        if edge_feat_size <= 0 or not isinstance(edge_feat_size, int):
+            raise ValueError("edge_feat_size must be positive int")
+        if hidden_size <= 0 or not isinstance(hidden_size, int):
+            raise ValueError("hidden_size must be positive int")
+        if out_size <= 0 or not isinstance(out_size, int):
+            raise ValueError("out_size must be positive int")
 
         self.edge_embedding_layer = ms.nn.SequentialCell(
             ms.nn.Dense(edge_feat_size, hidden_size),

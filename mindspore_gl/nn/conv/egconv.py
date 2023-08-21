@@ -90,9 +90,12 @@ class EGConv(GNNCell):
                  num_bases: int = 4,
                  bias: bool = True):
         super().__init__()
-        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
-        assert isinstance(out_feat_size, int) and out_feat_size > 0, "out_feat_size must be positive int"
-        assert isinstance(num_heads, int) and num_heads > 0, "num_heads must be positive int"
+        if in_feat_size <= 0 or not isinstance(in_feat_size, int):
+            raise ValueError("in_feat_size must be positive int")
+        if out_feat_size <= 0 or not isinstance(out_feat_size, int):
+            raise ValueError("out_feat_size must be positive int")
+        if num_heads <= 0 or not isinstance(num_heads, int):
+            raise ValueError("num_heads must be positive int")
 
         self.in_feat_size = in_feat_size
         self.out_feat_size = out_feat_size

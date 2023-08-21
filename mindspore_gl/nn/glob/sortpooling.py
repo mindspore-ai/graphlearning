@@ -68,7 +68,8 @@ class SortPooling(GNNCell):
 
     def __init__(self, k):
         super().__init__()
-        assert isinstance(k, int) and k > 0, "k must be positive int"
+        if k <= 0 or not isinstance(k, int):
+            raise ValueError("k must be positive int")
         self.k = k
 
     # pylint: disable=arguments-differ

@@ -34,6 +34,9 @@ int64_t lower_bound(int64_t *A, int64_t L, int64_t R, int64_t val) {
 // convert python type list to C type list
 int64_t* python_Ctypes(PyObject *data_list, int64_t length) {
     int64_t* p_data_list;
+    if (length < 0) {
+        return NULL;
+    }
     p_data_list = malloc(sizeof(int64_t) * length);
     for (int64_t index = 0; index < length; index++) {
         PyObject *item;

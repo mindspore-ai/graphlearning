@@ -91,13 +91,21 @@ class GATv2Conv(GNNCell):
                  activation=None,
                  add_norm=False):
         super().__init__()
-        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
-        assert isinstance(out_size, int) and out_size > 0, "out_size must be positive int"
-        assert isinstance(num_attn_head, int) and num_attn_head > 0, "num_attn_head must be positive int"
-        assert isinstance(input_drop_out_rate, float), "input_drop_out_rate must be float"
-        assert isinstance(attn_drop_out_rate, float), "attn_drop_out_rate must be float"
-        assert isinstance(leaky_relu_slope, float), "leaky_relu_slope must be float"
-        assert isinstance(add_norm, bool), "add_norm must be bool"
+        if in_feat_size <= 0 or not isinstance(in_feat_size, int):
+            raise ValueError("in_feat_size must be positive int")
+        if out_size <= 0 or not isinstance(out_size, int):
+            raise ValueError("out_size must be positive int")
+        if num_attn_head <= 0 or not isinstance(num_attn_head, int):
+            raise ValueError("num_attn_head must be positive int")
+        if not isinstance(input_drop_out_rate, float):
+            raise ValueError("input_drop_out_rate must be float")
+        if not isinstance(attn_drop_out_rate, float):
+            raise ValueError("attn_drop_out_rate must be float")
+        if not isinstance(leaky_relu_slope, float):
+            raise ValueError("leaky_relu_slope must be float")
+        if not isinstance(add_norm, bool):
+            raise ValueError("add_norm must be bool")
+
         self.num_attn_head = num_attn_head
         self.out_size = out_size
         if input_drop_out_rate < 0.0 or input_drop_out_rate >= 1.0:

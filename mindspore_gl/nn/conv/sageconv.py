@@ -95,10 +95,14 @@ class SAGEConv(GNNCell):
                  norm=None,
                  activation=None):
         super().__init__()
-        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
-        assert isinstance(out_feat_size, int) and out_feat_size > 0, "out_feat_size must be positive int"
-        assert aggregator_type in ["mean", "pool", "lstm"], "aggregator_type must in ['mean', 'pool', 'lstm']"
-        assert isinstance(bias, bool), "bias must be bool"
+        if (not isinstance(in_feat_size, int)) or in_feat_size <= 0:
+            raise ValueError("in_feat_size must be positive int")
+        if (not isinstance(out_feat_size, int)) or out_feat_size <= 0:
+            raise ValueError("out_feat_size must be positive int")
+        if not isinstance(bias, bool):
+            raise ValueError("bias must be bool")
+        if aggregator_type not in ["mean", "pool", "lstm"]:
+            raise TypeError("aggregator_type must in ['mean', 'pool', 'lstm']")
 
         self.in_feat_size = in_feat_size
         self.out_feat_size = out_feat_size

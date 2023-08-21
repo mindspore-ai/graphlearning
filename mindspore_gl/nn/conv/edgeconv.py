@@ -78,10 +78,15 @@ class EDGEConv(GNNCell):
                  batch_norm: bool,
                  bias=True):
         super().__init__()
-        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
-        assert isinstance(out_feat_size, int) and out_feat_size > 0, "out_feat_size must be positive int"
-        assert isinstance(batch_norm, bool) and batch_norm > 0, "batch_norm must be bool"
-        assert isinstance(bias, bool), "bias must be bool"
+
+        if in_feat_size <= 0 or not isinstance(in_feat_size, int):
+            raise ValueError("in_feat_size must be positive int")
+        if out_feat_size <= 0 or not isinstance(out_feat_size, int):
+            raise ValueError("out_feat_size must be positive int")
+        if not isinstance(batch_norm, int):
+            raise ValueError("batch_norm must be bool")
+        if not isinstance(bias, bool):
+            raise ValueError("bias must be bool")
 
         self.batch_norm = batch_norm
         self.theta = ms.nn.Dense(in_feat_size, out_feat_size, has_bias=bias)

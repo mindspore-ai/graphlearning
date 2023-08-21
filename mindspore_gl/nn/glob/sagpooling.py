@@ -103,8 +103,10 @@ class SAGPooling(GNNCell):
                  activation=ms.nn.Tanh,
                  multiplier=1.0):
         super().__init__()
-        assert isinstance(in_channels, int) and in_channels > 0, "in_channels must be positive int"
-        assert isinstance(multiplier, float), "multiplier must be float"
+        if in_channels <= 0 or not isinstance(in_channels, int):
+            raise ValueError("in_channels must be positive int")
+        if not isinstance(multiplier, float):
+            raise TypeError("multiplier must be float")
 
         if GNN is not GCNConv2:
             raise NotImplementedError(f"For '{self.cls_name}', only GCNConv2 as GNN is supported, "

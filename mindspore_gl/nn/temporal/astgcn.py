@@ -392,15 +392,25 @@ class ASTGCN(GNNCell):
                  bias: bool = True,
                  ):
         super().__init__()
-        assert isinstance(n_blocks, int) and n_blocks > 0, "n_blocks must be positive int"
-        assert isinstance(in_channels, int) and in_channels > 0, "in_channels must be positive int"
-        assert isinstance(k, int) and k > 0, "k must be positive int"
-        assert isinstance(n_chev_filters, int) and n_chev_filters > 0, "n_chev_filters must be positive int"
-        assert isinstance(n_time_filters, int) and n_time_filters > 0, "n_time_filters must be positive int"
-        assert isinstance(time_conv_strides, int) and time_conv_strides > 0, "time_conv_strides must be positive int"
-        assert isinstance(num_for_predict, int) and num_for_predict > 0, "num_for_predict must be positive int"
-        assert isinstance(len_input, int) and len_input > 0, "len_input must be positive int"
-        assert isinstance(n_vertices, int) and n_vertices > 0, "n_vertices must be positive int"
+
+        if n_blocks <= 0 or not isinstance(n_blocks, int):
+            raise ValueError("n_blocks must be positive int")
+        if in_channels <= 0 or not isinstance(in_channels, int):
+            raise ValueError("in_channels must be positive int")
+        if k <= 0 or not isinstance(k, int):
+            raise ValueError("k must be positive int")
+        if n_chev_filters <= 0 or not isinstance(n_chev_filters, int):
+            raise ValueError("n_chev_filters must be positive int")
+        if n_time_filters <= 0 or not isinstance(n_time_filters, int):
+            raise ValueError("n_time_filters must be positive int")
+        if time_conv_strides <= 0 or not isinstance(time_conv_strides, int):
+            raise ValueError("time_conv_strides must be positive int")
+        if num_for_predict <= 0 or not isinstance(num_for_predict, int):
+            raise ValueError("num_for_predict must be positive int")
+        if len_input <= 0 or not isinstance(len_input, int):
+            raise ValueError("len_input must be positive int")
+        if n_vertices <= 0 or not isinstance(n_vertices, int):
+            raise ValueError("n_vertices must be positive int")
 
         self.n_blocks = n_blocks
         self.in_channels = in_channels

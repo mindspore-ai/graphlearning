@@ -86,8 +86,10 @@ class GINConv(GNNCell):
                  learn_eps=False,
                  aggregation_type="sum"):
         super().__init__()
-        assert isinstance(init_eps, float), "init_eps must be float"
-        assert isinstance(learn_eps, bool), "learn_eps must be bool"
+        if not isinstance(init_eps, float):
+            raise ValueError("init_eps must be float")
+        if not isinstance(learn_eps, bool):
+            raise ValueError("learn_eps must be bool")
 
         if activation is not None and not isinstance(activation, ms.nn.Cell):
             raise TypeError(f"For '{self.cls_name}', the 'activation' must a mindspore.nn.Cell, but got "
