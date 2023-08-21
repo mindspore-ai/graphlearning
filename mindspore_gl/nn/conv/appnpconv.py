@@ -83,9 +83,14 @@ class APPNPConv(GNNCell):
                  alpha: float,
                  edge_drop=0.0):
         super().__init__()
-        assert isinstance(k, int) and k > 0, "k must be positive int"
-        assert isinstance(alpha, float), "alpha must be float"
-        assert isinstance(edge_drop, float), "edge_drop must be float"
+
+        if k <= 0 or not isinstance(k, int):
+            raise ValueError("k must be positive int")
+        if not isinstance(alpha, float):
+            raise ValueError("alpha must be float")
+        if not isinstance(edge_drop, float):
+            raise ValueError("edge_drop must be float")
+
         self.k_ = k
         self.alpha_ = alpha
 

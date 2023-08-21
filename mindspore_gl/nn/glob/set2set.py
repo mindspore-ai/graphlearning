@@ -79,9 +79,12 @@ class Set2Set(GNNCell):
 
     def __init__(self, input_size, num_iters, num_layers):
         super().__init__()
-        assert isinstance(input_size, int) and input_size > 0, "input_size must be positive int"
-        assert isinstance(num_iters, int) and num_iters > 0, "num_iters must be positive int"
-        assert isinstance(num_layers, int) and num_layers > 0, "num_layers must be positive int"
+        if input_size <= 0 or not isinstance(input_size, int):
+            raise ValueError("input_size must be positive int")
+        if num_iters <= 0 or not isinstance(num_iters, int):
+            raise ValueError("num_iters must be positive int")
+        if num_layers <= 0 or not isinstance(num_layers, int):
+            raise ValueError("num_layers must be positive int")
         self.input_size = input_size
         self.num_iters = num_iters
         self.num_layers = num_layers

@@ -80,10 +80,14 @@ class DOTGATConv(GNNCell):
                  num_heads: int,
                  bias=False):
         super().__init__()
-        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
-        assert isinstance(out_feat_size, int) and out_feat_size > 0, "out_feat_size must be positive int"
-        assert isinstance(num_heads, int) and num_heads > 0, "num_heads must be positive int"
-        assert isinstance(bias, bool), "bias must be bool"
+        if in_feat_size <= 0 or not isinstance(in_feat_size, int):
+            raise ValueError("in_feat_size must be positive int")
+        if out_feat_size <= 0 or not isinstance(out_feat_size, int):
+            raise ValueError("out_feat_size must be positive int")
+        if num_heads <= 0 or not isinstance(num_heads, int):
+            raise ValueError("num_heads must be positive int")
+        if not isinstance(bias, bool):
+            raise ValueError("bias must be bool")
 
         self.dense = ms.nn.Dense(in_feat_size, out_feat_size * num_heads, has_bias=bias)
         self.num_heads = num_heads

@@ -88,10 +88,15 @@ class ChebConv(GNNCell):
         """
     def __init__(self, in_channels: int, out_channels: int, k: int = 3, bias: bool = True):
         super(ChebConv, self).__init__()
-        assert isinstance(in_channels, int) and in_channels > 0, "in_channels must be positive int"
-        assert isinstance(out_channels, int) and out_channels > 0, "out_channels must be positive int"
-        assert isinstance(k, int) and k > 0, "k must be positive int"
-        assert isinstance(bias, bool), "bias must be bool"
+
+        if in_channels <= 0 or not isinstance(in_channels, int):
+            raise ValueError("in_channels must be positive int")
+        if out_channels <= 0 or not isinstance(out_channels, int):
+            raise ValueError("out_channels must be positive int")
+        if k <= 0 or not isinstance(k, int):
+            raise ValueError("k must be positive int")
+        if not isinstance(bias, bool):
+            raise ValueError("bias must be bool")
 
         self.k = k
         self.in_channels = in_channels

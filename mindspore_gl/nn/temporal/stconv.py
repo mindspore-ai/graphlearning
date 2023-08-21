@@ -62,9 +62,12 @@ class TemporalConv(ms.nn.Cell):
     """
     def __init__(self, in_channels: int, out_channels: int, kernel_size: int = 3):
         super(TemporalConv, self).__init__()
-        assert isinstance(in_channels, int) and in_channels > 0, "in_channels must be positive int"
-        assert isinstance(out_channels, int) and out_channels > 0, "out_channels must be positive int"
-        assert isinstance(kernel_size, int) and kernel_size > 0, "kernel_size must be positive int"
+        if in_channels <= 0 or not isinstance(in_channels, int):
+            raise ValueError("in_channels must be positive int")
+        if out_channels <= 0 or not isinstance(out_channels, int):
+            raise ValueError("out_channels must be positive int")
+        if kernel_size <= 0 or not isinstance(kernel_size, int):
+            raise ValueError("kernel_size must be positive int")
 
         self.in_channels = in_channels
         self.out_channels = out_channels
@@ -163,13 +166,21 @@ class STConv(GNNCell):
                  k: int = 3,
                  bias: bool = True):
         super().__init__()
-        assert isinstance(num_nodes, int) and num_nodes > 0, "num_nodes must be positive int"
-        assert isinstance(in_channels, int) and in_channels > 0, "in_channels must be positive int"
-        assert isinstance(hidden_channels, int) and hidden_channels > 0, "hidden_channels must be positive int"
-        assert isinstance(out_channels, int) and out_channels > 0, "out_channels must be positive int"
-        assert isinstance(kernel_size, int) and kernel_size > 0, "kernel_size must be positive int"
-        assert isinstance(k, int) and k > 0, "k must be positive int"
-        assert isinstance(bias, bool), "bias must be bool"
+        if num_nodes <= 0 or not isinstance(num_nodes, int):
+            raise ValueError("num_nodes must be positive int")
+        if in_channels <= 0 or not isinstance(in_channels, int):
+            raise ValueError("in_channels must be positive int")
+        if hidden_channels <= 0 or not isinstance(hidden_channels, int):
+            raise ValueError("hidden_channels must be positive int")
+        if out_channels <= 0 or not isinstance(out_channels, int):
+            raise ValueError("out_channels must be positive int")
+        if kernel_size <= 0 or not isinstance(kernel_size, int):
+            raise ValueError("kernel_size must be positive int")
+        if k <= 0 or not isinstance(k, int):
+            raise ValueError("k must be positive int")
+        if not isinstance(bias, bool):
+            raise ValueError("bias must be bool")
+
 
         self.num_nodes = num_nodes
         self.in_channels = in_channels

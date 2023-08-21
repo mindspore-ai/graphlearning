@@ -74,8 +74,10 @@ class AGNNConv(GNNCell):
                  init_beta: float = 1.0,
                  learn_beta: bool = True):
         super().__init__()
-        assert isinstance(init_beta, float), "init_beta must be float"
-        assert isinstance(learn_beta, bool), "learn_beta must be bool"
+        if not isinstance(init_beta, float):
+            raise ValueError("init_beta must be float")
+        if not isinstance(learn_beta, bool):
+            raise ValueError("learn_beta must be bool")
         if learn_beta:
             self.beta = ms.Parameter(ms.Tensor([init_beta], ms.float32))
         else:

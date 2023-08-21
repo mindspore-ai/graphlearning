@@ -74,8 +74,10 @@ class GCNConv2(GNNCell):
                  in_feat_size: int,
                  out_size: int):
         super().__init__()
-        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
-        assert isinstance(out_size, int) and out_size > 0, "out_size must be positive int"
+        if (not isinstance(in_feat_size, int)) or in_feat_size <= 0:
+            raise ValueError("in_feat_size must be positive int")
+        if (not isinstance(out_size, int)) or out_size <= 0:
+            raise ValueError("out_size must be positive int")
         self.in_feat_size = in_feat_size
         self.out_size = out_size
 

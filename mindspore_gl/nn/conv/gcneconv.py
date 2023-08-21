@@ -73,8 +73,11 @@ class GCNEConv(GNNCell):
                  out_size: int,
                  bias: bool = False):
         super().__init__()
-        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
-        assert isinstance(out_size, int) and out_size > 0, "out_size must be positive int"
+        if (not isinstance(in_feat_size, int)) or in_feat_size <= 0:
+            raise ValueError("in_feat_size must be positive int")
+        if (not isinstance(out_size, int)) or out_size <= 0:
+            raise ValueError("out_size must be positive int")
+
         self.in_feat_size = in_feat_size
         self.out_size = out_size
         self.fc1 = ms.nn.Dense(in_feat_size, out_size, weight_init=XavierUniform(), has_bias=False)

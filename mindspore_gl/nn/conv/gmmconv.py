@@ -91,12 +91,18 @@ class GMMConv(GNNCell):
                  bias=False,
                  aggregator_type="sum"):
         super().__init__()
-        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
-        assert isinstance(out_feat_size, int) and out_feat_size > 0, "out_feat_size must be positive int"
-        assert isinstance(coord_dim, int) and coord_dim > 0, "coord_dim must be positive int"
-        assert isinstance(n_kernels, int) and n_kernels > 0, "n_kernels must be positive int"
-        assert isinstance(bias, bool), "bias must be bool"
-        assert isinstance(residual, bool), "residual must be bool"
+        if (not isinstance(in_feat_size, int)) or in_feat_size <= 0:
+            raise ValueError("in_feat_size must be positive int")
+        if (not isinstance(out_feat_size, int)) or out_feat_size <= 0:
+            raise ValueError("out_feat_size must be positive int")
+        if (not isinstance(coord_dim, int)) or coord_dim <= 0:
+            raise ValueError("coord_dim must be positive int")
+        if (not isinstance(n_kernels, int)) or n_kernels <= 0:
+            raise ValueError("n_kernels must be positive int")
+        if not isinstance(bias, bool):
+            raise ValueError("bias must be bool")
+        if not isinstance(residual, bool):
+            raise ValueError("residual must be bool")
 
         if aggregator_type != "sum":
             raise TypeError("Don't support aggregator type other than sum.")

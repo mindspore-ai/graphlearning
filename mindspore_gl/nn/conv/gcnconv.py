@@ -91,9 +91,14 @@ class GCNConv(GNNCell):
                  activation=None,
                  dropout=0.5):
         super().__init__()
-        assert isinstance(in_feat_size, int) and in_feat_size > 0, "in_feat_size must be positive int"
-        assert isinstance(out_size, int) and out_size > 0, "out_size must be positive int"
-        assert isinstance(dropout, float), "dropout must be float"
+        if in_feat_size <= 0 or not isinstance(in_feat_size, int):
+            raise ValueError("in_feat_size must be positive int")
+        if out_size <= 0 or not isinstance(out_size, int):
+            raise ValueError("out_size must be positive int")
+        if not isinstance(dropout, float):
+            raise ValueError("dropout must be float")
+
+
         self.in_feat_size = in_feat_size
         self.out_size = out_size
 
