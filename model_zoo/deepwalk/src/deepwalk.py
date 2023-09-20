@@ -77,7 +77,7 @@ class BatchRandWalk:
         self.neg_num = neg_num
         self.batch_size = batch_size
         self.padded_size = batch_size * walk_len * win_size * 2
-        self.fill_value = self.graph.node_count
+        self.fill_value = self.graph.node_count - 1
 
     def __call__(self, nodes):
         walks = random_walk_unbias_on_homo(self.graph, np.array(nodes, np.int32), self.walk_len)
