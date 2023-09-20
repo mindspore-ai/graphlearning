@@ -155,8 +155,8 @@ def sampling_csr_data(src_idx, dst_idx, n_nodes, n_edges, seeds_idx=None, node_f
 
     Returns:
         - **csr_g** (tuple) - info of csr graph, it contains indices of csr graph, indptr of csr graph,
-            node numbers of csr graph, edges numbers of csr graph, pre-stored backward indices of csr graph,
-            pre-stored backward indptr of csr graph.
+          node numbers of csr graph, edges numbers of csr graph, pre-stored backward indices of csr graph,
+          pre-stored backward indptr of csr graph.
         - **seeds_idx** (numpy.ndarray) - reordered start nodes.
         - **node_feat** (numpy.ndarray) - reorder node features.
 
