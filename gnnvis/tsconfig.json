@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "node",
+        "isolatedModules": true,
+        "allowImportingTsExtensions": true,
+        "types": ["vitest/globals", "jest"]
+    },
+    "files": [],
+    "references": [
+        {
+            "path": "./tsconfig.node.json"
+        },
+        {
+            "path": "./tsconfig.app.json"
+        }
+    ]
+}
