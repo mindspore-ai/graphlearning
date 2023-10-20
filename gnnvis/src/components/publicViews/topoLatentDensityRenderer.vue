@@ -308,7 +308,10 @@ const {
     >,
     {
         timeout: 20_000,
-        dependencies: ["http://localhost:5173/workers/d3js.org_d3.v7.js"],
+        dependencies: [
+            // "http://localhost:5173/workers/d3js.org_d3.v7.js",
+            "https://d3js.org/d3.v7.min.js",
+        ],
     }
 );
 const {
@@ -318,7 +321,8 @@ const {
 } = useWebWorkerFn(calcVectorDist, {
     timeout: 20_000,
     dependencies: [
-        "http://localhost:5173/workers/d3js.org_d3.v7.js",
+        "https://d3js.org/d3.v7.min.js",
+        // "http://localhost:5173/workers/d3js.org_d3.v7.js",
         "http://localhost:5173/workers/distance.js",
     ],
 });

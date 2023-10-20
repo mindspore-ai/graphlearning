@@ -667,9 +667,9 @@ const {
 } = useWebWorkerFn(calcGraphCoords, {
     timeout: 20_000,
     dependencies: [
-        "http://localhost:5173/workers/d3js.org_d3.v7.js",
+        // "http://localhost:5173/workers/d3js.org_d3.v7.js",
         // "https://d3js.org/d3.v7.js", //for debug
-        // "https://d3js.org/d3.v7.min.js"
+        "https://d3js.org/d3.v7.min.js",
     ],
 });
 const calcPromiseKit: {

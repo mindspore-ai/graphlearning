@@ -1,12 +1,14 @@
 # User Manual
+
 Hi, it's a user manual to teach you how to use CorGIE-2.
 
 Basically, you can go to those sections to read:
-- [Layouts](#layouts)
-- [Dashboards](#dashboards)
-- [Tasks & Views](#tasks_and_views)
 
-# Layouts 
+-   [Layouts](#layouts)
+-   [Dashboards](#dashboards)
+-   [Tasks & Views](#tasks_and_views)
+
+# Layouts
 
 <span id="layouts"></span>
 
@@ -22,7 +24,7 @@ User can click `Analyze` button (as shown in fig) to enter the analytical proces
 
 ---
 
-When user clicks button `Compare`, the list will be filtered into a subset which only contains dataset from exact same graph (As shown in below fig). 
+When user clicks button `Compare`, the list will be filtered into a subset which only contains dataset from exact same graph (As shown in below fig).
 
 ![home_compare](assets/home_compare.png)
 
@@ -34,16 +36,17 @@ Dashboard Layout contains 3 parts: `Header`, `Main` and `Footer`.
 
 ![dashboard_layout](assets/dashboard_layout.png)
 
-### Header 
+### Header
 
 <span id="global_settings" ></span>
 
 In header, there is an **Global Setting** button, which contains the following options:
-- Global label type: whether to use `true label` or `predict label` in all Dashboards. When toggled, the labels will change immediately.
-- Default(Global) select mode: since many views have implemented the `brush` function to enable nodes selection, user can toggle this to decide a continuous selecting behavior or reselect new nodes subsets every time. Note that this setting will change immediately when toggled.
-- Rescale when: Each view in each dashboard can be resized to arbitrary size(width, height), and the coords will change simultaneously. But for the consideration of rendering optimization, user can choose to rescale the coords when the resize action is finished. Note that this setting will change immediately when toggled.
-- Max recent length: the maximum dashboards that show in the navigation bar.
-- Settings trigger mode: the gesture to trigger the popover setting menus. Note that this setting will change immediately when toggled.
+
+-   Global label type: whether to use `true label` or `predict label` in all Dashboards. When toggled, the labels will change immediately.
+-   Default(Global) select mode: since many views have implemented the `brush` function to enable nodes selection, user can toggle this to decide a continuous selecting behavior or reselect new nodes subsets every time. Note that this setting will change immediately when toggled.
+-   Rescale when: Each view in each dashboard can be resized to arbitrary size(width, height), and the coords will change simultaneously. But for the consideration of rendering optimization, user can choose to rescale the coords when the resize action is finished. Note that this setting will change immediately when toggled.
+-   Max recent length: the maximum dashboards that show in the navigation bar.
+-   Settings trigger mode: the gesture to trigger the popover setting menus. Note that this setting will change immediately when toggled.
 
 ![global_settings](assets/global_settings.png)
 
@@ -55,7 +58,7 @@ Note, if it's a dashboard for single dataset(model result), there will be an `Ad
 
 ### Footer
 
-In footer, the left section displays recently visited dashboards with max len at 3 by default. 
+In footer, the left section displays recently visited dashboards with max len at 3 by default.
 
 ![footer_recent](assets/footer_recent.png)
 
@@ -75,7 +78,7 @@ In the tree view, each dashboard can be abstracted as a tree node and the relati
 
 ---
 
-For dashboard-wise comparison, user can click two snapshots and then click `compare`, to create a new dashboard for comparative analysis. As is shown in the following fig. 
+For dashboard-wise comparison, user can click two snapshots and then click `compare`, to create a new dashboard for comparative analysis. As is shown in the following fig.
 
 ![tree_2](assets/tree_2.png)
 
@@ -121,7 +124,6 @@ Alternatively, user can clear the `public` nodes selection every time selecting 
 
 ## Restore View Sizes
 
-
 When user click the `restore view sizes` button, all views will be resized to their original sizes, with their contents rescaled.
 
 ![dashboard_restore](assets/dashboard_restore.gif)
@@ -132,7 +134,7 @@ When user click the `restore view sizes` button, all views will be resized to th
 
 In a dashboard, a view that is frequently interacted or in which nodes are largely selected may embody critical features and thus can represent its belonging dashboard. We call this view **Principal View** of the dashboard.
 
-When the `represent` button is clicked, the size of the dashboard will be decreased and only the principal view will be shown. User can drag the represented dashboard as if it floats above all layers, to capture a instantaneous comparison with other dashboards. 
+When the `represent` button is clicked, the size of the dashboard will be decreased and only the principal view will be shown. User can drag the represented dashboard as if it floats above all layers, to capture a instantaneous comparison with other dashboards.
 
 ![dashboard_represent](assets/dashboard_represent-61.png)
 
@@ -152,7 +154,6 @@ Click the `max` button to maximize the dashboard to its original appearance and 
 
 Many views uses different symbols to show different nodes, necessitating a consistent and easy-get legends. Hover on the legend icon to show it.
 
-
 ![dashboard_legends](assets/dashboard_legends-41.png)
 
 Specially, in dashboard-wise comparison, to distinguish which dashboard does the nodes come from, we designed half filled symbols, as is illustrated in the above fig. For short, symbols for other hops are designed like-wise.
@@ -165,12 +166,9 @@ When a circle denotes a whole graph rather than a node, it's possible that both 
 
 Like [global settings](#global_settings), dashboard has some public settings, which are only effective in the current dashboard.
 
-
 ![dashboard_settings](assets/dashboard_settings-39.png)
 
 Specially, by toggling `Highlight corresponding node` user can determine whether to highlight the same node or nodes group across views in the current dashboard, see [nodes highlighting](#nodes_highlighting). It's `true` by default.
-
-
 
 # Tasks & Views
 
@@ -180,18 +178,17 @@ Currently we support 3 main tasks: **node classification**, **link prediction**,
 
 We also support two model result comparison and two dashboard comparison(nodes selection comparison).
 
-Given different tasks, a dashboard will have different prescriptions of views, say, *what views does the current dashboard have?*
+Given different tasks, a dashboard will have different prescriptions of views, say, _what views does the current dashboard have?_
 
 ## Public Features of Views
 
 All views consists of a head part and a body part. In head part, there are some buttons frequently used functions and a setting button for some optional settings.
 
-
 ![view_public](assets/view_public.png)
 
 ### Resizable
 
-All views are wrapped in resizable boxes. The size of the view can be changed by dragging the handle at the right-bottom corner of the box, and the content will be automatically rescaled to suit the size. As shown below. 
+All views are wrapped in resizable boxes. The size of the view can be changed by dragging the handle at the right-bottom corner of the box, and the content will be automatically rescaled to suit the size. As shown below.
 
 ![view_resize](assets/view_resize.gif)
 
@@ -203,8 +200,6 @@ User can change the arrangement and order of the views by drag the title of each
 
 ![view_drag](assets/view_drag.gif)
 
-
-
 ### Nodes Highlighting
 
 <span id="nodes_highlighting"></span>
@@ -215,9 +210,7 @@ Most of the views have implemented nodes highlighting. When a node or a part of 
 
 ![nodes_highlight_2](assets/nodes_highlight_correspond_2-0.png)
 
-
 ### Pan and Zoom
-
 
 Most of the views have implemented pan and zoom. By default, user can zoom in or out through mouse scrolling. But pan behavior conflicts with brush(see [Nodes Selections](#nodes_selections)). User can click the `pan` button to enable pan behavior. Switching from `brush` to `pan` will not clear nodes selections.
 
@@ -226,8 +219,6 @@ Most of the views have implemented pan and zoom. By default, user can zoom in or
 User can click the `reset zoom` to transform the content into a proper size in the box.
 
 ![reset_zoom](assets/reset_zoom.gif)
-
-
 
 ### Nodes Selections
 
@@ -255,17 +246,15 @@ We use different symbols to encode different hop neighbors. Take the below fig, 
 
 NOTE: All scatter views have utilized this visual encodings, for more symbols, please refer to [scatter legends](#scatter_legends).
 
-
 ### Dashboard Discrimination
 
 <span id="dashboard_discrimination" ></span>
 
-When user compares two dashboards through [history tree view](#tree_view), it's necessary to discriminate the nodes from dashboard-0 or dashboard-1. 
+When user compares two dashboards through [history tree view](#tree_view), it's necessary to discriminate the nodes from dashboard-0 or dashboard-1.
 
-For scatter views, we use different filling style on symbols to encode dashboard sources. Take the below fig, left filled symbols(◐) are nodes from dashboard-0 and right filled symbols(◑) are nodes from dashboard-1, and if a node are selected by both dashboard-0 and dashboard-1, it will be fully filled(●). This rule is applied to all-hop symbols. 
+For scatter views, we use different filling style on symbols to encode dashboard sources. Take the below fig, left filled symbols(◐) are nodes from dashboard-0 and right filled symbols(◑) are nodes from dashboard-1, and if a node are selected by both dashboard-0 and dashboard-1, it will be fully filled(●). This rule is applied to all-hop symbols.
 
 Note that If a node is an 1-hop neighbor of selected nodes in dashboard-0 but a 2-hop neighbor of those in dashboard-1, we always take shorter path first, thus the symbol of the node will be fully filled triangle.
-
 
 ![dashboard_source](assets/dashboard_source.png)
 
@@ -273,14 +262,13 @@ If a symbol represents a graph, please refer to [scatter legends](#scatter_legen
 
 ---
 
-For confusion matrix views, we discriminate sources by drawing two hemispheres in one cell, with the left one denotes dashboard-0, and the right one, dashboard-1. 
+For confusion matrix views, we discriminate sources by drawing two hemispheres in one cell, with the left one denotes dashboard-0, and the right one, dashboard-1.
 
 ![confusion_matrix_sources](assets/confusion_matrix_sources.png)
 
 ---
 
 For histogram views, we discriminate sources by simply display chart side by side, with their x axis and y axis both aligned.
-
 
 ![histogram_sources](assets/histogram_sources.png)
 
@@ -297,13 +285,14 @@ There are some views are designed for model results comparison only, like [Compa
 ## Views for 3 Tasks
 
 In this sections we introduce views one-by-one that are generally used in 3 tasks.
-- [Topology View](#topology_view)
-- [Latent Space View](#latent_space_view)
-- [Topo - Latent Density View](#topo_latent_density_view)
-- [Comparative Rank View](#comparative_rank_view)
-- [Comparative Polar View](#comparative_polar_view)
-- [Dense Feature View(for Node)](#dense_feature_view_for_node)
-- [Sparse Feature View(for Node)](#sparse_feature_view_for_node)
+
+-   [Topology View](#topology_view)
+-   [Latent Space View](#latent_space_view)
+-   [Topo - Latent Density View](#topo_latent_density_view)
+-   [Comparative Rank View](#comparative_rank_view)
+-   [Comparative Polar View](#comparative_polar_view)
+-   [Dense Feature View(for Node)](#dense_feature_view_for_node)
+-   [Sparse Feature View(for Node)](#sparse_feature_view_for_node)
 
 ### Topology View
 
@@ -312,7 +301,6 @@ In this sections we introduce views one-by-one that are generally used in 3 task
 Topology View visualizes the topological structure of the entire graph for the current dashboard(nodes for current dashboard only), using force-directed layout, which is calculated when the dashboard is created.
 
 ![topology_view](assets/topology_view.png)
-
 
 <span id="node_link_common_setting"></span>
 
@@ -323,16 +311,16 @@ In its settings, user can decide whether to show links and set the opacity of li
 ### Latent Space View
 
 <span id="latent_space_view"></span>
-Latent Space View visualizes the dimension reduction of node embeddings of latent layers of GNN training models. 
+Latent Space View visualizes the dimension reduction of node embeddings of latent layers of GNN training models.
 
 ![latent_space](assets/latent_space.png)
 
-- Data: Usually the view in the first dashboard visualizes the data calculated by the backend, while those in descendant dashboards copy the coordinates in that of the first dashboard by default, and user can choose to rerun local calculation.
-- Aggregation: User can aggregate the points to have a more pop-out visualization. The sectors in each pie encode proportions of nodes of different labels, and the radius of each pie encodes the total amount of nodes within this pie. The links can be aggregated as well. User can change the aggregation radius in settings.
-  - ![latent_space_aggr](assets/latent_space_aggr.png)
-- Outlier Detection: Click `detect outlier` can automatically select some outlier nodes by algorithm.
-- Settings: In settings, user can set aggregation properties, nodes and links(see [this](#node_link_common_setting)), and hyper parameters for dim reduction. They are easy to understand.
-  - ![latent_space_settings](assets/latent_space_settings.png)
+-   Data: Usually the view in the first dashboard visualizes the data calculated by the backend, while those in descendant dashboards copy the coordinates in that of the first dashboard by default, and user can choose to rerun local calculation.
+-   Aggregation: User can aggregate the points to have a more pop-out visualization. The sectors in each pie encode proportions of nodes of different labels, and the radius of each pie encodes the total amount of nodes within this pie. The links can be aggregated as well. User can change the aggregation radius in settings.
+    -   ![latent_space_aggr](assets/latent_space_aggr.png)
+-   Outlier Detection: Click `detect outlier` can automatically select some outlier nodes by algorithm.
+-   Settings: In settings, user can set aggregation properties, nodes and links(see [this](#node_link_common_setting)), and hyper parameters for dim reduction. They are easy to understand.
+    -   ![latent_space_settings](assets/latent_space_settings.png)
 
 ### Topo - Latent Density View
 
@@ -348,21 +336,21 @@ In contrast to [Topology View](#topology_view), this view can help users directl
 
 Though those nodes can be filtered into a new dashboard, sometimes we need intuitive perception on the relationship between background nodes(nodes in the current dashboard) and selected nodes. While the new dashboard only contains selected nodes.
 
-
 Math:
-- If the dashboard is **not** for dashboard-wise comparison, we suppose Nodes Selection(and their hop neighbors) is $S$, and all nodes in the current dashboard constitute $G$, and the difference set is $(G-S)$. Suppose $S(i)$ means the $i$ th node in $S$, we have the datum of $S(i)$:
 
-  $$datum(S(i))= \frac{1}{len(G-S)}\sum_{j}^{len(G-S)} dist(S(i), G(j))$$
+-   If the dashboard is **not** for dashboard-wise comparison, we suppose Nodes Selection(and their hop neighbors) is $S$, and all nodes in the current dashboard constitute $G$, and the difference set is $(G-S)$. Suppose $S(i)$ means the $i$ th node in $S$, we have the datum of $S(i)$:
 
-- If the dashboard is for dashboard-wise comparison, we suppose Nodes Selection(and their hop neighbors) from dashboard 0 is $S_{0}$ with length $l_{0}$, Nodes Selection(and their hop neighbors) from dashboard 1 is $S_{1}$ with length $l_{1}$. Suppose $S_{0}(i)$ means the $i$ th node in $S_{0}$, $S_{1}(i)$ means the $i$ th node in $S_{1}$.
+    $$datum(S(i))= \frac{1}{len(G-S)}\sum_{j}^{len(G-S)} dist(S(i), G(j))$$
 
-  The datum of $S_{0}(i)$:
+-   If the dashboard is for dashboard-wise comparison, we suppose Nodes Selection(and their hop neighbors) from dashboard 0 is $S_{0}$ with length $l_{0}$, Nodes Selection(and their hop neighbors) from dashboard 1 is $S_{1}$ with length $l_{1}$. Suppose $S_{0}(i)$ means the $i$ th node in $S_{0}$, $S_{1}(i)$ means the $i$ th node in $S_{1}$.
 
-  $$ datum(S_{0}(i)) =\frac{1}{l_{1}} \sum_{j}^{l_{1}} dist(S_{0}(i), S_{1}(j)) $$
+    The datum of $S_{0}(i)$:
 
-  By same logic, the datum of $S_{1}(i)$:
+    $$ datum(S*{0}(i)) =\frac{1}{l*{1}} \sum*{j}^{l*{1}} dist(S*{0}(i), S*{1}(j)) $$
 
-  $$ datum(S_{1}(i)) = \frac{1}{l_{0}}\sum_{j}^{l_{0}} dist(S_{1}(i), S_{0}(j)) $$
+    By same logic, the datum of $S_{1}(i)$:
+
+    $$ datum(S*{1}(i)) = \frac{1}{l*{0}}\sum*{j}^{l*{0}} dist(S*{1}(i), S*{0}(j)) $$
 
 ### Comparative Rank View
 
@@ -400,7 +388,6 @@ There are two border lines with slopes of 1 in the rank view, which can be dragg
 
 Note that compared to nodes selected from the source view (the calculation source of rank view), those selected in rank view are other nodes entries. See [Nodes Selections](#nodes_selections).
 
-
 ### Comparative Polar View
 
 <span id="comparative_polar_view"></span>
@@ -425,7 +412,7 @@ Note that compared to nodes selected from the source view (the calculation sourc
 
 <span id="dense_feature_view_for_node"></span>
 
-If the dataset or model result contains dense node features, then they will be visualized as multiple histograms. 
+If the dataset or model result contains dense node features, then they will be visualized as multiple histograms.
 
 ![dense](assets/dense.png)
 
@@ -437,15 +424,13 @@ When hover a colored block, the nodes within the block will be highlighted acros
 
 The content is implemented in [grid layout](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Basic_concepts_of_grid_layout), and can be scrolled. Both column num and sub view height of each histogram can be set in settings.
 
-![dense_column](assets/dense_column.gif ':size=500') ![dense_height](assets/dense_height.gif ':size=500')
-
+![dense_column](assets/dense_column.gif ":size=500") ![dense_height](assets/dense_height.gif ":size=500")
 
 For dashboard-wise comparison, see [Dashboard Discrimination](#dashboard-discrimination)
 
 ### Sparse Feature View(for Node)
 
 <span id="sparse_feature_view_for_node"></span>
-
 
 This view visualizes sparse nodes features(if have). First, for features of all nodes, the bar chart encodes all dimensions with horizontal position(x axis), and encodes accumulated dim values with bar height.
 
@@ -466,10 +451,10 @@ For dashboard-wise comparison, we visualize the 2 nodes selection from 2 dashboa
 ## Views for Node Classification
 
 In this section we introduce views that are dedicated for task **node classification**
-- [Confusion Matrix(for Node)](#confusion_matrix_for_node)
 
+-   [Confusion Matrix(for Node)](#confusion_matrix_for_node)
 
-### Confusion Matrix(for Node) 
+### Confusion Matrix(for Node)
 
 <span id="confusion_matrix_for_node"></span>
 
@@ -484,12 +469,14 @@ For two model results comparison, we simply added another view. For dashboard-wi
 ## Views for Link Prediction
 
 In this section we introduce views that are dedicated for task **link prediction**
-- [Link Prediction View](#link_prediction_view)
+
+-   [Link Prediction View](#link_prediction_view)
 
 ### Link Prediction View
+
 <span id="link_prediction_view"></span>
 
-This view visualizes  the link predictions results of selected nodes, since rendering all results is like a mess. 
+This view visualizes the link predictions results of selected nodes, since rendering all results is like a mess.
 
 ![link_pred](assets/link_pred.png)
 
@@ -497,23 +484,22 @@ As for nodes, we encode different hop neighbors with different symbols, see [Nei
 
 For links, we encode **ground truth links** with <span style="color:#555">grey lines</span>, **true allow links**(contained in origin graph and predicted right) with <span style="color:black">black lines</span>, **false allow links**(contained in origin graph but predicted wrong) with <span style="color:red">red lines</span>, and **top-k unseen links**(recommended links) with <span style="color:#409eff">dashed blue lines</span> in different line widths.
 
-
 In view settings, user can change:
-- How many hops to be shown. (NOTE: this will cause rerender)
-- Whether to show ground truth links or allow links. (NOTE: these two are mutually exclusive)
-- Top k recommended links. (NOTE: this will cause rerender, and we only consider nodes within the current dashboard)
+
+-   How many hops to be shown. (NOTE: this will cause rerender)
+-   Whether to show ground truth links or allow links. (NOTE: these two are mutually exclusive)
+-   Top k recommended links. (NOTE: this will cause rerender, and we only consider nodes within the current dashboard)
 
 ![link_pred_settings](assets/link_pred_settings.png)
 
 ## Views for Graph Classification
 
 In this section we introduce views that are dedicated for task **graph classification**
-- [Topology View(for Graph)](#topology_view_for_graph)
-- [Latent Space(for Graph)](#latent_sparse_for_graph)
-- [Confusion Matrix(for Graph)](#confusion_matrix_for_graph)
-- [Dense Feature View(for Graph)](#dense_feature_view_for_graph)
 
-
+-   [Topology View(for Graph)](#topology_view_for_graph)
+-   [Latent Space(for Graph)](#latent_sparse_for_graph)
+-   [Confusion Matrix(for Graph)](#confusion_matrix_for_graph)
+-   [Dense Feature View(for Graph)](#dense_feature_view_for_graph)
 
 ### Topology View(for Graph)
 
@@ -523,22 +509,19 @@ Topology view for graph visualize graphs one by one in a scrollable grid layout,
 
 ![multi_graph](assets/multi_graph.png)
 
-
 Like [Dense Feature View(for Nodes)](#dense_feature_view_for_node), the column number and height be set manually.
 
 ---
 
 If user selects some nodes that can't form strictly complete graphs and then create a new dashboard, we still calculate the complete graphs, as shown in the following fig, where we still can differentiate the selected nodes from their neighbors.
 
-![multi_graph_select](assets/multi_graph_select.png ':size=350') → ![multi_graph_select_ret](assets/multi_graph_select_ret.png ':size=350')
+![multi_graph_select](assets/multi_graph_select.png ":size=350") → ![multi_graph_select_ret](assets/multi_graph_select_ret.png ":size=350")
 
 ---
 
 For two model results comparison, the inner rect can represents two different predicted labels. Simply, left for model 0 and right for model 1, as shown below.
 
 ![multi](assets/multi_graph_2model-0.png)
-
-
 
 ### Latent Space(for Graph)
 
@@ -558,8 +541,6 @@ NOTE: When some nodes are selected from other views, they may not consist of a c
 For [dashboard-wise comparison](#dashboard_discrimination), some nodes may be selected from both 2 dashboards, then the coming source of a graph may contain both. So we fill the circle by percent. The left sector represents how many nodes came from dashboard 0, while the right represents how many nodes came from dashboard 1. As shown below.
 
 ![graph_latent_percent](assets/graph_latent_percent-75.png)
-
-
 
 ### Confusion Matrix(for Graph)
 
@@ -581,10 +562,10 @@ Other functions are same as [Dense Feature View (for Nodes)](#dense_feature_view
 
 > For now, we only support dense features for graphs.
 
-
-
 # Documents for Data Descriptions
+
 ## Dataset
+
 1. Type: Folder
 
 2. Description: This folder is used to store multiple files of a dataset. The folder name is the same as the dataset name and can also be treated as an ID, which must be unique because it will be part of the route path.
@@ -597,21 +578,21 @@ Other functions are same as [Dense Feature View (for Nodes)](#dense_feature_view
 
 5. Each dataset should include the following files:
 
-|  No   |                 File name | Description                                                                    |
-| :---: | ------------------------: | :----------------------------------------------------------------------------- |
-|   1   |                graph.json | 📌 Necessary                                                                    |
-|   2   |       node-embeddings.csv | 📌 Necessary                                                                    |
-|   3   |   prediction-results.json | 📌 Necessary                                                                    |
-|   4   |      graph-embeddings.csv | ✅ Optional (Multi-graph task only)                                             |
-|   5   |       initial-layout.json | 📌 Necessary                                                                    |
-|   6   |            supplement.txt | ✅ Optional                                                                     |
-|   7   |   graph-custom-index.json | ✅ Optional: user-defined index                                                 |
-|   8   |   node-dense-features.csv | ✅ Optional: dense features of nodes                                            |
-|   9   | node-sparse-features.json | ✅ Optional: sparse features of nodes                                           |
-|  10   |           true-labels.txt | ✅ Optional (link-prediction & graph-classification only): true labels of nodes |
-
+| No  |                 File name | Description                                                                     |
+| :-: | ------------------------: | :------------------------------------------------------------------------------ |
+|  1  |                graph.json | 📌 Necessary                                                                    |
+|  2  |       node-embeddings.csv | 📌 Necessary                                                                    |
+|  3  |   prediction-results.json | 📌 Necessary                                                                    |
+|  4  |      graph-embeddings.csv | ✅ Optional (Multi-graph task only)                                             |
+|  5  |       initial-layout.json | 📌 Necessary                                                                    |
+|  6  |            supplement.txt | ✅ Optional                                                                     |
+|  7  |   graph-custom-index.json | ✅ Optional: user-defined index                                                 |
+|  8  |   node-dense-features.csv | ✅ Optional: dense features of nodes                                            |
+|  9  | node-sparse-features.json | ✅ Optional: sparse features of nodes                                           |
+| 10  |           true-labels.txt | ✅ Optional (link-prediction & graph-classification only): true labels of nodes |
 
 ### 1. graph.json
+
 1. Type: Json file, mainly referring to `NetworkX`.
 2. Description: graph data.
 3. Demo:
@@ -639,11 +620,11 @@ Other functions are same as [Dense Feature View (for Nodes)](#dense_feature_view
         },
     },
     "nodes": [ // Array
-        {   
-            "id": 0, 
+        {
+            "id": 0,
             "label": 8 // Optional: label of a node
         },
-        //...    
+        //...
     ],
     "edges": [
         {
@@ -670,8 +651,8 @@ Other functions are same as [Dense Feature View (for Nodes)](#dense_feature_view
 }
 ```
 
-
 ### 2. node-embeddings.csv
+
 1. Type: CSV file
 2. Description: The training data of nodes in the embedding space is usually generated by the last layer of the MLP. Each line in the file represents the embedding data of a node, and the order of the nodes corresponds to the order of nodes in graph.json.
 
@@ -688,68 +669,99 @@ Other functions are same as [Dense Feature View (for Nodes)](#dense_feature_view
 //...
 ```
 
-
 ### 3. prediction-results.json
+
 1. Type: Json file
 2. Description: The output of the model prediction. Three different tasks have different formats.
 
 #### node-classification
+
 ```json
 {
     "taskType": "node-classification",
-    "numNodeClasses": 7,  // int: number of points' classes
-    "predLabels": [  // Array<int>: predicted labels of nodes, the order is the same as the order of nodes in graph.json
-        0, 1, 2, 3, 4, 5, 6,  //...
+    "numNodeClasses": 7, // int: number of points' classes
+    "predLabels": [
+        // Array<int>: predicted labels of nodes, the order is the same as the order of nodes in graph.json
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6 //...
     ],
-    "trueLabels": [  // Array<int>: true labels of nodes, the order is the same as the order of nodes in graph.json
-        0, 0, 2, 3, 4, 5, 5,  //...
+    "trueLabels": [
+        // Array<int>: true labels of nodes, the order is the same as the order of nodes in graph.json
+        0,
+        0,
+        2,
+        3,
+        4,
+        5,
+        5 //...
     ]
 }
 ```
 
 #### link-prediction
+
 ```json
 {
     "taskType": "link-prediction",
-    "trueAllowEdges": [  // Array<Array<int, int> >
-        [0, 1],  // edge that exists in the original graph and is predicted correctly
-        [0, 2],  // presented by [starting point ID, end point ID]
+    "trueAllowEdges": [
+        // Array<Array<int, int> >
+        [0, 1], // edge that exists in the original graph and is predicted correctly
+        [0, 2] // presented by [starting point ID, end point ID]
         //...
     ],
-    "falseAllowEdges": [  // Array< <int, int> >
-        [0, 18],  // edge that exists in the original graph but is not predicted
-        [1, 39],  // presented by [starting point ID, end point ID]
+    "falseAllowEdges": [
+        // Array< <int, int> >
+        [0, 18], // edge that exists in the original graph but is not predicted
+        [1, 39] // presented by [starting point ID, end point ID]
         //...
     ],
-    "trueUnseenTopK": 5,  // int: recommended edges that are not present in the original image are determined by a score sorting
-                          // represents the top few selections.
-    "trueUnseenEdgesSorted": {  // edges that do not exist in the original graph but are recommended by the model
-        "11": [44, 161, 3, 19, 339],  // each KEY represents a node ID, and the corresbonding VALUE is an Array<int> with a length of "trueUnseenTopK"
-        "16": [145, 122, 259, 321, 324],  // each int is a node ID, and the order of the edges is determined by the score
+    "trueUnseenTopK": 5, // int: recommended edges that are not present in the original image are determined by a score sorting
+    // represents the top few selections.
+    "trueUnseenEdgesSorted": {
+        // edges that do not exist in the original graph but are recommended by the model
+        "11": [44, 161, 3, 19, 339], // each KEY represents a node ID, and the corresbonding VALUE is an Array<int> with a length of "trueUnseenTopK"
+        "16": [145, 122, 259, 321, 324] // each int is a node ID, and the order of the edges is determined by the score
         //...
     }
 }
 ```
 
-
 #### graph-classification
+
 ```json
 {
     "taskType": "graph-classification",
-    "numGraphClasses": 7,  // int: number of graphs' classes
-    "graphIndex": [  // Array<int> (Optional): index of each subgraph (the same as KEYs of "graphs" in graph.json)
-    ],               // if not given, it represents 0~n-1 (ascending order)
-    "predLabels": [  // Array: predicted labels of subgraphs (the order is the same as "graphs" in graph.json)
+    "numGraphClasses": 7, // int: number of graphs' classes
+    "graphIndex": [
+        // Array<int> (Optional): index of each subgraph (the same as KEYs of "graphs" in graph.json)
+    ], // if not given, it represents 0~n-1 (ascending order)
+    "predLabels": [
+        // Array: predicted labels of subgraphs (the order is the same as "graphs" in graph.json)
     ],
-    "trueLabels": [  // Array: true labels of subgraphs (the order is the same as "graphs" in graph.json)
+    "trueLabels": [
+        // Array: true labels of subgraphs (the order is the same as "graphs" in graph.json)
     ],
-    "phaseDict": {  // Dict (Optional): different useage of graph participation in training
-        0: "train",
-        1: "valid",
-        2: "predict"
+    "phaseDict": {
+        // Dict (Optional): different usage of graph participation in training
+        "0": "train",
+        "1": "valid",
+        "2": "predict"
     },
-    "phase": [  // Array<int>: the useage of each subgraph
-        1, 2, 0, 0, 0, 1, 1, 0,  //...
+    "phase": [
+        // Array<int>: the usage of each subgraph
+        1,
+        2,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0 //...
     ]
 }
 ```
@@ -768,8 +780,8 @@ Other functions are same as [Dense Feature View (for Nodes)](#dense_feature_view
 //...
 ```
 
-
 ### 5. initial-layout.json
+
 1. Type: Json file
 2. Description: Some computationally intensive initial rendering data, including the force-directed layout of graphs and the dimensionality reduction results of embedded spatial data.
 3. Introduction to Calculation Methods:
@@ -779,30 +791,32 @@ Other functions are same as [Dense Feature View (for Nodes)](#dense_feature_view
 
 ```json
 {
-    "forceDirectedLayout": [  // Array<Dict>: The length is equal to the length of the nodes, storing the coordinates of the points during the initial rendering of the graph.
-        {"id":0, "x":23.1, "y":50.3 },  // corresponding to the id of each node
-        {"id":1, "x":44.5, "y":90.1 },
+    "forceDirectedLayout": [
+        // Array<Dict>: The length is equal to the length of the nodes, storing the coordinates of the points during the initial rendering of the graph.
+        { "id": 0, "x": 23.1, "y": 50.3 }, // corresponding to the id of each node
+        { "id": 1, "x": 44.5, "y": 90.1 }
         //...
     ],
-    "nodeEmbUmp": [  // Array< <int, int> >: the same size of nodes. The data of node embeddings in the spatial dimension after being reduced by UMAP (two-dimensional).
-       [1.334,5.132],
-       //...
+    "nodeEmbUmp": [
+        // Array< <int, int> >: the same size of nodes. The data of node embeddings in the spatial dimension after being reduced by UMAP (two-dimensional).
+        [1.334, 5.132]
+        //...
     ],
-    "graphEmbUmp": [  // Array< <int, int> >: the same size of graphs. The data of graph embeddings in the spatial dimension after being reduced by UMAP (two-dimensional)
-       [1.334,5.132],
-       //...
+    "graphEmbUmp": [
+        // Array< <int, int> >: the same size of graphs. The data of graph embeddings in the spatial dimension after being reduced by UMAP (two-dimensional)
+        [1.334, 5.132]
+        //...
     ]
 }
 ```
 
-
 ### 6. supplement.txt
+
 1. Type: txt file
 2. Description: Any other information about this dataset, such as the hyperparameters of this training. Written manually, not generated by a program.
 
-
-
 ### 7. graph-custom-index.json
+
 1. Type: Json file
 2. Description: User defined feature calculated by `backend/custom_index.py`
 3. Demo:
@@ -825,8 +839,6 @@ Other functions are same as [Dense Feature View (for Nodes)](#dense_feature_view
 }
 ```
 
-
-
 ### 8. node-dense-features.csv
 
 1. Type: CSV file
@@ -841,7 +853,6 @@ feat-1,feat-2,feat-3
 3.99,1.0,18.884
 ...
 ```
-
 
 ### 9. node-sparse-features.json
 
@@ -867,10 +878,10 @@ feat-1,feat-2,feat-3
 }
 ```
 
-
 ## Format of python object
 
 Create a dataset file by calling as follows:
+
 ```python
 GNNVis(
     graph,
@@ -889,36 +900,41 @@ GNNVis(
 The meanings of each parameter are as follows:
 
 ### graph
+
 Python dict: the same as `graph.json`
 
 ### node_embed
+
 numpy.ndarray (2d)
 
 ### node_dense_features
+
 (Optional) numpy.ndarray (2d)
 
 ### node_dense_features_name
+
 (Optional) List: names of dense features of nodes
 
 ### node_sparse_features
+
 (Optional) Python dict: the same as `node-sparse-features.json`
 
-
 ### link_pred_res
+
 (Optional) Python dict: the same as `prediction-results.json`
 
-
 ### node_classify_res
+
 (Optional) Python dict: the same as `prediction-results.json`
 
 ### graph_classify_res
+
 (Optional) Python dict: the same as `prediction-results.json`
 
-
 ### graph_embed
+
 (Optional) numpy.ndarray (2d)
 
-
 ### gen_path
-(Optional) str: the path of the dataset folder (or the location of `backend`)
 
+(Optional) str: the path of the dataset folder (or the location of `backend`)

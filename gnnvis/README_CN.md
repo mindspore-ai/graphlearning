@@ -2,28 +2,29 @@
 
 一个由[Vue](https://vuejs.org/)实现的可视分析工具，用于调试和优化图神经网络训练模型，支持的任务：结点分类、链接预测、图分类等。
 
-
 # 论文
 
 即将到来……
 
 # 核心特点
-- 支持一个模型结果（训练结果）的探索，以及两个模型结果之间的比较。
-- 一个**数据集**是一个输出数据集，换言之，一个GNN模型的完整的训练结果，它可以用一个可视化的**仪表盘**进行分析
-- 每个仪表盘从集中状态管理工具（store）取得数据并在子**视图**中进行可视化渲染，可视化分为四个维度：拓扑空间、隐空间、预测空间。
-- 结点可以在多个**视图**之间被相应性地选择或高亮。
-- **结点选择**可以被**筛选**到一个新的仪表盘，以便于迭代分析或对比分析。
-- 仪表盘生成的过程，同时也是分析的路径，可以被存储并可视化为树，并且这些仪表盘可以被还原。点击树中的两个结点可以实现**仪表盘之间的比较**。
+
+-   支持一个模型结果（训练结果）的探索，以及两个模型结果之间的比较。
+-   一个**数据集**是一个输出数据集，换言之，一个 GNN 模型的完整的训练结果，它可以用一个可视化的**仪表盘**进行分析
+-   每个仪表盘从集中状态管理工具（store）取得数据并在子**视图**中进行可视化渲染，可视化分为四个维度：拓扑空间、隐空间、预测空间。
+-   结点可以在多个**视图**之间被相应性地选择或高亮。
+-   **结点选择**可以被**筛选**到一个新的仪表盘，以便于迭代分析或对比分析。
+-   仪表盘生成的过程，同时也是分析的路径，可以被存储并可视化为树，并且这些仪表盘可以被还原。点击树中的两个结点可以实现**仪表盘之间的比较**。
 
 # 快速启动
 
 最低配置:
-- 中央处理器：英特尔® 奔腾 G4560, 内存：8GB, 硬盘存储空间：不少于 HDD 10GB
-- 你需要[nodejs](https://nodejs.org/en/download/) (版本>=16) 和 [python](https://python.org) (版本>=3.7.10).
+
+-   中央处理器：英特尔 ® 奔腾 G4560, 内存：8GB, 硬盘存储空间：不少于 HDD 10GB
+-   你需要[nodejs](https://nodejs.org/en/download/) (版本>=16) 和 [python](https://python.org) (版本>=3.7.10).
 
 克隆或下载源代码，然后：
 
-首先，你需要运行python以启动一个后端服务器：
+首先，你需要运行 python 以启动一个后端服务器：
 
 ```bash
 python ./backend/static_server.py
@@ -40,6 +41,7 @@ npm install
 ```bash
 npm run dev
 ```
+
 一些案例数据集可以在 [/backend/backend.zip](./backend/backend.zip) 中找到，请解压到`backend`文件夹（如果遇到`是否替换`请选择`是`）。
 
 # 在线试用
@@ -56,56 +58,60 @@ npm run dev
 
 或者，如果你想在本地阅读用户手册，请按照以下步骤，因为我们使用 [docsify](https://docsify.js.org/) 撰写用户手册。
 
-- 如果你有 [nodejs](https://nodejs.org/en/download/):
+-   如果你有 [nodejs](https://nodejs.org/en/download/):
 
-  ```bash
-  npm i docsify-cli -g
-  ```
-  然后去往项目文件夹, 运行：
-  ```bash
-  docsify serve ./docs/user_manual
-  ```
-  然后打开浏览器（通常是浏览器）并输入网址 [http://localhost:3000](http://localhost:3000) 来阅读用户手册。
-- 或者，你可以
-  
-  ```bash
-  cd ./docs/user_manual
-  python -m http.server 3000
-  ```
-  然后打开浏览器并输入网址 [http://localhost:3000](http://localhost:3000) 来阅读用户手册。
+    ```bash
+    npm i docsify-cli -g
+    ```
 
+    然后去往项目文件夹, 运行：
+
+    ```bash
+    docsify serve ./docs/user_manual
+    ```
+
+    然后打开浏览器（通常是浏览器）并输入网址 [http://localhost:3000](http://localhost:3000) 来阅读用户手册。
+
+-   或者，你可以
+
+    ```bash
+    cd ./docs/user_manual
+    python -m http.server 3000
+    ```
+
+    然后打开浏览器并输入网址 [http://localhost:3000](http://localhost:3000) 来阅读用户手册。
 
 # 实现
 
 ## 概览
 
-- 使用 [Pinia](https://pinia.vuejs.org/) 提供数据集和全局状态管理。
-- 使用 [Vue Router](https://router.vuejs.org/) 管理路由。
-- 使用 [Element Plus](https://doc-archive.element-plus.org/#/zh-CN/component/installation) 开发布局组件。
-- 所有的Vue组件都是由 [Typescript](https://www.typescriptlang.org/) 语言、以[SFC（单文件组件）](https://vuejs.org/guide/scaling-up/sfc.html) 风格和 [Composition API（组合式API）](https://vuejs.org/guide/extras/composition-api-faq.html)编程。
-- 架构:
-  ![architecture_img](./docs/architecture.png)
+-   使用 [Pinia](https://pinia.vuejs.org/) 提供数据集和全局状态管理。
+-   使用 [Vue Router](https://router.vuejs.org/) 管理路由。
+-   使用 [Element Plus](https://doc-archive.element-plus.org/#/zh-CN/component/installation) 开发布局组件。
+-   所有的 Vue 组件都是由 [Typescript](https://www.typescriptlang.org/) 语言、以[SFC（单文件组件）](https://vuejs.org/guide/scaling-up/sfc.html) 风格和 [Composition API（组合式 API）](https://vuejs.org/guide/extras/composition-api-faq.html)编程。
+-   架构:
+    ![architecture_img](./docs/architecture.png)
 
 ## 工作流
 
-- 一个模型结果作为文件夹被放置在`backend`目录。
-- 进入一个路由路径时，`fetch`模型结果并且存储在`store`中的`DatasetList`。
-- 然后做一些初始计算，进入第一个单模型的或双模型的 `Dashboard（仪表盘）`, 它被定义在`store`的`DashboardList`。
-- 当初始化一个新的`Dashboard（仪表盘）`时，我们也按照不同的任务类型（结点分类、链接预测、图分类）初始化这个仪表盘的`View（视图）`列表。此列表存放在各`Dashboard（仪表盘）`对象中。
-- 我们把放置`View（视图）`的`Dashboard（仪表盘）`定义为`flex`的css布局，每个`View（视图）`放置在一个由[slot](https://vuejs.org/guide/components/slots.html#slots)实现的`ResizableBox（可放缩盒子）`中。
-- 当在不同的视图中选择或高亮一些结点集时，我们把这些信息公共地存放在`store`中的`Dashboard（仪表盘）`对象（而非 `View（视图）`对象中。
-- 当用所选结点生成一个新的`Dashboard（仪表盘）` 时, 这些所选结点将成为新`Dashboard（仪表盘）`的源结点。
-- 为了提高代码复用性，`brush（刷选）`，`zoom（放缩）`，`resize（改变大小）`以及一些其他功能被定义为[组合式函数](https://vuejs.org/guide/reusability/composables.html)或[自定义指令](https://vuejs.org/guide/reusability/custom-directives.html#introduction)。
-- 在很多散点图中，我们使用条件渲染来渲染不同的语义的结点的坐标。
+-   一个模型结果作为文件夹被放置在`backend`目录。
+-   进入一个路由路径时，`fetch`模型结果并且存储在`store`中的`DatasetList`。
+-   然后做一些初始计算，进入第一个单模型的或双模型的 `Dashboard（仪表盘）`, 它被定义在`store`的`DashboardList`。
+-   当初始化一个新的`Dashboard（仪表盘）`时，我们也按照不同的任务类型（结点分类、链接预测、图分类）初始化这个仪表盘的`View（视图）`列表。此列表存放在各`Dashboard（仪表盘）`对象中。
+-   我们把放置`View（视图）`的`Dashboard（仪表盘）`定义为`flex`的 css 布局，每个`View（视图）`放置在一个由[slot](https://vuejs.org/guide/components/slots.html#slots)实现的`ResizableBox（可放缩盒子）`中。
+-   当在不同的视图中选择或高亮一些结点集时，我们把这些信息公共地存放在`store`中的`Dashboard（仪表盘）`对象（而非 `View（视图）`对象中。
+-   当用所选结点生成一个新的`Dashboard（仪表盘）` 时, 这些所选结点将成为新`Dashboard（仪表盘）`的源结点。
+-   为了提高代码复用性，`brush（刷选）`，`zoom（放缩）`，`resize（改变大小）`以及一些其他功能被定义为[组合式函数](https://vuejs.org/guide/reusability/composables.html)或[自定义指令](https://vuejs.org/guide/reusability/custom-directives.html#introduction)。
+-   在很多散点图中，我们使用条件渲染来渲染不同的语义的结点的坐标。
 
 ## 文件和目录信息
 
 ```bash
-├── LICENSE 
+├── LICENSE
 ├── README.md
 ├── backend      # 静态服务器和数据集存放文件夹
 │   ├── cora-gae # 数据集的名字，也作为路由路径
-│   │   ├── graph.json 
+│   │   ├── graph.json
 │   │   ├── initial-layout.json
 │   │   ├── node-embeddings-tsne-result.csv
 │   │   ├── node-embeddings.csv
@@ -132,7 +138,7 @@ npm run dev
 │       └── forceLayout.js    # 图的力导向布局
 ├── src
 │   ├── App.vue                          # 最根部的vue组件
-│   ├── api   
+│   ├── api
 │   │   └── api.ts                       # 前端用于和后端通信的API接口字符串
 │   ├── assets                           # 根部的css样式文件（不重要）
 │   │   ├── main.css
@@ -143,7 +149,7 @@ npm run dev
 │   │   ├── header                       # 放在顶部header中的组件
 │   │   │   └── scatterSymbolLegend.vue  # 散点图中的结点图例
 │   │   ├── icon                         # 一些按钮的图标
-│   │   │   ├── CarbonCenterToFit.vue    
+│   │   │   ├── CarbonCenterToFit.vue
 │   │   │   └── ...
 │   │   ├── plugin                       # 逻辑复用的插件们
 │   │   │   ├── useD3Brush.ts            # 使用Vue组合式函数实现的d3库的刷选
@@ -211,21 +217,21 @@ npm run dev
 ├── vite.config.js                          # 打包工具的一些设置
 └── vite.config.ts                          # 打包工具的一些设置
 ```
+
 有关文件的更多信息，请阅读代码。
- 
+
 > 对于代码注释中的混合中英文，我们深表歉意。 :-)
 
-
 # 常见问题解答
+
 > 故障排除
 
 1. 碰见"Error: 404 File not found"我该怎么做？
-- ![404-file-not-fond](./docs/404-file-not-fond.png)
-- > 这可能是数据集缺失或者数据集不完整导致的, 检查 `backend\list.json` 确保这条数据集不是多余的，并且检查 `backend\${你的数据集名称}`来确保数据集是完整的。
+
+-   ![404-file-not-fond](./docs/404-file-not-fond.png)
+-   > 这可能是数据集缺失或者数据集不完整导致的, 检查 `backend\list.json` 确保这条数据集不是多余的，并且检查 `backend\${你的数据集名称}`来确保数据集是完整的。
 
 2. "load dataset（加载数据集）"的过程太长怎么办？
 
-- ![load-dataset-too-long](./docs/load-dataset-too-long.png)
-- > 这可能是因为您的计算机性能过低，可以尝试关闭其他无关程序并重启浏览器；或者是因为数据集过大，您可以使用其他可以用GPU加速的语言库预计算图布局和降维数据。
-
-
+-   ![load-dataset-too-long](./docs/load-dataset-too-long.png)
+-   > 这可能是因为您的计算机性能过低，可以尝试关闭其他无关程序并重启浏览器；或者是因为数据集过大，您可以使用其他可以用 GPU 加速的语言库预计算图布局和降维数据。

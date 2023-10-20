@@ -267,8 +267,8 @@ const handleCreatePolar = async (e: Event) => {
         //NOTE： 此创建不可重用，因为返回的status是ref，若重用则共享状态，出现混乱。
         timeout: 20_000,
         dependencies: [
-            // "https://d3js.org/d3.v7.min.js",
-            "http://localhost:5173/workers/d3js.org_d3.v7.js",
+            "https://d3js.org/d3.v7.min.js",
+            // "http://localhost:5173/workers/d3js.org_d3.v7.js",
             "http://localhost:5173/workers/bitset.js",
             "http://localhost:5173/workers/distance.js", // REVIEW temporary
         ],
