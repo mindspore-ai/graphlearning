@@ -790,7 +790,10 @@ export const useMyStore = defineStore("my", () => {
                 workerTerminate: neighborMasksWorkerTerminate,
             } = useWebWorkerFn(computeNeighborMasks, {
                 timeout: 30_000,
-                dependencies: ["http://localhost:5173/workers/bitset.js"],
+                dependencies: [
+                    "https://cdn.bootcdn.net/ajax/libs/bitset.js/5.1.0/bitset.min.js",
+                    // "http://localhost:5173/workers/bitset.js"
+                ],
             });
             const {
                 neighborMasks,
@@ -1341,7 +1344,8 @@ export const useMyStore = defineStore("my", () => {
             dependencies: [
                 // "http://localhost:5173/workers/d3js.org_d3.v7.js",
                 "https://d3js.org/d3.v7.min.js",
-                "http://localhost:5173/workers/bitset.js",
+                "https://cdn.bootcdn.net/ajax/libs/bitset.js/5.1.0/bitset.min.js",
+                // "http://localhost:5173/workers/bitset.js",
                 "http://localhost:5173/workers/distance.js", // REVIEW temporary
             ],
         });

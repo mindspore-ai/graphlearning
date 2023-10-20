@@ -189,7 +189,7 @@ var d2p = function (D, perplexity, tol) {
                     beta = (beta + betamax) / 2;
                 }
             } else {
-                // converse case. make distrubtion less peaky
+                // converse case. make distribution less peaky
                 betamax = beta;
                 if (betamin === -Infinity) {
                     beta = beta / 2;

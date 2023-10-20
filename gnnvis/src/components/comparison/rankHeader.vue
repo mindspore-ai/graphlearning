@@ -269,7 +269,8 @@ const handleCreatePolar = async (e: Event) => {
         dependencies: [
             "https://d3js.org/d3.v7.min.js",
             // "http://localhost:5173/workers/d3js.org_d3.v7.js",
-            "http://localhost:5173/workers/bitset.js",
+            // "http://localhost:5173/workers/bitset.js",
+            "https://cdn.bootcdn.net/ajax/libs/bitset.js/5.1.0/bitset.min.js",
             "http://localhost:5173/workers/distance.js", // REVIEW temporary
         ],
     });
