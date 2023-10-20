@@ -280,7 +280,6 @@
 1. Type: CSV file
 2. Description: Dense features of nodes. Each node may have multiple features, but each feature is a scalar value. The first line is the name of the feature (optional). The following 2-n lines correspond to the number of nodes, and the values are the node features.
 3. Demo:
-4.
 
 ```csv
 feat-1,feat-2,feat-3

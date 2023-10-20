@@ -317,10 +317,10 @@ Latent Space View visualizes the dimension reduction of node embeddings of laten
 
 - Data: Usually the view in the first dashboard visualizes the data calculated by the backend, while those in descendant dashboards copy the coordinates in that of the first dashboard by default, and user can choose to rerun local calculation.
 - Aggregation: User can aggregate the points to have a more pop-out visualization. The sectors in each pie encode proportions of nodes of different labels, and the radius of each pie encodes the total amount of nodes within this pie. The links can be aggregated as well. User can change the aggregation radius in settings.
-  - ![latent_space_aggr](assets/latent_space_aggr.png)
+    ![latent_space_aggr](assets/latent_space_aggr.png)
 - Outlier Detection: Click `detect outlier` can automatically select some outlier nodes by algorithm.
 - Settings: In settings, user can set aggregation properties, nodes and links(see [this](#node_link_common_setting)), and hyper parameters for dim reduction. They are easy to understand.
-  - ![latent_space_settings](assets/latent_space_settings.png)
+    ![latent_space_settings](assets/latent_space_settings.png)
 
 ### Topo - Latent Density View
 

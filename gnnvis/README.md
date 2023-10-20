@@ -38,7 +38,7 @@ npm install
 
 third, start the front-end:
 
-```
+```bash
 npm run dev
 ```
 

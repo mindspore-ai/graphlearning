@@ -318,10 +318,10 @@
 
 - 数据：通常第一个仪表盘中的视图显示的是后端计算的数据，而后代仪表盘中的视图默认复制第一个仪表盘的坐标，用户可以选择重新运行本地（当前仪表盘）的计算。
 - 聚合：用户可以聚合点，以获得更多的一目了然的可视化效果。每个饼图中的扇区对不同标签的结点的比例进行编码，并且每个饼图的半径对该饼图内的结点的总数进行编码。链接也可以聚合。用户可以在“设置”中更改用于聚合的网格半径。
-  - ![潜在 _ 空间 _ 聚集](assets/latent_space_aggr.png)
+    ![潜在 _ 空间 _ 聚集](assets/latent_space_aggr.png)
 - 边缘点检测：Click `detect outlier` 可以通过算法自动选择一些边缘结点。
 - 设置：在“设置”中，用户可以设置聚合属性、结点和边（请参见[this](#node_link_common_setting)）以及用于计算降维的超参数。它们很容易理解。
-  - ![潜在 _ 空间 _ 设置](assets/latent_space_settings.png)
+    ![潜在 _ 空间 _ 设置](assets/latent_space_settings.png)
 
 ### 拓扑-隐空间密度视图
 
@@ -621,11 +621,11 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
         },
     },
     "nodes": [ // Array
-        {   
-            "id": 0, 
+        {
+            "id": 0,
             "label": 8 // 可选：节点的标签
         },
-        //...    
+        //...
     ],
     "edges": [
         {
@@ -768,7 +768,7 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
         {"id":1, "x":44.5, "y":90.1 },
         //...
     ],
-    "nodeEmbUmp": [  // Array< <int, int> >: 长度等于 nodes 长度，存放结点嵌入空间数据经过 Umap 降维（二维）后的数据，顺序和结点id对应 
+    "nodeEmbUmp": [  // Array< <int, int> >: 长度等于 nodes 长度，存放结点嵌入空间数据经过 Umap 降维（二维）后的数据，顺序和结点id对应
        [1.334,5.132],
        //...
     ],
