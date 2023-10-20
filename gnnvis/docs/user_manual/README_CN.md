@@ -1,7 +1,9 @@
 # 用户手册
+
 嗨，这是一本教你如何使用CorGIE-2（柯基-2）的用户手册。
 
 基本上，你可以去这些部分阅读：
+
 - [Layouts 布局](#layouts)
 - [Dashboards 仪表盘](#dashboards)
 - [Tasks & Views 任务和视图](#tasks_and_views)
@@ -39,6 +41,7 @@
 <span id="global_settings" ></span>
 
 在 Header（头部）中，有一个**Global Setting（全局设置）**按钮，其中包含以下选项：
+
 - 全局标签类型：是否在所有仪表板中使用 `true label（真是标签）` 或 `predict label（预测标签）`。切换时，标签将立即更改。
 - 默认（全局）选择模式：由于许多视图已经实现了 `brush（刷选）` 启用结点选择的功能，用户可以切换此模式以决定连续选择行为或每次重新选择新的结点子集。请注意，此设置将在切换时立即更改。
 - 何时重新缩放：每个仪表板中的每个视图都可以调整为任意大小（宽度、高度），并且坐标将同时更改。但出于渲染优化的考虑，用户可以选择在调整大小操作完成后重新缩放坐标。请注意，此设置将在切换时立即更改。
@@ -151,7 +154,6 @@
 
 许多视图使用不同的符号来显示不同的结点，因此需要一致且易于获取的图例。将鼠标悬停在图例图标上以显示它。
 
-
 ![dashboard_legends](assets/dashboard_legends-41.png)
 
 特别地，在仪表板方面的比较中，为了区分结点来自哪个仪表板，我们设计了半填充符号，如上图所示。简而言之，用于其他邻居步长的符号被类似地设计。
@@ -164,12 +166,9 @@
 
 例如[全局设置](#global_settings)，仪表板有一些公共设置，这些设置仅在当前仪表板中有效。
 
-
 ![dashboard_settings](assets/dashboard_settings-39.png)
 
 特别地，通过切换 `Highlight corresponding node`，用户可以确定是否在当前仪表板的视图中突出显示相同的结点或结点集，请参阅[结点突出显示](#nodes_highlighting)。这默认为`true`。
-
-
 
 # Tasks & Views 任务和视图
 
@@ -184,7 +183,6 @@
 ## 视图的公共特征
 
 所有视图都由头部和身体部分组成。在头部部分，有一些常用功能的按钮和一些可选设置的设置按钮。
-
 
 ![view_public](assets/view_public.png)
 
@@ -202,8 +200,6 @@
 
 ![view_drag](assets/view_drag.gif)
 
-
-
 ### 结点突出显示
 
 <span id="nodes_highlighting"></span>
@@ -214,9 +210,7 @@
 
 ![nodes_highlight_2](assets/nodes_highlight_correspond_2-0.png)
 
-
 ### 平移和缩放
-
 
 大多数视图都实现了拖拽平移和缩放。默认情况下，用户可以通过鼠标滚动来放大或缩小。但平移行为与刷选冲突（请参见[结点选择](#nodes_selections)）。用户可以单击 `pan` 按钮以启用拖拽平移行为。从 `brush` 切换到 `pan` 不会清除结点选择。
 
@@ -225,8 +219,6 @@
 用户可以单击 `reset zoom` 以将框中的内容放缩为适当的大小。
 
 ![reset_zoom](assets/reset_zoom.gif)
-
-
 
 ### 结点选择
 
@@ -254,7 +246,6 @@
 
 注：所有散点图视图都使用了此视觉编码，有关更多符号，请参阅[散点图图例](#scatter_legends)。
 
-
 ### 仪表板区分
 
 <span id="dashboard_discrimination" ></span>
@@ -264,7 +255,6 @@
 对于散点视图，我们在符号上使用不同的填充样式来编码仪表板源。以下图为例，左边的填充符号（◐）是仪表盘-0 的结点，右边的填充符号（◑）是仪表盘-1 的结点，如果仪表盘-0 和仪表盘-1 都选中了一个结点，则该结点将被完全填充（●）。此规则适用于各阶邻居符号。
 
 请注意，如果某个结点是 仪表盘-0 中所选结点的 1 阶邻居，但却是 仪表盘-1 中所选结点的 2 阶邻居，则我们总是首先选择较短的路径，因此该结点的符号将是完全填充的三角形。
-
 
 ![dashboard_source](assets/dashboard_source.png)
 
@@ -279,7 +269,6 @@
 ---
 
 对于直方图视图，我们通过简单地并排显示图表来区分源，它们的 X 轴和 Y 轴都是对齐的。
-
 
 ![histogram_sources](assets/histogram_sources.png)
 
@@ -296,6 +285,7 @@
 ## 3 个任务的视图
 
 在本节中，我们将逐一介绍在 3 个任务中**共同**使用的视图。
+
 - [拓扑视图](#topology_view)
 - [隐空间视图](#latent_space_view)
 - [拓扑-隐空间密度视图](#topo_latent_density_view)
@@ -311,7 +301,6 @@
 拓扑视图可视化当前仪表板的整个图形的拓扑结构（仅限当前仪表板的结点），使用力导向布局，该布局是在创建仪表板时计算的。
 
 ![拓扑 _ 视图](assets/topology_view.png)
-
 
 <span id="node_link_common_setting"></span>
 
@@ -348,8 +337,8 @@
 
 虽然这些结点可以过滤到新的仪表板中，但有时我们需要直观地了解背景结点（当前仪表板中的所有结点）与所选结点之间的关系。而新仪表板仅包含选定的结点（和邻居）。
 
-
 数学：
+
 - 如果仪表板**不**用于两个仪表板之间的比较，我们假设结点选择（及其阶邻居）为$S$，并且当前仪表板中的所有结点构成$G$，差集为$(G-S)$。假设$S(i)$表示中$S$的$i$第个结点，我们有关于$S(i)$的以下数据：
 
   $$datum(S(i))= \frac{1}{len(G-S)}\sum_{j}^{len(G-S)} dist(S(i), G(j))$$
@@ -364,7 +353,6 @@
 
   $$ datum(S_{1}(i)) = \frac{1}{l_{0}}\sum_{j}^{l_{0}} dist(S_{1}(i), S_{0}(j)) $$
 
-
 ### 比较排名视图
 
 <span id="comparative_rank_view"></span>
@@ -378,7 +366,6 @@ $$dist(n_{j}) = dist(n_{i}, n_{j}), \space where \space n_{j} \in (S_{0}-n_{i})$
 $$dist(n_{j}) = dist(n_{i}, n_{j}), \space where \space n_{j} \in (S_{1}-n_{i})$$
 
 在距离各自计算完成后，我们可以给它们排序得到排名，也即距离值在排序后的索引值。
-
 
 如果点集 $G$ 被选中, 我们可以计算平均排名：
 
@@ -401,7 +388,6 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
 ![rank3](assets/rank3.png)
 
 请注意，与从源视图（排名视图的计算源）中选择的结点相比，在排名视图中选择的结点将会填充其他结点条目。有关节点条目参见[结点选择](#nodes_selections)。
-
 
 ### 比较极坐标视图
 
@@ -441,7 +427,6 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
 
 ![密集 _ 柱](assets/dense_column.gif ':size=500') ![密集 _ 高度](assets/dense_height.gif ':size=500')
 
-
 有关仪表板方面的比较，请参阅[仪表板识别](#dashboard-discrimination)
 
 ### 稀疏特征视图（针对结点）
@@ -467,8 +452,8 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
 ## 结点分类视图
 
 在本节中，我们将介绍专用于任务**结点分类**的视图
-- [混淆矩阵（用于结点）](#confusion_matrix_for_node)
 
+- [混淆矩阵（用于结点）](#confusion_matrix_for_node)
 
 ### 混淆矩阵（用于结点）
 
@@ -485,9 +470,11 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
 ## 链接预测视图
 
 在本节中，我们将介绍专用于任务**链接预测**的视图
+
 - [链接预测视图](#link_prediction_view)
 
 ### 链接预测视图
+
 <span id="link_prediction_view"></span>
 
 此视图可视化所选结点的链接预测结果，因为呈现所有结果会变成一团糟。
@@ -498,8 +485,8 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
 
 对于链接（边），**真实链接**用<span style="color:#555">灰线</span>编码，**true allow 链接**（包含在原点图中，预测正确）用<span style="color:black">黑线</span>编码，**false allow 链接**（包含在原点图中，但预测错误）用<span style="color:red">红线</span>编码，**排名前 k 的推荐链接**（推荐链接）用<span style="color:#409eff">不同线宽的蓝色虚线</span>编码。
 
-
 在“视图设置”中，用户可以更改：
+
 - 要显示多少步长。（注意：这将导致重新渲染）
 - 是显示真实链接还是预测链接。（注意：这两者是相互排斥的）
 - 推荐链接的“k”是多少。（注意：这将导致重新渲染，并且，我们只考虑当前仪表板中的结点）
@@ -509,12 +496,11 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
 ## 图分类视图
 
 在本节中，我们将介绍专用于任务**图分类**的视图
+
 - [拓扑视图（用于图）](#topology_view_for_graph)
 - [隐空间视图（用于图）](#latent_sparse_for_graph)
 - [混淆矩阵视图（用于图）](#confusion_matrix_for_graph)
 - [稠密特征视图（用于图）](#dense_feature_view_for_graph)
-
-
 
 ### 拓扑视图（用于图）
 
@@ -523,7 +509,6 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
 图的拓扑视图在可滚动网格布局中对各个图逐一可视化，每个外部矩形编码图真实标签（而非结点的标签），内部矩形编码图预测标签。
 
 ![多 _ 图](assets/multi_graph.png)
-
 
 和[稠密特征视图（针对结点）](#dense_feature_view_for_node)类似，列数和高度可以手动设置。
 
@@ -538,8 +523,6 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
 对于两个模型结果比较，内部矩形可以表示两个不同的预测标签。简单地说，左边是模型0的，右边是模型1的，如下所示。
 
 ![multi](assets/multi_graph_2model-0.png)
-
-
 
 ### 隐空间视图（用于图）
 
@@ -559,8 +542,6 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
 对于[仪表板方面的比较](#dashboard_discrimination)，用户可能从两个仪表板中选择结点的结点都能（完全地或部分地）组成同一个图，因此图的来源可能包含两个。所以我们用百分比填充这个圆圈。左边的部分表示有多少结点来自仪表板 0，而右边的部分表示有多少结点来自仪表板 1. 如下所示。
 
 ![图表 _ 潜在 _ 百分比](assets/graph_latent_percent-75.png)
-
-
 
 ### 混淆矩阵（用于图）
 
@@ -582,11 +563,8 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
 
 > 目前，我们只支持图形的稠密特征。
 
-
-
-
-
 # 数据格式描述
+
 ## 数据集
 
 1. 类型：文件夹
@@ -614,8 +592,8 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
 | 9  | node-sparse-features.json | ✅ 可选（结点的稀疏特征）             |
 | 10 |           true-labels.txt | ✅ 可选（仅当连接预测和图分类时，结点的真实标签） |
 
-
 ### 1. graph.json
+
 1. 类型： Json 文件，主要参考 `NetworkX` 的数据格式
 2. 描述：关于图的原始数据
 3. 文件样例：
@@ -674,8 +652,8 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
 }
 ```
 
-
 ### 2.node-embeddings.csv
+
 1. 类型：CSV 文件
 2. 描述：嵌入空间中节点的训练数据通常由 MLP 的最后一层生成。文件中的每一行都表示一个节点的嵌入数据，节点的顺序与 `graph.json` 中的节点顺序相对应。
 
@@ -692,12 +670,13 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
 //...
 ```
 
-
 ### 3.prediction-results.json
+
 1. 类型: Json 文件
 2. 描述：模型预测的输出。三种不同的任务具有不同的格式。
 
 #### 节点分类
+
 ```json
 {
     "taskType": "node-classification",
@@ -712,6 +691,7 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
 ```
 
 #### 边预测
+
 ```json
 {
     "taskType": "link-prediction",
@@ -735,8 +715,8 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
 }
 ```
 
-
 #### 图分类
+
 ```json
 {
     "taskType": "graph-classification",
@@ -772,12 +752,12 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
 //...
 ```
 
-
 ### 5.initial-layout.json
+
 1. 类型: Json 文件
 2. 描述：一些计算繁琐的，初始的渲染数据。包括图的力导向图（Force Directed Layout）。嵌入空间数据的降维结果等
 3. 计算方法介绍：
-    - forceDirectedLayout: https://github.com/d3/d3-force/tree/v3.0.0#d3-force
+    - forceDirectedLayout: <https://github.com/d3/d3-force/tree/v3.0.0#d3-force>
     - Umap, Tsne: 可使用 python 中的 sklearn 库
 4. 样例:
 
@@ -799,14 +779,13 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
 }
 ```
 
-
 ### 6.supplement.txt
+
 1. 类型: txt 文件
 2. 描述：关于此数据集的其他任何信息，例如本次训练的超参数。由人工撰写，非程序生成。
 
-
-
 ### 7.graph-custom-index.json
+
 1. 类型: Json 文件
 2. 描述：用户自定义特征，由 `backend/custom_index.py` 计算
 3. 样例:
@@ -829,8 +808,6 @@ $$avg\_rank(n_{j}) =\frac{1}{len(G)} \sum_{i}^{len(G)} dist(n_{i}, n_{j}),\space
 }
 ```
 
-
-
 ### 8.node-dense-features.csv
 
 1. 类型: CSV 文件
@@ -845,7 +822,6 @@ feat-1,feat-2,feat-3
 3.99,1.0,18.884
 ...
 ```
-
 
 ### 9.node-sparse-features.json
 
@@ -871,7 +847,6 @@ feat-1,feat-2,feat-3
 }
 ```
 
-
 ## Python 对象格式
 
 调用如下函数以创建数据文件：
@@ -894,35 +869,41 @@ GNNVis(
 各参数格式如下：
 
 ### graph
+
 Python dict: 与 `graph.json` 相同
 
 ### node_embed
+
 numpy.ndarray (2d)
 
 ### node_dense_features
+
 (可选) numpy.ndarray (2d)
 
 ### node_dense_features_name
+
 (可选) List: 结点稠密特征的名称
 
 ### node_sparse_features
+
 (可选) Python dict: 与 `node-sparse-features.json` 相同
 
-
 ### link_pred_res
+
 (可选) Python dict: 与 `prediction-results.json` 相同
 
-
 ### node_classify_res
+
 (可选) Python dict: 与 `prediction-results.json` 相同
 
 ### graph_classify_res
+
 (可选) Python dict: 与 `prediction-results.json` 相同
 
-
 ### graph_embed
+
 (可选) numpy.ndarray (2d)
 
-
 ### gen_path
+
 (可选) str: 数据文件路径 (`backend` 文件夹路径)

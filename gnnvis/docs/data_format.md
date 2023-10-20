@@ -180,7 +180,7 @@
 
 3.计算方法介绍：
 
-1. 对于 forceDirectedLayout，可参考https://github.com/d3/d3-force/tree/v3.0.0#d3-force
+1. 对于 forceDirectedLayout，可参考<https://github.com/d3/d3-force/tree/v3.0.0#d3-force>
 2. 对于 Umap, Tsne，可使用 python 的 sklearn
 
 ## 6.supplement.txt <span id="supplement-txt" />

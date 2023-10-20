@@ -4,9 +4,9 @@ Hi, it's a user manual to teach you how to use CorGIE-2.
 
 Basically, you can go to those sections to read:
 
--   [Layouts](#layouts)
--   [Dashboards](#dashboards)
--   [Tasks & Views](#tasks_and_views)
+- [Layouts](#layouts)
+- [Dashboards](#dashboards)
+- [Tasks & Views](#tasks_and_views)
 
 # Layouts
 
@@ -42,11 +42,11 @@ Dashboard Layout contains 3 parts: `Header`, `Main` and `Footer`.
 
 In header, there is an **Global Setting** button, which contains the following options:
 
--   Global label type: whether to use `true label` or `predict label` in all Dashboards. When toggled, the labels will change immediately.
--   Default(Global) select mode: since many views have implemented the `brush` function to enable nodes selection, user can toggle this to decide a continuous selecting behavior or reselect new nodes subsets every time. Note that this setting will change immediately when toggled.
--   Rescale when: Each view in each dashboard can be resized to arbitrary size(width, height), and the coords will change simultaneously. But for the consideration of rendering optimization, user can choose to rescale the coords when the resize action is finished. Note that this setting will change immediately when toggled.
--   Max recent length: the maximum dashboards that show in the navigation bar.
--   Settings trigger mode: the gesture to trigger the popover setting menus. Note that this setting will change immediately when toggled.
+- Global label type: whether to use `true label` or `predict label` in all Dashboards. When toggled, the labels will change immediately.
+- Default(Global) select mode: since many views have implemented the `brush` function to enable nodes selection, user can toggle this to decide a continuous selecting behavior or reselect new nodes subsets every time. Note that this setting will change immediately when toggled.
+- Rescale when: Each view in each dashboard can be resized to arbitrary size(width, height), and the coords will change simultaneously. But for the consideration of rendering optimization, user can choose to rescale the coords when the resize action is finished. Note that this setting will change immediately when toggled.
+- Max recent length: the maximum dashboards that show in the navigation bar.
+- Settings trigger mode: the gesture to trigger the popover setting menus. Note that this setting will change immediately when toggled.
 
 ![global_settings](assets/global_settings.png)
 
@@ -286,13 +286,13 @@ There are some views are designed for model results comparison only, like [Compa
 
 In this sections we introduce views one-by-one that are generally used in 3 tasks.
 
--   [Topology View](#topology_view)
--   [Latent Space View](#latent_space_view)
--   [Topo - Latent Density View](#topo_latent_density_view)
--   [Comparative Rank View](#comparative_rank_view)
--   [Comparative Polar View](#comparative_polar_view)
--   [Dense Feature View(for Node)](#dense_feature_view_for_node)
--   [Sparse Feature View(for Node)](#sparse_feature_view_for_node)
+- [Topology View](#topology_view)
+- [Latent Space View](#latent_space_view)
+- [Topo - Latent Density View](#topo_latent_density_view)
+- [Comparative Rank View](#comparative_rank_view)
+- [Comparative Polar View](#comparative_polar_view)
+- [Dense Feature View(for Node)](#dense_feature_view_for_node)
+- [Sparse Feature View(for Node)](#sparse_feature_view_for_node)
 
 ### Topology View
 
@@ -315,12 +315,12 @@ Latent Space View visualizes the dimension reduction of node embeddings of laten
 
 ![latent_space](assets/latent_space.png)
 
--   Data: Usually the view in the first dashboard visualizes the data calculated by the backend, while those in descendant dashboards copy the coordinates in that of the first dashboard by default, and user can choose to rerun local calculation.
--   Aggregation: User can aggregate the points to have a more pop-out visualization. The sectors in each pie encode proportions of nodes of different labels, and the radius of each pie encodes the total amount of nodes within this pie. The links can be aggregated as well. User can change the aggregation radius in settings.
-    -   ![latent_space_aggr](assets/latent_space_aggr.png)
--   Outlier Detection: Click `detect outlier` can automatically select some outlier nodes by algorithm.
--   Settings: In settings, user can set aggregation properties, nodes and links(see [this](#node_link_common_setting)), and hyper parameters for dim reduction. They are easy to understand.
-    -   ![latent_space_settings](assets/latent_space_settings.png)
+- Data: Usually the view in the first dashboard visualizes the data calculated by the backend, while those in descendant dashboards copy the coordinates in that of the first dashboard by default, and user can choose to rerun local calculation.
+- Aggregation: User can aggregate the points to have a more pop-out visualization. The sectors in each pie encode proportions of nodes of different labels, and the radius of each pie encodes the total amount of nodes within this pie. The links can be aggregated as well. User can change the aggregation radius in settings.
+  - ![latent_space_aggr](assets/latent_space_aggr.png)
+- Outlier Detection: Click `detect outlier` can automatically select some outlier nodes by algorithm.
+- Settings: In settings, user can set aggregation properties, nodes and links(see [this](#node_link_common_setting)), and hyper parameters for dim reduction. They are easy to understand.
+  - ![latent_space_settings](assets/latent_space_settings.png)
 
 ### Topo - Latent Density View
 
@@ -338,11 +338,11 @@ Though those nodes can be filtered into a new dashboard, sometimes we need intui
 
 Math:
 
--   If the dashboard is **not** for dashboard-wise comparison, we suppose Nodes Selection(and their hop neighbors) is $S$, and all nodes in the current dashboard constitute $G$, and the difference set is $(G-S)$. Suppose $S(i)$ means the $i$ th node in $S$, we have the datum of $S(i)$:
+- If the dashboard is **not** for dashboard-wise comparison, we suppose Nodes Selection(and their hop neighbors) is $S$, and all nodes in the current dashboard constitute $G$, and the difference set is $(G-S)$. Suppose $S(i)$ means the $i$ th node in $S$, we have the datum of $S(i)$:
 
     $$datum(S(i))= \frac{1}{len(G-S)}\sum_{j}^{len(G-S)} dist(S(i), G(j))$$
 
--   If the dashboard is for dashboard-wise comparison, we suppose Nodes Selection(and their hop neighbors) from dashboard 0 is $S_{0}$ with length $l_{0}$, Nodes Selection(and their hop neighbors) from dashboard 1 is $S_{1}$ with length $l_{1}$. Suppose $S_{0}(i)$ means the $i$ th node in $S_{0}$, $S_{1}(i)$ means the $i$ th node in $S_{1}$.
+- If the dashboard is for dashboard-wise comparison, we suppose Nodes Selection(and their hop neighbors) from dashboard 0 is $S_{0}$ with length $l_{0}$, Nodes Selection(and their hop neighbors) from dashboard 1 is $S_{1}$ with length $l_{1}$. Suppose $S_{0}(i)$ means the $i$ th node in $S_{0}$, $S_{1}(i)$ means the $i$ th node in $S_{1}$.
 
     The datum of $S_{0}(i)$:
 
@@ -452,7 +452,7 @@ For dashboard-wise comparison, we visualize the 2 nodes selection from 2 dashboa
 
 In this section we introduce views that are dedicated for task **node classification**
 
--   [Confusion Matrix(for Node)](#confusion_matrix_for_node)
+- [Confusion Matrix(for Node)](#confusion_matrix_for_node)
 
 ### Confusion Matrix(for Node)
 
@@ -470,7 +470,7 @@ For two model results comparison, we simply added another view. For dashboard-wi
 
 In this section we introduce views that are dedicated for task **link prediction**
 
--   [Link Prediction View](#link_prediction_view)
+- [Link Prediction View](#link_prediction_view)
 
 ### Link Prediction View
 
@@ -486,9 +486,9 @@ For links, we encode **ground truth links** with <span style="color:#555">grey l
 
 In view settings, user can change:
 
--   How many hops to be shown. (NOTE: this will cause rerender)
--   Whether to show ground truth links or allow links. (NOTE: these two are mutually exclusive)
--   Top k recommended links. (NOTE: this will cause rerender, and we only consider nodes within the current dashboard)
+- How many hops to be shown. (NOTE: this will cause rerender)
+- Whether to show ground truth links or allow links. (NOTE: these two are mutually exclusive)
+- Top k recommended links. (NOTE: this will cause rerender, and we only consider nodes within the current dashboard)
 
 ![link_pred_settings](assets/link_pred_settings.png)
 
@@ -496,10 +496,10 @@ In view settings, user can change:
 
 In this section we introduce views that are dedicated for task **graph classification**
 
--   [Topology View(for Graph)](#topology_view_for_graph)
--   [Latent Space(for Graph)](#latent_sparse_for_graph)
--   [Confusion Matrix(for Graph)](#confusion_matrix_for_graph)
--   [Dense Feature View(for Graph)](#dense_feature_view_for_graph)
+- [Topology View(for Graph)](#topology_view_for_graph)
+- [Latent Space(for Graph)](#latent_sparse_for_graph)
+- [Confusion Matrix(for Graph)](#confusion_matrix_for_graph)
+- [Dense Feature View(for Graph)](#dense_feature_view_for_graph)
 
 ### Topology View(for Graph)
 
@@ -785,7 +785,7 @@ Other functions are same as [Dense Feature View (for Nodes)](#dense_feature_view
 1. Type: Json file
 2. Description: Some computationally intensive initial rendering data, including the force-directed layout of graphs and the dimensionality reduction results of embedded spatial data.
 3. Introduction to Calculation Methods:
-    - forceDirectedLayout: https://github.com/d3/d3-force/tree/v3.0.0#d3-force
+    - forceDirectedLayout: <https://github.com/d3/d3-force/tree/v3.0.0#d3-force>
     - Umap, Tsne: can use "sklearn" library in python
 4. Demo:
 

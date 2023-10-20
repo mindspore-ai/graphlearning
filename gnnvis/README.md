@@ -8,19 +8,19 @@ Coming soon...
 
 # Key Features
 
--   Support one model result exploration or comparative analysis between two model results.
--   A **dataset** is an output dataset or in other words, a model result, for a complete GNN training task, which will be analyzed by a visual **Dashboard** .
--   Each dashboard get data from store and render it in multi sub **View**s from different perspectives: topological space, feature space, latent space, and prediction space.
--   Nodes can be selected or highlighted correspondingly between sub **View**s.
--   **Nodes Selections** can be **FILTERED** to a new dashboard for further iterative analysis or comparative analysis.
--   The process of dashboards generation, which is also the path of analysis, will be stored and visualized by a tree, and each of them can be resumed. **Dashboard-wise comparison** is also supported by select two dashboards in the tree.
+- Support one model result exploration or comparative analysis between two model results.
+- A **dataset** is an output dataset or in other words, a model result, for a complete GNN training task, which will be analyzed by a visual **Dashboard** .
+- Each dashboard get data from store and render it in multi sub **View**s from different perspectives: topological space, feature space, latent space, and prediction space.
+- Nodes can be selected or highlighted correspondingly between sub **View**s.
+- **Nodes Selections** can be **FILTERED** to a new dashboard for further iterative analysis or comparative analysis.
+- The process of dashboards generation, which is also the path of analysis, will be stored and visualized by a tree, and each of them can be resumed. **Dashboard-wise comparison** is also supported by select two dashboards in the tree.
 
 # Quick Start
 
 Minimum Requirements:
 
--   CPU Intel® Pentium G4560, Memory 8GB, Storage HDD 10GB or more
--   You need [nodejs](https://nodejs.org/en/download/) (version>=16) and [python](https://python.org) (version>=3.7.10).
+- CPU Intel® Pentium G4560, Memory 8GB, Storage HDD 10GB or more
+- You need [nodejs](https://nodejs.org/en/download/) (version>=16) and [python](https://python.org) (version>=3.7.10).
 
 Clone or download source code and then:
 
@@ -58,7 +58,7 @@ You can read [this](./docs/user_manual/README.md).
 
 If you want to read user manual locally, please follow steps below, since we used [docsify](https://docsify.js.org/) to write user manual.
 
--   If you have [nodejs](https://nodejs.org/en/download/):
+- If you have [nodejs](https://nodejs.org/en/download/):
 
     ```bash
     npm i docsify-cli -g
@@ -72,7 +72,7 @@ If you want to read user manual locally, please follow steps below, since we use
 
     then open web browser (usually) at [http://localhost:3000](http://localhost:3000) to read the user manual.
 
--   Otherwise, you can
+- Otherwise, you can
 
     ```bash
     cd ./docs/user_manual
@@ -85,24 +85,24 @@ If you want to read user manual locally, please follow steps below, since we use
 
 ## Implementation Overview
 
--   Use [Pinia](https://pinia.vuejs.org/) to provide datasets and global states.
--   Use [Vue Router](https://router.vuejs.org/) to manage route.
--   Use [Element Plus](https://doc-archive.element-plus.org/#/zh-CN/component/installation) to develop layout components.
--   All Vue components are written in [Typescript](https://www.typescriptlang.org/) with [SFC](https://vuejs.org/guide/scaling-up/sfc.html) style and [Composition API](https://vuejs.org/guide/extras/composition-api-faq.html).
--   Architecture:
+- Use [Pinia](https://pinia.vuejs.org/) to provide datasets and global states.
+- Use [Vue Router](https://router.vuejs.org/) to manage route.
+- Use [Element Plus](https://doc-archive.element-plus.org/#/zh-CN/component/installation) to develop layout components.
+- All Vue components are written in [Typescript](https://www.typescriptlang.org/) with [SFC](https://vuejs.org/guide/scaling-up/sfc.html) style and [Composition API](https://vuejs.org/guide/extras/composition-api-faq.html).
+- Architecture:
     ![architecture_img](./docs/architecture.png)
 
 ## Work Flow
 
--   A model result is placed in `backend` as dirs.
--   When entering a route path, `fetch` the model result and store it in `store`'s `DatasetList`.
--   Then do some first run calculations and enter into single or comparative `Dashboard`, which is also defined in `store`'s `DashboardList`
--   When initializing a new `Dashboard`, we also initialize `View` list in the `Dashboard` given different tasks(node-classification, link-prediction, graph-classification). The `View` list is stored in each `Dashboard` object.
--   We put those `View`s in a `Dashboard` as `flex` css layout, with each of the `View` in a `ResizableBox` [slot](https://vuejs.org/guide/components/slots.html#slots) container
--   When selecting or highlighting some nodes in different views, we publicly store those infos in `Dashboard` object(not in `View`s) in the `store`.
--   When generating a new `Dashboard` with selected nodes, those nodes will be the source nodes of the new `Dashboard`
--   `brush`, `zoom`, `resize` and some other behaviors is defined as [Composables](https://vuejs.org/guide/reusability/composables.html) or [Custom Directives](https://vuejs.org/guide/reusability/custom-directives.html#introduction) for code reuse considerations.
--   In many scatter plots, we use conditional rendering to render different node coordinates with different semantics.
+- A model result is placed in `backend` as dirs.
+- When entering a route path, `fetch` the model result and store it in `store`'s `DatasetList`.
+- Then do some first run calculations and enter into single or comparative `Dashboard`, which is also defined in `store`'s `DashboardList`
+- When initializing a new `Dashboard`, we also initialize `View` list in the `Dashboard` given different tasks(node-classification, link-prediction, graph-classification). The `View` list is stored in each `Dashboard` object.
+- We put those `View`s in a `Dashboard` as `flex` css layout, with each of the `View` in a `ResizableBox` [slot](https://vuejs.org/guide/components/slots.html#slots) container
+- When selecting or highlighting some nodes in different views, we publicly store those infos in `Dashboard` object(not in `View`s) in the `store`.
+- When generating a new `Dashboard` with selected nodes, those nodes will be the source nodes of the new `Dashboard`
+- `brush`, `zoom`, `resize` and some other behaviors is defined as [Composables](https://vuejs.org/guide/reusability/composables.html) or [Custom Directives](https://vuejs.org/guide/reusability/custom-directives.html#introduction) for code reuse considerations.
+- In many scatter plots, we use conditional rendering to render different node coordinates with different semantics.
 
 ## Files & Directories Information
 
@@ -228,10 +228,10 @@ For more information about files, please refer to the codes.
 
 1. What should I do if "Error: 404 File not found"?
 
--   ![404-file-not-fond](./docs/404-file-not-fond.png)
--   > This may caused by missing dataset or incomplete dataset, check `backend\list.json` to ensure the dataset is not redundant and check `backend\${your-dataset-name}` to see if the dataset is complete
+- ![404-file-not-fond](./docs/404-file-not-fond.png)
+- > This may caused by missing dataset or incomplete dataset, check `backend\list.json` to ensure the dataset is not redundant and check `backend\${your-dataset-name}` to see if the dataset is complete
 
 2. What should I do if "load dataset" process is too long?
 
--   ![load-dataset-too-long](./docs/load-dataset-too-long.png)
--   > This may caused by your limited computer performance, try to close irrelevant programs and restart the browser; Or by oversized dataset, for which you can precalculate the graph layout and dimension reduction using other language libs that can be accelerated by GPUs.
+- ![load-dataset-too-long](./docs/load-dataset-too-long.png)
+- > This may caused by your limited computer performance, try to close irrelevant programs and restart the browser; Or by oversized dataset, for which you can precalculate the graph layout and dimension reduction using other language libs that can be accelerated by GPUs.

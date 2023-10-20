@@ -221,7 +221,7 @@
 1. Type: Json file
 2. Description: Some computationally intensive initial rendering data, including the force-directed layout of graphs and the dimensionality reduction results of embedded spatial data.
 3. Introduction to Calculation Methods:
-    - forceDirectedLayout: https://github.com/d3/d3-force/tree/v3.0.0#d3-force
+    - forceDirectedLayout: <https://github.com/d3/d3-force/tree/v3.0.0#d3-force>
     - Umap, Tsne: can use "sklearn" library in python
 4. Demo:
 
