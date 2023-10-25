@@ -13,7 +13,6 @@
 # limitations under the License.
 # ============================================================================
 """train val"""
-from gnnvis import GNNVis
 import time
 import argparse
 import numpy as np
@@ -39,6 +38,7 @@ from util import get_auc_score
 
 import sys
 sys.path.append("..")
+from gnnvis import GNNVis
 
 
 def seed(x=2022):
@@ -103,19 +103,7 @@ def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
 
-def main():
-    """train gcn"""
-    if seed is not None:
-        seed(args.seed)
-
-    dropout = args.dropout_keep_prob
-    epochs = args.epochs
-    hidden1_dim = args.hidden1_dim
-    hidden2_dim = args.hidden2_dim
-    lr = args.lr
-    weight_decay = args.weight_decay
-    mode = args.mode
-
+def args_init():
     if args.fuse:
         context.set_context(device_target="CPU", save_graphs=True, save_graphs_path="./computational_graph/",
                             mode=context.GRAPH_MODE, enable_graph_kernel=True,
@@ -130,31 +118,32 @@ def main():
         ms_profiler = Profiler(subgraph="ALL", is_detail=True,
                                is_show_op_path=False, output_path="./prof_result")
 
-    # dataloader
+
+def init_output_path():
+    timestamp = datetime.datetime.strftime(
+        datetime.datetime.now(), '%Y-%m-%d %H:%M:%S ')
+    save_path = f'./saved_out_gae_link_pred/{args.data_name}/{timestamp}'
+    if not os.path.exists(save_path):
+        os.makedirs(save_path)
+    return save_path
+
+
+def get_dataset_from_args():
     print(args.data_name)
+
     if args.data_name == 'cora_v2':
-        ds = CoraV2(args.data_path, args.data_name)
+        return CoraV2(args.data_path, args.data_name)
     elif args.data_name == 'citeseer':
-        ds = CoraV2(args.data_path, args.data_name)
+        return CoraV2(args.data_path, args.data_name)
     elif args.data_name == 'pubmed':
-        ds = CoraV2(args.data_path, args.data_name)
+        return CoraV2(args.data_path, args.data_name)
 
-    adj_coo, (train, val, test) = split_data(ds, graph_type='undirected')
+    raise ValueError(f"args.data_name: {args.data_name} not in ['cora_v2', 'citeseer', 'pubmed']")
 
-    # Construct negative examples
-    positive = [e for list in [train, val, test] for e in list]
-    val_false = negative_sample(
-        positive, ds.node_count - 1, len(val), mode=mode)
-    test_false = negative_sample(
-        positive, ds.node_count - 1, len(test), mode=mode)
 
-    n_nodes = ds.node_feat.shape[0]
-    n_edges = adj_coo.row.shape[0] - val.shape[0] - test.shape[0]
+def calc_in_out_degree(n_nodes, adj_coo):
     in_deg = np.zeros(shape=n_nodes, dtype=np.int32)
     out_deg = np.zeros(shape=n_nodes, dtype=np.int32)
-
-    # Construct labels, remove diagonal matrix
-    label = ms.Tensor(adj_coo.toarray(), ms.float32)
 
     # Calculate in-degree and out-degree
     for r in adj_coo.row:
@@ -163,6 +152,82 @@ def main():
         in_deg[r] += 1
     in_deg = ms.Tensor(in_deg, ms.int32)
     out_deg = ms.Tensor(out_deg, ms.int32)
+
+    return in_deg, out_deg
+
+
+def calc_unseen_edges_score(matrix, positive):
+    res = []
+
+    for row, vec in enumerate(matrix.tolist()):
+        if row % 100 == 0:
+            print(f"row:{row} now processing")
+
+        vec_index = [(col, data) for col, data in enumerate(vec)]
+        sorted_vec = sorted(vec_index, key=lambda x: x[1], reverse=True)
+
+        if row % 100 == 0:
+            # print('sorted_vec', sorted_vec[:10])
+            print(f"row:{row} sorted")
+
+        count, i = 0, 0
+        top_k_list = []
+        while count < args.top_k:
+            if [row, sorted_vec[i][0]] not in positive:
+                # print(row,sorted_vec[i][0]," not in")
+                top_k_list.append(sorted_vec[i])
+                count += 1
+            i += 1
+            if i == len(sorted_vec):
+                break
+
+        if count > 0:
+            if row % 100 == 0:
+                print('top_k_list:', top_k_list)
+            res.append([row, top_k_list])
+
+    # 再按top1排序, 因为对称性,肯定是top1相等的成对存在, 所以让index小的在前
+    # 1是说top_k_list 在[row, top_k_list], 0是说最大的那个, 再取data或者index
+    res = sorted(res, key=lambda x: (
+        x[1][0][1], x[1][0][0]), reverse=True)
+
+    return res
+
+
+def main():
+    """train gcn"""
+    if seed is not None:
+        seed(args.seed)
+
+    dropout = args.dropout_keep_prob
+    epochs = args.epochs
+    hidden1_dim = args.hidden1_dim
+    hidden2_dim = args.hidden2_dim
+    lr = args.lr
+    weight_decay = args.weight_decay
+    mode = args.mode
+
+    args_init()
+
+    # dataloader
+    ds = get_dataset_from_args()
+
+    adj_coo, (train, val, test) = split_data(ds, graph_type='undirected')
+
+    # Construct negative examples
+    positive = [e for lst in [train, val, test] for e in lst]
+    val_false = negative_sample(
+        positive, ds.node_count - 1, len(val), mode=mode)
+    test_false = negative_sample(
+        positive, ds.node_count - 1, len(test), mode=mode)
+
+    n_nodes = ds.node_feat.shape[0]
+    n_edges = adj_coo.row.shape[0] - val.shape[0] - test.shape[0]
+
+    # Construct labels, remove diagonal matrix
+    label = ms.Tensor(adj_coo.toarray(), ms.float32)
+
+    in_deg, out_deg = calc_in_out_degree(n_nodes, adj_coo)
 
     g = GraphField(ms.Tensor(adj_coo.row, dtype=ms.int32), ms.Tensor(adj_coo.col, dtype=ms.int32),
                    int(n_nodes), int(n_edges))
@@ -197,21 +262,13 @@ def main():
         print("epoch:", e, "loss:", loss_v, "time:{} s".format(dur))
 
         net.set_train(False)
-        # out = net(node_feat, in_deg, out_deg, index, *g.get_graph())
-        # auc_score, ap_score = get_auc_score(out.asnumpy(), val, val_false)
 
-        # my
         out_x, out_y = net(node_feat, in_deg, out_deg, index, *g.get_graph())
         auc_score, ap_score = get_auc_score(out_y.asnumpy(), val, val_false)
-        # end my
 
         print('Val AUC score:', auc_score, "AP score:", ap_score, '\n')
 
-    # auc_score, ap_score = get_auc_score(out.asnumpy(), test, test_false)
-
-    # my
     auc_score, ap_score = get_auc_score(out_y.asnumpy(), test, test_false)
-    # end my
 
     print('Test AUC score:', auc_score, "AP score:", ap_score)
 
@@ -223,7 +280,7 @@ def main():
         preds_bool_index.append(sigmoid(matrix[e[0], e[1]]) > 0.5)
 
     for e in positive:
-        if (matrix[e[0], e[1]] < 0):
+        if matrix[e[0], e[1]] < 0:
             print('a negative', e)
 
     print("pres_bool_index OK")
@@ -239,84 +296,24 @@ def main():
 
     positive = positive.tolist()
 
-    trueUnseenEdgesSorted = []
-    for row, vec in enumerate(matrix.tolist()):
-        if row % 100 == 0:
-            print(f"row:{row} now processing")
+    true_unseen_edges_sorted = calc_unseen_edges_score(matrix, positive)
 
-        vec_index = [(col, data) for col, data in enumerate(vec)]
-        sorted_vec = sorted(vec_index, key=lambda x: x[1], reverse=True)
-
-        if row % 100 == 0:
-            # print('sorted_vec', sorted_vec[:10])
-            print(f"row:{row} sorted")
-
-        count, i = 0, 0
-        top_k_list = []
-        while count < args.top_k:
-            if [row, sorted_vec[i][0]] not in positive:
-                # print(row,sorted_vec[i][0]," not in")
-                top_k_list.append(sorted_vec[i])
-                count += 1
-            i += 1
-            if i == len(sorted_vec):
-                break
-
-        if count > 0:
-            if row % 100 == 0:
-                print('top_k_list:', top_k_list)
-            trueUnseenEdgesSorted.append([row, top_k_list])
-
-        # if (row+1)%200 ==0:
-        #     print(f"row:{row} OK")
-        # break
-
-    # 再按top1排序, 因为对称性,肯定是top1相等的成对存在, 所以让index小的在前
-    # 1是说top_k_list 在[row, top_k_list], 0是说最大的那个, 再取data或者index
-    trueUnseenEdgesSorted = sorted(trueUnseenEdgesSorted, key=lambda x: (
-        x[1][0][1], x[1][0][0]), reverse=True)
-    trueUnseenEdgesSortedCompact = dict(
-        [[i[0], [j[0] for j in i[1]]] for i in trueUnseenEdgesSorted])
+    true_unseen_edges_sorted_compact = dict(
+        [[i[0], [j[0] for j in i[1]]] for i in true_unseen_edges_sorted])
 
     save_json = {
-        "isLinkPrediction": True,
         "trueAllowEdges": true_allow.tolist(),
         "falseAllowEdges": false_allow.tolist(),
-        "trueUnseenEdgesSorted": trueUnseenEdgesSortedCompact,
+        "trueUnseenEdgesSorted": true_unseen_edges_sorted_compact,
     }
 
     # 创建文件夹
-    timestamp = datetime.datetime.strftime(
-        datetime.datetime.now(), '%Y-%m-%d %H:%M:%S ')
-    save_path = f'./saved_out_gae_link_pred/{args.data_name}/{timestamp}'
-    if not os.path.exists(save_path):
-        os.makedirs(save_path)
+    save_path = init_output_path()
 
-    # with open(os.path.join(save_path, "prediction-results.json"), mode='w') as f_pred:
-    #     json.dump(save_json, f_pred, ensure_ascii=False)
-    # f_pred.close()
-
-    # df = pd.DataFrame(out_x.asnumpy(), index=None, columns=None)
-    # df.to_csv(os.path.join(save_path, 'node-embeddings.csv'), header=None, index=None)
-
-    # df_test = pd.DataFrame(test,index=None, columns=None)
-    # df_test.to_csv(f"./link_pred/{args.data_name}_test.csv", header=None,index=None)
-    # df_test_false = pd.DataFrame(test_false,index=None, columns=None)
-    # df_test_false.to_csv(f"./link_pred/{args.data_name}_test_false.csv", header=None,index=None)
-
-    # 保存
-    # end my
-
-    # ms.export(net, node_feat, in_deg, out_deg, index, *g.get_graph(), file_name="gae_model", file_format="MINDIR")
-    #
-    # if args.profile:
-    #     ms_profiler.analyse()
-
-    G = None
     with open(f"./{args.data_path}/graph.json", mode='r') as f:
-        G = json.load(f)
+        graph_dict = json.load(f)
 
-    GNNVis(G,
+    GNNVis(graph_dict,
            node_embed=out_x,
            node_dense_features=ds.node_feat,
            link_pred_res=save_json,
