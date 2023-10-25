@@ -1,0 +1,4 @@
+from .test_utils import TestUtils
+from .test_node_classification import TestGnnVisNodeClassification
+from .test_link_prediction import TestGnnVisLinkPrediction
+from .test_graph_classification import TestGnnVisGraphClassification
